@@ -1,75 +1,100 @@
 import torch
-import torch.nn.functional as F
-import time
 import copy
-from typing import Tuple
 import os
+from src.quantizer import Quantization
 from src.model import CNN
 from src.utils import get_data_loaders, get_model_size
 from src.train import train_model
 from src.config import DEVICE, MODEL_SAVE_PATH
+from src.evaluate_model import evaluate
+from src.logging import get_logger
+from src.logging_config import setup_logging
 
-
-def evaluate(
-    model: torch.nn.Module, loader: torch.utils.data.DataLoader, desc: str
-) -> Tuple[float, float]:
-    model.eval()
-    model.to(DEVICE)
-
-    correct = 0
-    test_loss = 0
-
-    start_time = time.time()
-
-    if DEVICE.type == "cuda":
-        torch.cuda.synchronize()
-
-    with torch.no_grad():
-        for data, target in loader:
-            data, target = data.to(DEVICE), target.to(DEVICE)
-            output = model(data)
-
-            test_loss += F.nll_loss(output, target, reduction="sum").item()
-            pred = output.argmax(dim=1, keepdim=True)
-            correct += pred.eq(target.view_as(pred)).sum().item()
-
-    end_time = time.time()
-    inference_time = end_time - start_time
-
-    test_loss /= len(loader.dataset)
-    accuracy = 100.0 * correct / len(loader.dataset)
-    duration = end_time - start_time
-
-    print(
-        f"[{desc}] Acc: {accuracy:.2f}% | Loss: {test_loss:.4f} | Zeit: {duration:.4f}s"
-    )
-
-    return accuracy, inference_time
+logger = get_logger("Experiment")
 
 
 def run_experiment():
+    if torch.cuda.is_available():
+        logger.info(f"Config: Using NVIDIA GPU ({torch.cuda.get_device_name(0)})")
+    else:
+        logger.info("Config: Using CPU")
+
+    logger.info("Initializing Data Loaders...")
     _, test_loader = get_data_loaders()
 
     if not os.path.exists(MODEL_SAVE_PATH):
+        logger.warning(f"Model not found at {MODEL_SAVE_PATH}. Training new model.")
         model = train_model()
     else:
+        logger.info(f"Loading existing model from {MODEL_SAVE_PATH}")
         model = CNN().to(DEVICE)
         model.load_state_dict(torch.load(MODEL_SAVE_PATH))
 
     acc_base, time_base = evaluate(model, test_loader, "Baseline Float32")
     size_base = get_model_size(MODEL_SAVE_PATH)
 
-    print("\n==========================================")
-    print("         ERGEBNIS BERICHT                 ")
-    print("==========================================")
-    print(f"Modell Größe (Float32):   {size_base:.2f} MB")
-    print(f"Theor. Größe (Int8):      {size_base / 4:.2f} MB")
-    print("------------------------------------------")
-    print(f"Accuracy Float32:         {acc_base:.2f}%")
-    # print(f"Accuracy Int8 (Sim):      {acc_quant:.2f}%")
-    # print(f"Verlust an Genauigkeit:   {acc_base - acc_quant:.2f}%")
-    print("==========================================")
+    # Quantization Affine
+    logger.info("Applying 8-bit Affine Quantization... (Simulated)")
+    quant_model = copy.deepcopy(model)
+    quant_model.to(DEVICE)
+
+    for name, module in quant_model.named_modules():
+        if isinstance(module, (torch.nn.Conv2d, torch.nn.Linear)):
+            logger.debug(f"Quantization layer (affine): {name}")
+            float_weights = module.weight.data
+            dequant_weights, _ = Quantization.affine_quantization(
+                float_weights, num_bits=8
+            )
+            module.weight.data = dequant_weights.to(module.weight.dtype)
+
+    acc_affine, time_affine = evaluate(quant_model, test_loader, "Quanitzed 8-bit")
+
+    # Quantization Symmetric
+    logger.info("Applying 8-bit Symmetric Quantization... (Simulated)")
+    quant_model_sym = copy.deepcopy(model)
+    quant_model_sym.to(DEVICE)
+
+    for name, module in quant_model_sym.named_modules():
+        if isinstance(module, (torch.nn.Conv2d, torch.nn.Linear)):
+            logger.debug(f"Quantizing layer (symmetric): {name}")
+            float_weights = module.weight.data
+            dequant_weights, _ = Quantization.symmetric_quantization(
+                float_weights, num_bits=8
+            )
+            module.weight.data = dequant_weights.to(module.weight.dtype)
+    acc_symm, time_symm = evaluate(quant_model_sym, test_loader, "Symmetric 8-bit")
+
+    report = (
+        "\n==========================================\n"
+        "         Result Report                      \n"
+        "==========================================\n"
+        f"Model Size (Float32):   {size_base:.2f} MB\n"
+        f"Theor. Size (Int8):      {size_base / 4:.2f} MB\n"
+        "------------------------------------------\n"
+        f"Accuracy Float32:         {acc_base:.2f}%\n"
+        f"Accuracy Affine:        {acc_affine:.2f}%\n"
+        f"Accuracy Symmetric:       {acc_symm:.2f}%\n"
+        "=========================================="
+    )
+    logger.info("Experiment finished. Summary: " + report)
 
 
 if __name__ == "__main__":
+    setup_logging()
     run_experiment()
+
+
+# TODO
+# Logging + (Analysing Functions --> Research whats best)
+# Moving to Uni GPU Servers
+
+
+# Full Implementation of Quantisation -> Different and Unique Models based on Functions
+
+# DONE UNTIL 8th of Dec
+
+# Bigger Dataset for Training during christmas
+# --> Helper Function for dataset integration
+# --> making it actually work lol
+
+# DONE UNTIL WEEK BEFORE CHRISTMAS

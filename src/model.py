@@ -1,16 +1,14 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-kernel_size = 3
-stride = 1
+from src.config import KERNEL_SIZE, STRIDE
 
 
 class CNN(nn.Module):
     def __init__(self):
         super(CNN, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=kernel_size, stride=stride)
-        self.conv2 = nn.Conv2d(32, 64, kernel_size=kernel_size, stride=stride)
+        self.conv1 = nn.Conv2d(1, 32, kernel_size=KERNEL_SIZE, stride=STRIDE)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=KERNEL_SIZE, stride=STRIDE)
         self.dropout1 = nn.Dropout(0.25)
         self.dropout2 = nn.Dropout(0.5)
         self.fc1 = nn.Linear(9216, 128)

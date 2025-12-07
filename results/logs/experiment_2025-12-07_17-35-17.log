@@ -1,0 +1,43 @@
+{"asctime": "2025-12-07T17:35:17Z", "levelname": "INFO", "name": "Experiment", "message": "Config: Using NVIDIA GPU (NVIDIA GeForce RTX 4070 Ti SUPER)"}
+{"asctime": "2025-12-07T17:35:17Z", "levelname": "INFO", "name": "Experiment", "message": "Initializing Data Loaders..."}
+{"asctime": "2025-12-07T17:35:17Z", "levelname": "INFO", "name": "Experiment", "message": "Loading existing model from results/models\\cnn_float32.pth"}
+{"asctime": "2025-12-07T17:35:17Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Baseline Float32"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Baseline Float32] - Acc: 98.60% | Loss: 0.0402 | Time: 2.9258s"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "INFO", "name": "Experiment", "message": "Applying 8-bit Affine Quantization... (Simulated)"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): conv1"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.4704, Max=0.4407, Scale=0.003573, Zero Point:132.0"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): conv2"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.3085, Max=0.2476, Scale=0.002181, Zero Point:141.0"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): fc1"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.1746, Max=0.1736, Scale=0.001366, Zero Point:128.0"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): fc2"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.4411, Max=0.2394, Scale=0.002669, Zero Point:165.0"}
+{"asctime": "2025-12-07T17:35:20Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Quanitzed 8-bit"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Quanitzed 8-bit] - Acc: 98.60% | Loss: 0.0402 | Time: 2.8354s"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "INFO", "name": "Experiment", "message": "Applying 8-bit Symmetric Quantization... (Simulated)"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantizing layer (symmetric): conv1"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Symmetric Quantization: Max value=0.4704, Scale=0.003704, Range=[-127, 127]"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantizing layer (symmetric): conv2"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Symmetric Quantization: Max value=0.3085, Scale=0.002429, Range=[-127, 127]"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantizing layer (symmetric): fc1"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Symmetric Quantization: Max value=0.1746, Scale=0.001375, Range=[-127, 127]"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantizing layer (symmetric): fc2"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Symmetric Quantization: Max value=0.4411, Scale=0.003473, Range=[-127, 127]"}
+{"asctime": "2025-12-07T17:35:23Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Symmetric 8-bit"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Symmetric 8-bit] - Acc: 98.62% | Loss: 0.0401 | Time: 2.9022s"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "INFO", "name": "Experiment", "message": "Starting Actual Storage Quantization (Int8).."}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "INFO", "name": "Experiment", "message": "Model layers replaced with Quantizable versions"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine8-bit"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.4704, Max=0.4407, Scale=0.003573, Zero Point:132.0"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine8-bit"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.3085, Max=0.2476, Scale=0.002181, Zero Point:141.0"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine8-bit"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.1746, Max=0.1736, Scale=0.001366, Zero Point:128.0"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine8-bit"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.4411, Max=0.2394, Scale=0.002669, Zero Point:165.0"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "INFO", "name": "Experiment", "message": "Original Size: 4690.57 KB"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "INFO", "name": "Experiment", "message": "Quantized Size: 1178.20 KB"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "INFO", "name": "Experiment", "message": "Reduction: 351236.33%"}
+{"asctime": "2025-12-07T17:35:25Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Storage Quantization (Int8)"}
+{"asctime": "2025-12-07T17:35:28Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Storage Quantization (Int8)] - Acc: 98.60% | Loss: 0.0402 | Time: 2.8977s"}
+{"asctime": "2025-12-07T17:35:28Z", "levelname": "INFO", "name": "Experiment", "message": "Experiment finished. Summary: \n==========================================\n         Result Report                      \n==========================================\nModel Size (Float32):   4.58 MB\nTheor. Size (Int8):      1.15 MB\n------------------------------------------\nAccuracy Float32:         98.60%\nAccuracy Affine:        98.60%\nAccuracy Symmetric:       98.62%\n=========================================="}

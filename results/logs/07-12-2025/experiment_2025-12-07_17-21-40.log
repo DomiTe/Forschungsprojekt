@@ -1,0 +1,43 @@
+{"asctime": "2025-12-07T17:21:40Z", "levelname": "INFO", "name": "Experiment", "message": "Config: Using NVIDIA GPU (NVIDIA GeForce RTX 4070 Ti SUPER)"}
+{"asctime": "2025-12-07T17:21:40Z", "levelname": "INFO", "name": "Experiment", "message": "Initializing Data Loaders..."}
+{"asctime": "2025-12-07T17:21:40Z", "levelname": "WARNING", "name": "Experiment", "message": "Model not found at results/models\\cnn_float32.pth. Training new model."}
+{"asctime": "2025-12-07T17:21:40Z", "levelname": "INFO", "name": "src.train", "message": "Starting Training on Device: cuda"}
+{"asctime": "2025-12-07T17:21:43Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[0/60000(0%)]Loss: 2.299642"}
+{"asctime": "2025-12-07T17:21:43Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[6400/60000(11%)]Loss: 0.132852"}
+{"asctime": "2025-12-07T17:21:44Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[12800/60000(21%)]Loss: 0.236426"}
+{"asctime": "2025-12-07T17:21:44Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[19200/60000(32%)]Loss: 0.094629"}
+{"asctime": "2025-12-07T17:21:45Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[25600/60000(43%)]Loss: 0.275514"}
+{"asctime": "2025-12-07T17:21:45Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[32000/60000(53%)]Loss: 0.140207"}
+{"asctime": "2025-12-07T17:21:46Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[38400/60000(64%)]Loss: 0.109665"}
+{"asctime": "2025-12-07T17:21:46Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[44800/60000(75%)]Loss: 0.022149"}
+{"asctime": "2025-12-07T17:21:47Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[51200/60000(85%)]Loss: 0.056796"}
+{"asctime": "2025-12-07T17:21:47Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 1[57600/60000(96%)]Loss: 0.044075"}
+{"asctime": "2025-12-07T17:21:48Z", "levelname": "INFO", "name": "src.train", "message": "Epoch 1 finished in 7.83s"}
+{"asctime": "2025-12-07T17:21:50Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[0/60000(0%)]Loss: 0.023504"}
+{"asctime": "2025-12-07T17:21:50Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[6400/60000(11%)]Loss: 0.012948"}
+{"asctime": "2025-12-07T17:21:51Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[12800/60000(21%)]Loss: 0.081790"}
+{"asctime": "2025-12-07T17:21:51Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[19200/60000(32%)]Loss: 0.058459"}
+{"asctime": "2025-12-07T17:21:52Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[25600/60000(43%)]Loss: 0.036010"}
+{"asctime": "2025-12-07T17:21:53Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[32000/60000(53%)]Loss: 0.126511"}
+{"asctime": "2025-12-07T17:21:53Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[38400/60000(64%)]Loss: 0.129486"}
+{"asctime": "2025-12-07T17:21:54Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[44800/60000(75%)]Loss: 0.045701"}
+{"asctime": "2025-12-07T17:21:54Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[51200/60000(85%)]Loss: 0.062371"}
+{"asctime": "2025-12-07T17:21:55Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 2[57600/60000(96%)]Loss: 0.138666"}
+{"asctime": "2025-12-07T17:21:55Z", "levelname": "INFO", "name": "src.train", "message": "Epoch 2 finished in 7.30s"}
+{"asctime": "2025-12-07T17:21:57Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[0/60000(0%)]Loss: 0.051181"}
+{"asctime": "2025-12-07T17:21:58Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[6400/60000(11%)]Loss: 0.046179"}
+{"asctime": "2025-12-07T17:21:58Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[12800/60000(21%)]Loss: 0.118748"}
+{"asctime": "2025-12-07T17:21:59Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[19200/60000(32%)]Loss: 0.082008"}
+{"asctime": "2025-12-07T17:21:59Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[25600/60000(43%)]Loss: 0.039371"}
+{"asctime": "2025-12-07T17:22:00Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[32000/60000(53%)]Loss: 0.007791"}
+{"asctime": "2025-12-07T17:22:00Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[38400/60000(64%)]Loss: 0.017159"}
+{"asctime": "2025-12-07T17:22:01Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[44800/60000(75%)]Loss: 0.086304"}
+{"asctime": "2025-12-07T17:22:02Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[51200/60000(85%)]Loss: 0.246453"}
+{"asctime": "2025-12-07T17:22:02Z", "levelname": "INFO", "name": "src.train", "message": "Train Epoch: 3[57600/60000(96%)]Loss: 0.116888"}
+{"asctime": "2025-12-07T17:22:03Z", "levelname": "INFO", "name": "src.train", "message": "Epoch 3 finished in 7.31s"}
+{"asctime": "2025-12-07T17:22:03Z", "levelname": "INFO", "name": "src.train", "message": "Refernce Model saved to: results/models\\cnn_float32.pth"}
+{"asctime": "2025-12-07T17:22:03Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Baseline Float32"}
+{"asctime": "2025-12-07T17:22:06Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Baseline Float32] - Acc: 98.60% | Loss: 0.0402 | Time: 2.8421s"}
+{"asctime": "2025-12-07T17:22:06Z", "levelname": "INFO", "name": "Experiment", "message": "Applying 8-bit Affine Quantization... (Simulated)"}
+{"asctime": "2025-12-07T17:22:06Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): conv1"}
+{"asctime": "2025-12-07T17:22:06Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.4704, Max=0.4407, Scale=0.003573, Zero Point:132.0"}

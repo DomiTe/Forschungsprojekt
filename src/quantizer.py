@@ -17,22 +17,22 @@ class Quantization:
         q_max = 2**num_bits - 1
 
         if x_max == x_min:
-            logger.warning("Tensor min/max are identical.")
+            logger.warning("Tensor min/max are identical in affine quantization.")
             return tensor, tensor.to(torch.uint8), torch.tensor(1.0), torch.tensor(0.0)
 
-        scale = (x_max - x_min) / (q_max - q_min)
-        zero_point = torch.round(q_min - (x_min / scale))
+        scale = (x_max - x_min) / float(q_max - q_min)
+        zero_point = torch.round(q_min - (x_min / scale)).to(torch.int32)
 
         logger.debug(
-            f"Affine Quantization: Min={x_min:.4f}, Max={x_max:.4f}, "
-            f"Scale={scale:.6f}, Zero Point:{zero_point.item()}"
+            f"Affine Quantization: Min={x_min:.6f}, Max={x_max:.6f}, "
+            f"Scale={scale:.8f}, Zero Point:{zero_point.item()}"
         )
 
         x_int = torch.round((tensor / scale) + zero_point)
         x_int = torch.clamp(x_int, q_min, q_max)
         x_dequant = (x_int - zero_point) * scale
 
-        return x_dequant, x_int.to(torch.uint8), scale, zero_point
+        return x_dequant, x_int.to(torch.uint8), scale, zero_point.to(torch.int32)
 
     @staticmethod
     def symmetric_quantization(
@@ -61,3 +61,41 @@ class Quantization:
         zero_point = torch.tensor(1.0)
 
         return x_dequant, x_int.to(torch.int8), scale, zero_point
+
+    @staticmethod
+    def quantize_tensor(tensor: torch.Tensor, method: str= 'symmetric', num_bits: int = 8):
+        if method == 'affine':
+            return Quantization.affine_quantization(tensor, num_bits=num_bits)
+        else:
+            return Quantization.symmetric_quantization(tensor, num_bits=num_bits)
+        
+    @staticmethod
+    def quantize_with_params(tensor: torch.Tensor, scale: torch.Tensor, zero_point: torch.Tensor, method: str = 'symmetric', num_bits = 8):
+        if method == 'affine':
+            q_min = 0
+            q_max = 2**num_bits - 1
+            if float(scale) == 0:
+                logger.warning("Scale is zero in quantize_with_params (affine). replacing with 1.0")
+                scale = torch.tensor(1.0, device= tensor.device)
+            x_int = torch.round(tensor / scale)
+            x_int = torch.clamp(x_int, q_min, q_max)
+            x_dequant = x_int * scale
+            return x_dequant, x_int.to(torch.int8)
+        else:
+            q_max = (2 ** (num_bits - 1)) - 1
+            q_min = -q_max
+            
+            x_int = torch.round(tensor / scale)
+            x_int = torch.clamp(x_int, q_min, q_max)
+            x_dequant = x_int * scale
+            return x_dequant, x_int.to(torch.int8)
+        
+    @staticmethod
+    def dequantize_from_int(int_tensor: torch.Tensor, scale: torch.Tensor, zero_point: torch.Tensor, method: str = 'symmetric'):
+        if int_tensor is None:
+            return None
+        if method == 'affine':
+            return (int_tensor.float() - float(zero_point)) * float(scale)
+        else:
+            return int_tensor.float() *float(scale)
+                            

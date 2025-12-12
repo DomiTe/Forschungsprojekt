@@ -1,0 +1,119 @@
+2025-12-12T17:31:28Z INFO Experiment Config: Using NVIDIA GPU (NVIDIA GeForce RTX 4070 Ti SUPER)
+2025-12-12T17:31:28Z INFO Experiment Initializing Data Loaders...
+2025-12-12T17:31:28Z WARNING Experiment Model not found at C:\Users\Dominic\Documents\ResearchProject\results\models\cnn_mnist_2025-12-12_17-31-24.pt. Training new model.
+2025-12-12T17:31:28Z INFO src.train Starting Training on Device: cuda
+2025-12-12T17:31:29Z INFO src.train Train Epoch: 1[0/60000(0%)]Loss: 2.307051
+2025-12-12T17:31:29Z INFO src.train Train Epoch: 1[6400/60000(11%)]Loss: 0.271477
+2025-12-12T17:31:30Z INFO src.train Train Epoch: 1[12800/60000(21%)]Loss: 0.101714
+2025-12-12T17:31:31Z INFO src.train Train Epoch: 1[19200/60000(32%)]Loss: 0.333530
+2025-12-12T17:31:31Z INFO src.train Train Epoch: 1[25600/60000(43%)]Loss: 0.242901
+2025-12-12T17:31:32Z INFO src.train Train Epoch: 1[32000/60000(53%)]Loss: 0.149952
+2025-12-12T17:31:33Z INFO src.train Train Epoch: 1[38400/60000(64%)]Loss: 0.055477
+2025-12-12T17:31:33Z INFO src.train Train Epoch: 1[44800/60000(75%)]Loss: 0.034924
+2025-12-12T17:31:34Z INFO src.train Train Epoch: 1[51200/60000(85%)]Loss: 0.165160
+2025-12-12T17:31:35Z INFO src.train Train Epoch: 1[57600/60000(96%)]Loss: 0.125499
+2025-12-12T17:31:35Z INFO src.train Epoch 1 finished in 6.40s
+2025-12-12T17:31:35Z INFO src.train Train Epoch: 2[0/60000(0%)]Loss: 0.029579
+2025-12-12T17:31:36Z INFO src.train Train Epoch: 2[6400/60000(11%)]Loss: 0.146263
+2025-12-12T17:31:36Z INFO src.train Train Epoch: 2[12800/60000(21%)]Loss: 0.031579
+2025-12-12T17:31:37Z INFO src.train Train Epoch: 2[19200/60000(32%)]Loss: 0.025978
+2025-12-12T17:31:38Z INFO src.train Train Epoch: 2[25600/60000(43%)]Loss: 0.047209
+2025-12-12T17:31:39Z INFO src.train Train Epoch: 2[32000/60000(53%)]Loss: 0.014376
+2025-12-12T17:31:39Z INFO src.train Train Epoch: 2[38400/60000(64%)]Loss: 0.020790
+2025-12-12T17:31:40Z INFO src.train Train Epoch: 2[44800/60000(75%)]Loss: 0.191019
+2025-12-12T17:31:41Z INFO src.train Train Epoch: 2[51200/60000(85%)]Loss: 0.091858
+2025-12-12T17:31:42Z INFO src.train Train Epoch: 2[57600/60000(96%)]Loss: 0.062082
+2025-12-12T17:31:42Z INFO src.train Epoch 2 finished in 7.31s
+2025-12-12T17:31:42Z INFO src.train Train Epoch: 3[0/60000(0%)]Loss: 0.170543
+2025-12-12T17:31:43Z INFO src.train Train Epoch: 3[6400/60000(11%)]Loss: 0.075898
+2025-12-12T17:31:44Z INFO src.train Train Epoch: 3[12800/60000(21%)]Loss: 0.062558
+2025-12-12T17:31:45Z INFO src.train Train Epoch: 3[19200/60000(32%)]Loss: 0.024283
+2025-12-12T17:31:46Z INFO src.train Train Epoch: 3[25600/60000(43%)]Loss: 0.033436
+2025-12-12T17:31:46Z INFO src.train Train Epoch: 3[32000/60000(53%)]Loss: 0.013725
+2025-12-12T17:31:47Z INFO src.train Train Epoch: 3[38400/60000(64%)]Loss: 0.026974
+2025-12-12T17:31:48Z INFO src.train Train Epoch: 3[44800/60000(75%)]Loss: 0.051873
+2025-12-12T17:31:48Z INFO src.train Train Epoch: 3[51200/60000(85%)]Loss: 0.012759
+2025-12-12T17:31:49Z INFO src.train Train Epoch: 3[57600/60000(96%)]Loss: 0.008863
+2025-12-12T17:31:49Z INFO src.train Epoch 3 finished in 7.24s
+2025-12-12T17:31:50Z INFO src.train Refernce Model saved to: C:\Users\Dominic\Documents\ResearchProject\results\models\cnn_mnist_2025-12-12_17-31-24.pt
+2025-12-12T17:31:50Z INFO src.evaluation.evaluate_model Starting evaluation: Baseline Float32
+2025-12-12T17:31:51Z INFO src.evaluation.evaluate_model Evaluation Result [Baseline Float32] - Acc: 98.96% | Loss: 0.0336 | Time: 1.1036s
+2025-12-12T17:31:51Z INFO Experiment Applying 8-bit Affine Quantization... (Simulated)
+2025-12-12T17:31:51Z DEBUG Experiment Quantization layer (affine): conv1
+2025-12-12T17:31:51Z DEBUG src.quantizer Affine Quantization: Min=-0.523980, Max=0.460280, Scale=0.00385984, Zero Point:136
+2025-12-12T17:31:51Z DEBUG Experiment Quantization layer (affine): conv2
+2025-12-12T17:31:51Z DEBUG src.quantizer Affine Quantization: Min=-0.323479, Max=0.330028, Scale=0.00256277, Zero Point:126
+2025-12-12T17:31:51Z DEBUG Experiment Quantization layer (affine): fc1
+2025-12-12T17:31:51Z DEBUG src.quantizer Affine Quantization: Min=-0.173281, Max=0.193798, Scale=0.00143953, Zero Point:120
+2025-12-12T17:31:51Z DEBUG Experiment Quantization layer (affine): fc2
+2025-12-12T17:31:51Z DEBUG src.quantizer Affine Quantization: Min=-0.486983, Max=0.377839, Scale=0.00339146, Zero Point:144
+2025-12-12T17:31:51Z INFO src.evaluation.evaluate_model Starting evaluation: Simulated Affine 8-bit
+2025-12-12T17:31:52Z INFO src.evaluation.evaluate_model Evaluation Result [Simulated Affine 8-bit] - Acc: 98.96% | Loss: 0.0338 | Time: 1.0108s
+2025-12-12T17:31:52Z INFO Experiment Applying 8-bit Symmetric Quantization... (Simulated)
+2025-12-12T17:31:52Z DEBUG Experiment Quantizing layer (symmetric): conv1
+2025-12-12T17:31:52Z DEBUG src.quantizer Symmetric Quantization: Max value=0.5240, Scale=0.004126, Range=[-127, 127]
+2025-12-12T17:31:52Z DEBUG Experiment Quantizing layer (symmetric): conv2
+2025-12-12T17:31:52Z DEBUG src.quantizer Symmetric Quantization: Max value=0.3300, Scale=0.002599, Range=[-127, 127]
+2025-12-12T17:31:52Z DEBUG Experiment Quantizing layer (symmetric): fc1
+2025-12-12T17:31:52Z DEBUG src.quantizer Symmetric Quantization: Max value=0.1938, Scale=0.001526, Range=[-127, 127]
+2025-12-12T17:31:52Z DEBUG Experiment Quantizing layer (symmetric): fc2
+2025-12-12T17:31:52Z DEBUG src.quantizer Symmetric Quantization: Max value=0.4870, Scale=0.003835, Range=[-127, 127]
+2025-12-12T17:31:52Z INFO src.evaluation.evaluate_model Starting evaluation: Simulated Symmetric 8-bit
+2025-12-12T17:31:53Z INFO src.evaluation.evaluate_model Evaluation Result [Simulated Symmetric 8-bit] - Acc: 98.98% | Loss: 0.0336 | Time: 1.0364s
+2025-12-12T17:31:53Z INFO Experiment Starting Actual Storage Quantization (Int8)..
+2025-12-12T17:31:53Z INFO Experiment Model layers replaced with Quantizable versions
+2025-12-12T17:31:53Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-12T17:31:53Z DEBUG src.quantizer Affine Quantization: Min=-0.523980, Max=0.460280, Scale=0.00385984, Zero Point:136
+2025-12-12T17:31:53Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-12T17:31:53Z DEBUG src.quantizer Affine Quantization: Min=-0.323479, Max=0.330028, Scale=0.00256277, Zero Point:126
+2025-12-12T17:31:53Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-12T17:31:53Z DEBUG src.quantizer Affine Quantization: Min=-0.173281, Max=0.193798, Scale=0.00143953, Zero Point:120
+2025-12-12T17:31:53Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-12T17:31:53Z DEBUG src.quantizer Affine Quantization: Min=-0.486983, Max=0.377839, Scale=0.00339146, Zero Point:144
+2025-12-12T17:31:53Z INFO Experiment Calibrating activations for quantized model (using train set subset)...
+2025-12-12T17:31:53Z INFO src.layers Calibrating with 50 batches...
+2025-12-12T17:31:53Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-12T17:31:53Z INFO Experiment Saving quantized model to: C:\Users\Dominic\Documents\ResearchProject\results\quantized_models\cnn_mnist_quantized2025-12-12_17-31-24.pt
+2025-12-12T17:31:53Z INFO Experiment Original Size: 4690.88 KB
+2025-12-12T17:31:53Z INFO Experiment Quantized Size: 1180.93 KB
+2025-12-12T17:31:53Z INFO Experiment Reduction: 74.82%
+2025-12-12T17:31:53Z INFO src.evaluation.evaluate_model Starting evaluation: Storage Quantization (Int8)
+2025-12-12T17:31:55Z INFO src.evaluation.evaluate_model Evaluation Result [Storage Quantization (Int8)] - Acc: 98.86% | Loss: 0.0335 | Time: 1.8614s
+2025-12-12T17:31:55Z INFO Experiment Computing per-layer weight MSE between float model and quantized storage model...
+2025-12-12T17:31:55Z INFO Experiment Running per-layer sensitivity analysis (quantize one layer at a time)
+2025-12-12T17:31:55Z INFO src.utility.utils Starting Sensitivity Analysis on 4 layers...
+2025-12-12T17:31:55Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-12T17:31:55Z DEBUG src.quantizer Affine Quantization: Min=-0.523980, Max=0.460280, Scale=0.00385984, Zero Point:136
+2025-12-12T17:31:55Z INFO src.layers Calibrating with 10 batches...
+2025-12-12T17:31:55Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-12T17:31:55Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: conv1
+2025-12-12T17:31:57Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: conv1] - Acc: 98.90% | Loss: 0.0335 | Time: 1.4957s
+2025-12-12T17:31:57Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-12T17:31:57Z DEBUG src.quantizer Affine Quantization: Min=-0.323479, Max=0.330028, Scale=0.00256277, Zero Point:126
+2025-12-12T17:31:57Z INFO src.layers Calibrating with 10 batches...
+2025-12-12T17:31:57Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-12T17:31:57Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: conv2
+2025-12-12T17:31:59Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: conv2] - Acc: 98.97% | Loss: 0.0337 | Time: 1.7330s
+2025-12-12T17:31:59Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-12T17:31:59Z DEBUG src.quantizer Affine Quantization: Min=-0.173281, Max=0.193798, Scale=0.00143953, Zero Point:120
+2025-12-12T17:31:59Z INFO src.layers Calibrating with 10 batches...
+2025-12-12T17:31:59Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-12T17:31:59Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: fc1
+2025-12-12T17:32:00Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: fc1] - Acc: 98.94% | Loss: 0.0337 | Time: 1.4777s
+2025-12-12T17:32:00Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-12T17:32:00Z DEBUG src.quantizer Affine Quantization: Min=-0.486983, Max=0.377839, Scale=0.00339146, Zero Point:144
+2025-12-12T17:32:00Z INFO src.layers Calibrating with 10 batches...
+2025-12-12T17:32:01Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-12T17:32:01Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: fc2
+2025-12-12T17:32:02Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: fc2] - Acc: 98.96% | Loss: 0.0337 | Time: 1.4387s
+2025-12-12T17:32:02Z INFO Experiment Experiment finished. Summary: 
+==========================================
+         Result Report                      
+==========================================
+Model Size (Float32):   4.58 MB
+Theor. Size (Int8):      1.15 MB
+------------------------------------------
+Accuracy Float32:         98.96%
+Accuracy Affine:        98.96%
+Accuracy Symmetric:       98.98%
+==========================================

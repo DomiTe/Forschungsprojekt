@@ -8,10 +8,10 @@ from src.utility.utils import get_data_loaders, get_model_size, layer_weight_mse
 from src.train import train_model
 from src.utility.config import (
     DEVICE, 
-    MODEL_SAVE_PATH, 
-    QUANTIZED_FILENAME,      
+    MODEL_SAVE_PATH,    
     SENSITIVITY_CSV_PATH, 
-    MSE_CSV_PATH
+    MSE_CSV_PATH,
+    QUANTIZED_SAVE_PATH
 )
 from src.evaluation.evaluate_model import evaluate
 from src.utility.logging import get_logger
@@ -88,11 +88,11 @@ def run_experiment():
     logger.info("Calibrating activations for quantized model (using train set subset)...")
     calibrated_model_activation(storage_model, train_loader, device='cpu', num_batches=50, method='affine', num_bits=8)
 
-    logger.info(f"Saving quantized model to: {QUANTIZED_FILENAME}")
-    torch.save(storage_model.state_dict(), QUANTIZED_FILENAME)
+    logger.info(f"Saving quantized model to: {QUANTIZED_SAVE_PATH}")
+    torch.save(storage_model.state_dict(), QUANTIZED_SAVE_PATH)
 
     original_size = os.path.getsize(MODEL_SAVE_PATH) / 1024
-    quantized_size = os.path.getsize(QUANTIZED_FILENAME) / 1024
+    quantized_size = os.path.getsize(QUANTIZED_SAVE_PATH) / 1024
     reduction = 100 * (1 - quantized_size / original_size) if original_size > 0 else 0.0
 
     logger.info(f"Original Size: {original_size:.2f} KB")

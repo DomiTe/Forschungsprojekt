@@ -20,11 +20,13 @@ RESULTS_DIR = os.path.join(BASE_DIR, "results")
 
 LOG_DIR = os.path.join(RESULTS_DIR, "logs")
 MODELS_DIR = os.path.join(RESULTS_DIR, "models")
+QUANTIZED_MODELS = os.path.join(RESULTS_DIR, "quantized_models")
 CSV_DIR = os.path.join(RESULTS_DIR, "csv")
 
 os.makedirs(RESULTS_DIR, exist_ok=True)
 os.makedirs(LOG_DIR, exist_ok=True)
 os.makedirs(MODELS_DIR, exist_ok=True)
+os.makedirs(QUANTIZED_MODELS, exist_ok=True)
 os.makedirs(CSV_DIR, exist_ok=True)
 
 # --- Data Paths ---
@@ -32,7 +34,7 @@ MODEL_FILENAME = f"cnn_mnist_{TIMESTAMP}.pt"
 MODEL_SAVE_PATH = os.path.join(MODELS_DIR, MODEL_FILENAME)
 
 QUANTIZED_FILENAME = f"cnn_mnist_quantized{TIMESTAMP}.pt"
-MODEL_SAVE_PATH = os.path.join(MODELS_DIR, QUANTIZED_FILENAME)
+QUANTIZED_SAVE_PATH = os.path.join(QUANTIZED_MODELS, QUANTIZED_FILENAME)
 
 SENSITIVITY_CSV_PATH = os.path.join(CSV_DIR, f"sensitivity_{TIMESTAMP}.csv")
 MSE_CSV_PATH = os.path.join(CSV_DIR, f"weight_mse_{TIMESTAMP}.csv")

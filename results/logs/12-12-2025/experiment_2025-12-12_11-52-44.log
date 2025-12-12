@@ -1,0 +1,73 @@
+{"asctime": "2025-12-12T11:52:44Z", "levelname": "INFO", "name": "Experiment", "message": "Config: Using NVIDIA GPU (NVIDIA GeForce RTX 4070 Ti SUPER)"}
+{"asctime": "2025-12-12T11:52:44Z", "levelname": "INFO", "name": "Experiment", "message": "Initializing Data Loaders..."}
+{"asctime": "2025-12-12T11:52:44Z", "levelname": "INFO", "name": "Experiment", "message": "Loading existing model from results/models\\cnn_float32.pth"}
+{"asctime": "2025-12-12T11:52:44Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Baseline Float32"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Baseline Float32] - Acc: 98.74% | Loss: 0.0380 | Time: 3.0621s"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "INFO", "name": "Experiment", "message": "Applying 8-bit Affine Quantization... (Simulated)"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): conv1"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.480838, Max=0.424830, Scale=0.00355164, Zero Point:135"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): conv2"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.357402, Max=0.257038, Scale=0.00240957, Zero Point:148"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): fc1"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.179746, Max=0.202817, Scale=0.00150025, Zero Point:120"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantization layer (affine): fc2"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.449698, Max=0.349509, Scale=0.00313415, Zero Point:143"}
+{"asctime": "2025-12-12T11:52:47Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Simulated Affine 8-bit"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Simulated Affine 8-bit] - Acc: 98.73% | Loss: 0.0381 | Time: 2.7595s"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "INFO", "name": "Experiment", "message": "Applying 8-bit Symmetric Quantization... (Simulated)"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantizing layer (symmetric): conv1"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Symmetric Quantization: Max value=0.4808, Scale=0.003786, Range=[-127, 127]"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantizing layer (symmetric): conv2"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Symmetric Quantization: Max value=0.3574, Scale=0.002814, Range=[-127, 127]"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantizing layer (symmetric): fc1"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Symmetric Quantization: Max value=0.2028, Scale=0.001597, Range=[-127, 127]"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "DEBUG", "name": "Experiment", "message": "Quantizing layer (symmetric): fc2"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Symmetric Quantization: Max value=0.4497, Scale=0.003541, Range=[-127, 127]"}
+{"asctime": "2025-12-12T11:52:50Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Simulated Symmetric 8-bit"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Simulated Symmetric 8-bit] - Acc: 98.77% | Loss: 0.0377 | Time: 2.8818s"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "INFO", "name": "Experiment", "message": "Starting Actual Storage Quantization (Int8).."}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "INFO", "name": "Experiment", "message": "Model layers replaced with Quantizable versions"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine 8-bit"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.480838, Max=0.424830, Scale=0.00355164, Zero Point:135"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine 8-bit"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.357402, Max=0.257038, Scale=0.00240957, Zero Point:148"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine 8-bit"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.179746, Max=0.202817, Scale=0.00150025, Zero Point:120"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine 8-bit"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.449698, Max=0.349509, Scale=0.00313415, Zero Point:143"}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "INFO", "name": "Experiment", "message": "Calibrating activations for quantized model (using train set subset)..."}
+{"asctime": "2025-12-12T11:52:53Z", "levelname": "INFO", "name": "src.layers", "message": "Calibrating with 50 batches..."}
+{"asctime": "2025-12-12T11:52:55Z", "levelname": "INFO", "name": "src.layers", "message": "Activation calibration finished for quantizable layers"}
+{"asctime": "2025-12-12T11:52:55Z", "levelname": "INFO", "name": "Experiment", "message": "Original Size: 4690.57 KB"}
+{"asctime": "2025-12-12T11:52:55Z", "levelname": "INFO", "name": "Experiment", "message": "Quantized Size: 1180.28 KB"}
+{"asctime": "2025-12-12T11:52:55Z", "levelname": "INFO", "name": "Experiment", "message": "Reduction: 74.84%"}
+{"asctime": "2025-12-12T11:52:55Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Storage Quantization (Int8)"}
+{"asctime": "2025-12-12T11:52:58Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Storage Quantization (Int8)] - Acc: 98.85% | Loss: 0.0342 | Time: 3.0281s"}
+{"asctime": "2025-12-12T11:52:58Z", "levelname": "INFO", "name": "Experiment", "message": "Computing per-layer weight MSE between float model and quantized storage model..."}
+{"asctime": "2025-12-12T11:52:58Z", "levelname": "INFO", "name": "Experiment", "message": "Running per-layer sensitivity analysis (quantize one layer at a time)"}
+{"asctime": "2025-12-12T11:52:58Z", "levelname": "INFO", "name": "src.utils", "message": "Starting Sensitivity Analysis on 4 layers..."}
+{"asctime": "2025-12-12T11:52:58Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine 8-bit"}
+{"asctime": "2025-12-12T11:52:58Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.480838, Max=0.424830, Scale=0.00355164, Zero Point:135"}
+{"asctime": "2025-12-12T11:52:58Z", "levelname": "INFO", "name": "src.layers", "message": "Calibrating with 10 batches..."}
+{"asctime": "2025-12-12T11:53:00Z", "levelname": "INFO", "name": "src.layers", "message": "Activation calibration finished for quantizable layers"}
+{"asctime": "2025-12-12T11:53:00Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Sensitivity: conv1"}
+{"asctime": "2025-12-12T11:53:03Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Sensitivity: conv1] - Acc: 98.88% | Loss: 0.0340 | Time: 3.0292s"}
+{"asctime": "2025-12-12T11:53:03Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine 8-bit"}
+{"asctime": "2025-12-12T11:53:03Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.357402, Max=0.257038, Scale=0.00240957, Zero Point:148"}
+{"asctime": "2025-12-12T11:53:03Z", "levelname": "INFO", "name": "src.layers", "message": "Calibrating with 10 batches..."}
+{"asctime": "2025-12-12T11:53:06Z", "levelname": "INFO", "name": "src.layers", "message": "Activation calibration finished for quantizable layers"}
+{"asctime": "2025-12-12T11:53:06Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Sensitivity: conv2"}
+{"asctime": "2025-12-12T11:53:09Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Sensitivity: conv2] - Acc: 98.75% | Loss: 0.0380 | Time: 3.1222s"}
+{"asctime": "2025-12-12T11:53:09Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine 8-bit"}
+{"asctime": "2025-12-12T11:53:09Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.179746, Max=0.202817, Scale=0.00150025, Zero Point:120"}
+{"asctime": "2025-12-12T11:53:09Z", "levelname": "INFO", "name": "src.layers", "message": "Calibrating with 10 batches..."}
+{"asctime": "2025-12-12T11:53:11Z", "levelname": "INFO", "name": "src.layers", "message": "Activation calibration finished for quantizable layers"}
+{"asctime": "2025-12-12T11:53:11Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Sensitivity: fc1"}
+{"asctime": "2025-12-12T11:53:15Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Sensitivity: fc1] - Acc: 98.76% | Loss: 0.0380 | Time: 3.1953s"}
+{"asctime": "2025-12-12T11:53:15Z", "levelname": "DEBUG", "name": "src.layers", "message": "Quantizing layer (storage): affine 8-bit"}
+{"asctime": "2025-12-12T11:53:15Z", "levelname": "DEBUG", "name": "src.quantizer", "message": "Affine Quantization: Min=-0.449698, Max=0.349509, Scale=0.00313415, Zero Point:143"}
+{"asctime": "2025-12-12T11:53:15Z", "levelname": "INFO", "name": "src.layers", "message": "Calibrating with 10 batches..."}
+{"asctime": "2025-12-12T11:53:17Z", "levelname": "INFO", "name": "src.layers", "message": "Activation calibration finished for quantizable layers"}
+{"asctime": "2025-12-12T11:53:17Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Starting evaluation: Sensitivity: fc2"}
+{"asctime": "2025-12-12T11:53:21Z", "levelname": "INFO", "name": "src.evaluate_model", "message": "Evaluation Result [Sensitivity: fc2] - Acc: 98.76% | Loss: 0.0380 | Time: 3.4713s"}
+{"asctime": "2025-12-12T11:53:21Z", "levelname": "INFO", "name": "Experiment", "message": "Experiment finished. Summary: \n==========================================\n         Result Report                      \n==========================================\nModel Size (Float32):   4.58 MB\nTheor. Size (Int8):      1.15 MB\n------------------------------------------\nAccuracy Float32:         98.74%\nAccuracy Affine:        98.73%\nAccuracy Symmetric:       98.77%\n=========================================="}

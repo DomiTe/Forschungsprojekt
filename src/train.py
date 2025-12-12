@@ -2,9 +2,9 @@ import torch
 import torch.optim as optim
 import torch.nn.functional as F
 from src.model import CNN
-from src.utils import get_data_loaders
-from src.config import DEVICE, EPOCHS, LEARNING_RATE, MODEL_SAVE_PATH
-from src.logging import get_logger
+from src.utility.utils import get_data_loaders
+from src.utility.config import DEVICE, EPOCHS, LEARNING_RATE, MODEL_SAVE_PATH
+from src.utility.logging import get_logger
 import time
 
 logger = get_logger(__name__)

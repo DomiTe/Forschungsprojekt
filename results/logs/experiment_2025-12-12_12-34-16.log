@@ -1,0 +1,4 @@
+2025-12-12T12:34:17Z INFO Experiment Config: Using NVIDIA GPU (NVIDIA GeForce RTX 4070 Ti SUPER)
+2025-12-12T12:34:17Z INFO Experiment Initializing Data Loaders...
+2025-12-12T12:34:17Z WARNING Experiment Model not found at c:\Users\Dominic\Documents\ResearchProject\results\models\cnn_mnist_quantized2025-12-12_12-34-16.pt. Training new model.
+2025-12-12T12:34:17Z INFO src.train Starting Training on Device: cuda

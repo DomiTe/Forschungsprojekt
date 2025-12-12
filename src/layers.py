@@ -1,10 +1,11 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from copy import deepcopy
+# from copy import deepcopy
 
 from src.quantizer import Quantization
-from src.logging import get_logger
+from src.utility.logging import get_logger
+from src.utility.config import QUANTIZATION_METHOD, QUANTIZATION_NUM_BITS, QUANTIZATION_NUM_BATCHES
 
 logger = get_logger(__name__)
 
@@ -19,10 +20,10 @@ class QuantizedLayers:
         self.register_buffer('act_scale', torch.tensor(1.0))
         self.register_buffer('act_zero_point', torch.tensor(0.0))
         self.activation_calibrated = False
-        self.quant_method = 'symmetric'
-        self.num_bits = 8
+        self.quant_method = QUANTIZATION_METHOD
+        self.num_bits = QUANTIZATION_NUM_BITS
 
-    def quantized_storage(self, num_bits=8, method='symmetric'):
+    def quantized_storage(self, num_bits=QUANTIZATION_NUM_BITS, method=QUANTIZATION_METHOD):
 
         if not hasattr(self, 'weight') or self.weight is None:
             return
@@ -117,7 +118,7 @@ def replace_layers_with_quantizable(model):
             replace_layers_with_quantizable(module)
     return model
 
-def calibrated_model_activation(model, data_loader, device='cpu', num_batches=50, method='symmetric', num_bits=8):
+def calibrated_model_activation(model, data_loader, device='cpu', num_batches=QUANTIZATION_NUM_BATCHES, method=QUANTIZATION_METHOD, num_bits=QUANTIZATION_NUM_BITS):
     model.eval()
     model.to(device)
 
@@ -127,7 +128,8 @@ def calibrated_model_activation(model, data_loader, device='cpu', num_batches=50
 
     def make_hook(name):
         def hook(module, input, output):
-            if output is None: return
+            if output is None:
+                return
             
             # Track both Min and Max for proper Affine support
             curr_min = output.min().item()

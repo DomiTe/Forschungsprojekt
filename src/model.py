@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from src.config import KERNEL_SIZE, STRIDE
+from src.utility.config import KERNEL_SIZE, STRIDE
 
 
 class CNN(nn.Module):

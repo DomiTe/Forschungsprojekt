@@ -12,10 +12,12 @@ logger = get_logger(__name__)
 
 def train_model() -> CNN:
     logger.info(f"Starting Training on Device: {DEVICE}")
-    train_loader, test_loader = get_data_loaders()
 
-    model = CNN().to(DEVICE)
-    optimizer = optim.Adadelta(model.parameters(), lr=LEARNING_RATE)
+    train_loader, test_loader, num_classes = get_data_loaders()
+
+    model = CNN(num_classes=num_classes).to(DEVICE)
+
+    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
 
     model.train()
     for epoch in range(1, EPOCHS + 1):

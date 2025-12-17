@@ -10,6 +10,19 @@ else:
     DEVICE = torch.device("cpu")
     PIN_MEMORY = False
 
+# DATASET KONFIGURATION
+DATASET_NAME = "POKEMON" 
+
+if DATASET_NAME == "MNIST":
+    IMAGE_SIZE = 28
+    CHANNELS = 1       # Schwarz-Weiß
+    NUM_CLASSES = 10
+    
+elif DATASET_NAME == "POKEMON":
+    IMAGE_SIZE = 64
+    CHANNELS = 3       # RGB Farbe
+    NUM_CLASSES = 898
+
 # --- Timestamp ---
 TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
@@ -17,6 +30,7 @@ TIMESTAMP = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 # Erstellt automatisch den results Ordner
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 RESULTS_DIR = os.path.join(BASE_DIR, "results")
+DATA_DIR = os.path.join(BASE_DIR, "data")
 
 LOG_DIR = os.path.join(RESULTS_DIR, "logs")
 MODELS_DIR = os.path.join(RESULTS_DIR, "models")
@@ -41,13 +55,11 @@ MSE_CSV_PATH = os.path.join(CSV_DIR, f"weight_mse_{TIMESTAMP}.csv")
 
 LOG_FILE_PATH = os.path.join(LOG_DIR, f"experiment_{TIMESTAMP}.log")
 
-DATA_DIR = "./data"
-
 # --- Hyperparameter ---
 BATCH_SIZE = 64
 TEST_BATCH_SIZE = 1000
-LEARNING_RATE = 1.0
-EPOCHS = 3
+LEARNING_RATE = 0.0005
+EPOCHS = 50
 
 KERNEL_SIZE = 3
 STRIDE = 1

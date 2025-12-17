@@ -1,18 +1,27 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from src.utility.config import KERNEL_SIZE, STRIDE
+from src.utility.config import KERNEL_SIZE, STRIDE, CHANNELS, IMAGE_SIZE, NUM_CLASSES
 
 
 class CNN(nn.Module):
-    def __init__(self):
+    def __init__(self, num_classes=NUM_CLASSES):
         super(CNN, self).__init__()
-        self.conv1 = nn.Conv2d(1, 32, kernel_size=KERNEL_SIZE, stride=STRIDE)
+        self.conv1 = nn.Conv2d(CHANNELS, 32, kernel_size=KERNEL_SIZE, stride=STRIDE)
         self.conv2 = nn.Conv2d(32, 64, kernel_size=KERNEL_SIZE, stride=STRIDE)
         self.dropout1 = nn.Dropout(0.25)
         self.dropout2 = nn.Dropout(0.5)
-        self.fc1 = nn.Linear(9216, 128)
-        self.fc2 = nn.Linear(128, 10)
+        dim = IMAGE_SIZE - (KERNEL_SIZE - 1)
+        # 2. Nach Conv2
+        dim = dim - (KERNEL_SIZE - 1)
+        # 3. Nach MaxPool (Faktor 2)
+        dim = dim // 2
+        # Flatten Size = Pixel_Höhe * Pixel_Breite * Anzahl_Filter (64)
+        self.flatten_size = dim * dim * 64
+        # Jetzt nutzen wir die Variable statt der festen Zahl 9216
+        self.fc1 = nn.Linear(self.flatten_size, 1024)
+        # Hier auch NUM_CLASSES statt 10 nutzen!
+        self.fc2 = nn.Linear(1024, num_classes)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = self.conv1(x)

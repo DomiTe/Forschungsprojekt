@@ -22,11 +22,11 @@ dependencies = [
     "torchvision",
 
     # --- Utilities ---
-    "requests",            # Für HTTP Calls
-    "beautifulsoup4",      # Wenn du Webscraping machst
-    "pillow",              # Bildverarbeitung
-    "arrow",               # Oder python-dateutil, je nachdem was du importierst
-    "pyyaml",              # Um YAML Configs zu lesen
+    "requests",
+    "beautifulsoup4",
+    "pillow",
+    "arrow",
+    "pyyaml",
 ]
 [tool.uv]
 index = [

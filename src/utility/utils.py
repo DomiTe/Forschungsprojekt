@@ -1,37 +1,72 @@
 import torch
 from torchvision import datasets, transforms
+from torch.utils.data import DataLoader, random_split
 from typing import Tuple
 import os
 import copy
 from src.utility.logging import get_logger 
 from src.quantizer import Quantization
-from src.utility.config import PIN_MEMORY, DATA_DIR, BATCH_SIZE, TEST_BATCH_SIZE
+from src.utility.config import PIN_MEMORY, DATA_DIR, BATCH_SIZE, TEST_BATCH_SIZE, IMAGE_SIZE, DATASET_NAME
 from src.evaluation.evaluate_model import evaluate
 from src.layers import replace_layers_with_quantizable, calibrated_model_activation, QuantizedConv2d, QuantizedLinear
 
 logger = get_logger(__name__)
 
-def get_data_loaders() -> Tuple[
-    torch.utils.data.DataLoader, torch.utils.data.DataLoader
-]:
-    transform = transforms.Compose(
-        [transforms.ToTensor(), transforms.Normalize((0.1307,), (0.3081,))]
-    )
+def get_data_loaders():
+    """
+    Die Hauptfunktion, die von main.py aufgerufen wird.
+    Sie entscheidet, welches Dataset geladen wird.
+    """
+    if DATASET_NAME == "MNIST":
+        return _get_mnist_loaders()
+    elif DATASET_NAME == "POKEMON":
+        return _get_pokemon_loaders()
+    else:
+        raise ValueError(f"Unbekanntes Dataset in Config: {DATASET_NAME}")
 
+# --- Interne Hilfsfunktionen (beginnen mit _) ---
+
+def _get_mnist_loaders():
+    transform = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.1307,), (0.3081,))
+    ])
     kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
-    train_dataset = datasets.MNIST(
-        DATA_DIR, train=True, download=True, transform=transform
-    )
-    train_loader = torch.utils.data.DataLoader(
-        train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs
-    )
-    test_dataset = datasets.MNIST(
-        DATA_DIR, train=False, download=True, transform=transform
-    )
-    test_loader = torch.utils.data.DataLoader(
-        test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs
-    )
-    return train_loader, test_loader
+    
+    train_dataset = datasets.MNIST(DATA_DIR, train=True, download=True, transform=transform)
+    test_dataset = datasets.MNIST(DATA_DIR, train=False, download=True, transform=transform)
+    
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
+    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    
+    return train_loader, test_loader, 10
+
+def _get_pokemon_loaders():
+    transform = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # RGB Normalisierung (Standardwerte)
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+    kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+    
+    # Pfad: root/data/pokemon
+    dataset_path = os.path.join(DATA_DIR, "Pokemon")
+    
+    full_dataset = datasets.ImageFolder(root=dataset_path, transform=transform)
+    
+    # Split
+    train_size = int(0.8 * len(full_dataset))
+    test_size = len(full_dataset) - train_size
+    train_dataset, test_dataset = random_split(full_dataset, [train_size, test_size])
+    
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
+    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    num_classes = len(full_dataset.classes)
+
+    return train_loader, test_loader, num_classes
+
 
 
 def get_model_size(model_path: str) -> float:
@@ -78,7 +113,7 @@ def per_layer_sensitivity_analysis(model_base, test_loader, device, bits=8, meth
 
         # 3. Calibrate Activations (Required for Full Quantization)
         # We perform a quick calibration on the modified model
-        train_loader, _ = get_data_loaders()
+        train_loader, _ , _= get_data_loaders()
         calibrated_model_activation(model_copy, train_loader, device='cpu', num_batches=10, method=method, num_bits=bits)
 
         # 4. Evaluate

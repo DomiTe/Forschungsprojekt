@@ -28,14 +28,16 @@ def run_experiment():
         logger.info("Config: Using CPU")
 
     logger.info("Initializing Data Loaders...")
-    train_loader, test_loader = get_data_loaders()
+
+    train_loader, test_loader, num_classes = get_data_loaders()
+    
 
     if not os.path.exists(MODEL_SAVE_PATH):
         logger.warning(f"Model not found at {MODEL_SAVE_PATH}. Training new model.")
         model = train_model()
     else:
         logger.info(f"Loading existing model from {MODEL_SAVE_PATH}")
-        model = CNN().to(DEVICE)
+        model = CNN(num_classes=num_classes).to(DEVICE)
         model.load_state_dict(torch.load(MODEL_SAVE_PATH))
 
     acc_base, time_base = evaluate(model, test_loader, "Baseline Float32")

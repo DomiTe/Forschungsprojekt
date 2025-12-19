@@ -9,30 +9,34 @@ class CNN(nn.Module):
         super(CNN, self).__init__()
         self.conv1 = nn.Conv2d(CHANNELS, 32, kernel_size=KERNEL_SIZE, stride=STRIDE)
         self.conv2 = nn.Conv2d(32, 64, kernel_size=KERNEL_SIZE, stride=STRIDE)
-        self.dropout1 = nn.Dropout(0.25)
-        self.dropout2 = nn.Dropout(0.5)
-        dim = IMAGE_SIZE - (KERNEL_SIZE - 1)
-        # 2. Nach Conv2
-        dim = dim - (KERNEL_SIZE - 1)
-        # 3. Nach MaxPool (Faktor 2)
-        dim = dim // 2
-        # Flatten Size = Pixel_Höhe * Pixel_Breite * Anzahl_Filter (64)
-        self.flatten_size = dim * dim * 64
-        # Jetzt nutzen wir die Variable statt der festen Zahl 9216
-        self.fc1 = nn.Linear(self.flatten_size, 1024)
-        # Hier auch NUM_CLASSES statt 10 nutzen!
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=KERNEL_SIZE, stride=STRIDE)
+        self.conv4 = nn.Conv2d(128, 256, kernel_size=KERNEL_SIZE, stride=STRIDE)
+        self.dropout = nn.Dropout(0.5) # Ein Dropout reicht oft
+
+        self.global_pool = nn.AdaptiveAvgPool2d((2, 2))
+
+        # WICHTIG: Der Input für Linear wächst dadurch um Faktor 4!
+        # 256 Filter * 2 * 2 = 1024
+        self.fc_input_dim = 256 * 2 * 2 
+
+        self.fc1 = nn.Linear(self.fc_input_dim, 1024)
         self.fc2 = nn.Linear(1024, num_classes)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        x = self.conv1(x)
-        x = F.relu(x)
-        x = self.conv2(x)
-        x = F.relu(x)
+        x = F.relu(self.conv1(x))
+        x = F.relu(self.conv2(x))
         x = F.max_pool2d(x, 2)
-        x = self.dropout1(x)
+        x = F.relu(self.conv3(x))
+        x = F.relu(self.conv4(x))
+
+        # (Batch, 256, H, W) -> (Batch, 256, 1, 1)
+        x = self.global_pool(x)
+        
+        # (Batch, 256)
         x = torch.flatten(x, 1)
-        x = self.fc1(x)
-        x = F.relu(x)
-        x = self.dropout2(x)
+        
+        # Klassifizierung
+        x = self.dropout(x)
+        x = F.relu(self.fc1(x))
         x = self.fc2(x)
         return F.log_softmax(x, dim=1)

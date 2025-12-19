@@ -43,18 +43,22 @@ def _get_mnist_loaders():
     return train_loader, test_loader, 10
 
 def _get_pokemon_loaders():
-    transform = transforms.Compose([
-        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
-        transforms.ToTensor(),
-        # RGB Normalisierung (Standardwerte)
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-    ])
+    transform_train = transforms.Compose([
+    transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+    # Data Augmentation Block
+    transforms.RandomHorizontalFlip(),    # Spiegeln
+    transforms.RandomRotation(15),        # Drehen
+    transforms.ColorJitter(brightness=0.2, contrast=0.2), # Licht ändern
+    # ---------------------
+    transforms.ToTensor(),
+    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+])
     kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
     
     # Pfad: root/data/pokemon
     dataset_path = os.path.join(DATA_DIR, "Pokemon")
     
-    full_dataset = datasets.ImageFolder(root=dataset_path, transform=transform)
+    full_dataset = datasets.ImageFolder(root=dataset_path, transform=transform_train)
     
     # Split
     train_size = int(0.8 * len(full_dataset))

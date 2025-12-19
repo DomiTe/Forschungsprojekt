@@ -59,11 +59,11 @@ LOG_FILE_PATH = os.path.join(LOG_DIR, f"experiment_{TIMESTAMP}.log")
 BATCH_SIZE = 64
 TEST_BATCH_SIZE = 1000
 LEARNING_RATE = 0.0005
-EPOCHS = 50
+EPOCHS = 200
 
 KERNEL_SIZE = 3
 STRIDE = 1
 
 QUANTIZATION_METHOD = 'symmetric' # Can also be Affine or power of 2(work in progress)
 QUANTIZATION_NUM_BITS = 8 # Quantization to 8-bit
-QUANTIZATION_NUM_BATCHES = 50 # Batches for quantization calibration
+QUANTIZATION_NUM_BATCHES = 100 # Batches for quantization calibration

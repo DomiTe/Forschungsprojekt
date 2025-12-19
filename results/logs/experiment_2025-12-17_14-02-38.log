@@ -1,0 +1,310 @@
+2025-12-17T14:02:39Z INFO Experiment Config: Using NVIDIA GPU (NVIDIA GeForce RTX 4070 Ti SUPER)
+2025-12-17T14:02:39Z INFO Experiment Initializing Data Loaders...
+2025-12-17T14:02:39Z WARNING Experiment Model not found at C:\Users\Dominic\Documents\ResearchProject\results\models\cnn_mnist_2025-12-17_14-02-38.pt. Training new model.
+2025-12-17T14:02:39Z INFO src.train Starting Training on Device: cuda
+2025-12-17T14:02:40Z INFO src.train Train Epoch: 1[0/2002(0%)]Loss: 6.796278
+2025-12-17T14:02:42Z INFO src.train Epoch 1 finished in 2.82s
+2025-12-17T14:02:42Z INFO src.train Train Epoch: 2[0/2002(0%)]Loss: 6.789595
+2025-12-17T14:02:45Z INFO src.train Epoch 2 finished in 2.54s
+2025-12-17T14:02:45Z INFO src.train Train Epoch: 3[0/2002(0%)]Loss: 6.737587
+2025-12-17T14:02:47Z INFO src.train Epoch 3 finished in 2.55s
+2025-12-17T14:02:47Z INFO src.train Train Epoch: 4[0/2002(0%)]Loss: 6.732393
+2025-12-17T14:02:50Z INFO src.train Epoch 4 finished in 2.52s
+2025-12-17T14:02:50Z INFO src.train Train Epoch: 5[0/2002(0%)]Loss: 6.704703
+2025-12-17T14:02:52Z INFO src.train Epoch 5 finished in 2.50s
+2025-12-17T14:02:52Z INFO src.train Train Epoch: 6[0/2002(0%)]Loss: 6.568193
+2025-12-17T14:02:55Z INFO src.train Epoch 6 finished in 2.52s
+2025-12-17T14:02:55Z INFO src.train Train Epoch: 7[0/2002(0%)]Loss: 6.503697
+2025-12-17T14:02:57Z INFO src.train Epoch 7 finished in 2.71s
+2025-12-17T14:02:58Z INFO src.train Train Epoch: 8[0/2002(0%)]Loss: 6.267908
+2025-12-17T14:03:00Z INFO src.train Epoch 8 finished in 2.90s
+2025-12-17T14:03:00Z INFO src.train Train Epoch: 9[0/2002(0%)]Loss: 6.285450
+2025-12-17T14:03:03Z INFO src.train Epoch 9 finished in 3.02s
+2025-12-17T14:03:03Z INFO src.train Train Epoch: 10[0/2002(0%)]Loss: 6.002427
+2025-12-17T14:03:06Z INFO src.train Epoch 10 finished in 2.93s
+2025-12-17T14:03:06Z INFO src.train Train Epoch: 11[0/2002(0%)]Loss: 6.271004
+2025-12-17T14:03:09Z INFO src.train Epoch 11 finished in 2.90s
+2025-12-17T14:03:09Z INFO src.train Train Epoch: 12[0/2002(0%)]Loss: 5.702900
+2025-12-17T14:03:12Z INFO src.train Epoch 12 finished in 2.97s
+2025-12-17T14:03:12Z INFO src.train Train Epoch: 13[0/2002(0%)]Loss: 5.332824
+2025-12-17T14:03:15Z INFO src.train Epoch 13 finished in 2.87s
+2025-12-17T14:03:15Z INFO src.train Train Epoch: 14[0/2002(0%)]Loss: 5.601417
+2025-12-17T14:03:18Z INFO src.train Epoch 14 finished in 2.93s
+2025-12-17T14:03:18Z INFO src.train Train Epoch: 15[0/2002(0%)]Loss: 5.538249
+2025-12-17T14:03:21Z INFO src.train Epoch 15 finished in 2.96s
+2025-12-17T14:03:21Z INFO src.train Train Epoch: 16[0/2002(0%)]Loss: 5.318227
+2025-12-17T14:03:24Z INFO src.train Epoch 16 finished in 2.99s
+2025-12-17T14:03:24Z INFO src.train Train Epoch: 17[0/2002(0%)]Loss: 5.183208
+2025-12-17T14:03:27Z INFO src.train Epoch 17 finished in 2.98s
+2025-12-17T14:03:27Z INFO src.train Train Epoch: 18[0/2002(0%)]Loss: 5.029902
+2025-12-17T14:03:30Z INFO src.train Epoch 18 finished in 2.96s
+2025-12-17T14:03:30Z INFO src.train Train Epoch: 19[0/2002(0%)]Loss: 5.147886
+2025-12-17T14:03:33Z INFO src.train Epoch 19 finished in 2.97s
+2025-12-17T14:03:33Z INFO src.train Train Epoch: 20[0/2002(0%)]Loss: 4.939167
+2025-12-17T14:03:36Z INFO src.train Epoch 20 finished in 2.96s
+2025-12-17T14:03:36Z INFO src.train Train Epoch: 21[0/2002(0%)]Loss: 4.900997
+2025-12-17T14:03:39Z INFO src.train Epoch 21 finished in 2.94s
+2025-12-17T14:03:39Z INFO src.train Train Epoch: 22[0/2002(0%)]Loss: 4.735289
+2025-12-17T14:03:42Z INFO src.train Epoch 22 finished in 2.85s
+2025-12-17T14:03:42Z INFO src.train Train Epoch: 23[0/2002(0%)]Loss: 4.606710
+2025-12-17T14:03:44Z INFO src.train Epoch 23 finished in 2.90s
+2025-12-17T14:03:45Z INFO src.train Train Epoch: 24[0/2002(0%)]Loss: 4.508521
+2025-12-17T14:03:47Z INFO src.train Epoch 24 finished in 2.89s
+2025-12-17T14:03:47Z INFO src.train Train Epoch: 25[0/2002(0%)]Loss: 4.688329
+2025-12-17T14:03:50Z INFO src.train Epoch 25 finished in 2.85s
+2025-12-17T14:03:50Z INFO src.train Train Epoch: 26[0/2002(0%)]Loss: 4.586043
+2025-12-17T14:03:53Z INFO src.train Epoch 26 finished in 2.89s
+2025-12-17T14:03:53Z INFO src.train Train Epoch: 27[0/2002(0%)]Loss: 4.559707
+2025-12-17T14:03:56Z INFO src.train Epoch 27 finished in 2.88s
+2025-12-17T14:03:56Z INFO src.train Train Epoch: 28[0/2002(0%)]Loss: 4.601581
+2025-12-17T14:03:59Z INFO src.train Epoch 28 finished in 2.87s
+2025-12-17T14:03:59Z INFO src.train Train Epoch: 29[0/2002(0%)]Loss: 4.493631
+2025-12-17T14:04:02Z INFO src.train Epoch 29 finished in 2.91s
+2025-12-17T14:04:02Z INFO src.train Train Epoch: 30[0/2002(0%)]Loss: 4.593324
+2025-12-17T14:04:05Z INFO src.train Epoch 30 finished in 2.92s
+2025-12-17T14:04:05Z INFO src.train Train Epoch: 31[0/2002(0%)]Loss: 4.340182
+2025-12-17T14:04:08Z INFO src.train Epoch 31 finished in 2.90s
+2025-12-17T14:04:08Z INFO src.train Train Epoch: 32[0/2002(0%)]Loss: 4.539124
+2025-12-17T14:04:10Z INFO src.train Epoch 32 finished in 2.91s
+2025-12-17T14:04:11Z INFO src.train Train Epoch: 33[0/2002(0%)]Loss: 4.163612
+2025-12-17T14:04:13Z INFO src.train Epoch 33 finished in 2.89s
+2025-12-17T14:04:13Z INFO src.train Train Epoch: 34[0/2002(0%)]Loss: 4.256646
+2025-12-17T14:04:16Z INFO src.train Epoch 34 finished in 2.91s
+2025-12-17T14:04:16Z INFO src.train Train Epoch: 35[0/2002(0%)]Loss: 4.157413
+2025-12-17T14:04:19Z INFO src.train Epoch 35 finished in 2.88s
+2025-12-17T14:04:19Z INFO src.train Train Epoch: 36[0/2002(0%)]Loss: 4.113125
+2025-12-17T14:04:22Z INFO src.train Epoch 36 finished in 2.88s
+2025-12-17T14:04:22Z INFO src.train Train Epoch: 37[0/2002(0%)]Loss: 4.107590
+2025-12-17T14:04:25Z INFO src.train Epoch 37 finished in 2.89s
+2025-12-17T14:04:25Z INFO src.train Train Epoch: 38[0/2002(0%)]Loss: 4.038516
+2025-12-17T14:04:28Z INFO src.train Epoch 38 finished in 2.87s
+2025-12-17T14:04:28Z INFO src.train Train Epoch: 39[0/2002(0%)]Loss: 4.009122
+2025-12-17T14:04:31Z INFO src.train Epoch 39 finished in 2.91s
+2025-12-17T14:04:31Z INFO src.train Train Epoch: 40[0/2002(0%)]Loss: 4.189489
+2025-12-17T14:04:34Z INFO src.train Epoch 40 finished in 2.88s
+2025-12-17T14:04:34Z INFO src.train Train Epoch: 41[0/2002(0%)]Loss: 3.931526
+2025-12-17T14:04:36Z INFO src.train Epoch 41 finished in 2.82s
+2025-12-17T14:04:37Z INFO src.train Train Epoch: 42[0/2002(0%)]Loss: 3.939365
+2025-12-17T14:04:39Z INFO src.train Epoch 42 finished in 2.85s
+2025-12-17T14:04:39Z INFO src.train Train Epoch: 43[0/2002(0%)]Loss: 4.078073
+2025-12-17T14:04:42Z INFO src.train Epoch 43 finished in 2.86s
+2025-12-17T14:04:42Z INFO src.train Train Epoch: 44[0/2002(0%)]Loss: 3.597386
+2025-12-17T14:04:45Z INFO src.train Epoch 44 finished in 2.84s
+2025-12-17T14:04:45Z INFO src.train Train Epoch: 45[0/2002(0%)]Loss: 3.822339
+2025-12-17T14:04:48Z INFO src.train Epoch 45 finished in 2.92s
+2025-12-17T14:04:48Z INFO src.train Train Epoch: 46[0/2002(0%)]Loss: 4.282812
+2025-12-17T14:04:51Z INFO src.train Epoch 46 finished in 2.93s
+2025-12-17T14:04:51Z INFO src.train Train Epoch: 47[0/2002(0%)]Loss: 3.859237
+2025-12-17T14:04:54Z INFO src.train Epoch 47 finished in 2.91s
+2025-12-17T14:04:54Z INFO src.train Train Epoch: 48[0/2002(0%)]Loss: 3.593986
+2025-12-17T14:04:57Z INFO src.train Epoch 48 finished in 2.86s
+2025-12-17T14:04:57Z INFO src.train Train Epoch: 49[0/2002(0%)]Loss: 3.481570
+2025-12-17T14:04:59Z INFO src.train Epoch 49 finished in 2.88s
+2025-12-17T14:05:00Z INFO src.train Train Epoch: 50[0/2002(0%)]Loss: 3.653794
+2025-12-17T14:05:02Z INFO src.train Epoch 50 finished in 2.86s
+2025-12-17T14:05:02Z INFO src.train Train Epoch: 51[0/2002(0%)]Loss: 3.405360
+2025-12-17T14:05:05Z INFO src.train Epoch 51 finished in 2.87s
+2025-12-17T14:05:05Z INFO src.train Train Epoch: 52[0/2002(0%)]Loss: 3.372644
+2025-12-17T14:05:08Z INFO src.train Epoch 52 finished in 2.82s
+2025-12-17T14:05:08Z INFO src.train Train Epoch: 53[0/2002(0%)]Loss: 3.404132
+2025-12-17T14:05:11Z INFO src.train Epoch 53 finished in 2.93s
+2025-12-17T14:05:11Z INFO src.train Train Epoch: 54[0/2002(0%)]Loss: 3.410705
+2025-12-17T14:05:14Z INFO src.train Epoch 54 finished in 2.90s
+2025-12-17T14:05:14Z INFO src.train Train Epoch: 55[0/2002(0%)]Loss: 3.255884
+2025-12-17T14:05:17Z INFO src.train Epoch 55 finished in 2.90s
+2025-12-17T14:05:17Z INFO src.train Train Epoch: 56[0/2002(0%)]Loss: 3.179495
+2025-12-17T14:05:20Z INFO src.train Epoch 56 finished in 2.94s
+2025-12-17T14:05:20Z INFO src.train Train Epoch: 57[0/2002(0%)]Loss: 3.416855
+2025-12-17T14:05:23Z INFO src.train Epoch 57 finished in 2.89s
+2025-12-17T14:05:23Z INFO src.train Train Epoch: 58[0/2002(0%)]Loss: 3.331484
+2025-12-17T14:05:25Z INFO src.train Epoch 58 finished in 2.87s
+2025-12-17T14:05:26Z INFO src.train Train Epoch: 59[0/2002(0%)]Loss: 3.159353
+2025-12-17T14:05:28Z INFO src.train Epoch 59 finished in 2.94s
+2025-12-17T14:05:29Z INFO src.train Train Epoch: 60[0/2002(0%)]Loss: 3.195410
+2025-12-17T14:05:31Z INFO src.train Epoch 60 finished in 2.87s
+2025-12-17T14:05:31Z INFO src.train Train Epoch: 61[0/2002(0%)]Loss: 3.245403
+2025-12-17T14:05:34Z INFO src.train Epoch 61 finished in 2.86s
+2025-12-17T14:05:34Z INFO src.train Train Epoch: 62[0/2002(0%)]Loss: 3.356458
+2025-12-17T14:05:37Z INFO src.train Epoch 62 finished in 2.85s
+2025-12-17T14:05:37Z INFO src.train Train Epoch: 63[0/2002(0%)]Loss: 3.118516
+2025-12-17T14:05:40Z INFO src.train Epoch 63 finished in 2.89s
+2025-12-17T14:05:40Z INFO src.train Train Epoch: 64[0/2002(0%)]Loss: 3.131255
+2025-12-17T14:05:43Z INFO src.train Epoch 64 finished in 2.93s
+2025-12-17T14:05:43Z INFO src.train Train Epoch: 65[0/2002(0%)]Loss: 2.971893
+2025-12-17T14:05:46Z INFO src.train Epoch 65 finished in 3.03s
+2025-12-17T14:05:46Z INFO src.train Train Epoch: 66[0/2002(0%)]Loss: 3.050888
+2025-12-17T14:05:49Z INFO src.train Epoch 66 finished in 3.09s
+2025-12-17T14:05:49Z INFO src.train Train Epoch: 67[0/2002(0%)]Loss: 3.107850
+2025-12-17T14:05:52Z INFO src.train Epoch 67 finished in 3.02s
+2025-12-17T14:05:52Z INFO src.train Train Epoch: 68[0/2002(0%)]Loss: 3.047875
+2025-12-17T14:05:55Z INFO src.train Epoch 68 finished in 3.07s
+2025-12-17T14:05:55Z INFO src.train Train Epoch: 69[0/2002(0%)]Loss: 2.767731
+2025-12-17T14:05:58Z INFO src.train Epoch 69 finished in 2.99s
+2025-12-17T14:05:58Z INFO src.train Train Epoch: 70[0/2002(0%)]Loss: 2.997562
+2025-12-17T14:06:01Z INFO src.train Epoch 70 finished in 2.94s
+2025-12-17T14:06:01Z INFO src.train Train Epoch: 71[0/2002(0%)]Loss: 2.779388
+2025-12-17T14:06:04Z INFO src.train Epoch 71 finished in 2.98s
+2025-12-17T14:06:04Z INFO src.train Train Epoch: 72[0/2002(0%)]Loss: 2.998695
+2025-12-17T14:06:07Z INFO src.train Epoch 72 finished in 2.97s
+2025-12-17T14:06:07Z INFO src.train Train Epoch: 73[0/2002(0%)]Loss: 2.599615
+2025-12-17T14:06:10Z INFO src.train Epoch 73 finished in 2.99s
+2025-12-17T14:06:10Z INFO src.train Train Epoch: 74[0/2002(0%)]Loss: 2.563548
+2025-12-17T14:06:13Z INFO src.train Epoch 74 finished in 2.96s
+2025-12-17T14:06:13Z INFO src.train Train Epoch: 75[0/2002(0%)]Loss: 2.576940
+2025-12-17T14:06:16Z INFO src.train Epoch 75 finished in 2.91s
+2025-12-17T14:06:16Z INFO src.train Train Epoch: 76[0/2002(0%)]Loss: 2.694350
+2025-12-17T14:06:19Z INFO src.train Epoch 76 finished in 2.87s
+2025-12-17T14:06:19Z INFO src.train Train Epoch: 77[0/2002(0%)]Loss: 2.769516
+2025-12-17T14:06:22Z INFO src.train Epoch 77 finished in 2.90s
+2025-12-17T14:06:22Z INFO src.train Train Epoch: 78[0/2002(0%)]Loss: 2.899058
+2025-12-17T14:06:24Z INFO src.train Epoch 78 finished in 2.91s
+2025-12-17T14:06:25Z INFO src.train Train Epoch: 79[0/2002(0%)]Loss: 2.457028
+2025-12-17T14:06:27Z INFO src.train Epoch 79 finished in 2.95s
+2025-12-17T14:06:28Z INFO src.train Train Epoch: 80[0/2002(0%)]Loss: 2.401323
+2025-12-17T14:06:30Z INFO src.train Epoch 80 finished in 2.90s
+2025-12-17T14:06:30Z INFO src.train Train Epoch: 81[0/2002(0%)]Loss: 2.549921
+2025-12-17T14:06:33Z INFO src.train Epoch 81 finished in 2.91s
+2025-12-17T14:06:33Z INFO src.train Train Epoch: 82[0/2002(0%)]Loss: 2.359772
+2025-12-17T14:06:36Z INFO src.train Epoch 82 finished in 2.91s
+2025-12-17T14:06:36Z INFO src.train Train Epoch: 83[0/2002(0%)]Loss: 2.267887
+2025-12-17T14:06:39Z INFO src.train Epoch 83 finished in 2.89s
+2025-12-17T14:06:39Z INFO src.train Train Epoch: 84[0/2002(0%)]Loss: 2.175402
+2025-12-17T14:06:42Z INFO src.train Epoch 84 finished in 2.84s
+2025-12-17T14:06:42Z INFO src.train Train Epoch: 85[0/2002(0%)]Loss: 2.421634
+2025-12-17T14:06:45Z INFO src.train Epoch 85 finished in 2.88s
+2025-12-17T14:06:45Z INFO src.train Train Epoch: 86[0/2002(0%)]Loss: 2.201253
+2025-12-17T14:06:48Z INFO src.train Epoch 86 finished in 2.89s
+2025-12-17T14:06:48Z INFO src.train Train Epoch: 87[0/2002(0%)]Loss: 2.254369
+2025-12-17T14:06:51Z INFO src.train Epoch 87 finished in 2.91s
+2025-12-17T14:06:51Z INFO src.train Train Epoch: 88[0/2002(0%)]Loss: 2.472425
+2025-12-17T14:06:53Z INFO src.train Epoch 88 finished in 2.87s
+2025-12-17T14:06:54Z INFO src.train Train Epoch: 89[0/2002(0%)]Loss: 2.045953
+2025-12-17T14:06:56Z INFO src.train Epoch 89 finished in 2.87s
+2025-12-17T14:06:56Z INFO src.train Train Epoch: 90[0/2002(0%)]Loss: 2.376773
+2025-12-17T14:06:59Z INFO src.train Epoch 90 finished in 2.90s
+2025-12-17T14:06:59Z INFO src.train Train Epoch: 91[0/2002(0%)]Loss: 2.241834
+2025-12-17T14:07:02Z INFO src.train Epoch 91 finished in 2.92s
+2025-12-17T14:07:02Z INFO src.train Train Epoch: 92[0/2002(0%)]Loss: 2.195694
+2025-12-17T14:07:05Z INFO src.train Epoch 92 finished in 2.91s
+2025-12-17T14:07:05Z INFO src.train Train Epoch: 93[0/2002(0%)]Loss: 1.950259
+2025-12-17T14:07:08Z INFO src.train Epoch 93 finished in 2.90s
+2025-12-17T14:07:08Z INFO src.train Train Epoch: 94[0/2002(0%)]Loss: 2.109092
+2025-12-17T14:07:11Z INFO src.train Epoch 94 finished in 2.99s
+2025-12-17T14:07:11Z INFO src.train Train Epoch: 95[0/2002(0%)]Loss: 2.086701
+2025-12-17T14:07:14Z INFO src.train Epoch 95 finished in 2.94s
+2025-12-17T14:07:14Z INFO src.train Train Epoch: 96[0/2002(0%)]Loss: 1.974569
+2025-12-17T14:07:17Z INFO src.train Epoch 96 finished in 2.92s
+2025-12-17T14:07:17Z INFO src.train Train Epoch: 97[0/2002(0%)]Loss: 2.157059
+2025-12-17T14:07:20Z INFO src.train Epoch 97 finished in 2.88s
+2025-12-17T14:07:20Z INFO src.train Train Epoch: 98[0/2002(0%)]Loss: 2.295053
+2025-12-17T14:07:23Z INFO src.train Epoch 98 finished in 2.91s
+2025-12-17T14:07:23Z INFO src.train Train Epoch: 99[0/2002(0%)]Loss: 1.590769
+2025-12-17T14:07:25Z INFO src.train Epoch 99 finished in 2.85s
+2025-12-17T14:07:26Z INFO src.train Train Epoch: 100[0/2002(0%)]Loss: 2.010462
+2025-12-17T14:07:28Z INFO src.train Epoch 100 finished in 2.88s
+2025-12-17T14:07:28Z INFO src.train Refernce Model saved to: C:\Users\Dominic\Documents\ResearchProject\results\models\cnn_mnist_2025-12-17_14-02-38.pt
+2025-12-17T14:07:28Z INFO src.evaluation.evaluate_model Starting evaluation: Baseline Float32
+2025-12-17T14:07:29Z INFO src.evaluation.evaluate_model Evaluation Result [Baseline Float32] - Acc: 50.90% | Loss: 3.1734 | Time: 0.7582s
+2025-12-17T14:07:29Z INFO Experiment Applying 8-bit Affine Quantization... (Simulated)
+2025-12-17T14:07:29Z DEBUG Experiment Quantization layer (affine): conv1
+2025-12-17T14:07:29Z DEBUG src.quantizer Affine Quantization: Min=-0.278283, Max=0.294650, Scale=0.00224680, Zero Point:124
+2025-12-17T14:07:29Z DEBUG Experiment Quantization layer (affine): conv2
+2025-12-17T14:07:29Z DEBUG src.quantizer Affine Quantization: Min=-0.360848, Max=0.211308, Scale=0.00224375, Zero Point:161
+2025-12-17T14:07:29Z DEBUG Experiment Quantization layer (affine): conv3
+2025-12-17T14:07:29Z DEBUG src.quantizer Affine Quantization: Min=-0.405670, Max=0.403608, Scale=0.00317364, Zero Point:128
+2025-12-17T14:07:29Z DEBUG Experiment Quantization layer (affine): conv4
+2025-12-17T14:07:29Z DEBUG src.quantizer Affine Quantization: Min=-0.350889, Max=0.574871, Scale=0.00363043, Zero Point:97
+2025-12-17T14:07:29Z DEBUG Experiment Quantization layer (affine): fc1
+2025-12-17T14:07:29Z DEBUG src.quantizer Affine Quantization: Min=-0.712077, Max=0.250312, Scale=0.00377408, Zero Point:189
+2025-12-17T14:07:29Z DEBUG Experiment Quantization layer (affine): fc2
+2025-12-17T14:07:29Z DEBUG src.quantizer Affine Quantization: Min=-1.075343, Max=0.179661, Scale=0.00492158, Zero Point:218
+2025-12-17T14:07:29Z INFO src.evaluation.evaluate_model Starting evaluation: Simulated Affine 8-bit
+2025-12-17T14:07:30Z INFO src.evaluation.evaluate_model Evaluation Result [Simulated Affine 8-bit] - Acc: 51.10% | Loss: 3.1401 | Time: 0.6764s
+2025-12-17T14:07:30Z INFO Experiment Applying 8-bit Symmetric Quantization... (Simulated)
+2025-12-17T14:07:30Z DEBUG Experiment Quantizing layer (symmetric): conv1
+2025-12-17T14:07:30Z DEBUG src.quantizer Symmetric Quantization: Max value=0.2946, Scale=0.002320, Range=[-127, 127]
+2025-12-17T14:07:30Z DEBUG Experiment Quantizing layer (symmetric): conv2
+2025-12-17T14:07:30Z DEBUG src.quantizer Symmetric Quantization: Max value=0.3608, Scale=0.002841, Range=[-127, 127]
+2025-12-17T14:07:30Z DEBUG Experiment Quantizing layer (symmetric): conv3
+2025-12-17T14:07:30Z DEBUG src.quantizer Symmetric Quantization: Max value=0.4057, Scale=0.003194, Range=[-127, 127]
+2025-12-17T14:07:30Z DEBUG Experiment Quantizing layer (symmetric): conv4
+2025-12-17T14:07:30Z DEBUG src.quantizer Symmetric Quantization: Max value=0.5749, Scale=0.004527, Range=[-127, 127]
+2025-12-17T14:07:30Z DEBUG Experiment Quantizing layer (symmetric): fc1
+2025-12-17T14:07:30Z DEBUG src.quantizer Symmetric Quantization: Max value=0.7121, Scale=0.005607, Range=[-127, 127]
+2025-12-17T14:07:30Z DEBUG Experiment Quantizing layer (symmetric): fc2
+2025-12-17T14:07:30Z DEBUG src.quantizer Symmetric Quantization: Max value=1.0753, Scale=0.008467, Range=[-127, 127]
+2025-12-17T14:07:30Z INFO src.evaluation.evaluate_model Starting evaluation: Simulated Symmetric 8-bit
+2025-12-17T14:07:30Z INFO src.evaluation.evaluate_model Evaluation Result [Simulated Symmetric 8-bit] - Acc: 50.90% | Loss: 3.2202 | Time: 0.6962s
+2025-12-17T14:07:30Z INFO Experiment Starting Actual Storage Quantization (Int8)..
+2025-12-17T14:07:30Z INFO Experiment Model layers replaced with Quantizable versions
+2025-12-17T14:07:30Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:30Z DEBUG src.quantizer Affine Quantization: Min=-0.278283, Max=0.294650, Scale=0.00224680, Zero Point:124
+2025-12-17T14:07:30Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:30Z DEBUG src.quantizer Affine Quantization: Min=-0.360848, Max=0.211308, Scale=0.00224375, Zero Point:161
+2025-12-17T14:07:30Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:30Z DEBUG src.quantizer Affine Quantization: Min=-0.405670, Max=0.403608, Scale=0.00317364, Zero Point:128
+2025-12-17T14:07:30Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:30Z DEBUG src.quantizer Affine Quantization: Min=-0.350889, Max=0.574871, Scale=0.00363043, Zero Point:97
+2025-12-17T14:07:30Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:30Z DEBUG src.quantizer Affine Quantization: Min=-0.712077, Max=0.250312, Scale=0.00377407, Zero Point:189
+2025-12-17T14:07:30Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:30Z DEBUG src.quantizer Affine Quantization: Min=-1.075343, Max=0.179661, Scale=0.00492158, Zero Point:218
+2025-12-17T14:07:30Z INFO Experiment Calibrating activations for quantized model (using train set subset)...
+2025-12-17T14:07:30Z INFO src.layers Calibrating with 50 batches...
+2025-12-17T14:07:36Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-17T14:07:36Z INFO Experiment Saving quantized model to: C:\Users\Dominic\Documents\ResearchProject\results\quantized_models\cnn_mnist_quantized2025-12-17_14-02-38.pt
+2025-12-17T14:07:36Z INFO Experiment Original Size: 3835.82 KB
+2025-12-17T14:07:36Z INFO Experiment Quantized Size: 975.20 KB
+2025-12-17T14:07:36Z INFO Experiment Reduction: 74.58%
+2025-12-17T14:07:36Z INFO src.evaluation.evaluate_model Starting evaluation: Storage Quantization (Int8)
+2025-12-17T14:07:37Z INFO src.evaluation.evaluate_model Evaluation Result [Storage Quantization (Int8)] - Acc: 17.96% | Loss: 5.7877 | Time: 0.9309s
+2025-12-17T14:07:37Z INFO Experiment Computing per-layer weight MSE between float model and quantized storage model...
+2025-12-17T14:07:37Z INFO Experiment Running per-layer sensitivity analysis (quantize one layer at a time)
+2025-12-17T14:07:37Z INFO src.utility.utils Starting Sensitivity Analysis on 6 layers...
+2025-12-17T14:07:37Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:37Z DEBUG src.quantizer Affine Quantization: Min=-0.278283, Max=0.294650, Scale=0.00224680, Zero Point:124
+2025-12-17T14:07:37Z INFO src.layers Calibrating with 10 batches...
+2025-12-17T14:07:39Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-17T14:07:39Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: conv1
+2025-12-17T14:07:40Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: conv1] - Acc: 15.97% | Loss: 5.4689 | Time: 0.7213s
+2025-12-17T14:07:40Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:40Z DEBUG src.quantizer Affine Quantization: Min=-0.360848, Max=0.211308, Scale=0.00224375, Zero Point:161
+2025-12-17T14:07:40Z INFO src.layers Calibrating with 10 batches...
+2025-12-17T14:07:42Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-17T14:07:42Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: conv2
+2025-12-17T14:07:42Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: conv2] - Acc: 52.89% | Loss: 3.2084 | Time: 0.9365s
+2025-12-17T14:07:42Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:42Z DEBUG src.quantizer Affine Quantization: Min=-0.405670, Max=0.403608, Scale=0.00317364, Zero Point:128
+2025-12-17T14:07:43Z INFO src.layers Calibrating with 10 batches...
+2025-12-17T14:07:44Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-17T14:07:44Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: conv3
+2025-12-17T14:07:45Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: conv3] - Acc: 49.10% | Loss: 3.1846 | Time: 0.8186s
+2025-12-17T14:07:45Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:45Z DEBUG src.quantizer Affine Quantization: Min=-0.350889, Max=0.574871, Scale=0.00363043, Zero Point:97
+2025-12-17T14:07:45Z INFO src.layers Calibrating with 10 batches...
+2025-12-17T14:07:47Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-17T14:07:47Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: conv4
+2025-12-17T14:07:48Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: conv4] - Acc: 50.90% | Loss: 3.3503 | Time: 0.8689s
+2025-12-17T14:07:48Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:48Z DEBUG src.quantizer Affine Quantization: Min=-0.712077, Max=0.250312, Scale=0.00377407, Zero Point:189
+2025-12-17T14:07:48Z INFO src.layers Calibrating with 10 batches...
+2025-12-17T14:07:49Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-17T14:07:49Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: fc1
+2025-12-17T14:07:50Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: fc1] - Acc: 50.90% | Loss: 3.1801 | Time: 0.8124s
+2025-12-17T14:07:50Z DEBUG src.layers Quantizing layer (storage): affine 8-bit
+2025-12-17T14:07:50Z DEBUG src.quantizer Affine Quantization: Min=-1.075343, Max=0.179661, Scale=0.00492158, Zero Point:218
+2025-12-17T14:07:50Z INFO src.layers Calibrating with 10 batches...
+2025-12-17T14:07:52Z INFO src.layers Activation calibration finished for quantizable layers
+2025-12-17T14:07:52Z INFO src.evaluation.evaluate_model Starting evaluation: Sensitivity: fc2
+2025-12-17T14:07:53Z INFO src.evaluation.evaluate_model Evaluation Result [Sensitivity: fc2] - Acc: 50.70% | Loss: 3.2082 | Time: 0.8206s
+2025-12-17T14:07:53Z INFO Experiment Experiment finished. Summary: 
+==========================================
+         Result Report                      
+==========================================
+Model Size (Float32):   3.75 MB
+Theor. Size (Int8):      0.94 MB
+------------------------------------------
+Accuracy Float32:         50.90%
+Accuracy Affine:        51.10%
+Accuracy Symmetric:       50.90%
+==========================================

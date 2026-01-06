@@ -146,17 +146,9 @@ if __name__ == "__main__":
     run_experiment()
 
 
-# TODO
-# DONE UNTIL 22th of Dec:
-# Better Evaluation
-# Visualisation: 
-# Jupyter Notebooks for results 
-# learning curve during training with example results of accuracy
-# -----------------------
-
-# DURING CHRISTMAS:
-# Bigger Dataset for Training during christmas
-# --> Helper Function for dataset integration
-# --> making it actually work lol
+# TODO:
+# Research
+# Fine Tuning CNN to maybe <95% Acc (92 before quant atm)
+# <85% Acc after quant??? 
 
 

@@ -1,11 +1,19 @@
 import torch
+import logging
 from typing import Tuple
-from src.utility.logging import get_logger
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class Quantization:
+    @staticmethod
+    def _core_quantization(tensor, scale, zero_point, q_min, q_max):
+        x_int = torch.round((tensor / scale) + zero_point)
+        x_int = torch.clamp(x_int, q_min, q_max)
+        x_dequant = (x_int - zero_point) * scale
+
+        return x_dequant, x_int
+    
     @staticmethod
     def affine_quantization(
         tensor: torch.Tensor, num_bits: int = 8
@@ -28,9 +36,7 @@ class Quantization:
             f"Scale={scale:.8f}, Zero Point:{zero_point.item()}"
         )
 
-        x_int = torch.round((tensor / scale) + zero_point)
-        x_int = torch.clamp(x_int, q_min, q_max)
-        x_dequant = (x_int - zero_point) * scale
+        x_dequant, x_int = Quantization._core_quantization(tensor, scale, zero_point, q_min, q_max)
 
         return x_dequant, x_int.to(torch.uint8), scale, zero_point.to(torch.int32)
 
@@ -54,11 +60,9 @@ class Quantization:
             f"Range=[{q_min}, {q_max}]"
         )
 
-        x_int = torch.round(tensor / scale)
-        x_int = torch.clamp(x_int, q_min, q_max)
-        x_dequant = x_int * scale
+        zero_point = torch.tensor(0.0).to(tensor.device)
 
-        zero_point = torch.tensor(1.0)
+        x_dequant, x_int = Quantization._core_quantization(tensor, scale, zero_point, q_min, q_max)
 
         return x_dequant, x_int.to(torch.int8), scale, zero_point
 

@@ -1,34 +1,55 @@
 import torch
 import torch.optim as optim
-import torch.nn.functional as F
-from src.model import CNN
-from src.utility.utils import get_data_loaders
-from src.utility.config import DEVICE, EPOCHS, LEARNING_RATE, MODEL_SAVE_PATH
-from src.utility.logging import get_logger
+import torch.nn as nn
+import logging
+from tqdm import tqdm 
+from torch.utils.tensorboard import SummaryWriter
 import time
 
-logger = get_logger(__name__)
+from src.model import CNN
+from src.utility.utils import get_data_loaders
+from src.utility.config import DEVICE, EPOCHS, LEARNING_RATE, MODEL_SAVE_PATH, LOG_DIR
+
+
+logger = logging.getLogger(__name__)
 
 
 def train_model() -> CNN:
     logger.info(f"Starting Training on Device: {DEVICE}")
 
     train_loader, test_loader, num_classes = get_data_loaders()
+    writer = SummaryWriter(log_dir=LOG_DIR)
 
     model = CNN(num_classes=num_classes).to(DEVICE)
-
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    criterion = nn.CrossEntropyLoss()
 
     model.train()
-    for epoch in range(1, EPOCHS + 1):
-        start_time = time.time()
-        for batch_idx, (data, target) in enumerate(train_loader):
+
+    for epoch in range(EPOCHS):
+        model.train()
+        running_loss = 0.0
+        correct = 0
+        total = 0
+        
+
+        pbar = tqdm(train_loader, desc=f"Epoche {epoch+1}/{EPOCHS}")
+
+        for batch_idx, (data, target) in enumerate(pbar):
             data, target = data.to(DEVICE), target.to(DEVICE)
+
             optimizer.zero_grad()
             output = model(data)
-            loss = F.nll_loss(output, target)
+            loss = criterion(output, target)
             loss.backward()
             optimizer.step()
+
+            running_loss += loss.item()
+            _, predicted = torch.max(output.data, 1)
+            total += target.size(0)
+            correct += (predicted == target).sum().item()
+            
+            pbar.set_postfix({'loss': f'{loss.item():.4f}'})
 
             if batch_idx % 100 == 0:
                 logger.info(
@@ -38,8 +59,17 @@ def train_model() -> CNN:
                     f"Loss: {loss.item():.6f}"
                 )
 
-        duration = time.time() - start_time
-        logger.info(f"Epoch {epoch} finished in {duration:.2f}s")
+        # Am Ende der Epoche: Durchschnittswerte
+        epoch_loss = running_loss / len(train_loader)
+        epoch_acc = 100 * correct / total
+        
+        # Werte an TensorBoard senden
+        writer.add_scalar('Loss/train', epoch_loss, epoch)
+        writer.add_scalar('Accuracy/train', epoch_acc, epoch)
+        
+        # TODO: Maybe Test-Set evaluieren 
+
+        print(f" -> Epoche {epoch+1} fertig: Loss: {epoch_loss:.4f} | Acc: {epoch_acc:.2f}%")
 
     model.to("cpu")
     torch.save(model.state_dict(), MODEL_SAVE_PATH)

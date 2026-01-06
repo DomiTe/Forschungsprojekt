@@ -9,24 +9,23 @@ dependencies = [
     # --- Jupyter & IDE ---
     "jupyterlab",
     "ipywidgets",
-
     # --- Data Science Basics ---
     "numpy",
     "pandas",
     "matplotlib",
     "seaborn",
     "sympy",
-
     # --- Machine Learning (Pytorch) ---
     "torch",
     "torchvision",
-
     # --- Utilities ---
     "requests",
     "beautifulsoup4",
     "pillow",
     "arrow",
     "pyyaml",
+    "tqdm>=4.67.1",
+    "tensorboard>=2.20.0",
 ]
 [tool.uv]
 index = [

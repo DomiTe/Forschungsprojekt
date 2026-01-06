@@ -1,11 +1,11 @@
 import torch
 import torch.nn.functional as F
 import time
+import logging
 from typing import Tuple
 from src.utility.config import DEVICE
-from src.utility.logging import get_logger
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 
 def evaluate(

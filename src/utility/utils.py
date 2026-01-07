@@ -2,6 +2,7 @@ import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from typing import Tuple
+import matplotlib.pyplot as plt
 import os
 import copy
 from src.utility.logging import get_logger 
@@ -43,35 +44,60 @@ def _get_mnist_loaders():
     return train_loader, test_loader, 10
 
 def _get_pokemon_loaders():
+    # 1. Transform für TRAINING
+    # WICHTIG: Wir nutzen jetzt (0.5, 0.5, 0.5) statt der ResNet-Werte
     transform_train = transforms.Compose([
-    transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
-    # Data Augmentation Block
-    transforms.RandomHorizontalFlip(),    # Spiegeln
-    transforms.RandomRotation(15),        # Drehen
-    transforms.ColorJitter(brightness=0.2, contrast=0.2), # Licht ändern
-    # ---------------------
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-])
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)), # Nimmt die 64 aus der Config
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomRotation(15),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) # Standard Normalisierung
+    ])
+
+    # 2. Transform für VALIDIERUNG (Keine Augmentation)
+    transform_val = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+    ])
+    
+    # Pfad zum Ordner "PokemonData" (wo die 150 Ordner drin sind)
+    dataset_path = os.path.join(DATA_DIR, "PokemonData") 
+    
+    # --- Der Split-Trick (Sauberer Weg) ---
+    
+    # Wir laden das Dataset ZWEIMAL (einmal mit Train-Transform, einmal mit Val-Transform)
+    train_dataset_full = datasets.ImageFolder(root=dataset_path, transform=transform_train)
+    val_dataset_full = datasets.ImageFolder(root=dataset_path, transform=transform_val)
+    
+    # Größe berechnen (80% / 20%)
+    total_len = len(train_dataset_full)
+    train_size = int(0.8 * total_len)
+    val_size = total_len - train_size
+    
+    # WICHTIG: Denselben Seed nutzen, damit die Indices identisch sind!
+    generator = torch.Generator().manual_seed(42)
+    
+    # Wir splitten BEIDE Datasets identisch
+    # train_data nimmt den Teil aus dem Dataset MIT Augmentation
+    train_data, _ = random_split(train_dataset_full, [train_size, val_size], generator=generator)
+    
+    # val_data nimmt den (identischen) Teil aus dem Dataset OHNE Augmentation
+    _, val_data = random_split(val_dataset_full, [train_size, val_size], generator=generator)
+    
     kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
     
-    # Pfad: root/data/pokemon
-    dataset_path = os.path.join(DATA_DIR, "Pokemon")
+    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
+    val_loader = DataLoader(val_data, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
     
-    full_dataset = datasets.ImageFolder(root=dataset_path, transform=transform_train)
+    # Anzahl Klassen auslesen
+    num_classes = len(train_dataset_full.classes)
     
-    # Split
-    train_size = int(0.8 * len(full_dataset))
-    test_size = len(full_dataset) - train_size
-    train_dataset, test_dataset = random_split(full_dataset, [train_size, test_size])
-    
-    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
-    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
-    num_classes = len(full_dataset.classes)
+    logger.info(f"Gen-1 Dataset geladen: {len(train_data)} Train, {len(val_data)} Val. Klassen: {num_classes}")
+    logger.info(f"Bildgröße: {IMAGE_SIZE}x{IMAGE_SIZE}")
 
-    return train_loader, test_loader, num_classes
-
-
+    return train_loader, val_loader, num_classes
 
 def get_model_size(model_path: str) -> float:
     size = os.path.getsize(model_path)
@@ -135,3 +161,32 @@ def per_layer_sensitivity_analysis(model_base, test_loader, device, bits=8, meth
         torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
     return results
+
+def plot_training_curves(history):
+    epochs = range(1, len(history['train_loss']) + 1)
+    
+    plt.figure(figsize=(14, 6))
+
+    # Plot 1: Loss (Die Fehlerkurve)
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, history['train_loss'], label='Training Loss', marker='.')
+    plt.plot(epochs, history['val_loss'], label='Validation Loss', marker='.')
+    plt.title('Training vs Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True)
+
+    # Plot 2: Accuracy (Das ist der Graph aus deinem Bild!)
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs, history['train_acc'], label='Training Accuracy', color='blue', marker='.')
+    plt.plot(epochs, history['val_acc'], label='Validation Accuracy', color='orange', marker='.')
+    plt.title('Training vs Validation Accuracy')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy (%)')
+    plt.legend()
+    plt.grid(True)
+
+    plt.tight_layout()
+    plt.savefig('learning_curves.png')
+    print("Plot gespeichert als 'learning_curves.png'")

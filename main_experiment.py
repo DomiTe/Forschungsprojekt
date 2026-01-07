@@ -4,7 +4,13 @@ import os
 import csv
 from src.utility.quantizer import Quantization
 from src.model import CNN
-from src.utility.utils import get_data_loaders, get_model_size, layer_weight_mse, per_layer_sensitivity_analysis
+from src.utility.utils import (
+    get_data_loaders, 
+    get_model_size, 
+    layer_weight_mse, 
+    per_layer_sensitivity_analysis,
+    plot_training_curves
+    )
 from src.train import train_model
 from src.utility.config import (
     DEVICE, 
@@ -34,7 +40,10 @@ def run_experiment():
 
     if not os.path.exists(MODEL_SAVE_PATH):
         logger.warning(f"Model not found at {MODEL_SAVE_PATH}. Training new model.")
-        model = train_model()
+        # Wir übergeben die Loader an train_model und bekommen die History zurück
+        model, history = train_model(train_loader, test_loader, num_classes)
+        # Plot erstellen!
+        plot_training_curves(history)
     else:
         logger.info(f"Loading existing model from {MODEL_SAVE_PATH}")
         model = CNN(num_classes=num_classes).to(DEVICE)
@@ -77,7 +86,7 @@ def run_experiment():
 
     logger.info("Starting Actual Storage Quantization (Int8)..")
 
-    storage_model = CNN().to('cpu')
+    storage_model = CNN(num_classes=num_classes).to('cpu')
     storage_model.load_state_dict(torch.load(MODEL_SAVE_PATH, map_location='cpu'))
 
     storage_model = replace_layers_with_quantizable(storage_model)

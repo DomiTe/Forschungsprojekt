@@ -1,3 +1,6 @@
 .venv/
-results/.old
+results/
 uv.lock
+data/MNIST
+data/Pokemon
+data/pokemon-dataset-1000

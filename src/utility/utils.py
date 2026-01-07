@@ -2,6 +2,8 @@ import torch
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from typing import Tuple
+import matplotlib.pyplot as plt
+
 import os
 import copy
 from src.utility.logging import get_logger 
@@ -43,33 +45,67 @@ def _get_mnist_loaders():
     return train_loader, test_loader, 10
 
 def _get_pokemon_loaders():
+    # 1. Transform (ResNet tauglich)
     transform_train = transforms.Compose([
-    transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
-    # Data Augmentation Block
-    transforms.RandomHorizontalFlip(),    # Spiegeln
-    transforms.RandomRotation(15),        # Drehen
-    transforms.ColorJitter(brightness=0.2, contrast=0.2), # Licht ändern
-    # ---------------------
-    transforms.ToTensor(),
-    transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
-])
-    kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+        transforms.Resize((224, 224)),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomRotation(15),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ])
+
+    # Für Validierung keine Augmentation
+    transform_val = transforms.Compose([
+        transforms.Resize((224, 224)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225))
+    ])
     
-    # Pfad: root/data/pokemon
-    dataset_path = os.path.join(DATA_DIR, "Pokemon")
+    # Pfad zum Ordner "PokemonData" (wo die 150 Ordner drin sind)
+    dataset_path = os.path.join(DATA_DIR, "PokemonData") 
     
+    # Dataset laden
+    # Trick: Wir laden es einmal komplett...
     full_dataset = datasets.ImageFolder(root=dataset_path, transform=transform_train)
     
-    # Split
+    # ... und teilen es dann auf (80% Train, 20% Val)
     train_size = int(0.8 * len(full_dataset))
-    test_size = len(full_dataset) - train_size
-    train_dataset, test_dataset = random_split(full_dataset, [train_size, test_size])
+    val_size = len(full_dataset) - train_size
     
-    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
-    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    train_dataset, val_dataset = random_split(full_dataset, [train_size, val_size])
+    
+    # WICHTIG: Dem Val-Set den richtigen Transform (ohne Wackeln) zuweisen
+    # Da random_split die Transforms vom Original übernimmt, müssen wir hier etwas tricksen:
+    # Wir überschreiben das Attribut im Dataset des Subsets. 
+    # (Oder einfacher: Wir akzeptieren kurzzeitig Augmentation im Val-Set, 
+    # aber für 95% Acc ist die saubere Trennung besser).
+    
+    # Sauberer Weg: Wir kopieren das Dataset für den Split
+    import copy
+    # Val Dataset bekommt 'transform_val'
+    # Da 'random_split' Subsets erstellt, greifen wir auf das unterliegende Dataset zu
+    # Das ist in Python etwas fummelig. 
+    # Einfachste Lösung für dich jetzt: Lade das Dataset ZWEIMAL.
+    
+    train_dataset_full = datasets.ImageFolder(root=dataset_path, transform=transform_train)
+    val_dataset_full = datasets.ImageFolder(root=dataset_path, transform=transform_val)
+    
+    # Wir nutzen denselben Seed für den Split, damit die Bilder nicht durcheinander kommen
+    generator = torch.Generator().manual_seed(42)
+    train_data, _ = random_split(train_dataset_full, [train_size, val_size], generator=generator)
+    _, val_data = random_split(val_dataset_full, [train_size, val_size], generator=generator)
+    
+    kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+    
+    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
+    val_loader = DataLoader(val_data, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    
     num_classes = len(full_dataset.classes)
+    
+    logger.info(f"Gen-1 Dataset geladen: {len(train_data)} Train, {len(val_data)} Val. Klassen: {num_classes}")
 
-    return train_loader, test_loader, num_classes
+    return train_loader, val_loader, num_classes
 
 
 
@@ -135,3 +171,32 @@ def per_layer_sensitivity_analysis(model_base, test_loader, device, bits=8, meth
         torch.cuda.empty_cache() if torch.cuda.is_available() else None
 
     return results
+
+def plot_training_curves(history):
+    epochs = range(1, len(history['train_loss']) + 1)
+    
+    plt.figure(figsize=(14, 6))
+
+    # Plot 1: Loss (Die Fehlerkurve)
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs, history['train_loss'], label='Training Loss', marker='.')
+    plt.plot(epochs, history['val_loss'], label='Validation Loss', marker='.')
+    plt.title('Training vs Validation Loss')
+    plt.xlabel('Epochs')
+    plt.ylabel('Loss')
+    plt.legend()
+    plt.grid(True)
+
+    # Plot 2: Accuracy (Das ist der Graph aus deinem Bild!)
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs, history['train_acc'], label='Training Accuracy', color='blue', marker='.')
+    plt.plot(epochs, history['val_acc'], label='Validation Accuracy', color='orange', marker='.')
+    plt.title('Training vs Validation Accuracy')
+    plt.xlabel('Epochs')
+    plt.ylabel('Accuracy (%)')
+    plt.legend()
+    plt.grid(True)
+
+    plt.tight_layout()
+    plt.savefig('learning_curves.png')
+    print("Plot gespeichert als 'learning_curves.png'")

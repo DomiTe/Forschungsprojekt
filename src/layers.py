@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 # from copy import deepcopy
 
-from src.quantizer import Quantization
+from src.utility.quantizer import Quantization
 from src.utility.logging import get_logger
 from src.utility.config import QUANTIZATION_METHOD, QUANTIZATION_NUM_BITS, QUANTIZATION_NUM_BATCHES
 

@@ -2,7 +2,7 @@ import torch
 import copy
 import os
 import csv
-from src.quantizer import Quantization
+from src.utility.quantizer import Quantization
 from src.model import CNN
 from src.utility.utils import get_data_loaders, get_model_size, layer_weight_mse, per_layer_sensitivity_analysis
 from src.train import train_model

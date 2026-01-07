@@ -5,7 +5,7 @@ from typing import Tuple
 import os
 import copy
 from src.utility.logging import get_logger 
-from src.quantizer import Quantization
+from src.utility.quantizer import Quantization
 from src.utility.config import PIN_MEMORY, DATA_DIR, BATCH_SIZE, TEST_BATCH_SIZE, IMAGE_SIZE, DATASET_NAME
 from src.evaluation.evaluate_model import evaluate
 from src.layers import replace_layers_with_quantizable, calibrated_model_activation, QuantizedConv2d, QuantizedLinear

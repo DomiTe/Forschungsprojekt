@@ -26,6 +26,7 @@ dependencies = [
     "pyyaml",
     "tqdm>=4.67.1",
     "tensorboard>=2.20.0",
+    "scikit-learn>=1.8.0",
 ]
 [tool.uv]
 index = [

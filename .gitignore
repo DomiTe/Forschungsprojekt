@@ -1,3 +1,6 @@
 .venv/
-results/
+results/.old
+results/models
+results/quantized_models
+results/logs
 uv.lock

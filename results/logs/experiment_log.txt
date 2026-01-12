@@ -1,0 +1,132 @@
+2026-01-12 16:43:28 [INFO] Experiment: Lade Datensätze...
+2026-01-12 16:43:29 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-12 16:43:29 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-12 16:43:29 [INFO] Experiment: Kein Baseline-Modell gefunden. Starte Training...
+2026-01-12 16:43:29 [INFO] src.train: Starte Training auf Device: cuda
+2026-01-12 16:43:52 [INFO] src.train: Ep 1: Train Acc: 0.97% | Val Acc: 1.91%
+2026-01-12 16:44:17 [INFO] src.train: Ep 2: Train Acc: 3.08% | Val Acc: 3.96%
+2026-01-12 16:44:41 [INFO] src.train: Ep 3: Train Acc: 5.30% | Val Acc: 5.72%
+2026-01-12 16:45:04 [INFO] src.train: Ep 4: Train Acc: 7.88% | Val Acc: 9.75%
+2026-01-12 16:45:28 [INFO] src.train: Ep 5: Train Acc: 10.89% | Val Acc: 14.15%
+2026-01-12 16:45:50 [INFO] src.train: Ep 6: Train Acc: 14.86% | Val Acc: 17.01%
+2026-01-12 16:46:12 [INFO] src.train: Ep 7: Train Acc: 18.59% | Val Acc: 18.04%
+2026-01-12 16:46:33 [INFO] src.train: Ep 8: Train Acc: 19.43% | Val Acc: 22.73%
+2026-01-12 16:46:55 [INFO] src.train: Ep 9: Train Acc: 22.98% | Val Acc: 24.27%
+2026-01-12 16:47:16 [INFO] src.train: Ep 10: Train Acc: 24.82% | Val Acc: 27.79%
+2026-01-12 16:47:38 [INFO] src.train: Ep 11: Train Acc: 27.66% | Val Acc: 31.01%
+2026-01-12 16:48:00 [INFO] src.train: Ep 12: Train Acc: 30.02% | Val Acc: 33.80%
+2026-01-12 16:48:20 [INFO] src.train: Ep 13: Train Acc: 30.96% | Val Acc: 33.80%
+2026-01-12 16:48:42 [INFO] src.train: Ep 14: Train Acc: 32.97% | Val Acc: 34.82%
+2026-01-12 16:49:04 [INFO] src.train: Ep 15: Train Acc: 34.95% | Val Acc: 37.54%
+2026-01-12 16:49:25 [INFO] src.train: Ep 16: Train Acc: 37.23% | Val Acc: 40.69%
+2026-01-12 16:49:48 [INFO] src.train: Ep 17: Train Acc: 38.58% | Val Acc: 40.84%
+2026-01-12 16:50:10 [INFO] src.train: Ep 18: Train Acc: 39.37% | Val Acc: 43.48%
+2026-01-12 16:50:32 [INFO] src.train: Ep 19: Train Acc: 40.91% | Val Acc: 46.99%
+2026-01-12 16:50:56 [INFO] src.train: Ep 20: Train Acc: 43.15% | Val Acc: 47.65%
+2026-01-12 16:51:18 [INFO] src.train: Ep 21: Train Acc: 44.56% | Val Acc: 52.13%
+2026-01-12 16:51:41 [INFO] src.train: Ep 22: Train Acc: 45.89% | Val Acc: 49.49%
+2026-01-12 16:52:03 [INFO] src.train: Ep 23: Train Acc: 47.58% | Val Acc: 52.57%
+2026-01-12 16:52:25 [INFO] src.train: Ep 24: Train Acc: 48.48% | Val Acc: 52.05%
+2026-01-12 16:52:48 [INFO] src.train: Ep 25: Train Acc: 49.52% | Val Acc: 53.74%
+2026-01-12 16:53:11 [INFO] src.train: Ep 26: Train Acc: 48.57% | Val Acc: 55.87%
+2026-01-12 16:53:34 [INFO] src.train: Ep 27: Train Acc: 50.97% | Val Acc: 57.77%
+2026-01-12 16:53:57 [INFO] src.train: Ep 28: Train Acc: 51.58% | Val Acc: 57.62%
+2026-01-12 16:54:20 [INFO] src.train: Ep 29: Train Acc: 51.96% | Val Acc: 59.09%
+2026-01-12 16:54:42 [INFO] src.train: Ep 30: Train Acc: 54.34% | Val Acc: 58.87%
+2026-01-12 16:55:04 [INFO] src.train: Ep 31: Train Acc: 53.63% | Val Acc: 61.14%
+2026-01-12 16:55:27 [INFO] src.train: Ep 32: Train Acc: 55.57% | Val Acc: 62.54%
+2026-01-12 16:55:49 [INFO] src.train: Ep 33: Train Acc: 56.10% | Val Acc: 63.86%
+2026-01-12 16:56:12 [INFO] src.train: Ep 34: Train Acc: 58.39% | Val Acc: 65.18%
+2026-01-12 16:56:35 [INFO] src.train: Ep 35: Train Acc: 58.34% | Val Acc: 66.79%
+2026-01-12 16:56:58 [INFO] src.train: Ep 36: Train Acc: 59.95% | Val Acc: 64.37%
+2026-01-12 16:57:20 [INFO] src.train: Ep 37: Train Acc: 59.48% | Val Acc: 67.45%
+2026-01-12 16:57:43 [INFO] src.train: Ep 38: Train Acc: 59.53% | Val Acc: 66.50%
+2026-01-12 16:58:07 [INFO] src.train: Ep 39: Train Acc: 62.21% | Val Acc: 69.13%
+2026-01-12 16:58:29 [INFO] src.train: Ep 40: Train Acc: 61.99% | Val Acc: 66.94%
+2026-01-12 16:58:52 [INFO] src.train: Ep 41: Train Acc: 63.43% | Val Acc: 68.11%
+2026-01-12 16:59:15 [INFO] src.train: Ep 42: Train Acc: 63.87% | Val Acc: 71.48%
+2026-01-12 16:59:37 [INFO] src.train: Ep 43: Train Acc: 64.57% | Val Acc: 72.58%
+2026-01-12 16:59:59 [INFO] src.train: Ep 44: Train Acc: 65.29% | Val Acc: 72.29%
+2026-01-12 17:00:21 [INFO] src.train: Ep 45: Train Acc: 66.02% | Val Acc: 73.53%
+2026-01-12 17:00:44 [INFO] src.train: Ep 46: Train Acc: 66.81% | Val Acc: 74.19%
+2026-01-12 17:01:06 [INFO] src.train: Ep 47: Train Acc: 66.90% | Val Acc: 75.44%
+2026-01-12 17:01:28 [INFO] src.train: Ep 48: Train Acc: 67.69% | Val Acc: 74.05%
+2026-01-12 17:01:51 [INFO] src.train: Ep 49: Train Acc: 68.18% | Val Acc: 77.05%
+2026-01-12 17:02:14 [INFO] src.train: Ep 50: Train Acc: 69.54% | Val Acc: 75.29%
+2026-01-12 17:02:14 [INFO] src.train: Training abgeschlossen. Baseline gespeichert unter: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-12 17:02:14 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-12 17:02:18 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-12 17:02:22 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 75.29% | Loss: 1.0343 | Total Time: 4.4094s | Latency: 3.2327 ms/img
+2026-01-12 17:02:22 [INFO] Experiment: Baseline -> Acc: 75.29%, Time: 4.4094s, Size: 6.07MB
+2026-01-12 17:02:23 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-01-12 17:02:23 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-12 17:02:24 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-12 17:02:32 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8 (Sample Size: 1364)
+2026-01-12 17:02:40 [INFO] src.evaluation.evaluate: Evaluation Result [Sym_INT8] - Acc: 75.07% | Loss: 1.0309 | Total Time: 7.2336s | Latency: 5.3032 ms/img
+2026-01-12 17:02:40 [INFO] Experiment: Ergebnis Sym_INT8: Acc=75.07% (Drop: 0.22)
+2026-01-12 17:02:40 [INFO] Experiment: Konvertiere Gewichte zu INT8 für Speicherung...
+2026-01-12 17:02:40 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-12 17:02:40 [INFO] Experiment: --- Starte Experiment: Sym_INT4 ---
+2026-01-12 17:02:40 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-12 17:02:41 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-12 17:02:49 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT4 (Sample Size: 1364)
+2026-01-12 17:02:56 [INFO] src.evaluation.evaluate: Evaluation Result [Sym_INT4] - Acc: 16.13% | Loss: 5.5918 | Total Time: 6.9844s | Latency: 5.1205 ms/img
+2026-01-12 17:02:56 [INFO] Experiment: Ergebnis Sym_INT4: Acc=16.13% (Drop: 59.16)
+2026-01-12 17:02:56 [INFO] Experiment: Konvertiere Gewichte zu INT4 für Speicherung...
+2026-01-12 17:02:56 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-12 17:02:56 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-01-12 17:02:56 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-12 17:02:58 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-12 17:03:05 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8 (Sample Size: 1364)
+2026-01-12 17:03:12 [INFO] src.evaluation.evaluate: Evaluation Result [Aff_INT8] - Acc: 74.93% | Loss: 1.0358 | Total Time: 7.1902s | Latency: 5.2714 ms/img
+2026-01-12 17:03:12 [INFO] Experiment: Ergebnis Aff_INT8: Acc=74.93% (Drop: 0.37)
+2026-01-12 17:03:12 [INFO] Experiment: Konvertiere Gewichte zu INT8 für Speicherung...
+2026-01-12 17:03:12 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-12 17:03:12 [INFO] Experiment: --- Starte Experiment: Aff_INT4 ---
+2026-01-12 17:03:12 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-12 17:03:14 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-12 17:03:21 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT4 (Sample Size: 1364)
+2026-01-12 17:03:29 [INFO] src.evaluation.evaluate: Evaluation Result [Aff_INT4] - Acc: 55.50% | Loss: 1.8490 | Total Time: 7.2298s | Latency: 5.3004 ms/img
+2026-01-12 17:03:29 [INFO] Experiment: Ergebnis Aff_INT4: Acc=55.50% (Drop: 19.79)
+2026-01-12 17:03:29 [INFO] Experiment: Konvertiere Gewichte zu INT4 für Speicherung...
+2026-01-12 17:03:29 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-12 17:03:29 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-01-12 17:03:29 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-12 17:03:31 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-12 17:03:38 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8 (Sample Size: 1364)
+2026-01-12 17:03:45 [INFO] src.evaluation.evaluate: Evaluation Result [Po2_INT8] - Acc: 74.12% | Loss: 1.0379 | Total Time: 7.3183s | Latency: 5.3653 ms/img
+2026-01-12 17:03:45 [INFO] Experiment: Ergebnis Po2_INT8: Acc=74.12% (Drop: 1.17)
+2026-01-12 17:03:45 [INFO] Experiment: Konvertiere Gewichte zu INT8 für Speicherung...
+2026-01-12 17:03:45 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-12 17:03:45 [INFO] Experiment: --- Starte Experiment: Po2_INT4 ---
+2026-01-12 17:03:45 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-12 17:03:47 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-12 17:03:55 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT4 (Sample Size: 1364)
+2026-01-12 17:04:02 [INFO] src.evaluation.evaluate: Evaluation Result [Po2_INT4] - Acc: 10.04% | Loss: 6.6541 | Total Time: 7.2249s | Latency: 5.2969 ms/img
+2026-01-12 17:04:02 [INFO] Experiment: Ergebnis Po2_INT4: Acc=10.04% (Drop: 65.25)
+2026-01-12 17:04:02 [INFO] Experiment: Konvertiere Gewichte zu INT4 für Speicherung...
+2026-01-12 17:04:02 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-12 17:04:02 [INFO] src.utility.utils: Daten gespeichert unter: C:\Users\Dominic\Documents\ResearchProject\results\csv\quantization_results_POKEMON.csv
+2026-01-12 17:04:02 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
+2026-01-12 17:04:06 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline (Sample Size: 1364)
+2026-01-12 17:04:10 [INFO] src.evaluation.evaluate: Evaluation Result [Sensitivity Baseline] - Acc: 75.29% | Loss: 1.0343 | Total Time: 4.5518s | Latency: 3.3371 ms/img
+2026-01-12 17:04:14 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1 (Sample Size: 1364)
+2026-01-12 17:04:19 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: conv1] - Acc: 75.15% | Loss: 1.0331 | Total Time: 4.5574s | Latency: 3.3412 ms/img
+2026-01-12 17:04:19 [INFO] src.utility.utils: Layer conv1: Drop = 0.15%
+2026-01-12 17:04:23 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2 (Sample Size: 1364)
+2026-01-12 17:04:27 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: conv2] - Acc: 75.22% | Loss: 1.0325 | Total Time: 4.5425s | Latency: 3.3303 ms/img
+2026-01-12 17:04:27 [INFO] src.utility.utils: Layer conv2: Drop = 0.07%
+2026-01-12 17:04:31 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3 (Sample Size: 1364)
+2026-01-12 17:04:35 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: conv3] - Acc: 75.15% | Loss: 1.0356 | Total Time: 4.5805s | Latency: 3.3582 ms/img
+2026-01-12 17:04:35 [INFO] src.utility.utils: Layer conv3: Drop = 0.15%
+2026-01-12 17:04:39 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4 (Sample Size: 1364)
+2026-01-12 17:04:44 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: conv4] - Acc: 75.29% | Loss: 1.0347 | Total Time: 4.5737s | Latency: 3.3531 ms/img
+2026-01-12 17:04:44 [INFO] src.utility.utils: Layer conv4: Drop = 0.00%
+2026-01-12 17:04:48 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1 (Sample Size: 1364)
+2026-01-12 17:04:53 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: fc1] - Acc: 75.29% | Loss: 1.0350 | Total Time: 4.5263s | Latency: 3.3184 ms/img
+2026-01-12 17:04:53 [INFO] src.utility.utils: Layer fc1: Drop = 0.00%
+2026-01-12 17:04:57 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2 (Sample Size: 1364)
+2026-01-12 17:05:02 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: fc2] - Acc: 75.37% | Loss: 1.0356 | Total Time: 4.5607s | Latency: 3.3436 ms/img
+2026-01-12 17:05:02 [INFO] src.utility.utils: Layer fc2: Drop = -0.07%
+2026-01-12 17:05:02 [INFO] src.utility.utils: Daten gespeichert unter: C:\Users\Dominic\Documents\ResearchProject\results\csv\sensitivity_analysis.csv
+2026-01-12 17:05:02 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===

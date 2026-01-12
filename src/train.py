@@ -26,20 +26,21 @@ def train_model(train_loader, test_loader, num_classes):
     writer = SummaryWriter(log_dir=LOG_DIR)
 
     # Modell initialisieren
-    # Wichtig: CNN erwartet num_classes im Konstruktor
     model = CNN(num_classes=num_classes).to(DEVICE)
     
     # Sicherstellen, dass wir im Float-Modus starten (falls Layers Default anders haben)
     if hasattr(model, 'convert_to_baseline'):
         model.convert_to_baseline()
 
-    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=1e-4)
     criterion = nn.CrossEntropyLoss()
 
     history = {
         'train_loss': [], 'train_acc': [],
         'val_loss': [], 'val_acc': []
     }
+
+    best_train_acc = 0.0
 
     for epoch in range(EPOCHS):
         model.train()
@@ -94,18 +95,21 @@ def train_model(train_loader, test_loader, num_classes):
 
         logger.info(f"Ep {epoch+1}: Train Acc: {train_acc:.2f}% | Val Acc: {val_acc:.2f}%")
         
+        if train_acc > best_train_acc:
+            best_train_acc = train_acc
+            save_path = os.path.join(MODELS_DIR, "baseline_float32.pt")
+            torch.save(model.state_dict(), save_path)
+            logger.info(f"Saved best model ({train_acc:.4f}%)")
+
         history['train_loss'].append(avg_train_loss)
         history['train_acc'].append(train_acc)
         history['val_loss'].append(avg_val_loss)
         history['val_acc'].append(val_acc)
 
-    # --- WICHTIG: Speichern als Baseline ---
-    # Damit main_experiment.py es findet
     save_path = os.path.join(MODELS_DIR, "baseline_float32.pt")
     torch.save(model.state_dict(), save_path)
     logger.info(f"Training abgeschlossen. Baseline gespeichert unter: {save_path}")
     
     writer.close()
     
-    # Rückgabe des trainierten Modells und der History (für Plots)
     return model, history

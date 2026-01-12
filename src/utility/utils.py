@@ -67,42 +67,60 @@ def _get_mnist_loaders():
     return train_loader, test_loader, 10 # num_classes
 
 def _get_pokemon_loaders():
-    transform = transforms.Compose([
+    # 1. Transform für TRAINING
+    # WICHTIG: Wir nutzen jetzt (0.5, 0.5, 0.5) statt der ResNet-Werte
+    transform_train = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)), # Nimmt die 64 aus der Config
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomRotation(15),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2),
+        transforms.ToTensor(),
+        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) # Standard Normalisierung
+    ])
+
+    # 2. Transform für VALIDIERUNG (Keine Augmentation)
+    transform_val = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
     
-    if not os.path.exists(DATA_DIR):
-         raise FileNotFoundError(f"Datenverzeichnis nicht gefunden: {DATA_DIR}")
-    
+    # Pfad zum Ordner "PokemonData" (wo die 150 Ordner drin sind)
     dataset_path = os.path.join(DATA_DIR, "PokemonData") 
+    
+    # --- Der Split-Trick (Sauberer Weg) ---
+    
+    # Wir laden das Dataset ZWEIMAL (einmal mit Train-Transform, einmal mit Val-Transform)
+    train_dataset_full = datasets.ImageFolder(root=dataset_path, transform=transform_train)
+    val_dataset_full = datasets.ImageFolder(root=dataset_path, transform=transform_val)
+    
+    # Größe berechnen (80% / 20%)
+    total_len = len(train_dataset_full)
+    train_size = int(0.8 * total_len)
+    val_size = total_len - train_size
+    
+    # WICHTIG: Denselben Seed nutzen, damit die Indices identisch sind!
+    generator = torch.Generator().manual_seed(42)
+    
+    # Wir splitten BEIDE Datasets identisch
+    # train_data nimmt den Teil aus dem Dataset MIT Augmentation
+    train_data, _ = random_split(train_dataset_full, [train_size, val_size], generator=generator)
+    
+    # val_data nimmt den (identischen) Teil aus dem Dataset OHNE Augmentation
+    _, val_data = random_split(val_dataset_full, [train_size, val_size], generator=generator)
+    
+    kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+    
+    train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
+    val_loader = DataLoader(val_data, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    
+    # Anzahl Klassen auslesen
+    num_classes = len(train_dataset_full.classes)
+    
+    logger.info(f"Gen-1 Dataset geladen: {len(train_data)} Train, {len(val_data)} Val. Klassen: {num_classes}")
+    logger.info(f"Bildgröße: {IMAGE_SIZE}x{IMAGE_SIZE}")
 
-    # 1. Den gesamten Datensatz laden (ImageFolder scannt Unterordner als Klassen)
-    full_dataset = datasets.ImageFolder(root=dataset_path, transform=transform)
-    
-    total_count = len(full_dataset)
-    num_classes = len(full_dataset.classes)
-    
-    logger.info(f"Gefundene Bilder: {total_count} in {num_classes} Klassen (Pokemon).")
-
-    # 2. Split berechnen (80% Train, 20% Test)
-    train_size = int(0.8 * total_count)
-    test_size = total_count - train_size
-    
-    # 3. Random Split durchführen (Seed setzen für Reproduzierbarkeit!)
-    train_dataset, test_dataset = random_split(
-        full_dataset, 
-        [train_size, test_size],
-        generator=torch.Generator().manual_seed(42) 
-    )
-
-    logger.info(f"Split: {train_size} Training, {test_size} Test.")
-    
-    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, pin_memory=PIN_MEMORY)
-    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, pin_memory=PIN_MEMORY)
-    
-    return train_loader, test_loader, num_classes
+    return train_loader, val_loader, num_classes
 
 def plot_training_curves(history):
     epochs = range(1, len(history['train_loss']) + 1)

@@ -1,4 +1,9 @@
 import torch
+from torchao.quantization import (
+    Int8WeightOnlyConfig, 
+    Int8DynamicActivationInt8WeightConfig,
+    Int4WeightOnlyConfig
+)
 import os
 from datetime import datetime 
 
@@ -21,13 +26,13 @@ if DATASET_NAME == "MNIST":
 elif DATASET_NAME == "POKEMON":
     IMAGE_SIZE = 64
     CHANNELS = 3       # RGB
-    NUM_CLASSES = 150
+    NUM_CLASSES = 152
 
 # Training Hyperparameter 
 BATCH_SIZE = 64
 TEST_BATCH_SIZE = 1000
 LEARNING_RATE = 0.001
-EPOCHS = 150 
+EPOCHS = 20 
 
 # Model Architecture
 KERNEL_SIZE = 3
@@ -37,12 +42,30 @@ STRIDE = 1
 
 # List of experiments in a loop
 EXPERIMENT_CONFIGS = [
-    {"method": "symmetric", "bits": 8, "name": "Sym_INT8"},
-    {"method": "symmetric", "bits": 4, "name": "Sym_INT4"},
-    {"method": "affine",    "bits": 8, "name": "Aff_INT8"},
-    {"method": "affine",    "bits": 4, "name": "Aff_INT4"},
-    {"method": "power2",    "bits": 8, "name": "Po2_INT8"},
-    {"method": "power2",    "bits": 4, "name": "Po2_INT4"}, # Optional
+    # {"method": "symmetric", "bits": 8, "name": "Sym_INT8"},
+    # {"method": "symmetric", "bits": 4, "name": "Sym_INT4"},
+    # {"method": "affine",    "bits": 8, "name": "Aff_INT8"},
+    # {"method": "affine",    "bits": 4, "name": "Aff_INT4"},
+    # {"method": "power2",    "bits": 8, "name": "Po2_INT8"},
+    # {"method": "power2",    "bits": 4, "name": "Po2_INT4"},
+
+    {
+        "name": "Sym_INT8", 
+        "method": "weight_only", 
+        "bits": 8, 
+        "ao_config": Int8WeightOnlyConfig(version=2)
+    },
+    {
+        "name": "Aff_INT8_Dynamic", 
+        "method": "dynamic", 
+        "bits": 8, 
+        "ao_config": Int8DynamicActivationInt8WeightConfig()
+    },
+    {
+        "name": "Sym_INT4",
+        "method": "weight_only", 
+        "bits": 4, 
+        "ao_config": Int4WeightOnlyConfig(group_size=32)}
 ]
 
 # Configuration for sensitivity layer analysis

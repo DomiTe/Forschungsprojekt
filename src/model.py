@@ -8,21 +8,21 @@ class CNN(nn.Module):
     def __init__(self, num_classes=NUM_CLASSES):
         super(CNN, self).__init__()
         
-        # Wir nutzen direkt die Quantized-Klassen. 
-        # Standardmäßig sind sie im "Float-Modus" (quant_mode=False).
-        self.conv1 = QuantizedConv2d(CHANNELS, 32, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
-        self.conv2 = QuantizedConv2d(32, 64, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
-        self.conv3 = QuantizedConv2d(64, 128, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
-        self.conv4 = QuantizedConv2d(128, 256, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
+        # standarised conv2d layers
+        self.conv1 = nn.Conv2d(CHANNELS, 32, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
+        self.conv2 = nn.Conv2d(32, 64, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
+        self.conv3 = nn.Conv2d(64, 128, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
+        self.conv4 = nn.Conv2d(128, 256, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
         
         self.dropout = nn.Dropout(0.5)
         self.global_pool = nn.AdaptiveAvgPool2d((2, 2))
 
-        # Berechnung der Dimension: 256 Channel * 2x2 Pooling
+        # Calculation of dimension: 256 Channel * 2x2 Pooling
         self.fc_input_dim = 256 * 2 * 2 
 
-        self.fc1 = QuantizedLinear(self.fc_input_dim, 1024)
-        self.fc2 = QuantizedLinear(1024, num_classes)
+        # standarised linear layers
+        self.fc1 = nn.Linear(self.fc_input_dim, 1024)
+        self.fc2 = nn.Linear(1024, num_classes)
 
     def forward(self, x):
         # Normaler Forward-Pass
@@ -42,20 +42,20 @@ class CNN(nn.Module):
 
     # --- Helfer-Methoden für das Experiment ---
 
-    def convert_to_quantized(self, method='symmetric', bits=8):
-        """Aktiviert Quantisierung für alle Layer"""
-        for module in self.modules():
-            if isinstance(module, QuantizedLayerMixin):
-                module.prepare_quantization(method, bits)
+    # def convert_to_quantized(self, method='symmetric', bits=8):
+    #     """Aktiviert Quantisierung für alle Layer"""
+    #     for module in self.modules():
+    #         if isinstance(module, QuantizedLayerMixin):
+    #             module.prepare_quantization(method, bits)
 
-    def convert_to_baseline(self):
-        """Deaktiviert Quantisierung (Reset auf Float32)"""
-        for module in self.modules():
-            if isinstance(module, QuantizedLayerMixin):
-                module.disable_quantization()
+    # def convert_to_baseline(self):
+    #     """Deaktiviert Quantisierung (Reset auf Float32)"""
+    #     for module in self.modules():
+    #         if isinstance(module, QuantizedLayerMixin):
+    #             module.disable_quantization()
 
-    def permanently_quantize_weights(self):
-        """Wandelt alle Gewichte im Modell permanent in INT8 um (spart Speicher)."""
-        for module in self.modules():
-            if isinstance(module, QuantizedLayerMixin):
-                module.convert_weights_to_int8()
+    # def permanently_quantize_weights(self):
+    #     """Wandelt alle Gewichte im Modell permanent in INT8 um (spart Speicher)."""
+    #     for module in self.modules():
+    #         if isinstance(module, QuantizedLayerMixin):
+    #             module.convert_weights_to_int8()

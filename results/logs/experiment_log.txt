@@ -437,3 +437,89 @@
 2026-01-13 15:08:51 [INFO] src.utility.utils: Layer fc2: Drop = 0.00%
 2026-01-13 15:08:51 [INFO] src.utility.utils: Daten gespeichert unter: /scratch/dominic/Forschungsprojekt/results/csv/sensitivity_analysis.csv
 2026-01-13 15:08:51 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
+2026-01-15 16:21:59 [INFO] Experiment: Lade Datensätze...
+2026-01-15 16:21:59 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-15 16:21:59 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-15 16:22:00 [INFO] Experiment: Load Baseline-Model: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-15 16:25:38 [INFO] Experiment: Lade Datensätze...
+2026-01-15 16:25:38 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-15 16:25:38 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-15 16:25:38 [INFO] Experiment: Load Baseline-Model: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-15 16:25:38 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-15 16:25:43 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-15 16:25:47 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 90.91% | Total Time: 3.5799s | Latency: 2.6246 ms/img
+2026-01-15 16:25:47 [INFO] Experiment: Baseline -> Acc: 90.91%, Time: 3.5799s, Size: 6.07MB
+2026-01-15 16:27:24 [INFO] Experiment: Lade Datensätze...
+2026-01-15 16:27:24 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-15 16:27:24 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-15 16:27:24 [INFO] Experiment: Load Baseline-Model: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-15 16:27:24 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-15 16:27:28 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-15 16:27:31 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 90.91% | Total Time: 3.4208s | Latency: 2.5079 ms/img
+2026-01-15 16:27:31 [INFO] Experiment: Baseline -> Acc: 90.91%, Time: 3.4208s, Size: 6.07MB
+2026-01-15 16:27:31 [INFO] Experiment: Baseline loaded. Skipping Training Curve.
+2026-01-15 16:27:31 [INFO] Experiment: --- Starting torchao Experiment: Sym_INT8 ---
+2026-01-15 16:33:31 [INFO] Experiment: Lade Datensätze...
+2026-01-15 16:33:31 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-15 16:33:31 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-15 16:33:31 [INFO] Experiment: Load Baseline-Model: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-15 16:33:31 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-15 16:33:35 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-15 16:33:38 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 90.91% | Total Time: 3.5532s | Latency: 2.6050 ms/img
+2026-01-15 16:33:38 [INFO] Experiment: Baseline -> Acc: 90.91%, Time: 3.5532s, Size: 6.07MB
+2026-01-15 16:33:38 [INFO] Experiment: Baseline loaded. Skipping Training Curve.
+2026-01-15 16:33:38 [INFO] Experiment: --- Starting torchao Experiment: Sym_INT8 ---
+2026-01-15 16:35:31 [INFO] Experiment: Lade Datensätze...
+2026-01-15 16:35:31 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-15 16:35:31 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-15 16:35:31 [INFO] Experiment: Load Baseline-Model: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-15 16:35:31 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-15 16:35:35 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-15 16:35:38 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 90.91% | Total Time: 3.3306s | Latency: 2.4418 ms/img
+2026-01-15 16:35:38 [INFO] Experiment: Baseline -> Acc: 90.91%, Time: 3.3306s, Size: 6.07MB
+2026-01-15 16:35:38 [INFO] Experiment: Baseline loaded. Skipping Training Curve.
+2026-01-15 16:35:38 [INFO] Experiment: --- Starting torchao Experiment: Sym_INT8 ---
+2026-01-15 16:35:43 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8 (Sample Size: 1364)
+2026-01-15 16:35:46 [INFO] src.evaluation.evaluate: Evaluation Result [Sym_INT8] - Acc: 90.91% | Total Time: 3.4496s | Latency: 2.5291 ms/img
+2026-01-15 16:35:46 [INFO] Experiment: Ergebnis Sym_INT8: Acc=90.91% (Drop: 0.00)
+2026-01-15 16:35:46 [INFO] Experiment: Gespeicherte Modellgröße: 2.64 MB
+2026-01-15 16:35:46 [INFO] Experiment: --- Starting torchao Experiment: Aff_INT8_Dynamic ---
+2026-01-15 16:38:03 [INFO] Experiment: Lade Datensätze...
+2026-01-15 16:38:03 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-15 16:38:03 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-15 16:38:03 [INFO] Experiment: Load Baseline-Model: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-15 16:38:03 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-15 16:38:07 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-15 16:38:10 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 90.91% | Total Time: 3.2623s | Latency: 2.3917 ms/img
+2026-01-15 16:38:10 [INFO] Experiment: Baseline -> Acc: 90.91%, Time: 3.2623s, Size: 6.07MB
+2026-01-15 16:38:10 [INFO] Experiment: Baseline loaded. Skipping Training Curve.
+2026-01-15 16:38:10 [INFO] Experiment: --- Starting torchao Experiment: Sym_INT8 ---
+2026-01-15 16:38:15 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8 (Sample Size: 1364)
+2026-01-15 16:38:19 [INFO] src.evaluation.evaluate: Evaluation Result [Sym_INT8] - Acc: 90.91% | Total Time: 3.5821s | Latency: 2.6262 ms/img
+2026-01-15 16:38:19 [INFO] Experiment: Ergebnis Sym_INT8: Acc=90.91% (Drop: 0.00)
+2026-01-15 16:38:19 [INFO] Experiment: Gespeicherte Modellgröße: 2.64 MB
+2026-01-15 16:38:19 [INFO] Experiment: --- Starting torchao Experiment: Aff_INT8_Dynamic ---
+2026-01-15 16:41:42 [INFO] Experiment: Lade Datensätze...
+2026-01-15 16:41:42 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-15 16:41:42 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-15 16:41:42 [INFO] Experiment: Load Baseline-Model: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-15 16:43:36 [INFO] Experiment: Lade Datensätze...
+2026-01-15 16:43:36 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-15 16:43:36 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-15 16:43:36 [INFO] Experiment: Load Baseline-Model: C:\Users\Dominic\Documents\ResearchProject\results\models\baseline_float32.pt
+2026-01-15 16:43:36 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-15 16:43:39 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-15 16:43:43 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 89.00% | Total Time: 3.3027s | Latency: 2.4214 ms/img
+2026-01-15 16:43:43 [INFO] Experiment: Baseline -> Acc: 89.00%, Time: 3.3027s, Size: 6.08MB
+2026-01-15 16:43:43 [INFO] Experiment: Baseline loaded. Skipping Training Curve.
+2026-01-15 16:43:43 [INFO] Experiment: --- Starting torchao Experiment: Sym_INT8 ---
+2026-01-15 16:43:47 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8 (Sample Size: 1364)
+2026-01-15 16:43:51 [INFO] src.evaluation.evaluate: Evaluation Result [Sym_INT8] - Acc: 89.00% | Total Time: 3.6094s | Latency: 2.6462 ms/img
+2026-01-15 16:43:51 [INFO] Experiment: Ergebnis Sym_INT8: Acc=89.00% (Drop: 0.00)
+2026-01-15 16:43:51 [INFO] Experiment: Gespeicherte Modellgröße: 2.64 MB
+2026-01-15 16:43:51 [INFO] Experiment: --- Starting torchao Experiment: Aff_INT8_Dynamic ---
+2026-01-15 16:43:55 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8_Dynamic (Sample Size: 1364)
+2026-01-15 16:43:58 [INFO] src.evaluation.evaluate: Evaluation Result [Aff_INT8_Dynamic] - Acc: 89.08% | Total Time: 3.5518s | Latency: 2.6039 ms/img
+2026-01-15 16:43:58 [INFO] Experiment: Ergebnis Aff_INT8_Dynamic: Acc=89.08% (Drop: -0.07)
+2026-01-15 16:43:58 [INFO] Experiment: Gespeicherte Modellgröße: 2.65 MB
+2026-01-15 16:43:58 [INFO] Experiment: --- Starting torchao Experiment: Sym_INT4 ---

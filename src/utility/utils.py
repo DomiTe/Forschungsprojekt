@@ -28,16 +28,26 @@ def get_model_size(model):
     Berechnet die Größe des Modells im Arbeitsspeicher in Megabytes (MB).
     Dies dient als theoretischer Vergleichswert.
     """
-    param_size = 0
-    for param in model.parameters():
-        param_size += param.nelement() * param.element_size()
-    
-    buffer_size = 0
+    byte_size = 0
+    for name, param in model.named_parameters():
+        if hasattr(param, "__tensor_flatten__"):
+            inner_tensors, _ = param.__tensor_flatten__()
+            for tensor_name in inner_tensors:
+                t = getattr(param, tensor_name)
+                byte_size += t.nelement() * t.element_size()
+        else:
+            byte_size += param.nelement() * param.element_size()
     for buffer in model.buffers():
-        buffer_size += buffer.nelement() * buffer.element_size()
+        byte_size += buffer.nelement() * buffer.element_size()
 
-    size_all_mb = (param_size + buffer_size) / 1024**2
-    return size_all_mb
+    return byte_size / (1024**2)
+    
+    # buffer_size = 0
+    # for buffer in model.buffers():
+    #     buffer_size += buffer.nelement() * buffer.element_size()
+
+    # size_all_mb = (param_size + buffer_size) / 1024**2
+    # return size_all_mb
 
 def get_data_loaders():
     """

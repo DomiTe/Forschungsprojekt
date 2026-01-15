@@ -1,22 +1,47 @@
 import torch
-from torchvision import datasets, transforms
-from torch.utils.data import DataLoader, random_split
-from typing import Tuple
-import matplotlib.pyplot as plt
 import os
 import copy
-from src.utility.logging import get_logger 
-from src.utility.quantizer import Quantization
-from src.utility.config import PIN_MEMORY, DATA_DIR, BATCH_SIZE, TEST_BATCH_SIZE, IMAGE_SIZE, DATASET_NAME
-from src.evaluation.evaluate_model import evaluate
-from src.layers import replace_layers_with_quantizable, calibrated_model_activation, QuantizedConv2d, QuantizedLinear
+import sys
+import csv
+import logging
+import matplotlib.pyplot as plt
+from torchvision import datasets, transforms
+from torch.utils.data import DataLoader, random_split
+from src.utility.config import (
+    PIN_MEMORY, 
+    DATA_DIR, 
+    LOG_DIR,
+    CSV_DIR,
+    BATCH_SIZE, 
+    TEST_BATCH_SIZE, 
+    IMAGE_SIZE, 
+    DATASET_NAME,
+    DEVICE
+)
+from src.layers import QuantizedLayerMixin
+from src.evaluation.evaluate import evaluate
 
-logger = get_logger(__name__)
+logger = logging.getLogger(__name__)
+
+def get_model_size(model):
+    """
+    Berechnet die Größe des Modells im Arbeitsspeicher in Megabytes (MB).
+    Dies dient als theoretischer Vergleichswert.
+    """
+    param_size = 0
+    for param in model.parameters():
+        param_size += param.nelement() * param.element_size()
+    
+    buffer_size = 0
+    for buffer in model.buffers():
+        buffer_size += buffer.nelement() * buffer.element_size()
+
+    size_all_mb = (param_size + buffer_size) / 1024**2
+    return size_all_mb
 
 def get_data_loaders():
     """
-    Die Hauptfunktion, die von main.py aufgerufen wird.
-    Sie entscheidet, welches Dataset geladen wird.
+    Die Hauptfunktion zum Laden der Daten.
     """
     if DATASET_NAME == "MNIST":
         return _get_mnist_loaders()
@@ -25,23 +50,21 @@ def get_data_loaders():
     else:
         raise ValueError(f"Unbekanntes Dataset in Config: {DATASET_NAME}")
 
-# --- Interne Hilfsfunktionen (beginnen mit _) ---
-
 def _get_mnist_loaders():
     transform = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
         transforms.Normalize((0.1307,), (0.3081,))
     ])
-    kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
     
+    # Download=True ist wichtig für den ersten Run
     train_dataset = datasets.MNIST(DATA_DIR, train=True, download=True, transform=transform)
     test_dataset = datasets.MNIST(DATA_DIR, train=False, download=True, transform=transform)
     
-    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
-    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, pin_memory=PIN_MEMORY)
+    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, pin_memory=PIN_MEMORY)
     
-    return train_loader, test_loader, 10
+    return train_loader, test_loader, 10 # num_classes
 
 def _get_pokemon_loaders():
     # 1. Transform für TRAINING
@@ -99,75 +122,12 @@ def _get_pokemon_loaders():
 
     return train_loader, val_loader, num_classes
 
-def get_model_size(model_path: str) -> float:
-    size = os.path.getsize(model_path)
-    return size / (1024 * 1024)
-
-def layer_weight_mse(model_float, model_quant):
-    errors = {}
-    for (name_f, mod_f), (name_q, mod_q) in zip(model_float.named_modules(), model_quant.named_modules()):
-        if isinstance(mod_f, (torch.nn.Conv2d, torch.nn.Linear)) and isinstance(mod_q, (QuantizedConv2d, QuantizedLinear)):
-            float_weight = mod_f.weight.data.cpu().float()
-            if getattr(mod_q, 'weight_int', None) is None:
-                dequant_weight = mod_q.weight.data.cpu().float()
-            else:
-                dequant_weight = Quantization.dequantize_from_int(mod_q.weight_int.cpu(), mod_q.scale.cpu(), mod_q.zero_point.cpu(), method=mod_q.quant_method)
-            mse = torch.mean((float_weight - dequant_weight) ** 2).item()
-            errors[name_f] = mse
-    return errors
-
-def per_layer_sensitivity_analysis(model_base, test_loader, device, bits=8, method='symmetric'):
-    results = []
-    
-    # Identify layers first
-    quantizable_names = [n for n, m in model_base.named_modules() if isinstance(m, (torch.nn.Conv2d, torch.nn.Linear))]
-
-    logger.info(f"Starting Sensitivity Analysis on {len(quantizable_names)} layers...")
-
-    for layer_name in quantizable_names:
-        # 1. Fresh Copy
-        model_copy = copy.deepcopy(model_base).to('cpu')
-        model_copy = replace_layers_with_quantizable(model_copy)
-        
-        # 2. Target Specific Layer
-        target_found = False
-        for name, module in model_copy.named_modules():
-            if name == layer_name and hasattr(module, 'quantized_storage'):
-                # Quantize Weights for THIS layer
-                module.quantized_storage(num_bits=bits, method=method)
-                target_found = True
-                break
-        
-        if not target_found:
-            continue
-
-        # 3. Calibrate Activations (Required for Full Quantization)
-        # We perform a quick calibration on the modified model
-        train_loader, _ , _= get_data_loaders()
-        calibrated_model_activation(model_copy, train_loader, device='cpu', num_batches=10, method=method, num_bits=bits)
-
-        # 4. Evaluate
-        model_copy.to(device)
-        acc, inf_time = evaluate(model_copy, test_loader, f"Sensitivity: {layer_name}")
-        
-        results.append({
-            "layer": layer_name,
-            "accuracy": acc,
-            "inference_time": inf_time
-        })
-        
-        # Cleanup to save RAM
-        del model_copy
-        torch.cuda.empty_cache() if torch.cuda.is_available() else None
-
-    return results
-
 def plot_training_curves(history):
     epochs = range(1, len(history['train_loss']) + 1)
     
     plt.figure(figsize=(14, 6))
 
-    # Plot 1: Loss (Die Fehlerkurve)
+    # Plot 1: Loss
     plt.subplot(1, 2, 1)
     plt.plot(epochs, history['train_loss'], label='Training Loss', marker='.')
     plt.plot(epochs, history['val_loss'], label='Validation Loss', marker='.')
@@ -177,16 +137,88 @@ def plot_training_curves(history):
     plt.legend()
     plt.grid(True)
 
-    # Plot 2: Accuracy (Das ist der Graph aus deinem Bild!)
+    # Plot 2: Accuracy
     plt.subplot(1, 2, 2)
     plt.plot(epochs, history['train_acc'], label='Training Accuracy', color='blue', marker='.')
-    plt.plot(epochs, history['val_acc'], label='Validation Accuracy', color='orange', marker='.')
+    plt.plot(epochs, history['val_acc'], label='Validation Accuracy', color='green', marker='.')
     plt.title('Training vs Validation Accuracy')
     plt.xlabel('Epochs')
     plt.ylabel('Accuracy (%)')
     plt.legend()
     plt.grid(True)
 
-    plt.tight_layout()
-    plt.savefig('learning_curves.png')
-    print("Plot gespeichert als 'learning_curves.png'")
+    save_path = os.path.join(LOG_DIR, "Training_Curves.png")
+    plt.savefig(save_path)
+    plt.close()
+
+def save_csv(results, filename, fieldnames):
+    """Hilfsfunktion zum Speichern von Listen in CSV"""
+    filepath = os.path.join(CSV_DIR, filename)
+    file_exists = os.path.isfile(filepath)
+    
+    with open(filepath, 'w', newline='') as csvfile:
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()
+        for row in results:
+            writer.writerow(row)
+    logger.info(f"Daten gespeichert unter: {filepath}")
+
+def run_sensitivity_analysis(base_model, test_loader, method='symmetric', bits=8):
+    """
+    Untersucht Layer-weise Empfindlichkeit:
+    Quantisiert immer nur EINEN Layer, lässt alle anderen auf Float.
+    """
+    logger.info(f"--- Starte Sensitivitätsanalyse (Method: {method}, Bits: {bits}) ---")
+    results = []
+    
+    # Wir brauchen eine saubere Kopie
+    model = copy.deepcopy(base_model)
+    model.eval()
+    model.to(DEVICE)
+    
+    # 1. Alle Module finden, die wir quantisieren können
+    quantizable_modules = []
+    for name, module in model.named_modules():
+        if isinstance(module, QuantizedLayerMixin):
+            quantizable_modules.append((name, module))
+            
+    # 2. Baseline Accuracy messen (sollte der Float-Accuracy entsprechen)
+    # Sicherstellen, dass alles auf Float steht
+    model.convert_to_baseline()
+    base_acc, _ = evaluate(model, test_loader, "Sensitivity Baseline")
+
+    # 3. Schleife durch alle Layer
+    for name, module in quantizable_modules:
+        # Nur diesen einen Layer quantisieren
+        module.prepare_quantization(method=method, bits=bits)
+        
+        # Evaluieren
+        acc, _ = evaluate(model, test_loader, f"Layer: {name}")
+        drop = base_acc - acc
+        
+        results.append({
+            "layer_name": name,
+            "accuracy": acc,
+            "drop": drop
+        })
+        
+        logger.info(f"Layer {name}: Drop = {drop:.2f}%")
+        
+        # WICHTIG: Layer wieder auf Float zurücksetzen für den nächsten Durchlauf
+        module.disable_quantization()
+        
+    save_csv(results, "sensitivity_analysis.csv", ["layer_name", "accuracy", "drop"])
+    return results
+
+def setup_global_logging():
+    log_filename = os.path.join(LOG_DIR, "experiment_log.txt")
+    os.makedirs(os.path.dirname(log_filename), exist_ok=True)
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S",
+        handlers=[
+            logging.FileHandler(log_filename, mode='a', encoding='utf-8'),
+            logging.StreamHandler(sys.stdout)
+        ]
+    )

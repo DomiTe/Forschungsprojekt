@@ -1,0 +1,439 @@
+2026-01-13 13:11:44 [INFO] Experiment: Lade Datensätze...
+2026-01-13 13:11:44 [INFO] Experiment: Lade Datensätze...
+2026-01-13 13:11:45 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-13 13:11:45 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-13 13:11:45 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-13 13:11:45 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-13 13:11:45 [INFO] Experiment: Kein Baseline-Modell gefunden. Starte Training...
+2026-01-13 13:11:45 [INFO] Experiment: Kein Baseline-Modell gefunden. Starte Training...
+2026-01-13 13:11:45 [INFO] src.train: Starte Training auf Device: cuda
+2026-01-13 13:11:45 [INFO] src.train: Starte Training auf Device: cuda
+2026-01-13 13:12:20 [INFO] src.train: Ep 1: Train Acc: 1.01% | Val Acc: 2.13%
+2026-01-13 13:12:20 [INFO] src.train: Ep 1: Train Acc: 1.14% | Val Acc: 1.91%
+2026-01-13 13:12:20 [INFO] src.train: Saved best model (1.0081%)
+2026-01-13 13:12:20 [INFO] src.train: Saved best model (1.1364%)
+2026-01-13 13:12:51 [INFO] src.train: Ep 2: Train Acc: 3.17% | Val Acc: 6.09%
+2026-01-13 13:12:51 [INFO] src.train: Saved best model (3.1708%)
+2026-01-13 13:12:51 [INFO] src.train: Ep 2: Train Acc: 3.13% | Val Acc: 3.23%
+2026-01-13 13:12:51 [INFO] src.train: Saved best model (3.1342%)
+2026-01-13 13:13:21 [INFO] src.train: Ep 3: Train Acc: 7.17% | Val Acc: 8.65%
+2026-01-13 13:13:21 [INFO] src.train: Saved best model (7.1664%)
+2026-01-13 13:13:22 [INFO] src.train: Ep 3: Train Acc: 4.09% | Val Acc: 5.21%
+2026-01-13 13:13:22 [INFO] src.train: Saved best model (4.0872%)
+2026-01-13 13:13:52 [INFO] src.train: Ep 4: Train Acc: 9.84% | Val Acc: 12.83%
+2026-01-13 13:13:52 [INFO] src.train: Saved best model (9.8424%)
+2026-01-13 13:13:52 [INFO] src.train: Ep 4: Train Acc: 5.99% | Val Acc: 6.67%
+2026-01-13 13:13:52 [INFO] src.train: Saved best model (5.9934%)
+2026-01-13 13:14:23 [INFO] src.train: Ep 5: Train Acc: 13.10% | Val Acc: 15.91%
+2026-01-13 13:14:23 [INFO] src.train: Saved best model (13.1048%)
+2026-01-13 13:14:23 [INFO] src.train: Ep 5: Train Acc: 8.30% | Val Acc: 10.63%
+2026-01-13 13:14:23 [INFO] src.train: Saved best model (8.3028%)
+2026-01-13 13:14:54 [INFO] src.train: Ep 6: Train Acc: 16.86% | Val Acc: 20.97%
+2026-01-13 13:14:54 [INFO] src.train: Saved best model (16.8622%)
+2026-01-13 13:14:54 [INFO] src.train: Ep 6: Train Acc: 11.64% | Val Acc: 15.76%
+2026-01-13 13:14:54 [INFO] src.train: Saved best model (11.6386%)
+2026-01-13 13:15:25 [INFO] src.train: Ep 7: Train Acc: 20.12% | Val Acc: 23.97%
+2026-01-13 13:15:25 [INFO] src.train: Saved best model (20.1246%)
+2026-01-13 13:15:26 [INFO] src.train: Ep 7: Train Acc: 14.85% | Val Acc: 16.94%
+2026-01-13 13:15:26 [INFO] src.train: Saved best model (14.8460%)
+2026-01-13 13:15:55 [INFO] src.train: Ep 8: Train Acc: 22.93% | Val Acc: 26.17%
+2026-01-13 13:15:55 [INFO] src.train: Saved best model (22.9289%)
+2026-01-13 13:15:56 [INFO] src.train: Ep 8: Train Acc: 18.48% | Val Acc: 21.19%
+2026-01-13 13:15:56 [INFO] src.train: Saved best model (18.4751%)
+2026-01-13 13:18:49 [INFO] Experiment: Lade Datensätze...
+2026-01-13 13:18:49 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-13 13:18:49 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-13 13:18:49 [INFO] Experiment: Load Baseline-Model: /scratch/dominic/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-13 13:18:49 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-13 13:18:55 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-13 13:19:01 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 21.19% | Loss: 3.1265 | Total Time: 5.6576s | Latency: 4.1478 ms/img
+2026-01-13 13:19:01 [INFO] Experiment: Baseline -> Acc: 21.19%, Time: 5.6576s, Size: 6.07MB
+2026-01-13 13:19:52 [INFO] Experiment: Lade Datensätze...
+2026-01-13 13:19:52 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-13 13:19:52 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-13 13:19:52 [INFO] Experiment: Kein Baseline-Modell gefunden. Starte Training...
+2026-01-13 13:19:52 [INFO] src.train: Starte Training auf Device: cuda
+2026-01-13 13:20:23 [INFO] src.train: Ep 1: Train Acc: 2.00% | Val Acc: 2.49%
+2026-01-13 13:20:23 [INFO] src.train: Saved best model (1.9978%)
+2026-01-13 13:20:54 [INFO] src.train: Ep 2: Train Acc: 4.77% | Val Acc: 6.16%
+2026-01-13 13:20:54 [INFO] src.train: Saved best model (4.7654%)
+2026-01-13 13:21:24 [INFO] src.train: Ep 3: Train Acc: 8.36% | Val Acc: 10.63%
+2026-01-13 13:21:24 [INFO] src.train: Saved best model (8.3578%)
+2026-01-13 13:21:55 [INFO] src.train: Ep 4: Train Acc: 12.79% | Val Acc: 15.98%
+2026-01-13 13:21:55 [INFO] src.train: Saved best model (12.7933%)
+2026-01-13 13:22:25 [INFO] src.train: Ep 5: Train Acc: 15.08% | Val Acc: 19.35%
+2026-01-13 13:22:25 [INFO] src.train: Saved best model (15.0843%)
+2026-01-13 13:22:57 [INFO] Experiment: Lade Datensätze...
+2026-01-13 13:22:57 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-13 13:22:57 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-13 13:22:57 [INFO] Experiment: Load Baseline-Model: /scratch/dominic/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-13 13:22:57 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-13 13:23:03 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-13 13:23:09 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 19.35% | Loss: 3.2741 | Total Time: 5.6906s | Latency: 4.1720 ms/img
+2026-01-13 13:23:09 [INFO] Experiment: Baseline -> Acc: 19.35%, Time: 5.6906s, Size: 6.07MB
+2026-01-13 13:24:18 [INFO] Experiment: Lade Datensätze...
+2026-01-13 13:24:18 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-13 13:24:18 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-13 13:24:18 [INFO] Experiment: Kein Baseline-Modell gefunden. Starte Training...
+2026-01-13 13:24:18 [INFO] src.train: Starte Training auf Device: cuda
+2026-01-13 13:24:49 [INFO] src.train: Ep 1: Train Acc: 1.76% | Val Acc: 3.37%
+2026-01-13 13:24:49 [INFO] src.train: Saved best model (1.7595%)
+2026-01-13 13:25:20 [INFO] src.train: Ep 2: Train Acc: 3.76% | Val Acc: 5.57%
+2026-01-13 13:25:20 [INFO] src.train: Saved best model (3.7573%)
+2026-01-13 13:25:51 [INFO] src.train: Ep 3: Train Acc: 6.40% | Val Acc: 7.84%
+2026-01-13 13:25:51 [INFO] src.train: Saved best model (6.3966%)
+2026-01-13 13:26:22 [INFO] src.train: Ep 4: Train Acc: 9.44% | Val Acc: 11.07%
+2026-01-13 13:26:22 [INFO] src.train: Saved best model (9.4391%)
+2026-01-13 13:26:53 [INFO] src.train: Ep 5: Train Acc: 14.35% | Val Acc: 17.30%
+2026-01-13 13:26:53 [INFO] src.train: Saved best model (14.3512%)
+2026-01-13 13:27:23 [INFO] src.train: Ep 6: Train Acc: 17.41% | Val Acc: 18.33%
+2026-01-13 13:27:23 [INFO] src.train: Saved best model (17.4120%)
+2026-01-13 13:27:54 [INFO] src.train: Ep 7: Train Acc: 21.28% | Val Acc: 24.27%
+2026-01-13 13:27:54 [INFO] src.train: Saved best model (21.2793%)
+2026-01-13 13:28:24 [INFO] src.train: Ep 8: Train Acc: 24.38% | Val Acc: 28.52%
+2026-01-13 13:28:24 [INFO] src.train: Saved best model (24.3768%)
+2026-01-13 13:28:55 [INFO] src.train: Ep 9: Train Acc: 26.12% | Val Acc: 27.27%
+2026-01-13 13:28:55 [INFO] src.train: Saved best model (26.1180%)
+2026-01-13 13:29:26 [INFO] src.train: Ep 10: Train Acc: 28.12% | Val Acc: 31.16%
+2026-01-13 13:29:26 [INFO] src.train: Saved best model (28.1158%)
+2026-01-13 13:29:56 [INFO] src.train: Ep 11: Train Acc: 30.19% | Val Acc: 33.87%
+2026-01-13 13:29:56 [INFO] src.train: Saved best model (30.1870%)
+2026-01-13 13:30:27 [INFO] src.train: Ep 12: Train Acc: 33.19% | Val Acc: 33.94%
+2026-01-13 13:30:27 [INFO] src.train: Saved best model (33.1928%)
+2026-01-13 13:30:57 [INFO] src.train: Ep 13: Train Acc: 34.93% | Val Acc: 40.03%
+2026-01-13 13:30:57 [INFO] src.train: Saved best model (34.9340%)
+2026-01-13 13:31:28 [INFO] src.train: Ep 14: Train Acc: 36.29% | Val Acc: 40.18%
+2026-01-13 13:31:28 [INFO] src.train: Saved best model (36.2903%)
+2026-01-13 13:31:58 [INFO] src.train: Ep 15: Train Acc: 37.98% | Val Acc: 44.87%
+2026-01-13 13:31:58 [INFO] src.train: Saved best model (37.9765%)
+2026-01-13 13:32:29 [INFO] src.train: Ep 16: Train Acc: 40.58% | Val Acc: 43.77%
+2026-01-13 13:32:29 [INFO] src.train: Saved best model (40.5792%)
+2026-01-13 13:32:59 [INFO] src.train: Ep 17: Train Acc: 41.83% | Val Acc: 46.99%
+2026-01-13 13:32:59 [INFO] src.train: Saved best model (41.8255%)
+2026-01-13 13:33:29 [INFO] src.train: Ep 18: Train Acc: 43.88% | Val Acc: 46.11%
+2026-01-13 13:33:29 [INFO] src.train: Saved best model (43.8783%)
+2026-01-13 13:34:00 [INFO] src.train: Ep 19: Train Acc: 44.24% | Val Acc: 50.29%
+2026-01-13 13:34:00 [INFO] src.train: Saved best model (44.2449%)
+2026-01-13 13:34:31 [INFO] src.train: Ep 20: Train Acc: 45.86% | Val Acc: 52.20%
+2026-01-13 13:34:31 [INFO] src.train: Saved best model (45.8578%)
+2026-01-13 13:35:01 [INFO] src.train: Ep 21: Train Acc: 48.42% | Val Acc: 51.61%
+2026-01-13 13:35:01 [INFO] src.train: Saved best model (48.4238%)
+2026-01-13 13:35:32 [INFO] src.train: Ep 22: Train Acc: 50.29% | Val Acc: 54.55%
+2026-01-13 13:35:32 [INFO] src.train: Saved best model (50.2933%)
+2026-01-13 13:36:02 [INFO] src.train: Ep 23: Train Acc: 50.68% | Val Acc: 56.82%
+2026-01-13 13:36:02 [INFO] src.train: Saved best model (50.6782%)
+2026-01-13 13:36:32 [INFO] src.train: Ep 24: Train Acc: 50.60% | Val Acc: 55.87%
+2026-01-13 13:37:03 [INFO] src.train: Ep 25: Train Acc: 51.89% | Val Acc: 58.43%
+2026-01-13 13:37:03 [INFO] src.train: Saved best model (51.8878%)
+2026-01-13 13:37:33 [INFO] src.train: Ep 26: Train Acc: 53.24% | Val Acc: 60.34%
+2026-01-13 13:37:33 [INFO] src.train: Saved best model (53.2441%)
+2026-01-13 13:38:04 [INFO] src.train: Ep 27: Train Acc: 55.44% | Val Acc: 62.32%
+2026-01-13 13:38:04 [INFO] src.train: Saved best model (55.4435%)
+2026-01-13 13:38:34 [INFO] src.train: Ep 28: Train Acc: 56.23% | Val Acc: 64.44%
+2026-01-13 13:38:34 [INFO] src.train: Saved best model (56.2317%)
+2026-01-13 13:39:04 [INFO] src.train: Ep 29: Train Acc: 57.15% | Val Acc: 63.27%
+2026-01-13 13:39:04 [INFO] src.train: Saved best model (57.1481%)
+2026-01-13 13:39:35 [INFO] src.train: Ep 30: Train Acc: 58.12% | Val Acc: 65.62%
+2026-01-13 13:39:35 [INFO] src.train: Saved best model (58.1195%)
+2026-01-13 13:40:05 [INFO] src.train: Ep 31: Train Acc: 58.43% | Val Acc: 65.84%
+2026-01-13 13:40:05 [INFO] src.train: Saved best model (58.4311%)
+2026-01-13 13:40:36 [INFO] src.train: Ep 32: Train Acc: 61.24% | Val Acc: 69.79%
+2026-01-13 13:40:36 [INFO] src.train: Saved best model (61.2353%)
+2026-01-13 13:41:06 [INFO] src.train: Ep 33: Train Acc: 60.89% | Val Acc: 68.33%
+2026-01-13 13:41:37 [INFO] src.train: Ep 34: Train Acc: 61.91% | Val Acc: 72.29%
+2026-01-13 13:41:37 [INFO] src.train: Saved best model (61.9135%)
+2026-01-13 13:42:07 [INFO] src.train: Ep 35: Train Acc: 61.14% | Val Acc: 70.67%
+2026-01-13 13:42:38 [INFO] src.train: Ep 36: Train Acc: 63.40% | Val Acc: 71.19%
+2026-01-13 13:42:38 [INFO] src.train: Saved best model (63.3981%)
+2026-01-13 13:43:08 [INFO] src.train: Ep 37: Train Acc: 64.24% | Val Acc: 73.68%
+2026-01-13 13:43:08 [INFO] src.train: Saved best model (64.2412%)
+2026-01-13 13:43:38 [INFO] src.train: Ep 38: Train Acc: 65.93% | Val Acc: 73.68%
+2026-01-13 13:43:38 [INFO] src.train: Saved best model (65.9274%)
+2026-01-13 13:44:09 [INFO] src.train: Ep 39: Train Acc: 65.16% | Val Acc: 74.05%
+2026-01-13 13:44:39 [INFO] src.train: Ep 40: Train Acc: 67.67% | Val Acc: 74.56%
+2026-01-13 13:44:39 [INFO] src.train: Saved best model (67.6686%)
+2026-01-13 13:45:09 [INFO] src.train: Ep 41: Train Acc: 66.86% | Val Acc: 75.15%
+2026-01-13 13:45:39 [INFO] src.train: Ep 42: Train Acc: 67.58% | Val Acc: 76.47%
+2026-01-13 13:46:09 [INFO] src.train: Ep 43: Train Acc: 69.21% | Val Acc: 77.79%
+2026-01-13 13:46:09 [INFO] src.train: Saved best model (69.2082%)
+2026-01-13 13:46:40 [INFO] src.train: Ep 44: Train Acc: 69.04% | Val Acc: 79.84%
+2026-01-13 13:47:10 [INFO] src.train: Ep 45: Train Acc: 69.02% | Val Acc: 78.37%
+2026-01-13 13:47:40 [INFO] src.train: Ep 46: Train Acc: 69.76% | Val Acc: 79.55%
+2026-01-13 13:47:40 [INFO] src.train: Saved best model (69.7581%)
+2026-01-13 13:48:11 [INFO] src.train: Ep 47: Train Acc: 70.62% | Val Acc: 77.27%
+2026-01-13 13:48:11 [INFO] src.train: Saved best model (70.6195%)
+2026-01-13 13:48:41 [INFO] src.train: Ep 48: Train Acc: 70.77% | Val Acc: 81.09%
+2026-01-13 13:48:41 [INFO] src.train: Saved best model (70.7661%)
+2026-01-13 13:49:11 [INFO] src.train: Ep 49: Train Acc: 70.60% | Val Acc: 81.01%
+2026-01-13 13:49:42 [INFO] src.train: Ep 50: Train Acc: 71.66% | Val Acc: 82.11%
+2026-01-13 13:49:42 [INFO] src.train: Saved best model (71.6642%)
+2026-01-13 13:50:12 [INFO] src.train: Ep 51: Train Acc: 73.53% | Val Acc: 82.26%
+2026-01-13 13:50:12 [INFO] src.train: Saved best model (73.5337%)
+2026-01-13 13:50:43 [INFO] src.train: Ep 52: Train Acc: 72.82% | Val Acc: 82.11%
+2026-01-13 13:51:13 [INFO] src.train: Ep 53: Train Acc: 72.76% | Val Acc: 82.77%
+2026-01-13 13:51:43 [INFO] src.train: Ep 54: Train Acc: 74.41% | Val Acc: 83.36%
+2026-01-13 13:51:43 [INFO] src.train: Saved best model (74.4135%)
+2026-01-13 13:52:13 [INFO] src.train: Ep 55: Train Acc: 74.73% | Val Acc: 82.18%
+2026-01-13 13:52:13 [INFO] src.train: Saved best model (74.7251%)
+2026-01-13 13:52:44 [INFO] src.train: Ep 56: Train Acc: 75.20% | Val Acc: 83.14%
+2026-01-13 13:52:44 [INFO] src.train: Saved best model (75.2016%)
+2026-01-13 13:53:14 [INFO] src.train: Ep 57: Train Acc: 76.14% | Val Acc: 81.96%
+2026-01-13 13:53:14 [INFO] src.train: Saved best model (76.1364%)
+2026-01-13 13:53:44 [INFO] src.train: Ep 58: Train Acc: 75.15% | Val Acc: 84.09%
+2026-01-13 13:54:15 [INFO] src.train: Ep 59: Train Acc: 76.30% | Val Acc: 85.78%
+2026-01-13 13:54:15 [INFO] src.train: Saved best model (76.3013%)
+2026-01-13 13:54:45 [INFO] src.train: Ep 60: Train Acc: 76.23% | Val Acc: 83.94%
+2026-01-13 13:55:15 [INFO] src.train: Ep 61: Train Acc: 77.02% | Val Acc: 86.36%
+2026-01-13 13:55:15 [INFO] src.train: Saved best model (77.0161%)
+2026-01-13 13:55:46 [INFO] src.train: Ep 62: Train Acc: 77.31% | Val Acc: 84.46%
+2026-01-13 13:55:46 [INFO] src.train: Saved best model (77.3094%)
+2026-01-13 13:56:16 [INFO] src.train: Ep 63: Train Acc: 77.58% | Val Acc: 84.09%
+2026-01-13 13:56:16 [INFO] src.train: Saved best model (77.5843%)
+2026-01-13 13:56:47 [INFO] src.train: Ep 64: Train Acc: 77.84% | Val Acc: 84.68%
+2026-01-13 13:56:47 [INFO] src.train: Saved best model (77.8409%)
+2026-01-13 13:57:18 [INFO] src.train: Ep 65: Train Acc: 78.19% | Val Acc: 85.92%
+2026-01-13 13:57:18 [INFO] src.train: Saved best model (78.1891%)
+2026-01-13 13:57:48 [INFO] src.train: Ep 66: Train Acc: 78.30% | Val Acc: 82.55%
+2026-01-13 13:57:48 [INFO] src.train: Saved best model (78.2991%)
+2026-01-13 13:58:18 [INFO] src.train: Ep 67: Train Acc: 77.73% | Val Acc: 85.85%
+2026-01-13 13:58:49 [INFO] src.train: Ep 68: Train Acc: 79.66% | Val Acc: 85.26%
+2026-01-13 13:58:49 [INFO] src.train: Saved best model (79.6554%)
+2026-01-13 13:59:19 [INFO] src.train: Ep 69: Train Acc: 79.84% | Val Acc: 85.63%
+2026-01-13 13:59:19 [INFO] src.train: Saved best model (79.8387%)
+2026-01-13 13:59:50 [INFO] src.train: Ep 70: Train Acc: 80.43% | Val Acc: 85.26%
+2026-01-13 13:59:50 [INFO] src.train: Saved best model (80.4252%)
+2026-01-13 14:00:20 [INFO] src.train: Ep 71: Train Acc: 79.34% | Val Acc: 85.70%
+2026-01-13 14:00:51 [INFO] src.train: Ep 72: Train Acc: 79.18% | Val Acc: 86.88%
+2026-01-13 14:01:21 [INFO] src.train: Ep 73: Train Acc: 80.48% | Val Acc: 85.92%
+2026-01-13 14:01:21 [INFO] src.train: Saved best model (80.4802%)
+2026-01-13 14:01:51 [INFO] src.train: Ep 74: Train Acc: 80.08% | Val Acc: 86.66%
+2026-01-13 14:02:22 [INFO] src.train: Ep 75: Train Acc: 80.30% | Val Acc: 86.88%
+2026-01-13 14:02:52 [INFO] src.train: Ep 76: Train Acc: 80.72% | Val Acc: 89.08%
+2026-01-13 14:02:52 [INFO] src.train: Saved best model (80.7185%)
+2026-01-13 14:03:23 [INFO] src.train: Ep 77: Train Acc: 80.90% | Val Acc: 87.02%
+2026-01-13 14:03:23 [INFO] src.train: Saved best model (80.9018%)
+2026-01-13 14:03:53 [INFO] src.train: Ep 78: Train Acc: 82.04% | Val Acc: 86.95%
+2026-01-13 14:03:54 [INFO] src.train: Saved best model (82.0381%)
+2026-01-13 14:04:24 [INFO] src.train: Ep 79: Train Acc: 81.82% | Val Acc: 87.32%
+2026-01-13 14:04:54 [INFO] src.train: Ep 80: Train Acc: 83.82% | Val Acc: 87.98%
+2026-01-13 14:04:54 [INFO] src.train: Saved best model (83.8160%)
+2026-01-13 14:05:25 [INFO] src.train: Ep 81: Train Acc: 83.52% | Val Acc: 88.12%
+2026-01-13 14:05:55 [INFO] src.train: Ep 82: Train Acc: 81.25% | Val Acc: 88.71%
+2026-01-13 14:06:26 [INFO] src.train: Ep 83: Train Acc: 82.59% | Val Acc: 87.90%
+2026-01-13 14:06:57 [INFO] src.train: Ep 84: Train Acc: 83.12% | Val Acc: 87.76%
+2026-01-13 14:07:27 [INFO] src.train: Ep 85: Train Acc: 82.18% | Val Acc: 85.34%
+2026-01-13 14:07:58 [INFO] src.train: Ep 86: Train Acc: 82.84% | Val Acc: 88.27%
+2026-01-13 14:08:28 [INFO] src.train: Ep 87: Train Acc: 83.80% | Val Acc: 88.56%
+2026-01-13 14:08:59 [INFO] src.train: Ep 88: Train Acc: 83.50% | Val Acc: 88.71%
+2026-01-13 14:09:30 [INFO] src.train: Ep 89: Train Acc: 83.61% | Val Acc: 88.12%
+2026-01-13 14:10:00 [INFO] src.train: Ep 90: Train Acc: 83.12% | Val Acc: 87.76%
+2026-01-13 14:10:31 [INFO] src.train: Ep 91: Train Acc: 83.19% | Val Acc: 88.49%
+2026-01-13 14:11:01 [INFO] src.train: Ep 92: Train Acc: 84.09% | Val Acc: 88.34%
+2026-01-13 14:11:01 [INFO] src.train: Saved best model (84.0909%)
+2026-01-13 14:11:31 [INFO] src.train: Ep 93: Train Acc: 84.53% | Val Acc: 89.15%
+2026-01-13 14:11:31 [INFO] src.train: Saved best model (84.5308%)
+2026-01-13 14:12:02 [INFO] src.train: Ep 94: Train Acc: 84.20% | Val Acc: 88.64%
+2026-01-13 14:12:32 [INFO] src.train: Ep 95: Train Acc: 84.44% | Val Acc: 88.93%
+2026-01-13 14:13:03 [INFO] src.train: Ep 96: Train Acc: 85.19% | Val Acc: 89.44%
+2026-01-13 14:13:03 [INFO] src.train: Saved best model (85.1906%)
+2026-01-13 14:13:34 [INFO] src.train: Ep 97: Train Acc: 85.36% | Val Acc: 89.66%
+2026-01-13 14:13:34 [INFO] src.train: Saved best model (85.3556%)
+2026-01-13 14:14:04 [INFO] src.train: Ep 98: Train Acc: 85.61% | Val Acc: 89.59%
+2026-01-13 14:14:04 [INFO] src.train: Saved best model (85.6122%)
+2026-01-13 14:14:35 [INFO] src.train: Ep 99: Train Acc: 84.92% | Val Acc: 89.37%
+2026-01-13 14:15:05 [INFO] src.train: Ep 100: Train Acc: 86.03% | Val Acc: 89.37%
+2026-01-13 14:15:05 [INFO] src.train: Saved best model (86.0337%)
+2026-01-13 14:15:36 [INFO] src.train: Ep 101: Train Acc: 86.31% | Val Acc: 90.18%
+2026-01-13 14:15:36 [INFO] src.train: Saved best model (86.3087%)
+2026-01-13 14:16:06 [INFO] src.train: Ep 102: Train Acc: 86.03% | Val Acc: 89.08%
+2026-01-13 14:16:37 [INFO] src.train: Ep 103: Train Acc: 85.81% | Val Acc: 90.40%
+2026-01-13 14:17:07 [INFO] src.train: Ep 104: Train Acc: 85.67% | Val Acc: 89.22%
+2026-01-13 14:17:38 [INFO] src.train: Ep 105: Train Acc: 87.23% | Val Acc: 89.74%
+2026-01-13 14:17:38 [INFO] src.train: Saved best model (87.2251%)
+2026-01-13 14:18:08 [INFO] src.train: Ep 106: Train Acc: 86.55% | Val Acc: 89.22%
+2026-01-13 14:18:38 [INFO] src.train: Ep 107: Train Acc: 85.65% | Val Acc: 89.22%
+2026-01-13 14:19:09 [INFO] src.train: Ep 108: Train Acc: 85.34% | Val Acc: 90.03%
+2026-01-13 14:19:39 [INFO] src.train: Ep 109: Train Acc: 85.76% | Val Acc: 90.69%
+2026-01-13 14:20:10 [INFO] src.train: Ep 110: Train Acc: 86.82% | Val Acc: 89.81%
+2026-01-13 14:20:40 [INFO] src.train: Ep 111: Train Acc: 87.55% | Val Acc: 89.66%
+2026-01-13 14:20:40 [INFO] src.train: Saved best model (87.5550%)
+2026-01-13 14:21:11 [INFO] src.train: Ep 112: Train Acc: 86.09% | Val Acc: 89.00%
+2026-01-13 14:21:41 [INFO] src.train: Ep 113: Train Acc: 86.62% | Val Acc: 90.32%
+2026-01-13 14:22:11 [INFO] src.train: Ep 114: Train Acc: 87.54% | Val Acc: 89.66%
+2026-01-13 14:22:42 [INFO] src.train: Ep 115: Train Acc: 86.53% | Val Acc: 91.06%
+2026-01-13 14:23:12 [INFO] src.train: Ep 116: Train Acc: 86.84% | Val Acc: 89.88%
+2026-01-13 14:23:42 [INFO] src.train: Ep 117: Train Acc: 87.61% | Val Acc: 90.62%
+2026-01-13 14:23:42 [INFO] src.train: Saved best model (87.6100%)
+2026-01-13 14:24:13 [INFO] src.train: Ep 118: Train Acc: 86.90% | Val Acc: 89.88%
+2026-01-13 14:24:43 [INFO] src.train: Ep 119: Train Acc: 87.17% | Val Acc: 90.91%
+2026-01-13 14:25:14 [INFO] src.train: Ep 120: Train Acc: 87.50% | Val Acc: 89.44%
+2026-01-13 14:25:44 [INFO] src.train: Ep 121: Train Acc: 88.51% | Val Acc: 89.88%
+2026-01-13 14:25:44 [INFO] src.train: Saved best model (88.5081%)
+2026-01-13 14:26:15 [INFO] src.train: Ep 122: Train Acc: 87.41% | Val Acc: 89.96%
+2026-01-13 14:26:45 [INFO] src.train: Ep 123: Train Acc: 88.56% | Val Acc: 89.52%
+2026-01-13 14:26:45 [INFO] src.train: Saved best model (88.5630%)
+2026-01-13 14:27:16 [INFO] src.train: Ep 124: Train Acc: 87.76% | Val Acc: 90.10%
+2026-01-13 14:27:46 [INFO] src.train: Ep 125: Train Acc: 88.18% | Val Acc: 89.88%
+2026-01-13 14:28:17 [INFO] src.train: Ep 126: Train Acc: 86.77% | Val Acc: 90.40%
+2026-01-13 14:28:48 [INFO] src.train: Ep 127: Train Acc: 87.94% | Val Acc: 90.54%
+2026-01-13 14:29:18 [INFO] src.train: Ep 128: Train Acc: 87.35% | Val Acc: 90.25%
+2026-01-13 14:29:49 [INFO] src.train: Ep 129: Train Acc: 87.41% | Val Acc: 89.52%
+2026-01-13 14:30:19 [INFO] src.train: Ep 130: Train Acc: 87.83% | Val Acc: 91.20%
+2026-01-13 14:30:49 [INFO] src.train: Ep 131: Train Acc: 87.88% | Val Acc: 90.18%
+2026-01-13 14:31:20 [INFO] src.train: Ep 132: Train Acc: 88.91% | Val Acc: 90.10%
+2026-01-13 14:31:20 [INFO] src.train: Saved best model (88.9113%)
+2026-01-13 14:31:50 [INFO] src.train: Ep 133: Train Acc: 88.14% | Val Acc: 90.10%
+2026-01-13 14:32:21 [INFO] src.train: Ep 134: Train Acc: 88.95% | Val Acc: 90.91%
+2026-01-13 14:32:21 [INFO] src.train: Saved best model (88.9479%)
+2026-01-13 14:32:51 [INFO] src.train: Ep 135: Train Acc: 88.60% | Val Acc: 90.98%
+2026-01-13 14:33:22 [INFO] src.train: Ep 136: Train Acc: 88.73% | Val Acc: 90.91%
+2026-01-13 14:33:52 [INFO] src.train: Ep 137: Train Acc: 88.95% | Val Acc: 90.76%
+2026-01-13 14:34:22 [INFO] src.train: Ep 138: Train Acc: 88.76% | Val Acc: 90.76%
+2026-01-13 14:34:53 [INFO] src.train: Ep 139: Train Acc: 88.32% | Val Acc: 89.81%
+2026-01-13 14:35:23 [INFO] src.train: Ep 140: Train Acc: 89.53% | Val Acc: 90.54%
+2026-01-13 14:35:24 [INFO] src.train: Saved best model (89.5345%)
+2026-01-13 14:35:54 [INFO] src.train: Ep 141: Train Acc: 89.09% | Val Acc: 90.10%
+2026-01-13 14:36:25 [INFO] src.train: Ep 142: Train Acc: 89.15% | Val Acc: 90.69%
+2026-01-13 14:36:56 [INFO] src.train: Ep 143: Train Acc: 88.20% | Val Acc: 91.06%
+2026-01-13 14:37:26 [INFO] src.train: Ep 144: Train Acc: 88.45% | Val Acc: 90.62%
+2026-01-13 14:37:57 [INFO] src.train: Ep 145: Train Acc: 89.06% | Val Acc: 90.98%
+2026-01-13 14:38:27 [INFO] src.train: Ep 146: Train Acc: 88.69% | Val Acc: 90.62%
+2026-01-13 14:38:58 [INFO] src.train: Ep 147: Train Acc: 89.77% | Val Acc: 90.40%
+2026-01-13 14:38:58 [INFO] src.train: Saved best model (89.7727%)
+2026-01-13 14:39:28 [INFO] src.train: Ep 148: Train Acc: 88.86% | Val Acc: 90.84%
+2026-01-13 14:39:59 [INFO] src.train: Ep 149: Train Acc: 89.06% | Val Acc: 91.13%
+2026-01-13 14:40:30 [INFO] src.train: Ep 150: Train Acc: 89.77% | Val Acc: 91.42%
+2026-01-13 14:41:00 [INFO] src.train: Ep 151: Train Acc: 88.86% | Val Acc: 90.69%
+2026-01-13 14:41:31 [INFO] src.train: Ep 152: Train Acc: 88.84% | Val Acc: 91.35%
+2026-01-13 14:42:01 [INFO] src.train: Ep 153: Train Acc: 89.70% | Val Acc: 90.47%
+2026-01-13 14:42:32 [INFO] src.train: Ep 154: Train Acc: 89.86% | Val Acc: 90.40%
+2026-01-13 14:42:32 [INFO] src.train: Saved best model (89.8644%)
+2026-01-13 14:43:02 [INFO] src.train: Ep 155: Train Acc: 89.74% | Val Acc: 90.98%
+2026-01-13 14:43:33 [INFO] src.train: Ep 156: Train Acc: 89.68% | Val Acc: 91.79%
+2026-01-13 14:44:04 [INFO] src.train: Ep 157: Train Acc: 89.53% | Val Acc: 90.10%
+2026-01-13 14:44:34 [INFO] src.train: Ep 158: Train Acc: 89.17% | Val Acc: 91.42%
+2026-01-13 14:45:05 [INFO] src.train: Ep 159: Train Acc: 89.81% | Val Acc: 91.20%
+2026-01-13 14:45:35 [INFO] src.train: Ep 160: Train Acc: 90.52% | Val Acc: 90.47%
+2026-01-13 14:45:35 [INFO] src.train: Saved best model (90.5242%)
+2026-01-13 14:46:06 [INFO] src.train: Ep 161: Train Acc: 89.20% | Val Acc: 91.57%
+2026-01-13 14:46:36 [INFO] src.train: Ep 162: Train Acc: 90.19% | Val Acc: 90.98%
+2026-01-13 14:47:07 [INFO] src.train: Ep 163: Train Acc: 88.86% | Val Acc: 91.35%
+2026-01-13 14:47:38 [INFO] src.train: Ep 164: Train Acc: 89.52% | Val Acc: 90.25%
+2026-01-13 14:48:08 [INFO] src.train: Ep 165: Train Acc: 90.63% | Val Acc: 91.35%
+2026-01-13 14:48:08 [INFO] src.train: Saved best model (90.6342%)
+2026-01-13 14:48:39 [INFO] src.train: Ep 166: Train Acc: 89.92% | Val Acc: 91.42%
+2026-01-13 14:49:10 [INFO] src.train: Ep 167: Train Acc: 90.56% | Val Acc: 91.13%
+2026-01-13 14:49:40 [INFO] src.train: Ep 168: Train Acc: 89.81% | Val Acc: 91.28%
+2026-01-13 14:50:11 [INFO] src.train: Ep 169: Train Acc: 90.38% | Val Acc: 91.06%
+2026-01-13 14:50:42 [INFO] src.train: Ep 170: Train Acc: 90.29% | Val Acc: 91.28%
+2026-01-13 14:51:12 [INFO] src.train: Ep 171: Train Acc: 90.76% | Val Acc: 91.28%
+2026-01-13 14:51:12 [INFO] src.train: Saved best model (90.7625%)
+2026-01-13 14:51:43 [INFO] src.train: Ep 172: Train Acc: 90.78% | Val Acc: 90.76%
+2026-01-13 14:51:43 [INFO] src.train: Saved best model (90.7808%)
+2026-01-13 14:52:13 [INFO] src.train: Ep 173: Train Acc: 90.65% | Val Acc: 90.54%
+2026-01-13 14:52:43 [INFO] src.train: Ep 174: Train Acc: 90.58% | Val Acc: 90.91%
+2026-01-13 14:53:14 [INFO] src.train: Ep 175: Train Acc: 90.60% | Val Acc: 91.42%
+2026-01-13 14:53:44 [INFO] src.train: Ep 176: Train Acc: 90.34% | Val Acc: 90.69%
+2026-01-13 14:54:14 [INFO] src.train: Ep 177: Train Acc: 90.73% | Val Acc: 91.79%
+2026-01-13 14:54:44 [INFO] src.train: Ep 178: Train Acc: 91.13% | Val Acc: 91.20%
+2026-01-13 14:54:44 [INFO] src.train: Saved best model (91.1290%)
+2026-01-13 14:55:15 [INFO] src.train: Ep 179: Train Acc: 90.01% | Val Acc: 91.20%
+2026-01-13 14:55:45 [INFO] src.train: Ep 180: Train Acc: 90.54% | Val Acc: 91.64%
+2026-01-13 14:56:15 [INFO] src.train: Ep 181: Train Acc: 89.72% | Val Acc: 91.50%
+2026-01-13 14:56:46 [INFO] src.train: Ep 182: Train Acc: 90.73% | Val Acc: 91.50%
+2026-01-13 14:57:16 [INFO] src.train: Ep 183: Train Acc: 91.11% | Val Acc: 91.28%
+2026-01-13 14:57:47 [INFO] src.train: Ep 184: Train Acc: 90.23% | Val Acc: 90.76%
+2026-01-13 14:58:17 [INFO] src.train: Ep 185: Train Acc: 91.61% | Val Acc: 92.01%
+2026-01-13 14:58:17 [INFO] src.train: Saved best model (91.6056%)
+2026-01-13 14:58:48 [INFO] src.train: Ep 186: Train Acc: 90.36% | Val Acc: 91.20%
+2026-01-13 14:59:18 [INFO] src.train: Ep 187: Train Acc: 90.56% | Val Acc: 91.13%
+2026-01-13 14:59:49 [INFO] src.train: Ep 188: Train Acc: 91.28% | Val Acc: 90.54%
+2026-01-13 15:00:19 [INFO] src.train: Ep 189: Train Acc: 91.77% | Val Acc: 90.91%
+2026-01-13 15:00:19 [INFO] src.train: Saved best model (91.7705%)
+2026-01-13 15:00:49 [INFO] src.train: Ep 190: Train Acc: 90.52% | Val Acc: 90.76%
+2026-01-13 15:01:20 [INFO] src.train: Ep 191: Train Acc: 91.70% | Val Acc: 91.35%
+2026-01-13 15:01:50 [INFO] src.train: Ep 192: Train Acc: 90.43% | Val Acc: 90.18%
+2026-01-13 15:02:21 [INFO] src.train: Ep 193: Train Acc: 91.35% | Val Acc: 91.06%
+2026-01-13 15:02:51 [INFO] src.train: Ep 194: Train Acc: 91.07% | Val Acc: 91.35%
+2026-01-13 15:03:22 [INFO] src.train: Ep 195: Train Acc: 91.66% | Val Acc: 91.35%
+2026-01-13 15:03:53 [INFO] src.train: Ep 196: Train Acc: 90.85% | Val Acc: 91.64%
+2026-01-13 15:04:23 [INFO] src.train: Ep 197: Train Acc: 91.39% | Val Acc: 92.08%
+2026-01-13 15:04:54 [INFO] src.train: Ep 198: Train Acc: 91.17% | Val Acc: 90.76%
+2026-01-13 15:05:25 [INFO] src.train: Ep 199: Train Acc: 91.35% | Val Acc: 91.79%
+2026-01-13 15:05:56 [INFO] src.train: Ep 200: Train Acc: 91.55% | Val Acc: 91.06%
+2026-01-13 15:05:56 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-01-13 15:06:01 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-13 15:06:07 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.06% | Loss: 0.5779 | Total Time: 5.6846s | Latency: 4.1676 ms/img
+2026-01-13 15:06:07 [INFO] Experiment: Baseline -> Acc: 91.06%, Time: 5.6846s, Size: 6.07MB
+2026-01-13 15:06:07 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-01-13 15:06:07 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-13 15:06:10 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-13 15:06:16 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8 (Sample Size: 1364)
+2026-01-13 15:06:22 [INFO] src.evaluation.evaluate: Evaluation Result [Sym_INT8] - Acc: 91.06% | Loss: 0.5879 | Total Time: 5.5958s | Latency: 4.1025 ms/img
+2026-01-13 15:06:22 [INFO] Experiment: Ergebnis Sym_INT8: Acc=91.06% (Drop: 0.00)
+2026-01-13 15:06:22 [INFO] Experiment: Konvertiere Gewichte zu INT8 für Speicherung...
+2026-01-13 15:06:22 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-13 15:06:22 [INFO] Experiment: --- Starte Experiment: Sym_INT4 ---
+2026-01-13 15:06:22 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-13 15:06:25 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-13 15:06:30 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT4 (Sample Size: 1364)
+2026-01-13 15:06:36 [INFO] src.evaluation.evaluate: Evaluation Result [Sym_INT4] - Acc: 37.10% | Loss: 6.6003 | Total Time: 5.5452s | Latency: 4.0654 ms/img
+2026-01-13 15:06:36 [INFO] Experiment: Ergebnis Sym_INT4: Acc=37.10% (Drop: 53.96)
+2026-01-13 15:06:36 [INFO] Experiment: Konvertiere Gewichte zu INT4 für Speicherung...
+2026-01-13 15:06:36 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-13 15:06:36 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-01-13 15:06:36 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-13 15:06:39 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-13 15:06:45 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8 (Sample Size: 1364)
+2026-01-13 15:06:50 [INFO] src.evaluation.evaluate: Evaluation Result [Aff_INT8] - Acc: 90.98% | Loss: 0.5813 | Total Time: 5.5796s | Latency: 4.0906 ms/img
+2026-01-13 15:06:50 [INFO] Experiment: Ergebnis Aff_INT8: Acc=90.98% (Drop: 0.07)
+2026-01-13 15:06:50 [INFO] Experiment: Konvertiere Gewichte zu INT8 für Speicherung...
+2026-01-13 15:06:50 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-13 15:06:50 [INFO] Experiment: --- Starte Experiment: Aff_INT4 ---
+2026-01-13 15:06:50 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-13 15:06:53 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-13 15:06:59 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT4 (Sample Size: 1364)
+2026-01-13 15:07:05 [INFO] src.evaluation.evaluate: Evaluation Result [Aff_INT4] - Acc: 70.45% | Loss: 2.0178 | Total Time: 5.6662s | Latency: 4.1541 ms/img
+2026-01-13 15:07:05 [INFO] Experiment: Ergebnis Aff_INT4: Acc=70.45% (Drop: 20.60)
+2026-01-13 15:07:05 [INFO] Experiment: Konvertiere Gewichte zu INT4 für Speicherung...
+2026-01-13 15:07:05 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-13 15:07:05 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-01-13 15:07:05 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-13 15:07:08 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-13 15:07:13 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8 (Sample Size: 1364)
+2026-01-13 15:07:19 [INFO] src.evaluation.evaluate: Evaluation Result [Po2_INT8] - Acc: 91.06% | Loss: 0.5849 | Total Time: 5.5218s | Latency: 4.0482 ms/img
+2026-01-13 15:07:19 [INFO] Experiment: Ergebnis Po2_INT8: Acc=91.06% (Drop: 0.00)
+2026-01-13 15:07:19 [INFO] Experiment: Konvertiere Gewichte zu INT8 für Speicherung...
+2026-01-13 15:07:19 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-13 15:07:19 [INFO] Experiment: --- Starte Experiment: Po2_INT4 ---
+2026-01-13 15:07:19 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-01-13 15:07:22 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-01-13 15:07:28 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT4 (Sample Size: 1364)
+2026-01-13 15:07:33 [INFO] src.evaluation.evaluate: Evaluation Result [Po2_INT4] - Acc: 26.76% | Loss: 6.1846 | Total Time: 5.6351s | Latency: 4.1313 ms/img
+2026-01-13 15:07:33 [INFO] Experiment: Ergebnis Po2_INT4: Acc=26.76% (Drop: 64.30)
+2026-01-13 15:07:33 [INFO] Experiment: Konvertiere Gewichte zu INT4 für Speicherung...
+2026-01-13 15:07:33 [INFO] Experiment: Gespeicherte Modellgröße: 1.53 MB
+2026-01-13 15:07:33 [INFO] src.utility.utils: Daten gespeichert unter: /scratch/dominic/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-13 15:07:33 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
+2026-01-13 15:07:39 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline (Sample Size: 1364)
+2026-01-13 15:07:44 [INFO] src.evaluation.evaluate: Evaluation Result [Sensitivity Baseline] - Acc: 91.06% | Loss: 0.5779 | Total Time: 5.5383s | Latency: 4.0603 ms/img
+2026-01-13 15:07:50 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1 (Sample Size: 1364)
+2026-01-13 15:07:55 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: conv1] - Acc: 91.20% | Loss: 0.5799 | Total Time: 5.5941s | Latency: 4.1012 ms/img
+2026-01-13 15:07:55 [INFO] src.utility.utils: Layer conv1: Drop = -0.15%
+2026-01-13 15:08:01 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2 (Sample Size: 1364)
+2026-01-13 15:08:06 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: conv2] - Acc: 90.98% | Loss: 0.5787 | Total Time: 5.5688s | Latency: 4.0827 ms/img
+2026-01-13 15:08:06 [INFO] src.utility.utils: Layer conv2: Drop = 0.07%
+2026-01-13 15:08:12 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3 (Sample Size: 1364)
+2026-01-13 15:08:17 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: conv3] - Acc: 90.98% | Loss: 0.5781 | Total Time: 5.6038s | Latency: 4.1084 ms/img
+2026-01-13 15:08:17 [INFO] src.utility.utils: Layer conv3: Drop = 0.07%
+2026-01-13 15:08:23 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4 (Sample Size: 1364)
+2026-01-13 15:08:29 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: conv4] - Acc: 91.06% | Loss: 0.5781 | Total Time: 5.6012s | Latency: 4.1065 ms/img
+2026-01-13 15:08:29 [INFO] src.utility.utils: Layer conv4: Drop = 0.00%
+2026-01-13 15:08:34 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1 (Sample Size: 1364)
+2026-01-13 15:08:40 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: fc1] - Acc: 91.20% | Loss: 0.5774 | Total Time: 5.5684s | Latency: 4.0824 ms/img
+2026-01-13 15:08:40 [INFO] src.utility.utils: Layer fc1: Drop = -0.15%
+2026-01-13 15:08:45 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2 (Sample Size: 1364)
+2026-01-13 15:08:51 [INFO] src.evaluation.evaluate: Evaluation Result [Layer: fc2] - Acc: 91.06% | Loss: 0.5776 | Total Time: 5.6118s | Latency: 4.1142 ms/img
+2026-01-13 15:08:51 [INFO] src.utility.utils: Layer fc2: Drop = 0.00%
+2026-01-13 15:08:51 [INFO] src.utility.utils: Daten gespeichert unter: /scratch/dominic/Forschungsprojekt/results/csv/sensitivity_analysis.csv
+2026-01-13 15:08:51 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===

@@ -1,6 +1,8 @@
 import torch
-import os
 import copy
+import warnings
+from torch.ao.quantization import quantize_fx, QConfigMapping
+import os
 import sys
 import csv
 import logging
@@ -20,6 +22,7 @@ from src.utility.config import (
 )
 from src.layers import QuantizedLayerMixin
 from src.evaluation.evaluate import evaluate
+from src.utility.quantizer import Quantization
 
 logger = logging.getLogger(__name__)
 
@@ -222,3 +225,42 @@ def setup_global_logging():
             logging.StreamHandler(sys.stdout)
         ]
     )
+
+def apply_fx_quantization(model, data_loader, method="affine", num_batches=20):
+    """
+    Applies Post-Training Static Quantization using FX Graph Mode.
+    Optimized for x86 CPUs (Ryzen/Intel) on Windows/Linux.
+    """
+    print("Starting FX Graph Mode Quantization...")
+    
+    # Suppress specific PyTorch warnings regarding deprecation
+    warnings.filterwarnings("ignore", category=UserWarning)
+    
+    # 1. Setup: Deep copy and enforce CPU (required for quantization)
+    model_prep = copy.deepcopy(model)
+    model_prep.to('cpu')
+    model_prep.eval()
+
+    my_qconfig = Quantization.get_custom_qconfig(method)
+    
+    # 2. Config: Auto-select best config for x86 (handles OneDNN/FBGEMM)
+    qconfig_mapping = QConfigMapping().set_global(my_qconfig)
+    
+    # 3. Trace: Generate example input for graph tracing
+    example_input = (next(iter(data_loader))[0].to('cpu'), )
+    
+    # 4. Prepare: Insert observers into the graph
+    prepared_model = quantize_fx.prepare_fx(model_prep, qconfig_mapping, example_input)
+    
+    # 5. Calibrate: Pass batches to determine quantization ranges
+    print(f"Calibrating with {num_batches} batches...")
+    with torch.no_grad():
+        for i, (data, _) in enumerate(data_loader):
+            if i >= num_batches: break
+            prepared_model(data.to('cpu'))
+            
+    # 6. Convert: Transform graph to Int8
+    quantized_model = quantize_fx.convert_fx(prepared_model)
+    
+    print("Quantization complete.")
+    return quantized_model

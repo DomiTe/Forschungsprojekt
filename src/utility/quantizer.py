@@ -1,4 +1,11 @@
 import torch
+from torch.ao.quantization import (
+    QConfig, 
+    MinMaxObserver, 
+    PerChannelMinMaxObserver, 
+    HistogramObserver,
+    default_observer
+)
 import logging
 from typing import Tuple
 
@@ -130,3 +137,51 @@ class Quantization:
             scale = torch.tensor(1.0, device=tensor.device)
 
         return Quantization._core_quantization(tensor, scale, zero_point, q_min, q_max)
+    def get_custom_qconfig(method="affine"):
+        """
+        Erstellt eine QConfig basierend auf der gewünschten Methode.
+        """
+        if method == "affine":
+            # Standard x86 Setup: Asymmetrische Aktivierungen, Symmetrische Gewichte
+            # Gut für Genauigkeit (nutzt vollen Int8 Bereich für ReLU)
+            activation_observer = HistogramObserver.with_args(
+                dtype=torch.quint8, 
+                qscheme=torch.per_tensor_affine
+            )
+            weight_observer = PerChannelMinMaxObserver.with_args(
+                dtype=torch.qint8, 
+                qscheme=torch.per_channel_symmetric
+            )
+
+        elif method == "symmetric":
+            # Alles Symmetrisch: Zero Point ist immer 0
+            # Schneller auf mancher Hardware, aber verliert 1 Bit bei ReLU
+            activation_observer = MinMaxObserver.with_args(
+                dtype=torch.qint8,  # WICHTIG: qint8 (signed) statt quint8 bei symmetrisch
+                qscheme=torch.per_tensor_symmetric
+            )
+            weight_observer = PerChannelMinMaxObserver.with_args(
+                dtype=torch.qint8, 
+                qscheme=torch.per_channel_symmetric
+            )
+            
+        elif method == "powerof2":
+            # Power-of-2 Simulation (PyTorch hat keinen nativen Po2-Only Kernel für CPUs)
+            # Wir nutzen Symmetrisch als Basis, da Po2 eine Untermenge davon ist.
+            # Für echte Po2 müsste man einen Custom Observer schreiben, der Scales rundet.
+            # Für Latenz-Tests ist das hier äquivalent zu "symmetric".
+            print("Warnung: Po2 läuft auf CPUs via Standard-Int8 Instruktionen (wie Symmetric).")
+            activation_observer = MinMaxObserver.with_args(
+                dtype=torch.qint8,
+                qscheme=torch.per_tensor_symmetric
+            )
+            weight_observer = PerChannelMinMaxObserver.with_args(
+                dtype=torch.qint8,
+                qscheme=torch.per_channel_symmetric
+            )
+        
+        else:
+            raise ValueError(f"Unbekannte Methode: {method}")
+
+        return QConfig(activation=activation_observer, weight=weight_observer)
+    

@@ -28,6 +28,7 @@ dependencies = [
     "tensorboard>=2.20.0",
     "scikit-learn>=1.8.0",
     "torchsummary>=1.5.1",
+    "torchao>=0.15.0",
 ]
 [tool.uv]
 index = [

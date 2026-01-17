@@ -1,10 +1,22 @@
 import torch
+import warnings
+import copy
 from torch.ao.quantization import (
+    quantize_fx, 
+    QConfigMapping, 
     QConfig, 
     MinMaxObserver, 
-    PerChannelMinMaxObserver, 
+    PerChannelMinMaxObserver,
     HistogramObserver,
-    default_observer
+)
+
+from torch.ao.quantization.backend_config import get_fbgemm_backend_config
+
+from torchao.quantization import (
+    quantize_,
+    int8_weight_only,
+    int8_dynamic_activation_int8_weight,
+    autoquant
 )
 import logging
 from typing import Tuple
@@ -137,6 +149,8 @@ class Quantization:
             scale = torch.tensor(1.0, device=tensor.device)
 
         return Quantization._core_quantization(tensor, scale, zero_point, q_min, q_max)
+    
+    @staticmethod
     def get_custom_qconfig(method="affine"):
         """
         Erstellt eine QConfig basierend auf der gewünschten Methode.
@@ -184,4 +198,114 @@ class Quantization:
             raise ValueError(f"Unbekannte Methode: {method}")
 
         return QConfig(activation=activation_observer, weight=weight_observer)
+    
+    @staticmethod
+    def apply_fx_quantization(model, data_loader, method="affine", num_batches=30):
+        print(f"Starte FX Graph Mode Quantization (Methode: {method})...")
+        warnings.filterwarnings("ignore", category=UserWarning)
+        
+        # 1. Vorbereitung
+        model_prep = copy.deepcopy(model)
+        model_prep.to('cpu')
+        model_prep.eval()
+
+        # 2. Config definieren
+        if method == "affine":
+            qconfig = torch.ao.quantization.get_default_qconfig('x86')
+        elif method == "symmetric":
+            qconfig = QConfig(
+                activation=MinMaxObserver.with_args(
+                    dtype=torch.qint8, 
+                    qscheme=torch.per_tensor_symmetric,
+                    reduce_range=False
+                ),
+                weight=PerChannelMinMaxObserver.with_args(
+                    dtype=torch.qint8, 
+                    qscheme=torch.per_channel_symmetric
+                )
+            )
+        else:
+            raise ValueError(f"Unbekannte FX Methode: {method}")
+
+        qconfig_mapping = QConfigMapping().set_global(qconfig)
+        
+        # 3. Tracing Input
+        example_input = (next(iter(data_loader))[0].to('cpu'), )
+        
+        # --- FIX: Backend Config Objekt holen ---
+        # Strings ('x86') funktionieren in neueren PyTorch Versionen hier nicht mehr
+        backend_config = get_fbgemm_backend_config()
+        
+        # 4. Prepare
+        try:
+            prepared_model = quantize_fx.prepare_fx(
+                model_prep, 
+                qconfig_mapping, 
+                example_inputs=example_input,
+                backend_config=backend_config # <-- Objekt statt String übergeben
+            )
+        except Exception as e:
+            print(f"KRITISCHER FEHLER bei prepare_fx: {e}")
+            raise e # Fehler werfen, nicht verschlucken!
+        
+        # 5. Calibrate
+        print(f"Kalibriere mit {num_batches} Batches...")
+        with torch.no_grad():
+            for i, (data, _) in enumerate(data_loader):
+                if i >= num_batches: break
+                data = data.to('cpu')
+                prepared_model(data)
+                
+        # 6. Convert
+        print("Konvertiere Modell (Layer Fusion)...")
+        try:
+            quantized_model = quantize_fx.convert_fx(
+                prepared_model,
+                backend_config=backend_config # <-- Auch hier das Objekt nutzen
+            )
+        except Exception as e:
+            print(f"KRITISCHER FEHLER bei convert_fx: {e}")
+            raise e
+
+        print("FX Quantisierung abgeschlossen.")
+        return quantized_model
+    
+    @staticmethod
+    def apply_torchao_quantization(model, method="dynamic", dummy_input=None):
+        print(f"--- TorchAO: Wende '{method}' Quantisierung an ---")
+        
+        # 1. Methode anwenden
+        if method == "dynamic":
+            quantize_(model, int8_dynamic_activation_int8_weight())
+            
+        elif method == "weight_only":
+            quantize_(model, int8_weight_only())
+            
+        elif method == "auto":
+            # Hier ist der kritische Teil!
+            model = autoquant(model)
+            
+            if dummy_input is None:
+                raise ValueError("Für 'auto' Methode muss ein dummy_input übergeben werden!")
+                
+            print("Starte AutoQuant Analyse (Eager Mode)...")
+            # WICHTIG: Einmal ohne Compile laufen lassen, damit AutoQuant sich entscheidet
+            with torch.no_grad():
+                model(dummy_input)
+            print("AutoQuant hat die beste Strategie gewählt.")
+            
+        else:
+            # Fallback für alte Configs
+            if "int4" in method:
+                print("Wechsle zu Int8 Weight Only (Int4 braucht GPU-Libs).")
+                quantize_(model, int8_weight_only())
+            else:
+                raise ValueError(f"Unbekannte Methode: {method}")
+
+        # 2. KOMPILIEREN
+        print("Kompiliere mit torch.compile (Backend='inductor')...")
+        # 'max-autotune' ist auf CachyOS der Turbo
+        compiled_model = torch.compile(model, mode="max-autotune", backend="inductor")
+        
+        return compiled_model
     

@@ -164,7 +164,7 @@ class Quantization:
             )
             weight_observer = PerChannelMinMaxObserver.with_args(
                 dtype=torch.qint8, 
-                qscheme=torch.per_channel_symmetric
+                qscheme=torch.per_channel_affine
             )
 
         elif method == "symmetric":
@@ -200,7 +200,7 @@ class Quantization:
         return QConfig(activation=activation_observer, weight=weight_observer)
     
     @staticmethod
-    def apply_fx_quantization(model, data_loader, method="affine", num_batches=30):
+    def apply_fx_quantization(model, data_loader, method, num_batches=30):
         print(f"Starte FX Graph Mode Quantization (Methode: {method})...")
         warnings.filterwarnings("ignore", category=UserWarning)
         
@@ -211,8 +211,10 @@ class Quantization:
 
         # 2. Config definieren
         if method == "affine":
-            qconfig = torch.ao.quantization.get_default_qconfig('x86')
+            # qconfig = torch.ao.quantization.get_default_qconfig('fbgemm')
+            qconfig = Quantization.get_custom_qconfig(method="affine")
         elif method == "symmetric":
+            # qconfig = Quantization.get_custom_qconfig(method="symmetric")
             qconfig = QConfig(
                 activation=MinMaxObserver.with_args(
                     dtype=torch.qint8, 
@@ -253,7 +255,7 @@ class Quantization:
         with torch.no_grad():
             for i, (data, _) in enumerate(data_loader):
                 if i >= num_batches: break
-                data = data.to('cpu')
+                data = data.to('cpu').to(memory_format=torch.channels_last)
                 prepared_model(data)
                 
         # 6. Convert

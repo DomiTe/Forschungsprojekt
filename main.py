@@ -106,7 +106,7 @@ def run_experiment():
             "drop_percentage": drop
         })
         
-        save_path = os.path.join(QUANTIZED_MODELS, f"model_{conf['name']}.pt")
+        save_path = os.path.join(QUANTIZED_MODELS, f"fake_model_{conf['name']}.pt")
         torch.save(model_quant.state_dict(), save_path)
 
     # 6. Ergebnisse speichern (Funktion kommt jetzt aus utils)

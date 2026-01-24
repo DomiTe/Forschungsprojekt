@@ -15,6 +15,13 @@ from torch.ao.quantization import (
 from src.model import CNN
 from src.train import train_model
 from src.evaluation.evaluate import evaluate
+from src.custom_observer import (
+    SeminarAffineObserver,
+    SeminarSymmetricActivationObserver,
+    SeminarSymmetricWeightObserver,
+    SeminarPoTActivationObserver,
+    SeminarPoTWeightObserver
+)
 from src.utility.quantization_calibration import calibrate_model
 from src.utility.utils import (
     get_data_loaders, 
@@ -98,71 +105,136 @@ def fuse_layers(model):
         logger.warning("No layers fused. Check layer names in 'fuse_layers' function.")
 
     return model
-def get_pot_qconfig():
+
+
+
+def get_seminar_affine_qconfig():
     """
-    Returns QConfig for Power of Two (PoT) Quantization.
-    Uses custom observers to enforce 2^k scaling.
+    Configuration using the exact Affine formulas from the script.
     """
     return QConfig(
-        # ACTIVATIONS:
-        # Use our custom PoT class.
-        # qscheme=symmetric is required because PoT implies ZP=0.
-        activation=PowerOfTwoObserver.with_args(
-            qscheme=torch.per_tensor_symmetric,
-            dtype=torch.quint8
+        activation=SeminarAffineObserver.with_args(
+            dtype=torch.quint8,  # Activations usually 0-255
+            quant_min=0,
+            quant_max=255,
+            reduce_range=False
         ),
-        
-        # WEIGHTS:
-        # Use our custom Per-Channel PoT class.
-        # reduce_range=True is still needed for FBGEMM backend safety.
-        weight=PowerOfTwoWeightObserver.with_args(
-            qscheme=torch.per_channel_symmetric,
-            dtype=torch.qint8,
-            reduce_range=True
+        weight=SeminarAffineObserver.with_args(
+            dtype=torch.qint8,   # Weights -128 to 127
+            quant_min=-128,
+            quant_max=127,
+            reduce_range=False
         )
     )
 
-def get_symmetric_qconfig():
-    """
-    Returns QConfig for Symmetric Quantization (Manual/Eager Mode).
-    """
-    return QConfig(
-        # ACTIVATIONS:
-        # qint8 is signed [-128, 127]. 
-        # Symmetric means the range is centered at 0 (zero_point=0).
-        activation=HistogramObserver.with_args(
-            qscheme=torch.per_tensor_symmetric,
-            dtype=torch.quint8
+def get_seminar_symmetric_qconfig():
+    return torch.ao.quantization.QConfig(
+        # ACTIVATIONS -> Use Per-Tensor Class
+        activation=SeminarSymmetricActivationObserver.with_args(
+            dtype=torch.quint8, 
+            quant_min=0, 
+            quant_max=255, 
+            reduce_range=False,
+            qscheme=torch.per_tensor_symmetric # Fits MinMaxObserver
         ),
         
-        # WEIGHTS:
-        # reduce_range=True is MANDATORY for standard x86 CPUs (FBGEMM backend).
-        # It restricts weights to 7-bit to prevent overflow.
-        weight=PerChannelMinMaxObserver.with_args(
-            qscheme=torch.per_channel_symmetric,
-            dtype=torch.qint8,
-            reduce_range=True 
+        # WEIGHTS -> Use Per-Channel Class
+        weight=SeminarSymmetricWeightObserver.with_args(
+            dtype=torch.qint8, 
+            quant_min=-127, 
+            quant_max=127, 
+            reduce_range=False,
+            qscheme=torch.per_channel_symmetric, # Fits PerChannelMinMaxObserver
+            ch_axis=0
         )
     )
 
-def get_affine_qconfig():
-    """
-    Returns QConfig for Affine (Asymmetric) Quantization.
-    Activations: HistogramObserver (reduces outlier impact).
-    Weights: PerChannelMinMaxObserver (standard for CNNs).
-    Ref: https://pytorch.org/docs/stable/generated/torch.ao.quantization.qconfig.QConfig.html
-    """
-    return QConfig(
-        activation=HistogramObserver.with_args(
-            qscheme=torch.per_tensor_affine, 
-            dtype=torch.quint8
+def get_seminar_pot_qconfig():
+    return torch.ao.quantization.QConfig(
+        # ACTIVATIONS -> Use Per-Tensor PoT Class
+        activation=SeminarPoTActivationObserver.with_args(
+            dtype=torch.quint8,
+            quant_min=0,
+            quant_max=255,
+            reduce_range=False,
+            qscheme=torch.per_tensor_symmetric
         ),
-        weight=PerChannelMinMaxObserver.with_args(
-            qscheme=torch.per_channel_affine, 
+        
+        # WEIGHTS -> Use Per-Channel PoT Class
+        weight=SeminarPoTWeightObserver.with_args(
             dtype=torch.qint8,
-            reduce_range=True
+            quant_min=-127,
+            quant_max=127,
+            reduce_range=False,
+            qscheme=torch.per_channel_symmetric,
+            ch_axis=0
         )
     )
+# def get_pot_qconfig():
+#     """
+#     Returns QConfig for Power of Two (PoT) Quantization.
+#     Uses custom observers to enforce 2^k scaling.
+#     """
+#     return QConfig(
+#         # ACTIVATIONS:
+#         # Use our custom PoT class.
+#         # qscheme=symmetric is required because PoT implies ZP=0.
+#         activation=PowerOfTwoObserver.with_args(
+#             qscheme=torch.per_tensor_symmetric,
+#             dtype=torch.quint8
+#         ),
+        
+#         # WEIGHTS:
+#         # Use our custom Per-Channel PoT class.
+#         # reduce_range=True is still needed for FBGEMM backend safety.
+#         weight=PowerOfTwoWeightObserver.with_args(
+#             qscheme=torch.per_channel_symmetric,
+#             dtype=torch.qint8,
+#             reduce_range=True
+#         )
+#     )
+#
+# def get_symmetric_qconfig():
+#     """
+#     Returns QConfig for Symmetric Quantization (Manual/Eager Mode).
+#     """
+#     return QConfig(
+#         # ACTIVATIONS:
+#         # qint8 is signed [-128, 127]. 
+#         # Symmetric means the range is centered at 0 (zero_point=0).
+#         activation=HistogramObserver.with_args(
+#             qscheme=torch.per_tensor_symmetric,
+#             dtype=torch.quint8
+#         ),
+        
+#         # WEIGHTS:
+#         # reduce_range=True is MANDATORY for standard x86 CPUs (FBGEMM backend).
+#         # It restricts weights to 7-bit to prevent overflow.
+#         weight=PerChannelMinMaxObserver.with_args(
+#             qscheme=torch.per_channel_symmetric,
+#             dtype=torch.qint8,
+#             reduce_range=True 
+#         )
+#     )
+
+# def get_affine_qconfig():
+#     """
+#     Returns QConfig for Affine (Asymmetric) Quantization.
+#     Activations: HistogramObserver (reduces outlier impact).
+#     Weights: PerChannelMinMaxObserver (standard for CNNs).
+#     Ref: https://pytorch.org/docs/stable/generated/torch.ao.quantization.qconfig.QConfig.html
+#     """
+#     return QConfig(
+#         activation=HistogramObserver.with_args(
+#             qscheme=torch.per_tensor_affine, 
+#             dtype=torch.quint8
+#         ),
+#         weight=PerChannelMinMaxObserver.with_args(
+#             qscheme=torch.per_channel_affine, 
+#             dtype=torch.qint8,
+#             reduce_range=True
+#         )
+#     )
 
 def run_experiment():
     # Filter out the specific deprecation warnings from PyTorch Quantization
@@ -216,7 +288,7 @@ def run_experiment():
     model_affine = fuse_layers(model_affine)
 
     # Step C: Attach Configuration (Affine)
-    model_affine.qconfig = get_affine_qconfig()
+    model_affine.qconfig = get_seminar_affine_qconfig()
     
     # Step D: Prepare
     # Inserts observers into the model layers
@@ -277,7 +349,7 @@ def run_experiment():
 
     # Step C: Attach Configuration
     # We assign the config directly to the model
-    model_sym.qconfig = get_symmetric_qconfig()
+    model_sym.qconfig = get_seminar_symmetric_qconfig()
 
     # Step D: Prepare
     # This inserts the Observers into the model layers
@@ -330,7 +402,7 @@ def run_experiment():
     model_pot = fuse_layers(model_pot)
 
     # Step C: Attach PoT Config
-    model_pot.qconfig = get_pot_qconfig()
+    model_pot.qconfig = get_seminar_pot_qconfig()
 
     # Step D: Prepare
     # Uses our custom Observers to record min/max

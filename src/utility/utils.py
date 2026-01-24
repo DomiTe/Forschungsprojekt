@@ -18,7 +18,7 @@ from src.utility.config import (
     DATASET_NAME,
     DEVICE
 )
-from src.layers import QuantizedLayerMixin
+#from src.layers import QuantizedLayerMixin
 from src.evaluation.evaluate import evaluate
 
 logger = logging.getLogger(__name__)
@@ -163,52 +163,52 @@ def save_csv(results, filename, fieldnames):
             writer.writerow(row)
     logger.info(f"Daten gespeichert unter: {filepath}")
 
-def run_sensitivity_analysis(base_model, test_loader, method='symmetric', bits=8):
-    """
-    Untersucht Layer-weise Empfindlichkeit:
-    Quantisiert immer nur EINEN Layer, lässt alle anderen auf Float.
-    """
-    logger.info(f"--- Starte Sensitivitätsanalyse (Method: {method}, Bits: {bits}) ---")
-    results = []
+# def run_sensitivity_analysis(base_model, test_loader, method='symmetric', bits=8):
+#     """
+#     Untersucht Layer-weise Empfindlichkeit:
+#     Quantisiert immer nur EINEN Layer, lässt alle anderen auf Float.
+#     """
+#     logger.info(f"--- Starte Sensitivitätsanalyse (Method: {method}, Bits: {bits}) ---")
+#     results = []
     
-    # Wir brauchen eine saubere Kopie
-    model = copy.deepcopy(base_model)
-    model.eval()
-    model.to(DEVICE)
+#     # Wir brauchen eine saubere Kopie
+#     model = copy.deepcopy(base_model)
+#     model.eval()
+#     model.to(DEVICE)
     
-    # 1. Alle Module finden, die wir quantisieren können
-    quantizable_modules = []
-    for name, module in model.named_modules():
-        if isinstance(module, QuantizedLayerMixin):
-            quantizable_modules.append((name, module))
+#     # 1. Alle Module finden, die wir quantisieren können
+#     quantizable_modules = []
+#     for name, module in model.named_modules():
+#         if isinstance(module, QuantizedLayerMixin):
+#             quantizable_modules.append((name, module))
             
-    # 2. Baseline Accuracy messen (sollte der Float-Accuracy entsprechen)
-    # Sicherstellen, dass alles auf Float steht
-    model.convert_to_baseline()
-    base_acc, _ = evaluate(model, test_loader, "Sensitivity Baseline")
+#     # 2. Baseline Accuracy messen (sollte der Float-Accuracy entsprechen)
+#     # Sicherstellen, dass alles auf Float steht
+#     model.convert_to_baseline()
+#     base_acc, _ = evaluate(model, test_loader, "Sensitivity Baseline")
 
-    # 3. Schleife durch alle Layer
-    for name, module in quantizable_modules:
-        # Nur diesen einen Layer quantisieren
-        module.prepare_quantization(method=method, bits=bits)
+#     # 3. Schleife durch alle Layer
+#     for name, module in quantizable_modules:
+#         # Nur diesen einen Layer quantisieren
+#         module.prepare_quantization(method=method, bits=bits)
         
-        # Evaluieren
-        acc, _ = evaluate(model, test_loader, f"Layer: {name}")
-        drop = base_acc - acc
+#         # Evaluieren
+#         acc, _ = evaluate(model, test_loader, f"Layer: {name}")
+#         drop = base_acc - acc
         
-        results.append({
-            "layer_name": name,
-            "accuracy": acc,
-            "drop": drop
-        })
+#         results.append({
+#             "layer_name": name,
+#             "accuracy": acc,
+#             "drop": drop
+#         })
         
-        logger.info(f"Layer {name}: Drop = {drop:.2f}%")
+#         logger.info(f"Layer {name}: Drop = {drop:.2f}%")
         
-        # WICHTIG: Layer wieder auf Float zurücksetzen für den nächsten Durchlauf
-        module.disable_quantization()
+#         # WICHTIG: Layer wieder auf Float zurücksetzen für den nächsten Durchlauf
+#         module.disable_quantization()
         
-    save_csv(results, "sensitivity_analysis.csv", ["layer_name", "accuracy", "drop"])
-    return results
+#     save_csv(results, "sensitivity_analysis.csv", ["layer_name", "accuracy", "drop"])
+#     return results
 
 def setup_global_logging():
     log_filename = os.path.join(LOG_DIR, "experiment_log.txt")

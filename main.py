@@ -109,7 +109,7 @@ def get_pot_qconfig():
         # qscheme=symmetric is required because PoT implies ZP=0.
         activation=PowerOfTwoObserver.with_args(
             qscheme=torch.per_tensor_symmetric,
-            dtype=torch.qint8
+            dtype=torch.quint8
         ),
         
         # WEIGHTS:
@@ -132,7 +132,7 @@ def get_symmetric_qconfig():
         # Symmetric means the range is centered at 0 (zero_point=0).
         activation=HistogramObserver.with_args(
             qscheme=torch.per_tensor_symmetric,
-            dtype=torch.qint8
+            dtype=torch.quint8
         ),
         
         # WEIGHTS:
@@ -159,17 +159,19 @@ def get_affine_qconfig():
         ),
         weight=PerChannelMinMaxObserver.with_args(
             qscheme=torch.per_channel_affine, 
-            dtype=torch.qint8
+            dtype=torch.qint8,
+            reduce_range=True
         )
     )
 
 def run_experiment():
     # Filter out the specific deprecation warnings from PyTorch Quantization
-    warnings.filterwarnings("ignore", category=FutureWarning, module="torch.ao.quantization")
     warnings.filterwarnings("ignore", category=UserWarning, module="torch.ao.quantization")
+    warnings.filterwarnings("ignore", category=FutureWarning, module="torch.ao.quantization")
     # 1. Load Data
     logger.info("Loading datasets...")
     train_loader, test_loader, num_classes = get_data_loaders()
+    torch.backends.quantized.engine = 'fbgemm' # or fbgemm, QNnpack
 
     # 2. Baseline Model Management
     baseline_path = BASELINE_MODEL_PATH
@@ -186,7 +188,7 @@ def run_experiment():
     # 3. Evaluate Baseline
     logger.info("Evaluating Baseline (Float32)...")
     model.eval()
-    acc_base, time_base = evaluate(model, test_loader, "Baseline Float32")
+    acc_base, time_base = evaluate(model, test_loader, "Baseline Float32",device=torch.device('cpu'))
     size_base = get_model_size(model)
     logger.info(f"Baseline -> Acc: {acc_base:.2f}%, Time: {time_base:.4f}s, Size: {size_base:.2f}MB")
 
@@ -233,7 +235,7 @@ def run_experiment():
     torch.ao.quantization.convert(model_affine, inplace=True)
 
     # 5. Evaluate Quantized Model
-    acc, time_inf = evaluate(model_affine, test_loader, experiment_name, device='cpu')
+    acc, time_inf = evaluate(model_affine, test_loader, experiment_name, device=torch.device('cpu'))
     drop = acc_base - acc
     
     logger.info(f"Result {experiment_name}: Acc={acc:.2f}% (Drop: {drop:.2f})")
@@ -284,7 +286,7 @@ def run_experiment():
 
     # Step E: Calibrate
     logger.info("Calibrating Symmetric model...")
-    calibrate_model(model_sym, train_loader, num_batches=10, device="cpu")
+    calibrate_model(model_sym, train_loader, num_batches=10, device=torch.device('cpu'))
 
     # Step F: Convert
     # Freezes statistics and swaps float layers for int8 layers
@@ -292,7 +294,7 @@ def run_experiment():
     torch.ao.quantization.convert(model_sym, inplace=True)
 
     # Step G: Evaluate
-    acc, time_inf = evaluate(model_sym, test_loader, experiment_name, device="cpu")
+    acc, time_inf = evaluate(model_sym, test_loader, experiment_name, device=torch.device('cpu'))
     drop = acc_base - acc
     
     logger.info(f"Result {experiment_name}: Acc={acc:.2f}% (Drop: {drop:.2f})")
@@ -344,7 +346,7 @@ def run_experiment():
     torch.ao.quantization.convert(model_pot, inplace=True)
 
     # Step G: Evaluate
-    acc, time_inf = evaluate(model_pot, test_loader, experiment_name, device="cpu")
+    acc, time_inf = evaluate(model_pot, test_loader, experiment_name, device=torch.device('cpu'))
     drop = acc_base - acc
     
     logger.info(f"Result {experiment_name}: Acc={acc:.2f}% (Drop: {drop:.2f})")

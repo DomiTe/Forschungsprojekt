@@ -11,7 +11,7 @@ class CNN(nn.Module):
         
         self.quant = QuantStub()
 
-        self.conv1 = nn.conv2d(CHANNELS, 32, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
+        self.conv1 = nn.Conv2d(CHANNELS, 32, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
         self.relu1 = nn.ReLU()
         self.conv2 = nn.Conv2d(32, 64, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1)
         self.relu2 = nn.ReLU()
@@ -32,20 +32,20 @@ class CNN(nn.Module):
 
     def forward(self, x):
 
-        x = self.quant()
+        x = self.quant(x)
 
-        x = F.relu1(self.conv1(x))
-        x = F.relu2(self.conv2(x))
-        x = F.relu3(self.conv3(x))
-        x = F.relu4(self.conv4(x))
+        x = self.relu1(self.conv1(x))
+        x = self.relu2(self.conv2(x))
+        x = self.relu3(self.conv3(x))
+        x = self.relu4(self.conv4(x))
         
         x = self.global_pool(x)
         x = torch.flatten(x, 1)
         
         x = self.dropout(x)
-        x = F.relu5(self.fc1(x))
+        x = self.relu5(self.fc1(x))
         x = self.fc2(x)
 
-        x = self.dequant
+        x = self.dequant(x)
         
         return x

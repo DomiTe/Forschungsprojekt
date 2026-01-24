@@ -8,7 +8,7 @@ from src.utility.config import DEVICE
 logger = logging.getLogger(__name__)
 
 def evaluate(
-    model: torch.nn.Module, loader: torch.utils.data.DataLoader, desc: str
+    model: torch.nn.Module, loader: torch.utils.data.DataLoader, desc: str, device=DEVICE
 ) -> Tuple[float, float]:
     """
     Evaluiert das Modell auf dem gegebenen DataLoader.
@@ -17,8 +17,12 @@ def evaluate(
         accuracy (float): Genauigkeit in Prozent
         inference_time (float): Gesamtzeit für die Inferenz in Sekunden
     """
+
+    if isinstance(device, str):
+        device = torch.device(device)
+
     model.eval()
-    model.to(DEVICE)
+    model.to(device)
 
     correct = 0
     test_loss = 0
@@ -27,13 +31,13 @@ def evaluate(
     # --- 1. WARM-UP (Wichtig für präzise Zeitmessung) ---
     # Wir schicken ein paar Dummy-Batches durch, damit Caches gefüllt sind.
     # Das Ergebnis verwerfen wir.
-    if DEVICE.type == "cuda":
+    if device.type == "cuda":
         warmup_batches = 5
         with torch.no_grad():
             for i, (data, target) in enumerate(loader):
                 if i >= warmup_batches:
                     break
-                data = data.to(DEVICE)
+                data = data.to(device)
                 model(data)
         torch.cuda.synchronize() # Warten bis Warm-up fertig ist
 
@@ -44,7 +48,7 @@ def evaluate(
 
     with torch.no_grad():
         for data, target in loader:
-            data, target = data.to(DEVICE), target.to(DEVICE)
+            data, target = data.to(device), target.to(device)
             
             # Forward Pass
             output = model(data)
@@ -55,7 +59,7 @@ def evaluate(
             correct += pred.eq(target.view_as(pred)).sum().item()
 
     # Synchronisieren für exakte Zeit auf GPU
-    if DEVICE.type == "cuda":
+    if device.type == "cuda":
         torch.cuda.synchronize()
 
     end_time = time.time()

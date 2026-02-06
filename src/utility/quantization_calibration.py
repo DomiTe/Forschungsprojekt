@@ -1,6 +1,6 @@
 import torch
 
-def calibrate_model(model, data_loader, num_batches=10, device="cpu"):
+def calibrate_model(model, data_loader, num_batches=20, device="cpu"):
     """
     Feeds data through the model to allow Observers to record statistics 
     (min/max values of activations and weights).

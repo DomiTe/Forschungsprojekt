@@ -4,24 +4,11 @@ import os
 import logging
 import warnings
 
-from torch.ao.quantization import (
-    QConfig, 
-    HistogramObserver, 
-    PerChannelMinMaxObserver, 
-    fuse_modules,
-    MinMaxObserver, 
-)
-
+# Project Imports
 from src.model import CNN
 from src.train import train_model
 from src.evaluation.evaluate import evaluate
-from src.custom_observer import (
-    SeminarAffineObserver,
-    SeminarSymmetricActivationObserver,
-    SeminarSymmetricWeightObserver,
-    SeminarPoTActivationObserver,
-    SeminarPoTWeightObserver
-)
+
 from src.utility.quantization_calibration import calibrate_model
 from src.utility.utils import (
     get_data_loaders, 
@@ -30,6 +17,13 @@ from src.utility.utils import (
     setup_global_logging, 
     plot_training_curves
 )
+from src.utility.quant_utils import (
+    fuse_layers,
+    get_custome_affine_qconfig,
+    get_custome_symmetric_qconfig,
+    get_custome_pot_qconfig
+)
+
 from src.utility.config import (
     DEVICE, 
     QUANTIZED_MODELS, 
@@ -39,213 +33,18 @@ from src.utility.config import (
 
 logger = logging.getLogger("Experiment")
 
-class PowerOfTwoObserver(MinMaxObserver):
-    """
-    Custom Observer for Activations.
-    Forces scale to be a power of 2 (2^k) and zero_point to be 0.
-    """
-    def calculate_qparams(self):
-        # 1. Get standard min/max scale
-        scale, zero_point = super().calculate_qparams()
-        
-        # 2. Force Scale to nearest Power of Two: 2^(round(log2(scale)))
-        scale = 2.0 ** torch.round(torch.log2(scale))
-        
-        # 3. Force Zero Point to 0 (PoT is strictly symmetric)
-        zero_point = torch.zeros_like(zero_point)
-        
-        return scale, zero_point
-
-class PowerOfTwoWeightObserver(PerChannelMinMaxObserver):
-    """
-    Custom Observer for Weights (Per-Channel).
-    Forces scale to be a power of 2 (2^k) and zero_point to be 0.
-    """
-    def calculate_qparams(self):
-        # 1. Get standard per-channel scale
-        scale, zero_point = super().calculate_qparams()
-        
-        # 2. Force Scale to nearest Power of Two
-        scale = 2.0 ** torch.round(torch.log2(scale))
-        
-        # 3. Force Zero Point to 0
-        zero_point = torch.zeros_like(zero_point)
-        
-        return scale, zero_point
-    
-
-def fuse_layers(model):
-    """
-    Fuses Conv+ReLU and Linear+ReLU layers to improve accuracy and speed.
-    Ref: https://pytorch.org/docs/stable/quantization.html#module-torch.ao.quantization.fuse_modules
-    """
-    # Ensure model is in eval mode before fusion
-    model.eval()
-    
-    # NOTE: Adjust these names to match your src/model.py definition exactly.
-    # Example assumes: self.conv1, self.relu1, self.fc1, etc.
-    fusion_candidates = [
-        ['conv1', 'relu1'],
-        ['conv2', 'relu2'],
-        ['conv3', 'relu3'],
-        ['conv4', 'relu4'],
-        ['fc1', 'relu5'] # Assuming fc1 is followed by relu5
-    ]
-    
-    # Filter out modules that don't exist in the model to prevent errors
-    existing_fusions = [
-        f for f in fusion_candidates 
-        if hasattr(model, f[0]) and hasattr(model, f[1])
-    ]
-    
-    if existing_fusions:
-        fuse_modules(model, existing_fusions, inplace=True)
-        logger.info(f"Fused layers: {existing_fusions}")
-    else:
-        logger.warning("No layers fused. Check layer names in 'fuse_layers' function.")
-
-    return model
-
-
-
-def get_seminar_affine_qconfig():
-    """
-    Configuration using the exact Affine formulas from the script.
-    """
-    return QConfig(
-        activation=SeminarAffineObserver.with_args(
-            dtype=torch.quint8,  # Activations usually 0-255
-            quant_min=0,
-            quant_max=255,
-            reduce_range=False
-        ),
-        weight=SeminarAffineObserver.with_args(
-            dtype=torch.qint8,   # Weights -128 to 127
-            quant_min=-128,
-            quant_max=127,
-            reduce_range=False
-        )
-    )
-
-def get_seminar_symmetric_qconfig():
-    return torch.ao.quantization.QConfig(
-        # ACTIVATIONS -> Use Per-Tensor Class
-        activation=SeminarSymmetricActivationObserver.with_args(
-            dtype=torch.quint8, 
-            quant_min=0, 
-            quant_max=255, 
-            reduce_range=False,
-            qscheme=torch.per_tensor_symmetric # Fits MinMaxObserver
-        ),
-        
-        # WEIGHTS -> Use Per-Channel Class
-        weight=SeminarSymmetricWeightObserver.with_args(
-            dtype=torch.qint8, 
-            quant_min=-127, 
-            quant_max=127, 
-            reduce_range=False,
-            qscheme=torch.per_channel_symmetric, # Fits PerChannelMinMaxObserver
-            ch_axis=0
-        )
-    )
-
-def get_seminar_pot_qconfig():
-    return torch.ao.quantization.QConfig(
-        # ACTIVATIONS -> Use Per-Tensor PoT Class
-        activation=SeminarPoTActivationObserver.with_args(
-            dtype=torch.quint8,
-            quant_min=0,
-            quant_max=255,
-            reduce_range=False,
-            qscheme=torch.per_tensor_symmetric
-        ),
-        
-        # WEIGHTS -> Use Per-Channel PoT Class
-        weight=SeminarPoTWeightObserver.with_args(
-            dtype=torch.qint8,
-            quant_min=-127,
-            quant_max=127,
-            reduce_range=False,
-            qscheme=torch.per_channel_symmetric,
-            ch_axis=0
-        )
-    )
-# def get_pot_qconfig():
-#     """
-#     Returns QConfig for Power of Two (PoT) Quantization.
-#     Uses custom observers to enforce 2^k scaling.
-#     """
-#     return QConfig(
-#         # ACTIVATIONS:
-#         # Use our custom PoT class.
-#         # qscheme=symmetric is required because PoT implies ZP=0.
-#         activation=PowerOfTwoObserver.with_args(
-#             qscheme=torch.per_tensor_symmetric,
-#             dtype=torch.quint8
-#         ),
-        
-#         # WEIGHTS:
-#         # Use our custom Per-Channel PoT class.
-#         # reduce_range=True is still needed for FBGEMM backend safety.
-#         weight=PowerOfTwoWeightObserver.with_args(
-#             qscheme=torch.per_channel_symmetric,
-#             dtype=torch.qint8,
-#             reduce_range=True
-#         )
-#     )
-#
-# def get_symmetric_qconfig():
-#     """
-#     Returns QConfig for Symmetric Quantization (Manual/Eager Mode).
-#     """
-#     return QConfig(
-#         # ACTIVATIONS:
-#         # qint8 is signed [-128, 127]. 
-#         # Symmetric means the range is centered at 0 (zero_point=0).
-#         activation=HistogramObserver.with_args(
-#             qscheme=torch.per_tensor_symmetric,
-#             dtype=torch.quint8
-#         ),
-        
-#         # WEIGHTS:
-#         # reduce_range=True is MANDATORY for standard x86 CPUs (FBGEMM backend).
-#         # It restricts weights to 7-bit to prevent overflow.
-#         weight=PerChannelMinMaxObserver.with_args(
-#             qscheme=torch.per_channel_symmetric,
-#             dtype=torch.qint8,
-#             reduce_range=True 
-#         )
-#     )
-
-# def get_affine_qconfig():
-#     """
-#     Returns QConfig for Affine (Asymmetric) Quantization.
-#     Activations: HistogramObserver (reduces outlier impact).
-#     Weights: PerChannelMinMaxObserver (standard for CNNs).
-#     Ref: https://pytorch.org/docs/stable/generated/torch.ao.quantization.qconfig.QConfig.html
-#     """
-#     return QConfig(
-#         activation=HistogramObserver.with_args(
-#             qscheme=torch.per_tensor_affine, 
-#             dtype=torch.quint8
-#         ),
-#         weight=PerChannelMinMaxObserver.with_args(
-#             qscheme=torch.per_channel_affine, 
-#             dtype=torch.qint8,
-#             reduce_range=True
-#         )
-#     )
 
 def run_experiment():
-    # Filter out the specific deprecation warnings from PyTorch Quantization
-    warnings.filterwarnings("ignore", category=UserWarning, module="torch.ao.quantization")
-    warnings.filterwarnings("ignore", category=FutureWarning, module="torch.ao.quantization")
-    # 1. Load Data
+    # Suppress deprecation warnings for cleaner logs
+    warnings.filterwarnings("ignore", message=".*torch.ao.quantization is deprecated.*")
+    
+    # 1. Setup Data & Backend
     logger.info("Loading datasets...")
     train_loader, test_loader, num_classes = get_data_loaders()
-    torch.backends.quantized.engine = 'fbgemm' # or fbgemm, QNnpack
+    torch.backends.quantized.engine = 'fbgemm' # Optimized for x86 CPUs
 
-    # 2. Baseline Model Management
+    # 2. Baseline Model (Float32)
+    # Load existing model or train from scratch if missing
     baseline_path = BASELINE_MODEL_PATH
     model = CNN(num_classes=num_classes).to(DEVICE)
 
@@ -260,7 +59,7 @@ def run_experiment():
     # 3. Evaluate Baseline
     logger.info("Evaluating Baseline (Float32)...")
     model.eval()
-    acc_base, time_base = evaluate(model, test_loader, "Baseline Float32",device=torch.device('cpu'))
+    acc_base, time_base = evaluate(model, test_loader, "Baseline Float32", device=torch.device('cpu'))
     size_base = get_model_size(model)
     logger.info(f"Baseline -> Acc: {acc_base:.2f}%, Time: {time_base:.4f}s, Size: {size_base:.2f}MB")
 
@@ -274,51 +73,39 @@ def run_experiment():
         "drop_percentage": 0.0
     }]
 
-    # 4. Affine Quantization Experiment
+    # ---------------------------------------------------------
+    # Experiment 1: Affine Quantization (Asymmetric)
+    # ---------------------------------------------------------
     experiment_name = "Affine_PTQ"
     logger.info(f"--- Starting Experiment: {experiment_name} ---")
 
-    # Step A: Create a clean copy for quantization
-    # We use 'cpu' for quantization preparation as some observers are CPU-only
+    # A. Preparation
     model_affine = copy.deepcopy(model).to('cpu')
     model_affine.eval()
+    model_affine = fuse_layers(model_affine) # Fuse BEFORE config
 
-    # Step B: Fuse Layers
-    # Fusing must happen BEFORE attaching observers
-    model_affine = fuse_layers(model_affine)
-
-    # Step C: Attach Configuration (Affine)
-    model_affine.qconfig = get_seminar_affine_qconfig()
-    
-    # Step D: Prepare
-    # Inserts observers into the model layers
-    # Ref: https://pytorch.org/docs/stable/generated/torch.ao.quantization.prepare.prepare.html
+    # B. Configuration & Observer Attachment
+    model_affine.qconfig = get_custome_affine_qconfig()
     torch.ao.quantization.prepare(model_affine, inplace=True)
     
-    # Step E: Calibrate
-    # Passes data through model to calculate min/max ranges
+    # C. Calibration (Find Min/Max)
     logger.info("Calibrating model...")
     calibrate_model(model_affine, train_loader, num_batches=10, device='cpu')
 
-    # Step F: Convert
-    # Freezes statistics and swaps float layers for int8 layers
-    # Ref: https://pytorch.org/docs/stable/generated/torch.ao.quantization.convert.convert.html
+    # D. Conversion (Float -> Int8)
     logger.info("Converting to INT8...")
     torch.ao.quantization.convert(model_affine, inplace=True)
 
-    # 5. Evaluate Quantized Model
+    # E. Evaluation
     acc, time_inf = evaluate(model_affine, test_loader, experiment_name, device=torch.device('cpu'))
     drop = acc_base - acc
     
     logger.info(f"Result {experiment_name}: Acc={acc:.2f}% (Drop: {drop:.2f})")
 
-    # 6. Save Model
+    # F. Save Model
     save_path = os.path.join(QUANTIZED_MODELS, f"model_{experiment_name}.pt")
-    # TorchScript is preferred for saving quantized models to preserve structure
     torch.jit.save(torch.jit.script(model_affine), save_path)
-    
     real_size_mb = os.path.getsize(save_path) / (1024 * 1024)
-    logger.info(f"Saved model size: {real_size_mb:.2f} MB")
     
     results.append({
         "config_name": experiment_name,
@@ -330,52 +117,40 @@ def run_experiment():
         "drop_percentage": drop
     })
 
-    # 7. Save Results
-    save_csv(results, EXPERIMENT_CSV_PATH, 
-             ['config_name', 'method', 'bits', 'accuracy', 'inference_time', 'model_size_mb', 'drop_percentage'])
+    save_csv(results, EXPERIMENT_CSV_PATH, list(results[0].keys()))
 
-    # 5. Symmetric Quantization (Manual/Eager Mode)
+    # ---------------------------------------------------------
+    # Experiment 2: Symmetric Quantization
+    # ---------------------------------------------------------
     experiment_name = "Symmetric_PTQ"
     logger.info(f"--- Starting Experiment: {experiment_name} ---")
 
-    # Step A: Clean Copy & CPU move
-    # Quantization preparation typically happens on CPU
+    # A. Preparation
     model_sym = copy.deepcopy(model).to("cpu")
     model_sym.eval()
-
-    # Step B: Manual Fusion
-    # Crucial: Fusion must happen BEFORE setting the qconfig in Eager mode
     model_sym = fuse_layers(model_sym)
 
-    # Step C: Attach Configuration
-    # We assign the config directly to the model
-    model_sym.qconfig = get_seminar_symmetric_qconfig()
-
-    # Step D: Prepare
-    # This inserts the Observers into the model layers
-    # Warning: "prepare" is deprecated but correct for this manual workflow
+    # B. Configuration
+    model_sym.qconfig = get_custome_symmetric_qconfig()
     torch.ao.quantization.prepare(model_sym, inplace=True)
 
-    # Step E: Calibrate
+    # C. Calibration
     logger.info("Calibrating Symmetric model...")
     calibrate_model(model_sym, train_loader, num_batches=10, device=torch.device('cpu'))
 
-    # Step F: Convert
-    # Freezes statistics and swaps float layers for int8 layers
+    # D. Conversion
     logger.info("Converting to INT8 (Symmetric)...")
     torch.ao.quantization.convert(model_sym, inplace=True)
 
-    # Step G: Evaluate
+    # E. Evaluation
     acc, time_inf = evaluate(model_sym, test_loader, experiment_name, device=torch.device('cpu'))
     drop = acc_base - acc
     
     logger.info(f"Result {experiment_name}: Acc={acc:.2f}% (Drop: {drop:.2f})")
 
-    # Step H: Save
+    # F. Save
     save_path = os.path.join(QUANTIZED_MODELS, f"model_{experiment_name}.pt")
-    # Use TorchScript to save the quantized model structure reliably
     torch.jit.save(torch.jit.script(model_sym), save_path)
-    
     real_size_mb = os.path.getsize(save_path) / (1024 * 1024)
 
     results.append({
@@ -390,43 +165,38 @@ def run_experiment():
 
     save_csv(results, EXPERIMENT_CSV_PATH, list(results[0].keys()))
 
-    # 6. Power of Two (PoT) Quantization (Manual/Eager)
+    # ---------------------------------------------------------
+    # Experiment 3: Power-of-Two (PoT) Quantization
+    # ---------------------------------------------------------
     experiment_name = "PoT_PTQ"
     logger.info(f"--- Starting Experiment: {experiment_name} ---")
 
-    # Step A: Clean Copy
+    # A. Preparation
     model_pot = copy.deepcopy(model).to("cpu")
     model_pot.eval()
-
-    # Step B: Manual Fusion
     model_pot = fuse_layers(model_pot)
 
-    # Step C: Attach PoT Config
-    model_pot.qconfig = get_seminar_pot_qconfig()
-
-    # Step D: Prepare
-    # Uses our custom Observers to record min/max
+    # B. Configuration
+    model_pot.qconfig = get_custome_pot_qconfig()
     torch.ao.quantization.prepare(model_pot, inplace=True)
 
-    # Step E: Calibrate
+    # C. Calibration
     logger.info("Calibrating PoT model...")
     calibrate_model(model_pot, train_loader, num_batches=10, device="cpu")
 
-    # Step F: Convert
-    # This calls our custom calculate_qparams(), rounding scales to 2^k
+    # D. Conversion (Calculates 2^k scales)
     logger.info("Converting to INT8 (PoT)...")
     torch.ao.quantization.convert(model_pot, inplace=True)
 
-    # Step G: Evaluate
+    # E. Evaluation
     acc, time_inf = evaluate(model_pot, test_loader, experiment_name, device=torch.device('cpu'))
     drop = acc_base - acc
     
     logger.info(f"Result {experiment_name}: Acc={acc:.2f}% (Drop: {drop:.2f})")
 
-    # Step H: Save
+    # F. Save
     save_path = os.path.join(QUANTIZED_MODELS, f"model_{experiment_name}.pt")
     torch.jit.save(torch.jit.script(model_pot), save_path)
-    
     real_size_mb = os.path.getsize(save_path) / (1024 * 1024)
 
     results.append({

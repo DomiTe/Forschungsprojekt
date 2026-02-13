@@ -1,0 +1,1555 @@
+2026-01-24 09:34:37 [INFO] Experiment: Loading datasets...
+2026-01-24 09:34:38 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 09:34:38 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 09:35:36 [INFO] Experiment: Loading datasets...
+2026-01-24 09:35:37 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 09:35:37 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 09:35:37 [INFO] Experiment: No baseline found. Starting training...
+2026-01-24 09:35:37 [INFO] src.train: Starte Training auf Device: cuda
+2026-01-24 09:36:37 [INFO] Experiment: Loading datasets...
+2026-01-24 09:36:37 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 09:36:37 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 09:36:37 [INFO] Experiment: No baseline found. Starting training...
+2026-01-24 09:36:37 [INFO] src.train: Starte Training auf Device: cuda
+2026-01-24 09:39:37 [INFO] Experiment: Loading datasets...
+2026-01-24 09:39:37 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 09:39:37 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 09:39:37 [INFO] Experiment: No baseline found. Starting training...
+2026-01-24 09:39:37 [INFO] src.train: Starte Training auf Device: cuda
+2026-01-24 09:40:14 [INFO] src.train: Ep 1: Train Acc: 1.36% | Val Acc: 2.57%
+2026-01-24 09:40:14 [INFO] src.train: Saved best model (1.3563%)
+2026-01-24 09:40:44 [INFO] src.train: Ep 2: Train Acc: 3.04% | Val Acc: 4.33%
+2026-01-24 09:40:44 [INFO] src.train: Saved best model (3.0425%)
+2026-01-24 09:41:13 [INFO] src.train: Ep 3: Train Acc: 4.40% | Val Acc: 6.30%
+2026-01-24 09:41:13 [INFO] src.train: Saved best model (4.3988%)
+2026-01-24 09:41:43 [INFO] src.train: Ep 4: Train Acc: 6.74% | Val Acc: 9.38%
+2026-01-24 09:41:43 [INFO] src.train: Saved best model (6.7449%)
+2026-01-24 09:42:13 [INFO] src.train: Ep 5: Train Acc: 11.60% | Val Acc: 14.22%
+2026-01-24 09:42:13 [INFO] src.train: Saved best model (11.6019%)
+2026-01-24 09:42:43 [INFO] src.train: Ep 6: Train Acc: 15.56% | Val Acc: 18.33%
+2026-01-24 09:42:43 [INFO] src.train: Saved best model (15.5609%)
+2026-01-24 09:43:13 [INFO] src.train: Ep 7: Train Acc: 17.71% | Val Acc: 20.60%
+2026-01-24 09:43:13 [INFO] src.train: Saved best model (17.7053%)
+2026-01-24 09:43:43 [INFO] src.train: Ep 8: Train Acc: 21.39% | Val Acc: 22.51%
+2026-01-24 09:43:43 [INFO] src.train: Saved best model (21.3893%)
+2026-01-24 09:44:13 [INFO] src.train: Ep 9: Train Acc: 23.42% | Val Acc: 25.37%
+2026-01-24 09:44:13 [INFO] src.train: Saved best model (23.4238%)
+2026-01-24 09:44:42 [INFO] src.train: Ep 10: Train Acc: 25.20% | Val Acc: 28.30%
+2026-01-24 09:44:42 [INFO] src.train: Saved best model (25.2016%)
+2026-01-24 09:45:12 [INFO] src.train: Ep 11: Train Acc: 26.81% | Val Acc: 31.09%
+2026-01-24 09:45:12 [INFO] src.train: Saved best model (26.8145%)
+2026-01-24 09:45:42 [INFO] src.train: Ep 12: Train Acc: 29.23% | Val Acc: 33.80%
+2026-01-24 09:45:42 [INFO] src.train: Saved best model (29.2339%)
+2026-01-24 09:46:12 [INFO] src.train: Ep 13: Train Acc: 32.07% | Val Acc: 35.04%
+2026-01-24 09:46:12 [INFO] src.train: Saved best model (32.0748%)
+2026-01-24 09:46:42 [INFO] src.train: Ep 14: Train Acc: 34.44% | Val Acc: 35.85%
+2026-01-24 09:46:42 [INFO] src.train: Saved best model (34.4391%)
+2026-01-24 09:47:11 [INFO] src.train: Ep 15: Train Acc: 35.25% | Val Acc: 37.32%
+2026-01-24 09:47:11 [INFO] src.train: Saved best model (35.2456%)
+2026-01-24 09:47:41 [INFO] src.train: Ep 16: Train Acc: 37.02% | Val Acc: 41.50%
+2026-01-24 09:47:41 [INFO] src.train: Saved best model (37.0235%)
+2026-01-24 09:48:11 [INFO] src.train: Ep 17: Train Acc: 37.87% | Val Acc: 44.87%
+2026-01-24 09:48:11 [INFO] src.train: Saved best model (37.8666%)
+2026-01-24 09:48:41 [INFO] src.train: Ep 18: Train Acc: 40.62% | Val Acc: 45.67%
+2026-01-24 09:48:41 [INFO] src.train: Saved best model (40.6158%)
+2026-01-24 09:49:11 [INFO] src.train: Ep 19: Train Acc: 41.68% | Val Acc: 45.16%
+2026-01-24 09:49:11 [INFO] src.train: Saved best model (41.6789%)
+2026-01-24 09:49:41 [INFO] src.train: Ep 20: Train Acc: 42.80% | Val Acc: 50.00%
+2026-01-24 09:49:41 [INFO] src.train: Saved best model (42.7969%)
+2026-01-24 09:50:11 [INFO] src.train: Ep 21: Train Acc: 43.57% | Val Acc: 48.39%
+2026-01-24 09:50:11 [INFO] src.train: Saved best model (43.5667%)
+2026-01-24 09:50:41 [INFO] src.train: Ep 22: Train Acc: 46.30% | Val Acc: 51.39%
+2026-01-24 09:50:41 [INFO] src.train: Saved best model (46.2977%)
+2026-01-24 09:51:11 [INFO] src.train: Ep 23: Train Acc: 46.81% | Val Acc: 53.96%
+2026-01-24 09:51:11 [INFO] src.train: Saved best model (46.8109%)
+2026-01-24 09:51:41 [INFO] src.train: Ep 24: Train Acc: 47.67% | Val Acc: 53.01%
+2026-01-24 09:51:41 [INFO] src.train: Saved best model (47.6723%)
+2026-01-24 09:52:11 [INFO] src.train: Ep 25: Train Acc: 49.84% | Val Acc: 53.74%
+2026-01-24 09:52:11 [INFO] src.train: Saved best model (49.8350%)
+2026-01-24 09:52:41 [INFO] src.train: Ep 26: Train Acc: 50.37% | Val Acc: 56.67%
+2026-01-24 09:52:41 [INFO] src.train: Saved best model (50.3666%)
+2026-01-24 09:53:11 [INFO] src.train: Ep 27: Train Acc: 50.64% | Val Acc: 58.14%
+2026-01-24 09:53:11 [INFO] src.train: Saved best model (50.6415%)
+2026-01-24 09:53:41 [INFO] src.train: Ep 28: Train Acc: 52.33% | Val Acc: 57.40%
+2026-01-24 09:53:41 [INFO] src.train: Saved best model (52.3277%)
+2026-01-24 09:54:11 [INFO] src.train: Ep 29: Train Acc: 53.59% | Val Acc: 61.44%
+2026-01-24 09:54:11 [INFO] src.train: Saved best model (53.5924%)
+2026-01-24 09:54:41 [INFO] src.train: Ep 30: Train Acc: 55.33% | Val Acc: 60.04%
+2026-01-24 09:54:41 [INFO] src.train: Saved best model (55.3336%)
+2026-01-24 09:55:11 [INFO] src.train: Ep 31: Train Acc: 54.49% | Val Acc: 62.54%
+2026-01-24 09:55:40 [INFO] src.train: Ep 32: Train Acc: 56.76% | Val Acc: 61.73%
+2026-01-24 09:55:40 [INFO] src.train: Saved best model (56.7632%)
+2026-01-24 09:56:10 [INFO] src.train: Ep 33: Train Acc: 57.73% | Val Acc: 64.81%
+2026-01-24 09:56:10 [INFO] src.train: Saved best model (57.7346%)
+2026-01-24 09:56:40 [INFO] src.train: Ep 34: Train Acc: 58.49% | Val Acc: 66.94%
+2026-01-24 09:56:40 [INFO] src.train: Saved best model (58.4861%)
+2026-01-24 09:57:09 [INFO] src.train: Ep 35: Train Acc: 59.31% | Val Acc: 66.50%
+2026-01-24 09:57:09 [INFO] src.train: Saved best model (59.3109%)
+2026-01-24 09:57:39 [INFO] src.train: Ep 36: Train Acc: 60.48% | Val Acc: 68.04%
+2026-01-24 09:57:39 [INFO] src.train: Saved best model (60.4839%)
+2026-01-24 09:58:09 [INFO] src.train: Ep 37: Train Acc: 60.70% | Val Acc: 68.11%
+2026-01-24 09:58:09 [INFO] src.train: Saved best model (60.7038%)
+2026-01-24 09:58:39 [INFO] src.train: Ep 38: Train Acc: 61.44% | Val Acc: 68.48%
+2026-01-24 09:58:39 [INFO] src.train: Saved best model (61.4370%)
+2026-01-24 09:59:08 [INFO] src.train: Ep 39: Train Acc: 62.21% | Val Acc: 68.18%
+2026-01-24 09:59:08 [INFO] src.train: Saved best model (62.2067%)
+2026-01-24 09:59:38 [INFO] src.train: Ep 40: Train Acc: 62.21% | Val Acc: 72.21%
+2026-01-24 10:00:08 [INFO] src.train: Ep 41: Train Acc: 64.48% | Val Acc: 70.75%
+2026-01-24 10:00:08 [INFO] src.train: Saved best model (64.4795%)
+2026-01-24 10:00:38 [INFO] src.train: Ep 42: Train Acc: 63.49% | Val Acc: 73.90%
+2026-01-24 10:01:08 [INFO] src.train: Ep 43: Train Acc: 65.14% | Val Acc: 72.43%
+2026-01-24 10:01:08 [INFO] src.train: Saved best model (65.1393%)
+2026-01-24 10:01:38 [INFO] src.train: Ep 44: Train Acc: 65.76% | Val Acc: 75.95%
+2026-01-24 10:01:38 [INFO] src.train: Saved best model (65.7625%)
+2026-01-24 10:02:08 [INFO] src.train: Ep 45: Train Acc: 66.86% | Val Acc: 75.37%
+2026-01-24 10:02:08 [INFO] src.train: Saved best model (66.8622%)
+2026-01-24 10:02:37 [INFO] src.train: Ep 46: Train Acc: 68.00% | Val Acc: 73.61%
+2026-01-24 10:02:37 [INFO] src.train: Saved best model (67.9985%)
+2026-01-24 10:03:07 [INFO] src.train: Ep 47: Train Acc: 66.99% | Val Acc: 74.63%
+2026-01-24 10:03:37 [INFO] src.train: Ep 48: Train Acc: 67.06% | Val Acc: 75.22%
+2026-01-24 10:04:07 [INFO] src.train: Ep 49: Train Acc: 68.73% | Val Acc: 75.00%
+2026-01-24 10:04:07 [INFO] src.train: Saved best model (68.7317%)
+2026-01-24 10:04:37 [INFO] src.train: Ep 50: Train Acc: 68.48% | Val Acc: 76.76%
+2026-01-24 10:05:07 [INFO] src.train: Ep 51: Train Acc: 69.87% | Val Acc: 78.67%
+2026-01-24 10:05:07 [INFO] src.train: Saved best model (69.8680%)
+2026-01-24 10:05:37 [INFO] src.train: Ep 52: Train Acc: 70.18% | Val Acc: 77.86%
+2026-01-24 10:05:37 [INFO] src.train: Saved best model (70.1796%)
+2026-01-24 10:06:07 [INFO] src.train: Ep 53: Train Acc: 70.58% | Val Acc: 79.99%
+2026-01-24 10:06:07 [INFO] src.train: Saved best model (70.5828%)
+2026-01-24 10:06:37 [INFO] src.train: Ep 54: Train Acc: 71.52% | Val Acc: 80.13%
+2026-01-24 10:06:37 [INFO] src.train: Saved best model (71.5176%)
+2026-01-24 10:07:07 [INFO] src.train: Ep 55: Train Acc: 71.92% | Val Acc: 81.23%
+2026-01-24 10:07:07 [INFO] src.train: Saved best model (71.9208%)
+2026-01-24 10:07:36 [INFO] src.train: Ep 56: Train Acc: 72.95% | Val Acc: 79.47%
+2026-01-24 10:07:36 [INFO] src.train: Saved best model (72.9472%)
+2026-01-24 10:08:06 [INFO] src.train: Ep 57: Train Acc: 72.67% | Val Acc: 83.21%
+2026-01-24 10:08:36 [INFO] src.train: Ep 58: Train Acc: 74.21% | Val Acc: 82.18%
+2026-01-24 10:08:36 [INFO] src.train: Saved best model (74.2119%)
+2026-01-24 10:09:05 [INFO] src.train: Ep 59: Train Acc: 74.41% | Val Acc: 79.99%
+2026-01-24 10:09:05 [INFO] src.train: Saved best model (74.4135%)
+2026-01-24 10:09:35 [INFO] src.train: Ep 60: Train Acc: 73.85% | Val Acc: 82.99%
+2026-01-24 10:10:05 [INFO] src.train: Ep 61: Train Acc: 73.99% | Val Acc: 83.65%
+2026-01-24 10:10:34 [INFO] src.train: Ep 62: Train Acc: 76.06% | Val Acc: 81.38%
+2026-01-24 10:10:34 [INFO] src.train: Saved best model (76.0630%)
+2026-01-24 10:11:04 [INFO] src.train: Ep 63: Train Acc: 75.26% | Val Acc: 82.70%
+2026-01-24 10:11:34 [INFO] src.train: Ep 64: Train Acc: 76.32% | Val Acc: 83.43%
+2026-01-24 10:11:34 [INFO] src.train: Saved best model (76.3196%)
+2026-01-24 10:12:04 [INFO] src.train: Ep 65: Train Acc: 75.95% | Val Acc: 82.99%
+2026-01-24 10:12:33 [INFO] src.train: Ep 66: Train Acc: 75.75% | Val Acc: 84.53%
+2026-01-24 10:13:03 [INFO] src.train: Ep 67: Train Acc: 76.50% | Val Acc: 83.21%
+2026-01-24 10:13:03 [INFO] src.train: Saved best model (76.5029%)
+2026-01-24 10:13:32 [INFO] src.train: Ep 68: Train Acc: 76.83% | Val Acc: 84.38%
+2026-01-24 10:13:33 [INFO] src.train: Saved best model (76.8328%)
+2026-01-24 10:14:02 [INFO] src.train: Ep 69: Train Acc: 77.44% | Val Acc: 84.09%
+2026-01-24 10:14:02 [INFO] src.train: Saved best model (77.4377%)
+2026-01-24 10:14:32 [INFO] src.train: Ep 70: Train Acc: 77.14% | Val Acc: 86.44%
+2026-01-24 10:15:02 [INFO] src.train: Ep 71: Train Acc: 77.51% | Val Acc: 85.92%
+2026-01-24 10:15:02 [INFO] src.train: Saved best model (77.5110%)
+2026-01-24 10:15:31 [INFO] src.train: Ep 72: Train Acc: 78.68% | Val Acc: 85.12%
+2026-01-24 10:15:31 [INFO] src.train: Saved best model (78.6840%)
+2026-01-24 10:16:01 [INFO] src.train: Ep 73: Train Acc: 77.68% | Val Acc: 86.00%
+2026-01-24 10:16:31 [INFO] src.train: Ep 74: Train Acc: 79.69% | Val Acc: 86.22%
+2026-01-24 10:16:31 [INFO] src.train: Saved best model (79.6921%)
+2026-01-24 10:17:00 [INFO] src.train: Ep 75: Train Acc: 78.89% | Val Acc: 85.70%
+2026-01-24 10:17:30 [INFO] src.train: Ep 76: Train Acc: 78.10% | Val Acc: 86.66%
+2026-01-24 10:18:00 [INFO] src.train: Ep 77: Train Acc: 79.40% | Val Acc: 86.51%
+2026-01-24 10:18:30 [INFO] src.train: Ep 78: Train Acc: 79.78% | Val Acc: 87.02%
+2026-01-24 10:18:30 [INFO] src.train: Saved best model (79.7837%)
+2026-01-24 10:19:00 [INFO] src.train: Ep 79: Train Acc: 79.33% | Val Acc: 86.22%
+2026-01-24 10:19:29 [INFO] src.train: Ep 80: Train Acc: 79.84% | Val Acc: 87.76%
+2026-01-24 10:19:29 [INFO] src.train: Saved best model (79.8387%)
+2026-01-24 10:19:59 [INFO] src.train: Ep 81: Train Acc: 80.98% | Val Acc: 87.61%
+2026-01-24 10:19:59 [INFO] src.train: Saved best model (80.9751%)
+2026-01-24 10:20:29 [INFO] src.train: Ep 82: Train Acc: 80.63% | Val Acc: 87.76%
+2026-01-24 10:20:59 [INFO] src.train: Ep 83: Train Acc: 80.57% | Val Acc: 86.14%
+2026-01-24 10:21:29 [INFO] src.train: Ep 84: Train Acc: 81.54% | Val Acc: 87.76%
+2026-01-24 10:21:29 [INFO] src.train: Saved best model (81.5433%)
+2026-01-24 10:21:58 [INFO] src.train: Ep 85: Train Acc: 81.54% | Val Acc: 87.98%
+2026-01-24 10:22:28 [INFO] src.train: Ep 86: Train Acc: 81.05% | Val Acc: 88.49%
+2026-01-24 10:22:58 [INFO] src.train: Ep 87: Train Acc: 81.12% | Val Acc: 88.64%
+2026-01-24 10:23:28 [INFO] src.train: Ep 88: Train Acc: 81.54% | Val Acc: 87.24%
+2026-01-24 10:23:58 [INFO] src.train: Ep 89: Train Acc: 82.02% | Val Acc: 87.76%
+2026-01-24 10:23:58 [INFO] src.train: Saved best model (82.0198%)
+2026-01-24 10:24:28 [INFO] src.train: Ep 90: Train Acc: 82.22% | Val Acc: 88.20%
+2026-01-24 10:24:28 [INFO] src.train: Saved best model (82.2214%)
+2026-01-24 10:24:58 [INFO] src.train: Ep 91: Train Acc: 82.53% | Val Acc: 87.24%
+2026-01-24 10:24:58 [INFO] src.train: Saved best model (82.5330%)
+2026-01-24 10:25:28 [INFO] src.train: Ep 92: Train Acc: 82.55% | Val Acc: 87.68%
+2026-01-24 10:25:28 [INFO] src.train: Saved best model (82.5513%)
+2026-01-24 10:25:57 [INFO] src.train: Ep 93: Train Acc: 81.45% | Val Acc: 88.93%
+2026-01-24 10:26:27 [INFO] src.train: Ep 94: Train Acc: 82.04% | Val Acc: 87.17%
+2026-01-24 10:26:57 [INFO] src.train: Ep 95: Train Acc: 82.64% | Val Acc: 89.52%
+2026-01-24 10:26:57 [INFO] src.train: Saved best model (82.6430%)
+2026-01-24 10:27:28 [INFO] src.train: Ep 96: Train Acc: 83.25% | Val Acc: 89.44%
+2026-01-24 10:27:28 [INFO] src.train: Saved best model (83.2478%)
+2026-01-24 10:27:58 [INFO] src.train: Ep 97: Train Acc: 83.80% | Val Acc: 89.00%
+2026-01-24 10:27:58 [INFO] src.train: Saved best model (83.7977%)
+2026-01-24 10:28:27 [INFO] src.train: Ep 98: Train Acc: 83.25% | Val Acc: 87.90%
+2026-01-24 10:28:58 [INFO] src.train: Ep 99: Train Acc: 84.35% | Val Acc: 89.22%
+2026-01-24 10:28:58 [INFO] src.train: Saved best model (84.3475%)
+2026-01-24 10:29:27 [INFO] src.train: Ep 100: Train Acc: 83.01% | Val Acc: 89.08%
+2026-01-24 10:29:57 [INFO] src.train: Ep 101: Train Acc: 84.48% | Val Acc: 89.30%
+2026-01-24 10:29:57 [INFO] src.train: Saved best model (84.4758%)
+2026-01-24 10:30:27 [INFO] src.train: Ep 102: Train Acc: 83.32% | Val Acc: 88.56%
+2026-01-24 10:30:57 [INFO] src.train: Ep 103: Train Acc: 83.67% | Val Acc: 88.20%
+2026-01-24 10:31:27 [INFO] src.train: Ep 104: Train Acc: 84.16% | Val Acc: 89.66%
+2026-01-24 10:31:57 [INFO] src.train: Ep 105: Train Acc: 83.67% | Val Acc: 87.76%
+2026-01-24 10:32:27 [INFO] src.train: Ep 106: Train Acc: 85.10% | Val Acc: 88.93%
+2026-01-24 10:32:27 [INFO] src.train: Saved best model (85.0990%)
+2026-01-24 10:32:56 [INFO] src.train: Ep 107: Train Acc: 84.53% | Val Acc: 89.88%
+2026-01-24 10:33:26 [INFO] src.train: Ep 108: Train Acc: 84.97% | Val Acc: 89.37%
+2026-01-24 10:33:56 [INFO] src.train: Ep 109: Train Acc: 84.38% | Val Acc: 89.30%
+2026-01-24 10:34:26 [INFO] src.train: Ep 110: Train Acc: 85.28% | Val Acc: 88.05%
+2026-01-24 10:34:26 [INFO] src.train: Saved best model (85.2823%)
+2026-01-24 10:34:56 [INFO] src.train: Ep 111: Train Acc: 85.85% | Val Acc: 89.30%
+2026-01-24 10:34:56 [INFO] src.train: Saved best model (85.8504%)
+2026-01-24 10:35:25 [INFO] src.train: Ep 112: Train Acc: 84.46% | Val Acc: 89.22%
+2026-01-24 10:35:55 [INFO] src.train: Ep 113: Train Acc: 85.12% | Val Acc: 89.96%
+2026-01-24 10:36:25 [INFO] src.train: Ep 114: Train Acc: 85.28% | Val Acc: 89.52%
+2026-01-24 10:36:55 [INFO] src.train: Ep 115: Train Acc: 86.69% | Val Acc: 89.15%
+2026-01-24 10:36:55 [INFO] src.train: Saved best model (86.6935%)
+2026-01-24 10:37:25 [INFO] src.train: Ep 116: Train Acc: 85.61% | Val Acc: 90.40%
+2026-01-24 10:37:55 [INFO] src.train: Ep 117: Train Acc: 85.23% | Val Acc: 89.30%
+2026-01-24 10:38:24 [INFO] src.train: Ep 118: Train Acc: 85.65% | Val Acc: 89.66%
+2026-01-24 10:38:54 [INFO] src.train: Ep 119: Train Acc: 85.25% | Val Acc: 89.74%
+2026-01-24 10:39:24 [INFO] src.train: Ep 120: Train Acc: 86.38% | Val Acc: 90.32%
+2026-01-24 10:39:54 [INFO] src.train: Ep 121: Train Acc: 85.76% | Val Acc: 90.76%
+2026-01-24 10:40:23 [INFO] src.train: Ep 122: Train Acc: 86.27% | Val Acc: 90.76%
+2026-01-24 10:40:53 [INFO] src.train: Ep 123: Train Acc: 86.02% | Val Acc: 88.93%
+2026-01-24 10:41:23 [INFO] src.train: Ep 124: Train Acc: 85.48% | Val Acc: 90.62%
+2026-01-24 10:41:53 [INFO] src.train: Ep 125: Train Acc: 86.90% | Val Acc: 89.81%
+2026-01-24 10:41:53 [INFO] src.train: Saved best model (86.8952%)
+2026-01-24 10:42:22 [INFO] src.train: Ep 126: Train Acc: 87.61% | Val Acc: 90.47%
+2026-01-24 10:42:22 [INFO] src.train: Saved best model (87.6100%)
+2026-01-24 10:42:52 [INFO] src.train: Ep 127: Train Acc: 86.02% | Val Acc: 90.47%
+2026-01-24 10:43:22 [INFO] src.train: Ep 128: Train Acc: 87.35% | Val Acc: 90.03%
+2026-01-24 10:43:52 [INFO] src.train: Ep 129: Train Acc: 86.35% | Val Acc: 89.37%
+2026-01-24 10:44:22 [INFO] src.train: Ep 130: Train Acc: 86.22% | Val Acc: 89.88%
+2026-01-24 10:44:52 [INFO] src.train: Ep 131: Train Acc: 87.94% | Val Acc: 90.54%
+2026-01-24 10:44:52 [INFO] src.train: Saved best model (87.9399%)
+2026-01-24 10:45:21 [INFO] src.train: Ep 132: Train Acc: 87.01% | Val Acc: 90.69%
+2026-01-24 10:45:51 [INFO] src.train: Ep 133: Train Acc: 87.13% | Val Acc: 90.47%
+2026-01-24 10:46:20 [INFO] src.train: Ep 134: Train Acc: 87.76% | Val Acc: 90.18%
+2026-01-24 10:46:50 [INFO] src.train: Ep 135: Train Acc: 86.29% | Val Acc: 90.69%
+2026-01-24 10:47:20 [INFO] src.train: Ep 136: Train Acc: 87.63% | Val Acc: 90.32%
+2026-01-24 10:47:50 [INFO] src.train: Ep 137: Train Acc: 87.02% | Val Acc: 91.20%
+2026-01-24 10:48:20 [INFO] src.train: Ep 138: Train Acc: 87.66% | Val Acc: 89.59%
+2026-01-24 10:48:49 [INFO] src.train: Ep 139: Train Acc: 86.60% | Val Acc: 89.59%
+2026-01-24 10:49:19 [INFO] src.train: Ep 140: Train Acc: 88.01% | Val Acc: 89.74%
+2026-01-24 10:49:19 [INFO] src.train: Saved best model (88.0132%)
+2026-01-24 10:49:48 [INFO] src.train: Ep 141: Train Acc: 86.79% | Val Acc: 89.81%
+2026-01-24 10:50:18 [INFO] src.train: Ep 142: Train Acc: 88.20% | Val Acc: 90.40%
+2026-01-24 10:50:18 [INFO] src.train: Saved best model (88.1965%)
+2026-01-24 10:50:47 [INFO] src.train: Ep 143: Train Acc: 87.57% | Val Acc: 88.86%
+2026-01-24 10:51:17 [INFO] src.train: Ep 144: Train Acc: 88.43% | Val Acc: 90.47%
+2026-01-24 10:51:17 [INFO] src.train: Saved best model (88.4348%)
+2026-01-24 10:51:47 [INFO] src.train: Ep 145: Train Acc: 87.79% | Val Acc: 90.40%
+2026-01-24 10:52:16 [INFO] src.train: Ep 146: Train Acc: 87.65% | Val Acc: 90.69%
+2026-01-24 10:52:46 [INFO] src.train: Ep 147: Train Acc: 88.78% | Val Acc: 90.62%
+2026-01-24 10:52:46 [INFO] src.train: Saved best model (88.7830%)
+2026-01-24 10:53:15 [INFO] src.train: Ep 148: Train Acc: 89.00% | Val Acc: 90.32%
+2026-01-24 10:53:15 [INFO] src.train: Saved best model (89.0029%)
+2026-01-24 10:53:45 [INFO] src.train: Ep 149: Train Acc: 87.85% | Val Acc: 90.76%
+2026-01-24 10:54:15 [INFO] src.train: Ep 150: Train Acc: 88.18% | Val Acc: 90.54%
+2026-01-24 10:54:45 [INFO] src.train: Ep 151: Train Acc: 88.25% | Val Acc: 90.03%
+2026-01-24 10:55:14 [INFO] src.train: Ep 152: Train Acc: 87.76% | Val Acc: 90.69%
+2026-01-24 10:55:44 [INFO] src.train: Ep 153: Train Acc: 87.55% | Val Acc: 89.52%
+2026-01-24 10:56:14 [INFO] src.train: Ep 154: Train Acc: 87.37% | Val Acc: 90.40%
+2026-01-24 10:56:44 [INFO] src.train: Ep 155: Train Acc: 88.93% | Val Acc: 90.18%
+2026-01-24 10:57:13 [INFO] src.train: Ep 156: Train Acc: 88.89% | Val Acc: 90.03%
+2026-01-24 10:57:43 [INFO] src.train: Ep 157: Train Acc: 88.97% | Val Acc: 90.76%
+2026-01-24 10:58:13 [INFO] src.train: Ep 158: Train Acc: 88.54% | Val Acc: 91.42%
+2026-01-24 10:58:42 [INFO] src.train: Ep 159: Train Acc: 88.87% | Val Acc: 91.57%
+2026-01-24 10:59:12 [INFO] src.train: Ep 160: Train Acc: 89.06% | Val Acc: 90.84%
+2026-01-24 10:59:12 [INFO] src.train: Saved best model (89.0579%)
+2026-01-24 10:59:42 [INFO] src.train: Ep 161: Train Acc: 88.16% | Val Acc: 90.40%
+2026-01-24 11:00:12 [INFO] src.train: Ep 162: Train Acc: 88.87% | Val Acc: 90.62%
+2026-01-24 11:00:42 [INFO] src.train: Ep 163: Train Acc: 89.04% | Val Acc: 91.20%
+2026-01-24 11:01:12 [INFO] src.train: Ep 164: Train Acc: 88.91% | Val Acc: 90.25%
+2026-01-24 11:01:41 [INFO] src.train: Ep 165: Train Acc: 89.19% | Val Acc: 90.98%
+2026-01-24 11:01:41 [INFO] src.train: Saved best model (89.1862%)
+2026-01-24 11:02:11 [INFO] src.train: Ep 166: Train Acc: 88.93% | Val Acc: 90.98%
+2026-01-24 11:02:41 [INFO] src.train: Ep 167: Train Acc: 89.97% | Val Acc: 90.47%
+2026-01-24 11:02:41 [INFO] src.train: Saved best model (89.9743%)
+2026-01-24 11:03:11 [INFO] src.train: Ep 168: Train Acc: 89.63% | Val Acc: 90.84%
+2026-01-24 11:03:40 [INFO] src.train: Ep 169: Train Acc: 89.15% | Val Acc: 90.98%
+2026-01-24 11:04:10 [INFO] src.train: Ep 170: Train Acc: 88.69% | Val Acc: 91.06%
+2026-01-24 11:04:39 [INFO] src.train: Ep 171: Train Acc: 88.78% | Val Acc: 89.22%
+2026-01-24 11:05:09 [INFO] src.train: Ep 172: Train Acc: 88.84% | Val Acc: 90.98%
+2026-01-24 11:05:38 [INFO] src.train: Ep 173: Train Acc: 89.06% | Val Acc: 90.32%
+2026-01-24 11:06:08 [INFO] src.train: Ep 174: Train Acc: 88.82% | Val Acc: 90.76%
+2026-01-24 11:06:38 [INFO] src.train: Ep 175: Train Acc: 88.97% | Val Acc: 90.40%
+2026-01-24 11:07:08 [INFO] src.train: Ep 176: Train Acc: 89.90% | Val Acc: 90.84%
+2026-01-24 11:07:37 [INFO] src.train: Ep 177: Train Acc: 89.52% | Val Acc: 90.47%
+2026-01-24 11:08:07 [INFO] src.train: Ep 178: Train Acc: 89.85% | Val Acc: 90.69%
+2026-01-24 11:08:36 [INFO] src.train: Ep 179: Train Acc: 89.59% | Val Acc: 92.01%
+2026-01-24 11:09:06 [INFO] src.train: Ep 180: Train Acc: 90.01% | Val Acc: 91.42%
+2026-01-24 11:09:06 [INFO] src.train: Saved best model (90.0110%)
+2026-01-24 11:09:35 [INFO] src.train: Ep 181: Train Acc: 89.83% | Val Acc: 91.06%
+2026-01-24 11:10:05 [INFO] src.train: Ep 182: Train Acc: 89.79% | Val Acc: 91.72%
+2026-01-24 11:10:35 [INFO] src.train: Ep 183: Train Acc: 90.91% | Val Acc: 91.06%
+2026-01-24 11:10:35 [INFO] src.train: Saved best model (90.9091%)
+2026-01-24 11:11:04 [INFO] src.train: Ep 184: Train Acc: 90.01% | Val Acc: 90.47%
+2026-01-24 11:11:34 [INFO] src.train: Ep 185: Train Acc: 89.55% | Val Acc: 92.01%
+2026-01-24 11:12:04 [INFO] src.train: Ep 186: Train Acc: 89.72% | Val Acc: 91.50%
+2026-01-24 11:12:33 [INFO] src.train: Ep 187: Train Acc: 89.81% | Val Acc: 90.76%
+2026-01-24 11:13:03 [INFO] src.train: Ep 188: Train Acc: 89.50% | Val Acc: 90.76%
+2026-01-24 11:13:33 [INFO] src.train: Ep 189: Train Acc: 89.53% | Val Acc: 90.54%
+2026-01-24 11:14:03 [INFO] src.train: Ep 190: Train Acc: 90.18% | Val Acc: 90.84%
+2026-01-24 11:14:33 [INFO] src.train: Ep 191: Train Acc: 90.40% | Val Acc: 90.98%
+2026-01-24 11:15:03 [INFO] src.train: Ep 192: Train Acc: 89.52% | Val Acc: 91.13%
+2026-01-24 11:15:33 [INFO] src.train: Ep 193: Train Acc: 90.49% | Val Acc: 91.13%
+2026-01-24 11:16:02 [INFO] src.train: Ep 194: Train Acc: 89.90% | Val Acc: 91.57%
+2026-01-24 11:16:32 [INFO] src.train: Ep 195: Train Acc: 89.99% | Val Acc: 91.94%
+2026-01-24 11:17:02 [INFO] src.train: Ep 196: Train Acc: 90.69% | Val Acc: 91.42%
+2026-01-24 11:17:32 [INFO] src.train: Ep 197: Train Acc: 89.94% | Val Acc: 91.28%
+2026-01-24 11:18:02 [INFO] src.train: Ep 198: Train Acc: 90.74% | Val Acc: 91.57%
+2026-01-24 11:18:32 [INFO] src.train: Ep 199: Train Acc: 89.59% | Val Acc: 91.86%
+2026-01-24 11:19:02 [INFO] src.train: Ep 200: Train Acc: 90.21% | Val Acc: 91.20%
+2026-01-24 11:19:02 [INFO] src.train: Training abgeschlossen. Baseline gespeichert unter: /scratch/dominic/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 11:19:02 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 11:19:08 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 11:19:13 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6491 | Total Time: 5.6319s | Latency: 4.1290 ms/img
+2026-01-24 11:19:13 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 5.6319s, Size: 6.07MB
+2026-01-24 11:19:13 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 11:19:13 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 11:19:13 [INFO] Experiment: Calibrating model...
+2026-01-24 11:19:28 [INFO] Experiment: Converting to INT8...
+2026-01-24 11:34:36 [INFO] Experiment: Loading datasets...
+2026-01-24 11:34:36 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 11:34:36 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 11:34:36 [INFO] Experiment: Load Baseline-Model: /scratch/dominic/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 11:34:36 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 11:34:42 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 11:34:48 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6491 | Total Time: 5.5910s | Latency: 4.0990 ms/img
+2026-01-24 11:34:48 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 5.5910s, Size: 6.07MB
+2026-01-24 11:34:48 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 11:34:48 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 11:34:48 [INFO] Experiment: Calibrating model...
+2026-01-24 11:35:02 [INFO] Experiment: Converting to INT8...
+2026-01-24 11:39:06 [INFO] Experiment: Loading datasets...
+2026-01-24 11:39:06 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 11:39:06 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 11:39:06 [INFO] Experiment: Load Baseline-Model: /scratch/dominic/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 11:39:06 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 11:39:12 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 11:39:18 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6491 | Total Time: 5.5880s | Latency: 4.0968 ms/img
+2026-01-24 11:39:18 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 5.5880s, Size: 6.07MB
+2026-01-24 11:39:18 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 11:39:18 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 11:39:18 [INFO] Experiment: Calibrating model...
+2026-01-24 11:39:32 [INFO] Experiment: Converting to INT8...
+2026-01-24 11:45:36 [INFO] Experiment: Loading datasets...
+2026-01-24 11:45:36 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 11:45:36 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 11:45:36 [INFO] Experiment: Load Baseline-Model: /scratch/dominic/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 11:45:36 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 11:45:42 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 11:45:48 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6491 | Total Time: 5.5821s | Latency: 4.0925 ms/img
+2026-01-24 11:45:48 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 5.5821s, Size: 6.07MB
+2026-01-24 11:45:48 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 11:45:48 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 11:45:48 [INFO] Experiment: Calibrating model...
+2026-01-24 11:46:02 [INFO] Experiment: Converting to INT8...
+2026-01-24 11:50:06 [INFO] Experiment: Loading datasets...
+2026-01-24 11:50:06 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 11:50:06 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 11:50:06 [INFO] Experiment: Load Baseline-Model: /scratch/dominic/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 11:50:06 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 11:50:12 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 11:50:18 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6491 | Total Time: 5.5930s | Latency: 4.1004 ms/img
+2026-01-24 11:50:18 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 5.5930s, Size: 6.07MB
+2026-01-24 11:50:18 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 11:50:18 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 11:50:18 [INFO] Experiment: Calibrating model...
+2026-01-24 11:50:32 [INFO] Experiment: Converting to INT8...
+2026-01-24 11:57:06 [INFO] Experiment: Loading datasets...
+2026-01-24 11:57:06 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 11:57:06 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 11:57:06 [INFO] Experiment: Load Baseline-Model: /scratch/dominic/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 11:57:06 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 11:57:06 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 11:57:26 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 19.4090s | Latency: 14.2294 ms/img
+2026-01-24 11:57:26 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 19.4090s, Size: 6.07MB
+2026-01-24 11:57:26 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 11:57:26 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 11:57:26 [INFO] Experiment: Calibrating model...
+2026-01-24 11:57:41 [INFO] Experiment: Converting to INT8...
+2026-01-24 11:57:41 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 11:58:21 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 91.13% | Loss: -8.6901 | Total Time: 40.0247s | Latency: 29.3436 ms/img
+2026-01-24 11:58:21 [INFO] Experiment: Result Affine_PTQ: Acc=91.13% (Drop: 0.07)
+2026-01-24 11:58:21 [INFO] Experiment: Saved model size: 1.57 MB
+2026-01-24 11:58:21 [INFO] src.utility.utils: Daten gespeichert unter: /scratch/dominic/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 11:58:21 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 11:58:21 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 11:58:21 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 11:58:35 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 11:58:35 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 12:09:25 [INFO] Experiment: Loading datasets...
+2026-01-24 12:09:25 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:09:25 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:09:25 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:09:25 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:09:25 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:09:33 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 8.2198s | Latency: 6.0262 ms/img
+2026-01-24 12:09:33 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 8.2198s, Size: 6.07MB
+2026-01-24 12:09:33 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 12:09:33 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:09:33 [INFO] Experiment: Calibrating model...
+2026-01-24 12:09:39 [INFO] Experiment: Converting to INT8...
+2026-01-24 12:09:39 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 12:09:50 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 91.13% | Loss: -8.6895 | Total Time: 11.5124s | Latency: 8.4402 ms/img
+2026-01-24 12:09:50 [INFO] Experiment: Result Affine_PTQ: Acc=91.13% (Drop: 0.07)
+2026-01-24 12:09:50 [INFO] Experiment: Saved model size: 1.57 MB
+2026-01-24 12:09:50 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:09:50 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 12:09:50 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:09:50 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 12:09:56 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 12:09:56 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 12:10:12 [INFO] Experiment: Loading datasets...
+2026-01-24 12:10:12 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:10:12 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:10:12 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:10:12 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:10:12 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:10:24 [INFO] Experiment: Loading datasets...
+2026-01-24 12:10:24 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:10:24 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:10:24 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:10:24 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:10:27 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:10:30 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6491 | Total Time: 2.7242s | Latency: 1.9972 ms/img
+2026-01-24 12:10:30 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 2.7242s, Size: 6.07MB
+2026-01-24 12:10:30 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 12:10:30 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:10:30 [INFO] Experiment: Calibrating model...
+2026-01-24 12:10:35 [INFO] Experiment: Converting to INT8...
+2026-01-24 12:10:35 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 12:10:39 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 91.20% | Loss: -8.6902 | Total Time: 3.5006s | Latency: 2.5664 ms/img
+2026-01-24 12:10:39 [INFO] Experiment: Result Affine_PTQ: Acc=91.20% (Drop: 0.00)
+2026-01-24 12:10:39 [INFO] Experiment: Saved model size: 1.57 MB
+2026-01-24 12:10:39 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:10:39 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 12:10:39 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:10:39 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 12:10:44 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 12:10:44 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 12:11:36 [INFO] Experiment: Loading datasets...
+2026-01-24 12:11:36 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:11:36 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:11:36 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:11:36 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:11:39 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:11:42 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6491 | Total Time: 2.7492s | Latency: 2.0155 ms/img
+2026-01-24 12:11:42 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 2.7492s, Size: 6.07MB
+2026-01-24 12:11:42 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 12:11:42 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:11:42 [INFO] Experiment: Calibrating model...
+2026-01-24 12:11:47 [INFO] Experiment: Converting to INT8...
+2026-01-24 12:11:47 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 12:11:51 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 91.13% | Loss: -8.7203 | Total Time: 3.6252s | Latency: 2.6578 ms/img
+2026-01-24 12:11:51 [INFO] Experiment: Result Affine_PTQ: Acc=91.13% (Drop: 0.07)
+2026-01-24 12:11:51 [INFO] Experiment: Saved model size: 1.57 MB
+2026-01-24 12:11:51 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:11:51 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 12:11:51 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:11:51 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 12:11:57 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 12:11:57 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 12:12:00 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 90.03% | Loss: -8.6801 | Total Time: 3.5946s | Latency: 2.6353 ms/img
+2026-01-24 12:12:00 [INFO] Experiment: Result Symmetric_PTQ: Acc=90.03% (Drop: 1.17)
+2026-01-24 12:12:00 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:12:00 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-01-24 12:12:00 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:12:00 [INFO] Experiment: Calibrating PoT model...
+2026-01-24 12:12:05 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-01-24 12:12:05 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-01-24 12:12:08 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 42.16% | Loss: -3.1224 | Total Time: 3.4740s | Latency: 2.5470 ms/img
+2026-01-24 12:12:08 [INFO] Experiment: Result PoT_PTQ: Acc=42.16% (Drop: 49.05)
+2026-01-24 12:12:08 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:12:08 [INFO] Experiment: === Experiments completed successfully ===
+2026-01-24 12:14:22 [INFO] Experiment: Loading datasets...
+2026-01-24 12:14:22 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:14:22 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:14:22 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:14:22 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:14:22 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:14:30 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.9697s | Latency: 5.8429 ms/img
+2026-01-24 12:14:30 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.9697s, Size: 6.07MB
+2026-01-24 12:14:30 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 12:14:30 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:14:30 [INFO] Experiment: Calibrating model...
+2026-01-24 12:14:36 [INFO] Experiment: Converting to INT8...
+2026-01-24 12:14:36 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 12:14:40 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 91.13% | Loss: -8.6744 | Total Time: 3.4656s | Latency: 2.5408 ms/img
+2026-01-24 12:14:40 [INFO] Experiment: Result Affine_PTQ: Acc=91.13% (Drop: 0.07)
+2026-01-24 12:14:40 [INFO] Experiment: Saved model size: 1.57 MB
+2026-01-24 12:14:40 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:14:40 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 12:14:40 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:14:40 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 12:14:45 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 12:14:45 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 12:14:49 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 90.54% | Loss: -8.6836 | Total Time: 3.4944s | Latency: 2.5619 ms/img
+2026-01-24 12:14:49 [INFO] Experiment: Result Symmetric_PTQ: Acc=90.54% (Drop: 0.66)
+2026-01-24 12:14:49 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:14:49 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-01-24 12:14:49 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:14:49 [INFO] Experiment: Calibrating PoT model...
+2026-01-24 12:14:53 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-01-24 12:14:53 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-01-24 12:14:56 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 32.77% | Loss: -2.3900 | Total Time: 3.5193s | Latency: 2.5801 ms/img
+2026-01-24 12:14:56 [INFO] Experiment: Result PoT_PTQ: Acc=32.77% (Drop: 58.43)
+2026-01-24 12:14:56 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:14:56 [INFO] Experiment: === Experiments completed successfully ===
+2026-01-24 12:40:23 [INFO] Experiment: Loading datasets...
+2026-01-24 12:40:23 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:40:23 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:40:23 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:40:23 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:40:23 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:40:31 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6705s | Latency: 5.6236 ms/img
+2026-01-24 12:40:31 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6705s, Size: 6.07MB
+2026-01-24 12:40:31 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 12:40:31 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:40:31 [INFO] Experiment: Calibrating model...
+2026-01-24 12:40:36 [INFO] Experiment: Converting to INT8...
+2026-01-24 12:40:36 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 12:40:40 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 91.06% | Loss: -8.6962 | Total Time: 3.5495s | Latency: 2.6023 ms/img
+2026-01-24 12:40:40 [INFO] Experiment: Result Affine_PTQ: Acc=91.06% (Drop: 0.15)
+2026-01-24 12:40:40 [INFO] Experiment: Saved model size: 1.57 MB
+2026-01-24 12:40:40 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:40:40 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 12:40:40 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:40:40 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 12:40:45 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 12:40:45 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 12:43:38 [INFO] Experiment: Loading datasets...
+2026-01-24 12:43:38 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:43:38 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:43:39 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:43:39 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:43:39 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:43:46 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.8565s | Latency: 5.7599 ms/img
+2026-01-24 12:43:46 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.8565s, Size: 6.07MB
+2026-01-24 12:43:46 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 12:43:46 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:43:46 [INFO] Experiment: Calibrating model...
+2026-01-24 12:43:52 [INFO] Experiment: Converting to INT8...
+2026-01-24 12:43:52 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 12:44:04 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 91.06% | Loss: -8.6380 | Total Time: 11.7918s | Latency: 8.6450 ms/img
+2026-01-24 12:44:04 [INFO] Experiment: Result Affine_PTQ: Acc=91.06% (Drop: 0.15)
+2026-01-24 12:44:04 [INFO] Experiment: Saved model size: 1.57 MB
+2026-01-24 12:44:04 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:44:04 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 12:44:04 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:44:04 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 12:44:10 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 12:44:10 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 12:49:02 [INFO] Experiment: Loading datasets...
+2026-01-24 12:49:02 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:49:02 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:49:02 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:49:02 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:49:02 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:49:10 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 8.0681s | Latency: 5.9150 ms/img
+2026-01-24 12:49:10 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 8.0681s, Size: 6.07MB
+2026-01-24 12:49:10 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 12:49:10 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:49:10 [INFO] Experiment: Calibrating model...
+2026-01-24 12:49:16 [INFO] Experiment: Converting to INT8...
+2026-01-24 12:50:18 [INFO] Experiment: Loading datasets...
+2026-01-24 12:50:18 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 12:50:18 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 12:50:19 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 12:50:19 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 12:50:19 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 12:50:27 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.9736s | Latency: 5.8458 ms/img
+2026-01-24 12:50:27 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.9736s, Size: 6.07MB
+2026-01-24 12:50:27 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 12:50:27 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:50:27 [INFO] Experiment: Calibrating model...
+2026-01-24 12:50:32 [INFO] Experiment: Converting to INT8...
+2026-01-24 12:50:32 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 12:50:36 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 91.06% | Loss: -8.6789 | Total Time: 3.7042s | Latency: 2.7157 ms/img
+2026-01-24 12:50:36 [INFO] Experiment: Result Affine_PTQ: Acc=91.06% (Drop: 0.15)
+2026-01-24 12:50:36 [INFO] Experiment: Saved model size: 1.57 MB
+2026-01-24 12:50:36 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:50:36 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 12:50:36 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:50:36 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 12:50:42 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 12:50:42 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 12:50:45 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 90.62% | Loss: -8.6910 | Total Time: 3.6356s | Latency: 2.6654 ms/img
+2026-01-24 12:50:45 [INFO] Experiment: Result Symmetric_PTQ: Acc=90.62% (Drop: 0.59)
+2026-01-24 12:50:45 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:50:45 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-01-24 12:50:45 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 12:50:45 [INFO] Experiment: Calibrating PoT model...
+2026-01-24 12:50:50 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-01-24 12:50:50 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-01-24 12:50:53 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 33.43% | Loss: -2.3878 | Total Time: 3.6048s | Latency: 2.6428 ms/img
+2026-01-24 12:50:53 [INFO] Experiment: Result PoT_PTQ: Acc=33.43% (Drop: 57.77)
+2026-01-24 12:50:53 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 12:50:53 [INFO] Experiment: === Experiments completed successfully ===
+2026-01-24 14:52:40 [INFO] Experiment: Loading datasets...
+2026-01-24 14:52:40 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 14:52:40 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 14:52:40 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 14:52:40 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 14:52:40 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 14:52:48 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5200s | Latency: 5.5132 ms/img
+2026-01-24 14:52:48 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5200s, Size: 6.07MB
+2026-01-24 14:52:48 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 14:52:48 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 14:52:48 [INFO] Experiment: Calibrating model...
+2026-01-24 14:52:52 [INFO] Experiment: Converting to INT8...
+2026-01-24 14:52:52 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 14:52:55 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.32% | Loss: -8.6189 | Total Time: 3.3784s | Latency: 2.4768 ms/img
+2026-01-24 14:52:55 [INFO] Experiment: Result Affine_PTQ: Acc=90.32% (Drop: 0.88)
+2026-01-24 14:52:56 [INFO] Experiment: Saved model size: 1.55 MB
+2026-01-24 14:52:56 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 14:52:56 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 14:52:56 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 14:52:56 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 14:53:00 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 14:53:00 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 14:54:48 [INFO] Experiment: Loading datasets...
+2026-01-24 14:54:48 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 14:54:48 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 14:54:48 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 14:54:48 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 14:54:48 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 14:54:56 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6752s | Latency: 5.6270 ms/img
+2026-01-24 14:54:56 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6752s, Size: 6.07MB
+2026-01-24 14:54:56 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 14:54:56 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 14:54:56 [INFO] Experiment: Calibrating model...
+2026-01-24 14:55:00 [INFO] Experiment: Converting to INT8...
+2026-01-24 14:55:00 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 14:55:03 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.76% | Loss: -8.6602 | Total Time: 3.4250s | Latency: 2.5110 ms/img
+2026-01-24 14:55:03 [INFO] Experiment: Result Affine_PTQ: Acc=90.76% (Drop: 0.44)
+2026-01-24 14:55:03 [INFO] Experiment: Saved model size: 1.55 MB
+2026-01-24 14:55:03 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 14:55:03 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 14:55:03 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 14:55:03 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 14:55:08 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 14:55:08 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 14:55:11 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 0.66% | Loss: 26.7689 | Total Time: 3.4365s | Latency: 2.5194 ms/img
+2026-01-24 14:55:11 [INFO] Experiment: Result Symmetric_PTQ: Acc=0.66% (Drop: 90.54)
+2026-01-24 14:55:11 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 14:55:11 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-01-24 14:55:11 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 14:55:11 [INFO] Experiment: Calibrating PoT model...
+2026-01-24 14:55:15 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-01-24 14:55:15 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-01-24 14:55:18 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 32.48% | Loss: -2.4370 | Total Time: 3.4670s | Latency: 2.5418 ms/img
+2026-01-24 14:55:18 [INFO] Experiment: Result PoT_PTQ: Acc=32.48% (Drop: 58.72)
+2026-01-24 14:55:19 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 14:55:19 [INFO] Experiment: === Experiments completed successfully ===
+2026-01-24 14:57:07 [INFO] Experiment: Loading datasets...
+2026-01-24 14:57:07 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 14:57:07 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 14:57:07 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 14:57:07 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 14:57:07 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 14:57:15 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6663s | Latency: 5.6205 ms/img
+2026-01-24 14:57:15 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6663s, Size: 6.07MB
+2026-01-24 14:57:15 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 14:57:15 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 14:57:15 [INFO] Experiment: Calibrating model...
+2026-01-24 14:57:19 [INFO] Experiment: Converting to INT8...
+2026-01-24 14:57:19 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 14:57:22 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.47% | Loss: -8.6680 | Total Time: 3.4302s | Latency: 2.5148 ms/img
+2026-01-24 14:57:22 [INFO] Experiment: Result Affine_PTQ: Acc=90.47% (Drop: 0.73)
+2026-01-24 14:57:22 [INFO] Experiment: Saved model size: 1.55 MB
+2026-01-24 14:57:22 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 14:57:22 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 14:57:22 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 14:57:22 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 14:57:26 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 14:57:26 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 14:57:30 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 0.66% | Loss: 32.2999 | Total Time: 3.4235s | Latency: 2.5099 ms/img
+2026-01-24 14:57:30 [INFO] Experiment: Result Symmetric_PTQ: Acc=0.66% (Drop: 90.54)
+2026-01-24 14:57:30 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 14:57:30 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-01-24 14:57:30 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 14:57:30 [INFO] Experiment: Calibrating PoT model...
+2026-01-24 14:57:34 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-01-24 14:57:34 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-01-24 14:57:37 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 33.36% | Loss: -2.4450 | Total Time: 3.4525s | Latency: 2.5312 ms/img
+2026-01-24 14:57:37 [INFO] Experiment: Result PoT_PTQ: Acc=33.36% (Drop: 57.84)
+2026-01-24 14:57:37 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 14:57:37 [INFO] Experiment: === Experiments completed successfully ===
+2026-01-24 15:02:28 [INFO] Experiment: Loading datasets...
+2026-01-24 15:02:28 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 15:02:28 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 15:02:28 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 15:02:28 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 15:02:28 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 15:02:35 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5751s | Latency: 5.5536 ms/img
+2026-01-24 15:02:35 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5751s, Size: 6.07MB
+2026-01-24 15:02:35 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 15:02:35 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:02:35 [INFO] Experiment: Calibrating model...
+2026-01-24 15:02:39 [INFO] Experiment: Converting to INT8...
+2026-01-24 15:02:39 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 15:02:43 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 89.96% | Loss: -8.6387 | Total Time: 3.4144s | Latency: 2.5032 ms/img
+2026-01-24 15:02:43 [INFO] Experiment: Result Affine_PTQ: Acc=89.96% (Drop: 1.25)
+2026-01-24 15:02:43 [INFO] Experiment: Saved model size: 1.55 MB
+2026-01-24 15:02:43 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:02:43 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 15:02:43 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:02:43 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 15:02:47 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 15:05:49 [INFO] Experiment: Loading datasets...
+2026-01-24 15:05:49 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 15:05:49 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 15:05:49 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 15:05:49 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 15:05:49 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 15:05:57 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.4963s | Latency: 5.4958 ms/img
+2026-01-24 15:05:57 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.4963s, Size: 6.07MB
+2026-01-24 15:05:57 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 15:05:57 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:05:57 [INFO] Experiment: Calibrating model...
+2026-01-24 15:06:01 [INFO] Experiment: Converting to INT8...
+2026-01-24 15:06:01 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 15:06:04 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 89.81% | Loss: -8.5827 | Total Time: 3.3935s | Latency: 2.4879 ms/img
+2026-01-24 15:06:04 [INFO] Experiment: Result Affine_PTQ: Acc=89.81% (Drop: 1.39)
+2026-01-24 15:06:04 [INFO] Experiment: Saved model size: 1.55 MB
+2026-01-24 15:06:04 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:06:04 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 15:06:04 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:10:07 [INFO] Experiment: Loading datasets...
+2026-01-24 15:10:07 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 15:10:07 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 15:10:07 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 15:10:07 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 15:10:07 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 15:10:15 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5774s | Latency: 5.5553 ms/img
+2026-01-24 15:10:15 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5774s, Size: 6.07MB
+2026-01-24 15:10:15 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 15:10:15 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:10:15 [INFO] Experiment: Calibrating model...
+2026-01-24 15:10:19 [INFO] Experiment: Converting to INT8...
+2026-01-24 15:10:19 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 15:10:22 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.54% | Loss: -8.6483 | Total Time: 3.3724s | Latency: 2.4724 ms/img
+2026-01-24 15:10:22 [INFO] Experiment: Result Affine_PTQ: Acc=90.54% (Drop: 0.66)
+2026-01-24 15:10:22 [INFO] Experiment: Saved model size: 1.55 MB
+2026-01-24 15:10:22 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:10:22 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 15:10:22 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:10:22 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 15:10:27 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 15:10:27 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 15:10:30 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 0.66% | Loss: 32.0838 | Total Time: 3.4633s | Latency: 2.5390 ms/img
+2026-01-24 15:10:30 [INFO] Experiment: Result Symmetric_PTQ: Acc=0.66% (Drop: 90.54)
+2026-01-24 15:10:30 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:10:30 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-01-24 15:10:30 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:10:30 [INFO] Experiment: Calibrating PoT model...
+2026-01-24 15:10:34 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-01-24 15:10:34 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-01-24 15:10:37 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 33.80% | Loss: -2.5414 | Total Time: 3.4555s | Latency: 2.5333 ms/img
+2026-01-24 15:10:37 [INFO] Experiment: Result PoT_PTQ: Acc=33.80% (Drop: 57.40)
+2026-01-24 15:10:37 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:10:37 [INFO] Experiment: === Experiments completed successfully ===
+2026-01-24 15:11:42 [INFO] Experiment: Loading datasets...
+2026-01-24 15:11:42 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 15:11:42 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 15:11:42 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 15:11:42 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 15:11:42 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 15:11:50 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.7872s | Latency: 5.7091 ms/img
+2026-01-24 15:11:50 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.7872s, Size: 6.07MB
+2026-01-24 15:11:50 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 15:11:50 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:11:50 [INFO] Experiment: Calibrating model...
+2026-01-24 15:11:54 [INFO] Experiment: Converting to INT8...
+2026-01-24 15:11:54 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 15:11:58 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.47% | Loss: -8.6901 | Total Time: 3.7048s | Latency: 2.7161 ms/img
+2026-01-24 15:11:58 [INFO] Experiment: Result Affine_PTQ: Acc=90.47% (Drop: 0.73)
+2026-01-24 15:11:58 [INFO] Experiment: Saved model size: 1.55 MB
+2026-01-24 15:11:58 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:11:58 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 15:11:58 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:11:58 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 15:12:02 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 15:12:03 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 15:12:06 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 0.66% | Loss: 35.7937 | Total Time: 3.4707s | Latency: 2.5445 ms/img
+2026-01-24 15:12:06 [INFO] Experiment: Result Symmetric_PTQ: Acc=0.66% (Drop: 90.54)
+2026-01-24 15:12:06 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:12:06 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-01-24 15:12:06 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:12:06 [INFO] Experiment: Calibrating PoT model...
+2026-01-24 15:12:10 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-01-24 15:12:10 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-01-24 15:12:14 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 42.67% | Loss: -3.2317 | Total Time: 3.5360s | Latency: 2.5923 ms/img
+2026-01-24 15:12:14 [INFO] Experiment: Result PoT_PTQ: Acc=42.67% (Drop: 48.53)
+2026-01-24 15:12:14 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:12:14 [INFO] Experiment: === Experiments completed successfully ===
+2026-01-24 15:12:59 [INFO] Experiment: Loading datasets...
+2026-01-24 15:12:59 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-01-24 15:12:59 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-01-24 15:12:59 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-01-24 15:12:59 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-01-24 15:12:59 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-01-24 15:13:07 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5415s | Latency: 5.5289 ms/img
+2026-01-24 15:13:07 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5415s, Size: 6.07MB
+2026-01-24 15:13:07 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-01-24 15:13:07 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:13:07 [INFO] Experiment: Calibrating model...
+2026-01-24 15:13:10 [INFO] Experiment: Converting to INT8...
+2026-01-24 15:13:10 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-01-24 15:13:14 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.54% | Loss: -8.6526 | Total Time: 3.3557s | Latency: 2.4602 ms/img
+2026-01-24 15:13:14 [INFO] Experiment: Result Affine_PTQ: Acc=90.54% (Drop: 0.66)
+2026-01-24 15:13:14 [INFO] Experiment: Saved model size: 1.55 MB
+2026-01-24 15:13:14 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:13:14 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-01-24 15:13:14 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:13:14 [INFO] Experiment: Calibrating Symmetric model...
+2026-01-24 15:13:18 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-01-24 15:13:18 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-01-24 15:13:21 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 90.47% | Loss: -8.7347 | Total Time: 3.5779s | Latency: 2.6231 ms/img
+2026-01-24 15:13:21 [INFO] Experiment: Result Symmetric_PTQ: Acc=90.47% (Drop: 0.73)
+2026-01-24 15:13:21 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:13:21 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-01-24 15:13:21 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-01-24 15:13:21 [INFO] Experiment: Calibrating PoT model...
+2026-01-24 15:13:25 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-01-24 15:13:25 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-01-24 15:13:29 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 32.77% | Loss: -2.5022 | Total Time: 3.4563s | Latency: 2.5339 ms/img
+2026-01-24 15:13:29 [INFO] Experiment: Result PoT_PTQ: Acc=32.77% (Drop: 58.43)
+2026-01-24 15:13:29 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-01-24 15:13:29 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 13:42:10 [INFO] Experiment: Loading datasets...
+2026-02-06 13:42:10 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 13:42:10 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 13:42:10 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 13:42:10 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 13:42:10 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 13:42:18 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 8.1948s | Latency: 6.0079 ms/img
+2026-02-06 13:42:18 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 8.1948s, Size: 6.07MB
+2026-02-06 13:42:18 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 13:42:18 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:42:18 [INFO] Experiment: Calibrating model...
+2026-02-06 13:42:22 [INFO] Experiment: Converting to INT8...
+2026-02-06 13:42:22 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 13:42:26 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.32% | Loss: -8.6577 | Total Time: 3.6017s | Latency: 2.6406 ms/img
+2026-02-06 13:42:26 [INFO] Experiment: Result Affine_PTQ: Acc=90.32% (Drop: 0.88)
+2026-02-06 13:42:26 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 13:42:26 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:42:26 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 13:42:26 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:42:26 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 13:42:30 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 13:42:30 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 13:42:34 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 45.60% | Loss: -3.1407 | Total Time: 3.5297s | Latency: 2.5878 ms/img
+2026-02-06 13:42:34 [INFO] Experiment: Result Symmetric_PTQ: Acc=45.60% (Drop: 45.60)
+2026-02-06 13:42:34 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:42:34 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 13:42:34 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:42:34 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 13:42:38 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 13:42:38 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 13:42:41 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 32.77% | Loss: -2.5022 | Total Time: 3.4842s | Latency: 2.5544 ms/img
+2026-02-06 13:42:41 [INFO] Experiment: Result PoT_PTQ: Acc=32.77% (Drop: 58.43)
+2026-02-06 13:42:41 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:42:41 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 13:49:01 [INFO] Experiment: Loading datasets...
+2026-02-06 13:49:01 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 13:49:01 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 13:49:01 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 13:49:01 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 13:49:01 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 13:49:09 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 24.49% | Loss: 5.2072 | Total Time: 7.7329s | Latency: 5.6693 ms/img
+2026-02-06 13:49:09 [INFO] Experiment: Baseline -> Acc: 24.49%, Time: 7.7329s, Size: 6.07MB
+2026-02-06 13:49:09 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 13:49:09 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:49:09 [INFO] Experiment: Calibrating model...
+2026-02-06 13:49:13 [INFO] Experiment: Converting to INT8...
+2026-02-06 13:49:13 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 13:49:17 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 24.56% | Loss: 5.6481 | Total Time: 3.3800s | Latency: 2.4780 ms/img
+2026-02-06 13:49:17 [INFO] Experiment: Result Affine_PTQ: Acc=24.56% (Drop: -0.07)
+2026-02-06 13:49:17 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 13:49:17 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:49:17 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 13:49:17 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:49:17 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 13:49:21 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 13:49:21 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 13:49:24 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 5.06% | Loss: -0.2171 | Total Time: 3.4650s | Latency: 2.5404 ms/img
+2026-02-06 13:49:24 [INFO] Experiment: Result Symmetric_PTQ: Acc=5.06% (Drop: 19.43)
+2026-02-06 13:49:24 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:49:24 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 13:49:24 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:49:24 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 13:49:28 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 13:49:28 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 13:49:32 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 11.80% | Loss: -0.7863 | Total Time: 3.4570s | Latency: 2.5345 ms/img
+2026-02-06 13:49:32 [INFO] Experiment: Result PoT_PTQ: Acc=11.80% (Drop: 12.68)
+2026-02-06 13:49:32 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:49:32 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 13:49:44 [INFO] Experiment: Loading datasets...
+2026-02-06 13:49:44 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 13:49:44 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 13:49:44 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 13:49:44 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 13:49:44 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 13:49:52 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6771s | Latency: 5.6284 ms/img
+2026-02-06 13:49:52 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6771s, Size: 6.07MB
+2026-02-06 13:49:52 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 13:49:52 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:49:52 [INFO] Experiment: Calibrating model...
+2026-02-06 13:49:56 [INFO] Experiment: Converting to INT8...
+2026-02-06 13:49:56 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 13:49:59 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 89.81% | Loss: -8.5598 | Total Time: 3.4333s | Latency: 2.5171 ms/img
+2026-02-06 13:49:59 [INFO] Experiment: Result Affine_PTQ: Acc=89.81% (Drop: 1.39)
+2026-02-06 13:49:59 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 13:49:59 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:49:59 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 13:49:59 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:49:59 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 13:50:03 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 13:50:03 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 13:50:07 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 23.02% | Loss: -1.1263 | Total Time: 3.4763s | Latency: 2.5486 ms/img
+2026-02-06 13:50:07 [INFO] Experiment: Result Symmetric_PTQ: Acc=23.02% (Drop: 68.18)
+2026-02-06 13:50:07 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:50:07 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 13:50:07 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:50:07 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 13:50:11 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 13:50:11 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 13:50:14 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 33.50% | Loss: -2.4916 | Total Time: 3.5047s | Latency: 2.5694 ms/img
+2026-02-06 13:50:14 [INFO] Experiment: Result PoT_PTQ: Acc=33.50% (Drop: 57.70)
+2026-02-06 13:50:14 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:50:14 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 13:55:37 [INFO] Experiment: Loading datasets...
+2026-02-06 13:55:37 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 13:55:37 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 13:55:37 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 13:55:37 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 13:55:37 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 13:55:45 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6030s | Latency: 5.5740 ms/img
+2026-02-06 13:55:45 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6030s, Size: 6.07MB
+2026-02-06 13:55:45 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 13:55:45 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:55:45 [INFO] Experiment: Calibrating model...
+2026-02-06 13:55:49 [INFO] Experiment: Converting to INT8...
+2026-02-06 13:55:49 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 13:55:52 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.40% | Loss: -8.6796 | Total Time: 3.4171s | Latency: 2.5052 ms/img
+2026-02-06 13:55:52 [INFO] Experiment: Result Affine_PTQ: Acc=90.40% (Drop: 0.81)
+2026-02-06 13:55:52 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 13:55:52 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 13:55:52 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 13:55:52 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 13:55:52 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 13:55:56 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 13:55:56 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:00:50 [INFO] Experiment: Loading datasets...
+2026-02-06 14:00:50 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:00:50 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:00:50 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:00:50 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:00:50 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:00:58 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6026s | Latency: 5.5737 ms/img
+2026-02-06 14:00:58 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6026s, Size: 6.07MB
+2026-02-06 14:00:58 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:00:58 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:00:58 [INFO] Experiment: Calibrating model...
+2026-02-06 14:01:02 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:01:02 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:01:05 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.25% | Loss: -8.6256 | Total Time: 3.4208s | Latency: 2.5079 ms/img
+2026-02-06 14:01:05 [INFO] Experiment: Result Affine_PTQ: Acc=90.25% (Drop: 0.95)
+2026-02-06 14:01:05 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:01:05 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:01:05 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:01:05 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:01:05 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:01:05 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:01:05 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 14:01:09 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:01:09 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:01:13 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 66.28% | Loss: -4.5423 | Total Time: 3.4539s | Latency: 2.5322 ms/img
+2026-02-06 14:01:13 [INFO] Experiment: Result Symmetric_PTQ: Acc=66.28% (Drop: 24.93)
+2026-02-06 14:01:13 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:01:13 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:01:13 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:01:13 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:01:17 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:01:17 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:01:20 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 42.82% | Loss: -3.2793 | Total Time: 3.4696s | Latency: 2.5437 ms/img
+2026-02-06 14:01:20 [INFO] Experiment: Result PoT_PTQ: Acc=42.82% (Drop: 48.39)
+2026-02-06 14:01:20 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:01:20 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:10:30 [INFO] Experiment: Loading datasets...
+2026-02-06 14:10:30 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:10:30 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:10:31 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:10:31 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:10:31 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:10:38 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6802s | Latency: 5.6306 ms/img
+2026-02-06 14:10:38 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6802s, Size: 6.07MB
+2026-02-06 14:10:38 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:10:38 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:10:38 [INFO] Experiment: Calibrating model...
+2026-02-06 14:10:48 [INFO] Experiment: Loading datasets...
+2026-02-06 14:10:48 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:10:48 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:10:48 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:10:48 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:10:48 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:10:56 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6423s | Latency: 5.6029 ms/img
+2026-02-06 14:10:56 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6423s, Size: 6.07MB
+2026-02-06 14:10:56 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:10:56 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:10:56 [INFO] Experiment: Calibrating model...
+2026-02-06 14:11:00 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:11:00 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:11:03 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 89.81% | Loss: -8.5729 | Total Time: 3.4401s | Latency: 2.5221 ms/img
+2026-02-06 14:11:03 [INFO] Experiment: Result Affine_PTQ: Acc=89.81% (Drop: 1.39)
+2026-02-06 14:11:03 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:11:03 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:11:03 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:11:03 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:11:03 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:11:03 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:11:03 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 14:11:07 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:11:07 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:11:11 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 69.35% | Loss: -3.7746 | Total Time: 3.4628s | Latency: 2.5387 ms/img
+2026-02-06 14:11:11 [INFO] Experiment: Result Symmetric_PTQ: Acc=69.35% (Drop: 21.85)
+2026-02-06 14:11:11 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:11:11 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:11:11 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:11:11 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:11:15 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:11:15 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:11:18 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 42.67% | Loss: -3.2317 | Total Time: 3.5224s | Latency: 2.5824 ms/img
+2026-02-06 14:11:18 [INFO] Experiment: Result PoT_PTQ: Acc=42.67% (Drop: 48.53)
+2026-02-06 14:11:18 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:11:18 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:17:15 [INFO] Experiment: Loading datasets...
+2026-02-06 14:17:15 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:17:15 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:17:15 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:17:15 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:17:15 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:17:23 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5678s | Latency: 5.5482 ms/img
+2026-02-06 14:17:23 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5678s, Size: 6.07MB
+2026-02-06 14:17:23 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:17:23 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:17:23 [INFO] Experiment: Calibrating model...
+2026-02-06 14:17:27 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:17:27 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:17:30 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.10% | Loss: -8.6555 | Total Time: 3.4258s | Latency: 2.5116 ms/img
+2026-02-06 14:17:30 [INFO] Experiment: Result Affine_PTQ: Acc=90.10% (Drop: 1.10)
+2026-02-06 14:17:30 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:17:30 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:17:30 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:17:30 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:17:30 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:17:30 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:17:30 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 14:17:34 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:17:34 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:17:38 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 69.43% | Loss: -3.7376 | Total Time: 3.4434s | Latency: 2.5245 ms/img
+2026-02-06 14:17:38 [INFO] Experiment: Result Symmetric_PTQ: Acc=69.43% (Drop: 21.77)
+2026-02-06 14:17:38 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:17:38 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:17:38 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:17:38 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:17:42 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:17:42 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:17:45 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 32.77% | Loss: -2.5022 | Total Time: 3.4497s | Latency: 2.5291 ms/img
+2026-02-06 14:17:45 [INFO] Experiment: Result PoT_PTQ: Acc=32.77% (Drop: 58.43)
+2026-02-06 14:17:45 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:17:45 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:20:08 [INFO] Experiment: Loading datasets...
+2026-02-06 14:20:08 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:20:08 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:20:08 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:20:08 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:20:08 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:20:16 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.7528s | Latency: 5.6839 ms/img
+2026-02-06 14:20:16 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.7528s, Size: 6.07MB
+2026-02-06 14:20:16 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:20:16 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:20:16 [INFO] Experiment: Calibrating model...
+2026-02-06 14:20:20 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:20:20 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:20:23 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.25% | Loss: -8.6270 | Total Time: 3.4557s | Latency: 2.5335 ms/img
+2026-02-06 14:20:23 [INFO] Experiment: Result Affine_PTQ: Acc=90.25% (Drop: 0.95)
+2026-02-06 14:20:24 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:20:24 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:20:24 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:20:24 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:20:24 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:20:24 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:20:24 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 14:20:29 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:20:29 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:20:32 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 69.94% | Loss: -3.8036 | Total Time: 3.4581s | Latency: 2.5352 ms/img
+2026-02-06 14:20:32 [INFO] Experiment: Result Symmetric_PTQ: Acc=69.94% (Drop: 21.26)
+2026-02-06 14:20:32 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:20:32 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:20:32 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:20:32 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:20:36 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:20:36 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:20:40 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 43.33% | Loss: -3.2207 | Total Time: 3.4436s | Latency: 2.5246 ms/img
+2026-02-06 14:20:40 [INFO] Experiment: Result PoT_PTQ: Acc=43.33% (Drop: 47.87)
+2026-02-06 14:20:40 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:20:40 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:22:36 [INFO] Experiment: Loading datasets...
+2026-02-06 14:22:36 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:22:36 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:22:36 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:22:36 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:22:36 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:22:44 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5739s | Latency: 5.5527 ms/img
+2026-02-06 14:22:44 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5739s, Size: 6.07MB
+2026-02-06 14:22:44 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:22:44 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:22:44 [INFO] Experiment: Calibrating model...
+2026-02-06 14:22:48 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:22:48 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:22:51 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.54% | Loss: -8.6409 | Total Time: 3.6805s | Latency: 2.6983 ms/img
+2026-02-06 14:22:51 [INFO] Experiment: Result Affine_PTQ: Acc=90.54% (Drop: 0.66)
+2026-02-06 14:22:52 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:22:52 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:22:52 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:22:52 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:22:52 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:22:52 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:23:31 [INFO] Experiment: Loading datasets...
+2026-02-06 14:23:31 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:23:31 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:23:31 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:23:31 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:23:31 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:23:39 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6430s | Latency: 5.6034 ms/img
+2026-02-06 14:23:39 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6430s, Size: 6.07MB
+2026-02-06 14:23:39 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:23:39 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:23:39 [INFO] Experiment: Calibrating model...
+2026-02-06 14:23:43 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:23:43 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:23:46 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.25% | Loss: -8.6479 | Total Time: 3.4607s | Latency: 2.5372 ms/img
+2026-02-06 14:23:46 [INFO] Experiment: Result Affine_PTQ: Acc=90.25% (Drop: 0.95)
+2026-02-06 14:23:46 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:23:46 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:23:46 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:23:46 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:23:46 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:23:46 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:23:46 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 14:23:52 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:24:09 [INFO] Experiment: Loading datasets...
+2026-02-06 14:24:09 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:24:09 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:24:09 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:24:09 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:24:09 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:24:17 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.9479s | Latency: 5.8269 ms/img
+2026-02-06 14:24:17 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.9479s, Size: 6.07MB
+2026-02-06 14:24:17 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:24:17 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:24:17 [INFO] Experiment: Calibrating model...
+2026-02-06 14:24:21 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:24:21 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:24:25 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.47% | Loss: -8.6319 | Total Time: 3.4918s | Latency: 2.5600 ms/img
+2026-02-06 14:24:25 [INFO] Experiment: Result Affine_PTQ: Acc=90.47% (Drop: 0.73)
+2026-02-06 14:24:25 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:24:25 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:24:25 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:24:25 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:24:25 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:24:25 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:24:25 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 14:24:30 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:24:30 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:24:34 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 89.74% | Loss: -8.5750 | Total Time: 3.3986s | Latency: 2.4916 ms/img
+2026-02-06 14:24:34 [INFO] Experiment: Result Symmetric_PTQ: Acc=89.74% (Drop: 1.47)
+2026-02-06 14:24:34 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:24:34 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:24:34 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:24:34 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:24:38 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:24:38 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:24:41 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 32.77% | Loss: -2.5022 | Total Time: 3.4692s | Latency: 2.5434 ms/img
+2026-02-06 14:24:41 [INFO] Experiment: Result PoT_PTQ: Acc=32.77% (Drop: 58.43)
+2026-02-06 14:24:41 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:24:41 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:25:27 [INFO] Experiment: Loading datasets...
+2026-02-06 14:25:27 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:25:27 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:25:27 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:25:27 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:25:27 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:25:35 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6372s | Latency: 5.5991 ms/img
+2026-02-06 14:25:35 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6372s, Size: 6.07MB
+2026-02-06 14:25:35 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:25:35 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:25:35 [INFO] Experiment: Calibrating model...
+2026-02-06 14:25:39 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:25:39 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:25:42 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.18% | Loss: -8.6410 | Total Time: 3.4496s | Latency: 2.5291 ms/img
+2026-02-06 14:25:42 [INFO] Experiment: Result Affine_PTQ: Acc=90.18% (Drop: 1.03)
+2026-02-06 14:25:42 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:25:42 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:25:42 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:25:42 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:25:42 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:25:42 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:25:42 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 14:25:46 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:25:46 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:25:50 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 67.96% | Loss: -3.3982 | Total Time: 3.4529s | Latency: 2.5314 ms/img
+2026-02-06 14:25:50 [INFO] Experiment: Result Symmetric_PTQ: Acc=67.96% (Drop: 23.24)
+2026-02-06 14:25:50 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:25:50 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:25:50 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:25:50 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:25:54 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:25:54 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:25:57 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 32.77% | Loss: -2.5022 | Total Time: 3.4991s | Latency: 2.5653 ms/img
+2026-02-06 14:25:57 [INFO] Experiment: Result PoT_PTQ: Acc=32.77% (Drop: 58.43)
+2026-02-06 14:25:57 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:25:57 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:28:55 [INFO] Experiment: Loading datasets...
+2026-02-06 14:28:55 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:28:55 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:28:55 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:28:55 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:28:55 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:29:03 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5890s | Latency: 5.5638 ms/img
+2026-02-06 14:29:03 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5890s, Size: 6.07MB
+2026-02-06 14:29:03 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:29:03 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:29:03 [INFO] Experiment: Calibrating model...
+2026-02-06 14:29:07 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:29:07 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:29:10 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.03% | Loss: -8.6147 | Total Time: 3.5391s | Latency: 2.5947 ms/img
+2026-02-06 14:29:10 [INFO] Experiment: Result Affine_PTQ: Acc=90.03% (Drop: 1.17)
+2026-02-06 14:29:10 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:29:10 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:29:10 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:29:10 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:29:10 [INFO] Experiment: Overriding Input Layer to Affine (to handle negative input)
+2026-02-06 14:29:10 [INFO] Experiment: Overriding Final Layer to Affine (to handle negative logits)
+2026-02-06 14:29:10 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 14:29:14 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:29:14 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:29:18 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 20.67% | Loss: -1.0073 | Total Time: 3.5230s | Latency: 2.5829 ms/img
+2026-02-06 14:29:18 [INFO] Experiment: Result Symmetric_PTQ: Acc=20.67% (Drop: 70.53)
+2026-02-06 14:29:18 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:29:18 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:29:18 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:29:18 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:29:22 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:29:22 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:29:25 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 33.50% | Loss: -2.4916 | Total Time: 3.5240s | Latency: 2.5836 ms/img
+2026-02-06 14:29:25 [INFO] Experiment: Result PoT_PTQ: Acc=33.50% (Drop: 57.70)
+2026-02-06 14:29:25 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:29:25 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:32:06 [INFO] Experiment: Loading datasets...
+2026-02-06 14:32:06 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:32:06 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:32:06 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:32:06 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:32:06 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:32:14 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6133s | Latency: 5.5816 ms/img
+2026-02-06 14:32:14 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6133s, Size: 6.07MB
+2026-02-06 14:32:14 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:32:14 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:32:14 [INFO] Experiment: Calibrating model...
+2026-02-06 14:32:17 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:32:17 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:32:21 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.54% | Loss: -8.6356 | Total Time: 3.4231s | Latency: 2.5096 ms/img
+2026-02-06 14:32:21 [INFO] Experiment: Result Affine_PTQ: Acc=90.54% (Drop: 0.66)
+2026-02-06 14:32:21 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:32:21 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:32:21 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:32:21 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:32:25 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:32:25 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:32:28 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 21.63% | Loss: -1.0681 | Total Time: 3.4422s | Latency: 2.5236 ms/img
+2026-02-06 14:32:28 [INFO] Experiment: Result Symmetric_PTQ: Acc=21.63% (Drop: 69.57)
+2026-02-06 14:32:28 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:32:28 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:32:28 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:32:28 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:32:32 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:32:32 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:32:36 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 42.67% | Loss: -3.2317 | Total Time: 3.5502s | Latency: 2.6028 ms/img
+2026-02-06 14:32:36 [INFO] Experiment: Result PoT_PTQ: Acc=42.67% (Drop: 48.53)
+2026-02-06 14:32:36 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:32:36 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:40:24 [INFO] Experiment: Loading datasets...
+2026-02-06 14:40:24 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:40:24 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:40:24 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:40:24 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:40:24 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:40:32 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6810s | Latency: 5.6312 ms/img
+2026-02-06 14:40:32 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6810s, Size: 6.07MB
+2026-02-06 14:40:32 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:40:32 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:40:32 [INFO] Experiment: Calibrating model...
+2026-02-06 14:40:36 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:40:36 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:40:39 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.40% | Loss: -8.6214 | Total Time: 3.4326s | Latency: 2.5165 ms/img
+2026-02-06 14:40:39 [INFO] Experiment: Result Affine_PTQ: Acc=90.40% (Drop: 0.81)
+2026-02-06 14:40:39 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:40:39 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:40:39 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:40:39 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:40:43 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:40:43 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:40:47 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 62.90% | Loss: -3.0061 | Total Time: 3.4839s | Latency: 2.5542 ms/img
+2026-02-06 14:40:47 [INFO] Experiment: Result Symmetric_PTQ: Acc=62.90% (Drop: 28.30)
+2026-02-06 14:40:47 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:40:47 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:40:47 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:40:47 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:40:51 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:40:51 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:40:54 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 33.50% | Loss: -2.4916 | Total Time: 3.4853s | Latency: 2.5552 ms/img
+2026-02-06 14:40:54 [INFO] Experiment: Result PoT_PTQ: Acc=33.50% (Drop: 57.70)
+2026-02-06 14:40:54 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:40:54 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:44:01 [INFO] Experiment: Loading datasets...
+2026-02-06 14:44:01 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:44:01 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:44:01 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:44:01 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:44:01 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:44:09 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.8696s | Latency: 5.7695 ms/img
+2026-02-06 14:44:09 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.8696s, Size: 6.07MB
+2026-02-06 14:44:09 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:44:09 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:44:09 [INFO] Experiment: Calibrating model...
+2026-02-06 14:44:13 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:44:13 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:44:16 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.47% | Loss: -8.6483 | Total Time: 3.4641s | Latency: 2.5396 ms/img
+2026-02-06 14:44:16 [INFO] Experiment: Result Affine_PTQ: Acc=90.47% (Drop: 0.73)
+2026-02-06 14:44:16 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:44:16 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:44:16 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:44:16 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:44:20 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:44:20 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:44:24 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 87.76% | Loss: -8.1029 | Total Time: 3.4808s | Latency: 2.5519 ms/img
+2026-02-06 14:44:24 [INFO] Experiment: Result Symmetric_PTQ: Acc=87.76% (Drop: 3.45)
+2026-02-06 14:44:24 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:44:24 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:44:24 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:44:24 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:44:28 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:44:28 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:44:32 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 33.50% | Loss: -2.4916 | Total Time: 3.4976s | Latency: 2.5642 ms/img
+2026-02-06 14:44:32 [INFO] Experiment: Result PoT_PTQ: Acc=33.50% (Drop: 57.70)
+2026-02-06 14:44:32 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:44:32 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:47:37 [INFO] Experiment: Loading datasets...
+2026-02-06 14:47:37 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:47:37 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:47:37 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:47:37 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:47:37 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:47:45 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.6591s | Latency: 5.6152 ms/img
+2026-02-06 14:47:45 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.6591s, Size: 6.07MB
+2026-02-06 14:47:45 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:47:45 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:47:45 [INFO] Experiment: Calibrating model...
+2026-02-06 14:47:49 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:47:49 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:47:52 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.32% | Loss: -8.6266 | Total Time: 3.4623s | Latency: 2.5384 ms/img
+2026-02-06 14:47:52 [INFO] Experiment: Result Affine_PTQ: Acc=90.32% (Drop: 0.88)
+2026-02-06 14:47:53 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:47:53 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:47:53 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:47:53 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:47:56 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:47:56 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:48:00 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 87.90% | Loss: -8.0740 | Total Time: 3.4879s | Latency: 2.5571 ms/img
+2026-02-06 14:48:00 [INFO] Experiment: Result Symmetric_PTQ: Acc=87.90% (Drop: 3.30)
+2026-02-06 14:48:00 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:48:00 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:48:00 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:48:00 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:48:04 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:48:04 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:48:08 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 42.67% | Loss: -3.2317 | Total Time: 3.5256s | Latency: 2.5847 ms/img
+2026-02-06 14:48:08 [INFO] Experiment: Result PoT_PTQ: Acc=42.67% (Drop: 48.53)
+2026-02-06 14:48:08 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:48:08 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 14:57:01 [INFO] Experiment: Loading datasets...
+2026-02-06 14:57:01 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 14:57:01 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 14:57:01 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 14:57:01 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 14:57:01 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 14:57:09 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.7727s | Latency: 5.6985 ms/img
+2026-02-06 14:57:09 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.7727s, Size: 6.07MB
+2026-02-06 14:57:09 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 14:57:09 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:57:09 [INFO] Experiment: Calibrating model...
+2026-02-06 14:57:13 [INFO] Experiment: Converting to INT8...
+2026-02-06 14:57:13 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 14:57:16 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.32% | Loss: -8.6440 | Total Time: 3.4320s | Latency: 2.5161 ms/img
+2026-02-06 14:57:16 [INFO] Experiment: Result Affine_PTQ: Acc=90.32% (Drop: 0.88)
+2026-02-06 14:57:17 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 14:57:17 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:57:17 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 14:57:17 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:57:20 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 14:57:20 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 14:57:24 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 87.98% | Loss: -8.0292 | Total Time: 3.4772s | Latency: 2.5493 ms/img
+2026-02-06 14:57:24 [INFO] Experiment: Result Symmetric_PTQ: Acc=87.98% (Drop: 3.23)
+2026-02-06 14:57:24 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:57:24 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 14:57:24 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 14:57:24 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 14:57:28 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 14:57:28 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 14:57:31 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 90.03% | Loss: -8.5337 | Total Time: 3.4486s | Latency: 2.5283 ms/img
+2026-02-06 14:57:31 [INFO] Experiment: Result PoT_PTQ: Acc=90.03% (Drop: 1.17)
+2026-02-06 14:57:31 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 14:57:31 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 15:27:20 [INFO] Experiment: Loading datasets...
+2026-02-06 15:27:20 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 15:27:20 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 15:27:21 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 15:27:21 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 15:27:21 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 15:27:28 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.7956s | Latency: 5.7153 ms/img
+2026-02-06 15:27:28 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.7956s, Size: 6.07MB
+2026-02-06 15:27:28 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 15:27:28 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:27:28 [INFO] Experiment: Calibrating model...
+2026-02-06 15:27:32 [INFO] Experiment: Converting to INT8...
+2026-02-06 15:27:32 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 15:27:36 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.62% | Loss: -8.6300 | Total Time: 3.5991s | Latency: 2.6386 ms/img
+2026-02-06 15:27:36 [INFO] Experiment: Result Affine_PTQ: Acc=90.62% (Drop: 0.59)
+2026-02-06 15:27:36 [INFO] Experiment: Saved model size: 1.55 MB
+2026-02-06 15:27:36 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:27:36 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 15:27:36 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:27:40 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 15:27:40 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 15:27:44 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 88.20% | Loss: -8.0977 | Total Time: 3.5817s | Latency: 2.6259 ms/img
+2026-02-06 15:27:44 [INFO] Experiment: Result Symmetric_PTQ: Acc=88.20% (Drop: 3.01)
+2026-02-06 15:27:44 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:27:44 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 15:27:44 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:27:44 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 15:27:48 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 15:27:48 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 15:27:51 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 83.94% | Loss: -6.7383 | Total Time: 3.5567s | Latency: 2.6076 ms/img
+2026-02-06 15:27:51 [INFO] Experiment: Result PoT_PTQ: Acc=83.94% (Drop: 7.26)
+2026-02-06 15:27:51 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:27:51 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 15:36:33 [INFO] Experiment: Loading datasets...
+2026-02-06 15:36:33 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 15:36:33 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 15:36:34 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 15:36:34 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 15:36:34 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 15:36:41 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5242s | Latency: 5.5163 ms/img
+2026-02-06 15:36:41 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5242s, Size: 6.07MB
+2026-02-06 15:36:41 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 15:36:41 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:36:41 [INFO] Experiment: Calibrating model...
+2026-02-06 15:36:45 [INFO] Experiment: Converting to INT8...
+2026-02-06 15:36:45 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 15:36:49 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.40% | Loss: -8.6203 | Total Time: 3.4527s | Latency: 2.5313 ms/img
+2026-02-06 15:36:49 [INFO] Experiment: Result Affine_PTQ: Acc=90.40% (Drop: 0.81)
+2026-02-06 15:36:49 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:36:49 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 15:36:49 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:36:49 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 15:36:53 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 15:36:53 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 15:36:56 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 85.92% | Loss: -7.6603 | Total Time: 3.4797s | Latency: 2.5511 ms/img
+2026-02-06 15:36:56 [INFO] Experiment: Result Symmetric_PTQ: Acc=85.92% (Drop: 5.28)
+2026-02-06 15:36:56 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:36:56 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 15:36:56 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:36:56 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 15:37:00 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 15:37:00 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 15:37:04 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 90.03% | Loss: -8.5337 | Total Time: 3.5047s | Latency: 2.5695 ms/img
+2026-02-06 15:37:04 [INFO] Experiment: Result PoT_PTQ: Acc=90.03% (Drop: 1.17)
+2026-02-06 15:37:04 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:37:04 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 15:39:07 [INFO] Experiment: Loading datasets...
+2026-02-06 15:39:07 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 15:39:07 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 15:39:07 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 15:39:07 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 15:39:07 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 15:39:14 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5841s | Latency: 5.5602 ms/img
+2026-02-06 15:39:14 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5841s, Size: 6.07MB
+2026-02-06 15:39:14 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 15:39:14 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:39:14 [INFO] Experiment: Calibrating model...
+2026-02-06 15:39:18 [INFO] Experiment: Converting to INT8...
+2026-02-06 15:39:18 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 15:39:22 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.18% | Loss: -8.6421 | Total Time: 3.3864s | Latency: 2.4827 ms/img
+2026-02-06 15:39:22 [INFO] Experiment: Result Affine_PTQ: Acc=90.18% (Drop: 1.03)
+2026-02-06 15:39:22 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:39:22 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 15:39:22 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:39:22 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 15:39:26 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 15:39:26 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 15:39:29 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 87.90% | Loss: -8.0499 | Total Time: 3.5989s | Latency: 2.6385 ms/img
+2026-02-06 15:39:29 [INFO] Experiment: Result Symmetric_PTQ: Acc=87.90% (Drop: 3.30)
+2026-02-06 15:39:29 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:39:29 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 15:39:29 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:39:29 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 15:39:34 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 15:39:34 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 15:39:37 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 84.02% | Loss: -6.7683 | Total Time: 3.6527s | Latency: 2.6779 ms/img
+2026-02-06 15:39:37 [INFO] Experiment: Result PoT_PTQ: Acc=84.02% (Drop: 7.18)
+2026-02-06 15:39:37 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:39:37 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-06 15:40:19 [INFO] Experiment: Loading datasets...
+2026-02-06 15:40:19 [INFO] src.utility.utils: Gen-1 Dataset geladen: 5456 Train, 1364 Val. Klassen: 150
+2026-02-06 15:40:19 [INFO] src.utility.utils: Bildgröße: 64x64
+2026-02-06 15:40:19 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-06 15:40:19 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-06 15:40:19 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 1364)
+2026-02-06 15:40:27 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 91.20% | Loss: -8.6493 | Total Time: 7.5356s | Latency: 5.5246 ms/img
+2026-02-06 15:40:27 [INFO] Experiment: Baseline -> Acc: 91.20%, Time: 7.5356s, Size: 6.07MB
+2026-02-06 15:40:27 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-06 15:40:27 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:40:27 [INFO] Experiment: Calibrating model...
+2026-02-06 15:40:31 [INFO] Experiment: Converting to INT8...
+2026-02-06 15:40:31 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 1364)
+2026-02-06 15:40:34 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 90.69% | Loss: -8.6124 | Total Time: 3.4827s | Latency: 2.5533 ms/img
+2026-02-06 15:40:34 [INFO] Experiment: Result Affine_PTQ: Acc=90.69% (Drop: 0.51)
+2026-02-06 15:40:34 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:40:34 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-06 15:40:34 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:40:34 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-06 15:40:38 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-06 15:40:38 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 1364)
+2026-02-06 15:40:42 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 88.78% | Loss: -8.2766 | Total Time: 3.4647s | Latency: 2.5401 ms/img
+2026-02-06 15:40:42 [INFO] Experiment: Result Symmetric_PTQ: Acc=88.78% (Drop: 2.42)
+2026-02-06 15:40:42 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:40:42 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-06 15:40:42 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-06 15:40:42 [INFO] Experiment: Calibrating PoT model...
+2026-02-06 15:40:46 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-06 15:40:46 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 1364)
+2026-02-06 15:40:49 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 90.03% | Loss: -8.5337 | Total Time: 3.4613s | Latency: 2.5376 ms/img
+2026-02-06 15:40:49 [INFO] Experiment: Result PoT_PTQ: Acc=90.03% (Drop: 1.17)
+2026-02-06 15:40:49 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_POKEMON.csv
+2026-02-06 15:40:49 [INFO] Experiment: === Experiments completed successfully ===

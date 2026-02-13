@@ -26,15 +26,18 @@ class CNN(nn.Module):
         self.fc1 = nn.Linear(256 * 2 * 2 , 1024)
         self.relu5 = nn.ReLU()
         self.fc2 = nn.Linear(1024, num_classes)
-
+        self.relu6 = nn.ReLU()
+        
         self.dequant =DeQuantStub()
 
 
     def forward(self, x):
 
-        x = self.quant(x)
-
+        # x = self.quant(x)
         x = self.relu1(self.conv1(x))
+        
+        x = self.quant(x)
+        
         x = self.relu2(self.conv2(x))
         x = self.relu3(self.conv3(x))
         x = self.relu4(self.conv4(x))
@@ -44,8 +47,10 @@ class CNN(nn.Module):
         
         x = self.dropout(x)
         x = self.relu5(self.fc1(x))
-        x = self.fc2(x)
-
+        
         x = self.dequant(x)
+        x = self.relu6(self.fc2(x))
+
+        # x = self.dequant(x)
         
         return x

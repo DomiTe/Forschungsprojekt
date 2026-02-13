@@ -57,8 +57,14 @@ class CustomeSymmetricActivationObserver(MinMaxObserver):
         # 3. Force Midpoint Zero Point
         # Maps real 0.0 -> integer 128.
         # Required for FBGEMM to handle negative inputs with unsigned int8.
-        zero_point = torch.tensor(128).int()
-
+        zero_point = torch.tensor(0).int()
+        
+        # if min_val >= 0:
+        #     zero_point = torch.tensor(0).int()
+        # else:
+        #     # Shift to midpoint for quint8
+        #     zero_point = torch.tensor(128).int()
+        
         return scale, zero_point
 
 # ==========================================
@@ -117,7 +123,13 @@ class CustomePoTActivationObserver(MinMaxObserver):
         
         # 4. Force Midpoint Zero Point
         # Essential for accuracy on signed inputs with quint8.
-        zero_point = torch.tensor(128).int()
+        zero_point = torch.tensor(0).int()
+        
+        # if min_val >= 0:
+        #     zero_point = torch.tensor(0).int()
+        # else:
+        #     # Shift to midpoint for quint8
+        #     zero_point = torch.tensor(128).int()
 
         return scale, zero_point
 

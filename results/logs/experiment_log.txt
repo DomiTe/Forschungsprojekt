@@ -1,0 +1,428 @@
+2026-02-13 17:46:37 [INFO] Experiment: Loading datasets...
+2026-02-13 17:46:38 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 17:46:38 [INFO] Experiment: No baseline found. Starting training...
+2026-02-13 17:46:38 [INFO] src.train: Starte Training auf Device: cuda
+2026-02-13 17:46:45 [INFO] src.train: Ep 1: Train Acc: 20.14% | Val Acc: 26.37%
+2026-02-13 17:46:45 [INFO] src.train: Saved best model (20.1400%)
+2026-02-13 17:46:52 [INFO] src.train: Ep 2: Train Acc: 24.95% | Val Acc: 25.87%
+2026-02-13 17:46:52 [INFO] src.train: Saved best model (24.9460%)
+2026-02-13 17:47:00 [INFO] src.train: Ep 3: Train Acc: 27.09% | Val Acc: 27.01%
+2026-02-13 17:47:00 [INFO] src.train: Saved best model (27.0940%)
+2026-02-13 17:47:07 [INFO] src.train: Ep 4: Train Acc: 28.70% | Val Acc: 31.31%
+2026-02-13 17:47:07 [INFO] src.train: Saved best model (28.7040%)
+2026-02-13 17:47:14 [INFO] src.train: Ep 5: Train Acc: 30.02% | Val Acc: 30.70%
+2026-02-13 17:47:14 [INFO] src.train: Saved best model (30.0200%)
+2026-02-13 17:47:22 [INFO] src.train: Ep 6: Train Acc: 30.96% | Val Acc: 32.53%
+2026-02-13 17:47:22 [INFO] src.train: Saved best model (30.9600%)
+2026-02-13 17:47:29 [INFO] src.train: Ep 7: Train Acc: 31.88% | Val Acc: 33.45%
+2026-02-13 17:47:29 [INFO] src.train: Saved best model (31.8820%)
+2026-02-13 17:47:35 [INFO] src.train: Ep 8: Train Acc: 32.38% | Val Acc: 34.64%
+2026-02-13 17:47:35 [INFO] src.train: Saved best model (32.3800%)
+2026-02-13 17:47:42 [INFO] src.train: Ep 9: Train Acc: 33.06% | Val Acc: 33.45%
+2026-02-13 17:47:42 [INFO] src.train: Saved best model (33.0600%)
+2026-02-13 17:47:49 [INFO] src.train: Ep 10: Train Acc: 33.52% | Val Acc: 34.44%
+2026-02-13 17:47:49 [INFO] src.train: Saved best model (33.5160%)
+2026-02-13 17:47:56 [INFO] src.train: Ep 11: Train Acc: 34.15% | Val Acc: 36.03%
+2026-02-13 17:47:56 [INFO] src.train: Saved best model (34.1540%)
+2026-02-13 17:48:03 [INFO] src.train: Ep 12: Train Acc: 34.05% | Val Acc: 33.39%
+2026-02-13 17:48:09 [INFO] src.train: Ep 13: Train Acc: 35.96% | Val Acc: 41.97%
+2026-02-13 17:48:09 [INFO] src.train: Saved best model (35.9580%)
+2026-02-13 17:48:16 [INFO] src.train: Ep 14: Train Acc: 42.83% | Val Acc: 50.09%
+2026-02-13 17:48:16 [INFO] src.train: Saved best model (42.8300%)
+2026-02-13 17:48:23 [INFO] src.train: Ep 15: Train Acc: 53.39% | Val Acc: 57.22%
+2026-02-13 17:48:23 [INFO] src.train: Saved best model (53.3860%)
+2026-02-13 17:48:30 [INFO] src.train: Ep 16: Train Acc: 58.32% | Val Acc: 62.97%
+2026-02-13 17:48:30 [INFO] src.train: Saved best model (58.3240%)
+2026-02-13 17:48:36 [INFO] src.train: Ep 17: Train Acc: 60.71% | Val Acc: 64.05%
+2026-02-13 17:48:36 [INFO] src.train: Saved best model (60.7100%)
+2026-02-13 17:48:43 [INFO] src.train: Ep 18: Train Acc: 61.93% | Val Acc: 65.42%
+2026-02-13 17:48:43 [INFO] src.train: Saved best model (61.9280%)
+2026-02-13 17:48:50 [INFO] src.train: Ep 19: Train Acc: 62.62% | Val Acc: 65.45%
+2026-02-13 17:48:50 [INFO] src.train: Saved best model (62.6200%)
+2026-02-13 17:48:57 [INFO] src.train: Ep 20: Train Acc: 63.46% | Val Acc: 65.35%
+2026-02-13 17:48:57 [INFO] src.train: Saved best model (63.4620%)
+2026-02-13 17:49:04 [INFO] src.train: Ep 21: Train Acc: 64.03% | Val Acc: 67.27%
+2026-02-13 17:49:04 [INFO] src.train: Saved best model (64.0320%)
+2026-02-13 17:49:10 [INFO] src.train: Ep 22: Train Acc: 64.68% | Val Acc: 68.35%
+2026-02-13 17:49:10 [INFO] src.train: Saved best model (64.6760%)
+2026-02-13 17:49:17 [INFO] src.train: Ep 23: Train Acc: 65.95% | Val Acc: 74.95%
+2026-02-13 17:49:17 [INFO] src.train: Saved best model (65.9540%)
+2026-02-13 17:49:24 [INFO] src.train: Ep 24: Train Acc: 72.10% | Val Acc: 74.78%
+2026-02-13 17:49:24 [INFO] src.train: Saved best model (72.1000%)
+2026-02-13 17:49:31 [INFO] src.train: Ep 25: Train Acc: 72.94% | Val Acc: 75.63%
+2026-02-13 17:49:31 [INFO] src.train: Saved best model (72.9380%)
+2026-02-13 17:49:38 [INFO] src.train: Ep 26: Train Acc: 73.46% | Val Acc: 76.23%
+2026-02-13 17:49:38 [INFO] src.train: Saved best model (73.4600%)
+2026-02-13 17:49:46 [INFO] src.train: Ep 27: Train Acc: 73.71% | Val Acc: 76.69%
+2026-02-13 17:49:46 [INFO] src.train: Saved best model (73.7080%)
+2026-02-13 17:49:53 [INFO] src.train: Ep 28: Train Acc: 74.04% | Val Acc: 77.93%
+2026-02-13 17:49:53 [INFO] src.train: Saved best model (74.0400%)
+2026-02-13 17:50:00 [INFO] src.train: Ep 29: Train Acc: 74.44% | Val Acc: 78.19%
+2026-02-13 17:50:00 [INFO] src.train: Saved best model (74.4380%)
+2026-02-13 17:50:08 [INFO] src.train: Ep 30: Train Acc: 74.64% | Val Acc: 77.96%
+2026-02-13 17:50:08 [INFO] src.train: Saved best model (74.6440%)
+2026-02-13 17:50:15 [INFO] src.train: Ep 31: Train Acc: 74.90% | Val Acc: 78.19%
+2026-02-13 17:50:15 [INFO] src.train: Saved best model (74.9000%)
+2026-02-13 17:50:22 [INFO] src.train: Ep 32: Train Acc: 75.25% | Val Acc: 78.23%
+2026-02-13 17:50:22 [INFO] src.train: Saved best model (75.2500%)
+2026-02-13 17:50:30 [INFO] src.train: Ep 33: Train Acc: 75.40% | Val Acc: 79.05%
+2026-02-13 17:50:30 [INFO] src.train: Saved best model (75.4000%)
+2026-02-13 17:50:37 [INFO] src.train: Ep 34: Train Acc: 75.62% | Val Acc: 78.15%
+2026-02-13 17:50:37 [INFO] src.train: Saved best model (75.6220%)
+2026-02-13 17:50:44 [INFO] src.train: Ep 35: Train Acc: 75.76% | Val Acc: 79.46%
+2026-02-13 17:50:44 [INFO] src.train: Saved best model (75.7600%)
+2026-02-13 17:50:51 [INFO] src.train: Ep 36: Train Acc: 76.00% | Val Acc: 79.13%
+2026-02-13 17:50:51 [INFO] src.train: Saved best model (75.9980%)
+2026-02-13 17:50:59 [INFO] src.train: Ep 37: Train Acc: 76.19% | Val Acc: 79.84%
+2026-02-13 17:50:59 [INFO] src.train: Saved best model (76.1880%)
+2026-02-13 17:51:06 [INFO] src.train: Ep 38: Train Acc: 76.14% | Val Acc: 79.21%
+2026-02-13 17:51:13 [INFO] src.train: Ep 39: Train Acc: 76.76% | Val Acc: 79.23%
+2026-02-13 17:51:13 [INFO] src.train: Saved best model (76.7560%)
+2026-02-13 17:51:20 [INFO] src.train: Ep 40: Train Acc: 76.66% | Val Acc: 79.90%
+2026-02-13 17:51:27 [INFO] src.train: Ep 41: Train Acc: 76.93% | Val Acc: 80.06%
+2026-02-13 17:51:27 [INFO] src.train: Saved best model (76.9300%)
+2026-02-13 17:51:35 [INFO] src.train: Ep 42: Train Acc: 77.23% | Val Acc: 81.35%
+2026-02-13 17:51:35 [INFO] src.train: Saved best model (77.2280%)
+2026-02-13 17:51:42 [INFO] src.train: Ep 43: Train Acc: 77.44% | Val Acc: 81.05%
+2026-02-13 17:51:42 [INFO] src.train: Saved best model (77.4380%)
+2026-02-13 17:51:49 [INFO] src.train: Ep 44: Train Acc: 77.51% | Val Acc: 80.97%
+2026-02-13 17:51:49 [INFO] src.train: Saved best model (77.5100%)
+2026-02-13 17:51:56 [INFO] src.train: Ep 45: Train Acc: 77.38% | Val Acc: 80.98%
+2026-02-13 17:52:03 [INFO] src.train: Ep 46: Train Acc: 77.53% | Val Acc: 80.94%
+2026-02-13 17:52:04 [INFO] src.train: Saved best model (77.5300%)
+2026-02-13 17:52:11 [INFO] src.train: Ep 47: Train Acc: 77.95% | Val Acc: 80.10%
+2026-02-13 17:52:11 [INFO] src.train: Saved best model (77.9540%)
+2026-02-13 17:52:18 [INFO] src.train: Ep 48: Train Acc: 77.80% | Val Acc: 79.02%
+2026-02-13 17:52:25 [INFO] src.train: Ep 49: Train Acc: 78.19% | Val Acc: 81.42%
+2026-02-13 17:52:25 [INFO] src.train: Saved best model (78.1900%)
+2026-02-13 17:52:33 [INFO] src.train: Ep 50: Train Acc: 78.47% | Val Acc: 80.53%
+2026-02-13 17:52:33 [INFO] src.train: Saved best model (78.4680%)
+2026-02-13 17:52:33 [INFO] src.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 17:52:33 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 17:52:33 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 17:53:24 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.53% | Loss: -9.0606 | Total Time: 51.3750s | Latency: 5.1375 ms/img
+2026-02-13 17:53:24 [INFO] Experiment: Baseline -> Acc: 80.53%, Time: 51.3750s, Size: 5.52MB
+2026-02-13 17:53:24 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 17:53:24 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-13 17:53:24 [INFO] Experiment: Calibrating model...
+2026-02-13 17:53:28 [INFO] Experiment: Converting to INT8...
+2026-02-13 17:53:28 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 17:53:42 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 80.17% | Loss: -9.7308 | Total Time: 14.5150s | Latency: 1.4515 ms/img
+2026-02-13 17:53:42 [INFO] Experiment: Result Affine_PTQ: Acc=80.17% (Drop: 0.36)
+2026-02-13 17:53:42 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 17:53:42 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-13 17:53:42 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-13 17:53:42 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-13 17:53:46 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-13 17:53:46 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-13 17:54:01 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 26.95% | Loss: -5.0111 | Total Time: 14.8632s | Latency: 1.4863 ms/img
+2026-02-13 17:54:01 [INFO] Experiment: Result Symmetric_PTQ: Acc=26.95% (Drop: 53.58)
+2026-02-13 17:54:01 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 17:54:01 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-13 17:54:01 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5']]
+2026-02-13 17:54:01 [INFO] Experiment: Calibrating PoT model...
+2026-02-13 17:54:04 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-13 17:54:04 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-02-13 17:54:19 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 28.61% | Loss: -5.1109 | Total Time: 14.6723s | Latency: 1.4672 ms/img
+2026-02-13 17:54:19 [INFO] Experiment: Result PoT_PTQ: Acc=28.61% (Drop: 51.92)
+2026-02-13 17:54:19 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 17:54:19 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-13 17:57:55 [INFO] Experiment: Loading datasets...
+2026-02-13 17:57:56 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 17:57:56 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 17:57:56 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 17:57:56 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 17:58:47 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.53% | Loss: -9.0606 | Total Time: 51.3294s | Latency: 5.1329 ms/img
+2026-02-13 17:58:47 [INFO] Experiment: Baseline -> Acc: 80.53%, Time: 51.3294s, Size: 5.52MB
+2026-02-13 17:58:47 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 17:58:47 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 17:58:47 [INFO] Experiment: Calibrating model...
+2026-02-13 17:58:51 [INFO] Experiment: Converting to INT8...
+2026-02-13 17:58:51 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 17:59:05 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 80.28% | Loss: -9.6481 | Total Time: 14.4678s | Latency: 1.4468 ms/img
+2026-02-13 17:59:05 [INFO] Experiment: Result Affine_PTQ: Acc=80.28% (Drop: 0.25)
+2026-02-13 17:59:05 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 17:59:05 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-13 17:59:05 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 17:59:05 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-13 17:59:08 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-13 17:59:08 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-13 17:59:23 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 27.38% | Loss: -5.0243 | Total Time: 14.5950s | Latency: 1.4595 ms/img
+2026-02-13 17:59:23 [INFO] Experiment: Result Symmetric_PTQ: Acc=27.38% (Drop: 53.15)
+2026-02-13 17:59:23 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 17:59:23 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-13 17:59:23 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 17:59:23 [INFO] Experiment: Calibrating PoT model...
+2026-02-13 17:59:27 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-13 17:59:27 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-02-13 17:59:41 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 28.61% | Loss: -5.1109 | Total Time: 14.5591s | Latency: 1.4559 ms/img
+2026-02-13 17:59:41 [INFO] Experiment: Result PoT_PTQ: Acc=28.61% (Drop: 51.92)
+2026-02-13 17:59:41 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 17:59:41 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-13 18:00:45 [INFO] Experiment: Loading datasets...
+2026-02-13 18:00:45 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 18:00:45 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 18:00:45 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 18:00:45 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 18:01:37 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.53% | Loss: -9.0606 | Total Time: 51.4400s | Latency: 5.1440 ms/img
+2026-02-13 18:01:37 [INFO] Experiment: Baseline -> Acc: 80.53%, Time: 51.4400s, Size: 5.52MB
+2026-02-13 18:01:37 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 18:01:37 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 18:01:37 [INFO] Experiment: Calibrating model...
+2026-02-13 18:01:40 [INFO] Experiment: Converting to INT8...
+2026-02-13 18:01:40 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 18:01:55 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 80.15% | Loss: -9.6784 | Total Time: 14.4681s | Latency: 1.4468 ms/img
+2026-02-13 18:01:55 [INFO] Experiment: Result Affine_PTQ: Acc=80.15% (Drop: 0.38)
+2026-02-13 18:01:55 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 18:01:55 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-13 18:01:55 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 18:01:55 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-13 18:01:58 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-13 18:01:58 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-13 18:02:13 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 77.96% | Loss: -9.8545 | Total Time: 14.6899s | Latency: 1.4690 ms/img
+2026-02-13 18:02:13 [INFO] Experiment: Result Symmetric_PTQ: Acc=77.96% (Drop: 2.57)
+2026-02-13 18:02:13 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 18:02:13 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-13 18:02:13 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 18:02:13 [INFO] Experiment: Calibrating PoT model...
+2026-02-13 18:02:16 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-13 18:02:16 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-02-13 18:02:31 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 76.65% | Loss: -9.2689 | Total Time: 14.7209s | Latency: 1.4721 ms/img
+2026-02-13 18:02:31 [INFO] Experiment: Result PoT_PTQ: Acc=76.65% (Drop: 3.88)
+2026-02-13 18:02:31 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 18:02:31 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-13 18:59:03 [INFO] Experiment: Loading datasets...
+2026-02-13 18:59:04 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 18:59:04 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 18:59:04 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 18:59:04 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 18:59:56 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.53% | Loss: -9.0606 | Total Time: 51.7409s | Latency: 5.1741 ms/img
+2026-02-13 18:59:56 [INFO] Experiment: Baseline -> Acc: 80.53%, Time: 51.7409s, Size: 5.52MB
+2026-02-13 18:59:56 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 18:59:56 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 18:59:56 [INFO] Experiment: Calibrating model...
+2026-02-13 18:59:59 [INFO] Experiment: Converting to INT8...
+2026-02-13 18:59:59 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 19:00:14 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 80.16% | Loss: -9.7018 | Total Time: 14.5610s | Latency: 1.4561 ms/img
+2026-02-13 19:00:14 [INFO] Experiment: Result Affine_PTQ: Acc=80.16% (Drop: 0.37)
+2026-02-13 19:00:14 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:00:14 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-13 19:00:14 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:00:14 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-13 19:00:17 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-13 19:00:17 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-13 19:12:45 [INFO] Experiment: Loading datasets...
+2026-02-13 19:12:46 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 19:12:46 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 19:12:46 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 19:12:46 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 19:13:37 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.53% | Loss: -9.0606 | Total Time: 51.6035s | Latency: 5.1604 ms/img
+2026-02-13 19:13:37 [INFO] Experiment: Baseline -> Acc: 80.53%, Time: 51.6035s, Size: 5.52MB
+2026-02-13 19:13:37 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 19:13:37 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:13:37 [INFO] Experiment: Calibrating model...
+2026-02-13 19:13:41 [INFO] Experiment: Converting to INT8...
+2026-02-13 19:13:41 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 19:13:55 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 80.34% | Loss: -9.6571 | Total Time: 14.4143s | Latency: 1.4414 ms/img
+2026-02-13 19:13:55 [INFO] Experiment: Result Affine_PTQ: Acc=80.34% (Drop: 0.19)
+2026-02-13 19:13:55 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:13:55 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-13 19:13:55 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:13:55 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-13 19:13:59 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-13 19:13:59 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-13 19:14:13 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 78.32% | Loss: -9.8846 | Total Time: 14.7784s | Latency: 1.4778 ms/img
+2026-02-13 19:14:13 [INFO] Experiment: Result Symmetric_PTQ: Acc=78.32% (Drop: 2.21)
+2026-02-13 19:14:13 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:14:13 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-13 19:14:13 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:14:13 [INFO] Experiment: Calibrating PoT model...
+2026-02-13 19:14:17 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-13 19:14:17 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-02-13 19:14:31 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 76.80% | Loss: -9.2694 | Total Time: 14.5774s | Latency: 1.4577 ms/img
+2026-02-13 19:14:31 [INFO] Experiment: Result PoT_PTQ: Acc=76.80% (Drop: 3.73)
+2026-02-13 19:14:31 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:14:31 [INFO] Experiment: === Experiments completed successfully ===
+2026-02-13 19:33:40 [INFO] Experiment: Loading datasets...
+2026-02-13 19:33:41 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 19:33:41 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 19:33:41 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 19:33:41 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 19:34:32 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.53% | Loss: -9.0606 | Total Time: 51.1815s | Latency: 5.1181 ms/img
+2026-02-13 19:34:32 [INFO] Experiment: Baseline -> Acc: 80.53%, Time: 51.1815s, Size: 5.52MB
+2026-02-13 19:34:32 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 19:34:32 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:34:32 [INFO] Experiment: Calibrating model...
+2026-02-13 19:34:36 [INFO] Experiment: Converting to INT8...
+2026-02-13 19:34:36 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 19:34:50 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 80.18% | Loss: -9.7476 | Total Time: 14.3872s | Latency: 1.4387 ms/img
+2026-02-13 19:34:50 [INFO] Experiment: Result Affine_PTQ: Acc=80.18% (Drop: 0.35)
+2026-02-13 19:34:50 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:34:50 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-13 19:34:50 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:34:50 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-13 19:34:53 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-13 19:34:53 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-13 19:40:03 [INFO] Experiment: Loading datasets...
+2026-02-13 19:40:04 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 19:40:04 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 19:40:04 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 19:40:04 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 19:40:55 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.53% | Loss: -9.0606 | Total Time: 51.2746s | Latency: 5.1275 ms/img
+2026-02-13 19:40:55 [INFO] Experiment: Baseline -> Acc: 80.53%, Time: 51.2746s, Size: 5.52MB
+2026-02-13 19:40:55 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 19:40:55 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:40:55 [INFO] Experiment: Calibrating model...
+2026-02-13 19:40:58 [INFO] Experiment: Converting to INT8...
+2026-02-13 19:40:58 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 19:41:13 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 80.10% | Loss: -9.7606 | Total Time: 14.5439s | Latency: 1.4544 ms/img
+2026-02-13 19:41:13 [INFO] Experiment: Result Affine_PTQ: Acc=80.10% (Drop: 0.43)
+2026-02-13 19:41:13 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:41:13 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-13 19:41:13 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:41:13 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-13 19:41:16 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-13 19:41:16 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-13 19:45:52 [INFO] Experiment: Loading datasets...
+2026-02-13 19:45:53 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 19:45:53 [INFO] Experiment: No baseline found. Starting training...
+2026-02-13 19:45:53 [INFO] src.train: Starte Training auf Device: cuda
+2026-02-13 19:46:01 [INFO] src.train: Ep 1: Train Acc: 14.01% | Val Acc: 16.52%
+2026-02-13 19:46:01 [INFO] src.train: Saved best model (14.0140%)
+2026-02-13 19:46:08 [INFO] src.train: Ep 2: Train Acc: 15.66% | Val Acc: 16.95%
+2026-02-13 19:46:08 [INFO] src.train: Saved best model (15.6640%)
+2026-02-13 19:46:15 [INFO] src.train: Ep 3: Train Acc: 22.09% | Val Acc: 25.78%
+2026-02-13 19:46:15 [INFO] src.train: Saved best model (22.0900%)
+2026-02-13 19:46:23 [INFO] src.train: Ep 4: Train Acc: 26.91% | Val Acc: 26.46%
+2026-02-13 19:46:23 [INFO] src.train: Saved best model (26.9080%)
+2026-02-13 19:46:30 [INFO] src.train: Ep 5: Train Acc: 28.54% | Val Acc: 31.19%
+2026-02-13 19:46:30 [INFO] src.train: Saved best model (28.5440%)
+2026-02-13 19:46:38 [INFO] src.train: Ep 6: Train Acc: 29.78% | Val Acc: 32.42%
+2026-02-13 19:46:38 [INFO] src.train: Saved best model (29.7780%)
+2026-02-13 19:46:45 [INFO] src.train: Ep 7: Train Acc: 30.83% | Val Acc: 31.63%
+2026-02-13 19:46:45 [INFO] src.train: Saved best model (30.8260%)
+2026-02-13 19:46:53 [INFO] src.train: Ep 8: Train Acc: 31.32% | Val Acc: 33.29%
+2026-02-13 19:46:53 [INFO] src.train: Saved best model (31.3240%)
+2026-02-13 19:47:00 [INFO] src.train: Ep 9: Train Acc: 31.90% | Val Acc: 33.49%
+2026-02-13 19:47:00 [INFO] src.train: Saved best model (31.8980%)
+2026-02-13 19:47:07 [INFO] src.train: Ep 10: Train Acc: 32.12% | Val Acc: 33.36%
+2026-02-13 19:47:07 [INFO] src.train: Saved best model (32.1220%)
+2026-02-13 19:47:15 [INFO] src.train: Ep 11: Train Acc: 32.61% | Val Acc: 33.49%
+2026-02-13 19:47:15 [INFO] src.train: Saved best model (32.6140%)
+2026-02-13 19:47:22 [INFO] src.train: Ep 12: Train Acc: 33.24% | Val Acc: 37.21%
+2026-02-13 19:47:22 [INFO] src.train: Saved best model (33.2380%)
+2026-02-13 19:47:29 [INFO] src.train: Ep 13: Train Acc: 39.83% | Val Acc: 44.28%
+2026-02-13 19:47:29 [INFO] src.train: Saved best model (39.8320%)
+2026-02-13 19:47:37 [INFO] src.train: Ep 14: Train Acc: 48.68% | Val Acc: 52.40%
+2026-02-13 19:47:37 [INFO] src.train: Saved best model (48.6800%)
+2026-02-13 19:47:44 [INFO] src.train: Ep 15: Train Acc: 54.57% | Val Acc: 57.36%
+2026-02-13 19:47:44 [INFO] src.train: Saved best model (54.5700%)
+2026-02-13 19:47:51 [INFO] src.train: Ep 16: Train Acc: 56.50% | Val Acc: 59.12%
+2026-02-13 19:47:51 [INFO] src.train: Saved best model (56.4960%)
+2026-02-13 19:47:58 [INFO] src.train: Ep 17: Train Acc: 57.98% | Val Acc: 59.59%
+2026-02-13 19:47:58 [INFO] src.train: Saved best model (57.9800%)
+2026-02-13 19:48:06 [INFO] src.train: Ep 18: Train Acc: 61.80% | Val Acc: 68.59%
+2026-02-13 19:48:06 [INFO] src.train: Saved best model (61.8020%)
+2026-02-13 19:48:13 [INFO] src.train: Ep 19: Train Acc: 65.71% | Val Acc: 69.41%
+2026-02-13 19:48:13 [INFO] src.train: Saved best model (65.7120%)
+2026-02-13 19:48:20 [INFO] src.train: Ep 20: Train Acc: 66.41% | Val Acc: 68.82%
+2026-02-13 19:48:20 [INFO] src.train: Saved best model (66.4140%)
+2026-02-13 19:48:27 [INFO] src.train: Ep 21: Train Acc: 67.26% | Val Acc: 71.15%
+2026-02-13 19:48:27 [INFO] src.train: Saved best model (67.2560%)
+2026-02-13 19:48:35 [INFO] src.train: Ep 22: Train Acc: 68.17% | Val Acc: 71.68%
+2026-02-13 19:48:35 [INFO] src.train: Saved best model (68.1700%)
+2026-02-13 19:48:42 [INFO] src.train: Ep 23: Train Acc: 69.70% | Val Acc: 74.27%
+2026-02-13 19:48:42 [INFO] src.train: Saved best model (69.7000%)
+2026-02-13 19:48:49 [INFO] src.train: Ep 24: Train Acc: 71.29% | Val Acc: 74.98%
+2026-02-13 19:48:49 [INFO] src.train: Saved best model (71.2920%)
+2026-02-13 19:48:56 [INFO] src.train: Ep 25: Train Acc: 71.99% | Val Acc: 75.26%
+2026-02-13 19:48:56 [INFO] src.train: Saved best model (71.9880%)
+2026-02-13 19:49:03 [INFO] src.train: Ep 26: Train Acc: 72.35% | Val Acc: 75.64%
+2026-02-13 19:49:03 [INFO] src.train: Saved best model (72.3520%)
+2026-02-13 19:49:11 [INFO] src.train: Ep 27: Train Acc: 72.98% | Val Acc: 76.60%
+2026-02-13 19:49:11 [INFO] src.train: Saved best model (72.9780%)
+2026-02-13 19:49:18 [INFO] src.train: Ep 28: Train Acc: 73.26% | Val Acc: 76.76%
+2026-02-13 19:49:18 [INFO] src.train: Saved best model (73.2600%)
+2026-02-13 19:49:25 [INFO] src.train: Ep 29: Train Acc: 73.79% | Val Acc: 78.16%
+2026-02-13 19:49:25 [INFO] src.train: Saved best model (73.7880%)
+2026-02-13 19:49:32 [INFO] src.train: Ep 30: Train Acc: 73.99% | Val Acc: 77.61%
+2026-02-13 19:49:32 [INFO] src.train: Saved best model (73.9860%)
+2026-02-13 19:49:39 [INFO] src.train: Ep 31: Train Acc: 74.34% | Val Acc: 76.80%
+2026-02-13 19:49:40 [INFO] src.train: Saved best model (74.3420%)
+2026-02-13 19:49:47 [INFO] src.train: Ep 32: Train Acc: 74.66% | Val Acc: 76.10%
+2026-02-13 19:49:47 [INFO] src.train: Saved best model (74.6620%)
+2026-02-13 19:49:54 [INFO] src.train: Ep 33: Train Acc: 74.79% | Val Acc: 77.77%
+2026-02-13 19:49:54 [INFO] src.train: Saved best model (74.7880%)
+2026-02-13 19:50:01 [INFO] src.train: Ep 34: Train Acc: 75.18% | Val Acc: 78.84%
+2026-02-13 19:50:01 [INFO] src.train: Saved best model (75.1840%)
+2026-02-13 19:50:08 [INFO] src.train: Ep 35: Train Acc: 75.65% | Val Acc: 77.89%
+2026-02-13 19:50:08 [INFO] src.train: Saved best model (75.6480%)
+2026-02-13 19:50:15 [INFO] src.train: Ep 36: Train Acc: 75.59% | Val Acc: 78.49%
+2026-02-13 19:50:23 [INFO] src.train: Ep 37: Train Acc: 76.01% | Val Acc: 78.83%
+2026-02-13 19:50:23 [INFO] src.train: Saved best model (76.0100%)
+2026-02-13 19:50:30 [INFO] src.train: Ep 38: Train Acc: 76.27% | Val Acc: 80.03%
+2026-02-13 19:50:30 [INFO] src.train: Saved best model (76.2660%)
+2026-02-13 19:50:37 [INFO] src.train: Ep 39: Train Acc: 76.32% | Val Acc: 79.89%
+2026-02-13 19:50:37 [INFO] src.train: Saved best model (76.3180%)
+2026-02-13 19:50:44 [INFO] src.train: Ep 40: Train Acc: 76.73% | Val Acc: 79.77%
+2026-02-13 19:50:44 [INFO] src.train: Saved best model (76.7320%)
+2026-02-13 19:50:52 [INFO] src.train: Ep 41: Train Acc: 76.80% | Val Acc: 79.90%
+2026-02-13 19:50:52 [INFO] src.train: Saved best model (76.8020%)
+2026-02-13 19:50:59 [INFO] src.train: Ep 42: Train Acc: 76.69% | Val Acc: 77.94%
+2026-02-13 19:51:06 [INFO] src.train: Ep 43: Train Acc: 77.10% | Val Acc: 79.33%
+2026-02-13 19:51:06 [INFO] src.train: Saved best model (77.0980%)
+2026-02-13 19:51:13 [INFO] src.train: Ep 44: Train Acc: 77.03% | Val Acc: 80.87%
+2026-02-13 19:51:20 [INFO] src.train: Ep 45: Train Acc: 77.47% | Val Acc: 81.00%
+2026-02-13 19:51:20 [INFO] src.train: Saved best model (77.4680%)
+2026-02-13 19:51:28 [INFO] src.train: Ep 46: Train Acc: 77.51% | Val Acc: 80.21%
+2026-02-13 19:51:28 [INFO] src.train: Saved best model (77.5080%)
+2026-02-13 19:51:35 [INFO] src.train: Ep 47: Train Acc: 77.85% | Val Acc: 79.32%
+2026-02-13 19:51:35 [INFO] src.train: Saved best model (77.8500%)
+2026-02-13 19:51:42 [INFO] src.train: Ep 48: Train Acc: 77.88% | Val Acc: 80.55%
+2026-02-13 19:51:42 [INFO] src.train: Saved best model (77.8840%)
+2026-02-13 19:51:49 [INFO] src.train: Ep 49: Train Acc: 78.03% | Val Acc: 80.03%
+2026-02-13 19:51:49 [INFO] src.train: Saved best model (78.0280%)
+2026-02-13 19:51:57 [INFO] src.train: Ep 50: Train Acc: 78.09% | Val Acc: 80.45%
+2026-02-13 19:51:57 [INFO] src.train: Saved best model (78.0920%)
+2026-02-13 19:51:57 [INFO] src.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 19:51:57 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 19:51:57 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 19:52:48 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.45% | Loss: -10.1057 | Total Time: 51.1930s | Latency: 5.1193 ms/img
+2026-02-13 19:52:48 [INFO] Experiment: Baseline -> Acc: 80.45%, Time: 51.1930s, Size: 5.52MB
+2026-02-13 19:52:48 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 19:52:48 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:52:48 [INFO] Experiment: Calibrating model...
+2026-02-13 19:52:51 [INFO] Experiment: Converting to INT8...
+2026-02-13 19:52:51 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 19:57:33 [INFO] Experiment: Loading datasets...
+2026-02-13 19:57:34 [INFO] src.utility.utils: CIFAR-10 loaded: 50000 Train, 10000 Test.
+2026-02-13 19:57:34 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-13 19:57:34 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-13 19:57:34 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-13 19:58:26 [INFO] src.evaluation.evaluate: Evaluation Result [Baseline Float32] - Acc: 80.45% | Loss: -10.1057 | Total Time: 52.0638s | Latency: 5.2064 ms/img
+2026-02-13 19:58:26 [INFO] Experiment: Baseline -> Acc: 80.45%, Time: 52.0638s, Size: 5.52MB
+2026-02-13 19:58:26 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-13 19:58:26 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:58:26 [INFO] Experiment: Calibrating model...
+2026-02-13 19:58:30 [INFO] Experiment: Converting to INT8...
+2026-02-13 19:58:30 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-13 19:58:44 [INFO] src.evaluation.evaluate: Evaluation Result [Affine_PTQ] - Acc: 80.08% | Loss: -10.5852 | Total Time: 14.7063s | Latency: 1.4706 ms/img
+2026-02-13 19:58:44 [INFO] Experiment: Result Affine_PTQ: Acc=80.08% (Drop: 0.37)
+2026-02-13 19:58:44 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:58:44 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-13 19:58:44 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:58:44 [INFO] Experiment: Calibrating Symmetric model...
+2026-02-13 19:58:48 [INFO] Experiment: Converting to INT8 (Symmetric)...
+2026-02-13 19:58:48 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-13 19:59:02 [INFO] src.evaluation.evaluate: Evaluation Result [Symmetric_PTQ] - Acc: 77.45% | Loss: -10.7527 | Total Time: 14.6057s | Latency: 1.4606 ms/img
+2026-02-13 19:59:02 [INFO] Experiment: Result Symmetric_PTQ: Acc=77.45% (Drop: 3.00)
+2026-02-13 19:59:03 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:59:03 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-13 19:59:03 [INFO] Experiment: Fused layers: [['conv1', 'relu1'], ['conv2', 'relu2'], ['conv3', 'relu3'], ['conv4', 'relu4'], ['fc1', 'relu5'], ['fc2', 'relu6']]
+2026-02-13 19:59:03 [INFO] Experiment: Calibrating PoT model...
+2026-02-13 19:59:06 [INFO] Experiment: Converting to INT8 (PoT)...
+2026-02-13 19:59:06 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-02-13 19:59:21 [INFO] src.evaluation.evaluate: Evaluation Result [PoT_PTQ] - Acc: 78.81% | Loss: -10.6984 | Total Time: 14.5896s | Latency: 1.4590 ms/img
+2026-02-13 19:59:21 [INFO] Experiment: Result PoT_PTQ: Acc=78.81% (Drop: 1.64)
+2026-02-13 19:59:21 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-13 19:59:21 [INFO] Experiment: === Experiments completed successfully ===

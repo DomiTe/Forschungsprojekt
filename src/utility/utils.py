@@ -47,6 +47,8 @@ def get_data_loaders():
         return _get_mnist_loaders()
     elif DATASET_NAME == "POKEMON":
         return _get_pokemon_loaders()
+    elif DATASET_NAME == "CIFAR10":
+        return _get_cifar10_loaders()
     else:
         raise ValueError(f"Unbekanntes Dataset in Config: {DATASET_NAME}")
 
@@ -66,11 +68,42 @@ def _get_mnist_loaders():
     
     return train_loader, test_loader, 10 # num_classes
 
+def _get_cifar10_loaders():
+    # standard augmentation for CIFAR-10 training
+    transform_train = transforms.Compose([
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # standard CIFAR-10 mean and std
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+    ])
+
+    # no augmentation for testing, only resize and normalize
+    transform_test = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+    ])
+    
+    # fetch training and test datasets
+    train_dataset = datasets.CIFAR10(DATA_DIR, train=True, download=True, transform=transform_train)
+    test_dataset = datasets.CIFAR10(DATA_DIR, train=False, download=True, transform=transform_test)
+    
+    kwargs = {"num_workers": 2, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+    
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
+    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    
+    logger.info(f"CIFAR-10 loaded: {len(train_dataset)} Train, {len(test_dataset)} Test.")
+    
+    return train_loader, test_loader, 10 # num_classes
+
 def _get_pokemon_loaders():
     # 1. Transform für TRAINING
     # WICHTIG: Wir nutzen jetzt (0.5, 0.5, 0.5) statt der ResNet-Werte
     transform_train = transforms.Compose([
-        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)), # Nimmt die 64 aus der Config
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomRotation(15),
         transforms.ColorJitter(brightness=0.2, contrast=0.2),

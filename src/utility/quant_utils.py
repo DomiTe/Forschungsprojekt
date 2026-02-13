@@ -35,8 +35,9 @@ def fuse_layers(model):
         ['conv2', 'relu2'],
         ['conv3', 'relu3'],
         ['conv4', 'relu4'],
-        ['fc1', 'relu5'] 
-    ]
+        ['fc1', 'relu5'],
+        ['fc2', 'relu6']
+    ] 
     
     # Only fuse layers that actually exist
     existing_fusions = [

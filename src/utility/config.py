@@ -11,9 +11,14 @@ else:
     PIN_MEMORY = False
 
 # DATASET Configuration
-DATASET_NAME = "CIFAR10" # Options: "MNIST" , "CIFAR10" , "POKEMON"
+DATASET_NAME = "MNIST" # Options: "MNIST" , "CIFAR10" , "POKEMON"
 
 if DATASET_NAME == "MNIST":
+    IMAGE_SIZE = 28
+    CHANNELS = 1       # Black/White
+    NUM_CLASSES = 10
+
+if DATASET_NAME == "FASHION_MNIST":
     IMAGE_SIZE = 28
     CHANNELS = 1       # Black/White
     NUM_CLASSES = 10
@@ -22,6 +27,11 @@ elif DATASET_NAME == "CIFAR10":
     IMAGE_SIZE = 32 
     CHANNELS = 3       # RGB
     NUM_CLASSES = 10
+    
+elif DATASET_NAME == "CIFAR100":
+    IMAGE_SIZE = 32 
+    CHANNELS = 3       # RGB
+    NUM_CLASSES = 100
     
 elif DATASET_NAME == "POKEMON":
     IMAGE_SIZE = 64
@@ -32,7 +42,7 @@ elif DATASET_NAME == "POKEMON":
 BATCH_SIZE = 64
 TEST_BATCH_SIZE = 1000
 LEARNING_RATE = 0.001
-EPOCHS = 50 
+EPOCHS = 50
 
 # Model Architecture
 KERNEL_SIZE = 3

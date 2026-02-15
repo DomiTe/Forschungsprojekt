@@ -87,15 +87,16 @@ def run_experiment():
     # B. Configuration & Observer Attachment
     model_affine.qconfig = get_custome_affine_qconfig()
     
-    if hasattr(model_affine, 'conv1'):
-        model_affine.conv1.qconfig = None
-        model_affine.relu1.qconfig = None
-        # model_sym.quant.qconfig = None
+    # if hasattr(model_affine, 'conv1'):
+    #     model_affine.conv1.qconfig = None
+    #     model_affine.relu1.qconfig = None
 
-    # Letzte Schicht (fc2)
-    if hasattr(model_affine, 'fc2'):
-        model_affine.fc2.qconfig = None
-        model_affine.relu2.qconfig = None 
+
+    # # Letzte Schicht (fc2)
+    # if hasattr(model_affine, 'fc2'):
+    #     model_affine.fc2.qconfig = None
+    #     model_affine.relu2.qconfig = None 
+    
     torch.ao.quantization.prepare(model_affine, inplace=True)
     
     # C. Calibration (Find Min/Max)
@@ -143,15 +144,14 @@ def run_experiment():
     # B. Configuration
     model_sym.qconfig = get_custome_symmetric_qconfig()
     
-    if hasattr(model_sym, 'conv1'):
-        model_sym.conv1.qconfig = None
-        model_sym.relu1.qconfig = None
-        # model_sym.quant.qconfig = None
+    # if hasattr(model_sym, 'conv1'):
+    #     model_sym.conv1.qconfig = None
+    #     model_sym.relu1.qconfig = None
 
-    # Letzte Schicht (fc2)
-    if hasattr(model_sym, 'fc2'):
-        model_sym.fc2.qconfig = None
-        model_sym.relu2.qconfig = None 
+    # # Letzte Schicht (fc2)
+    # if hasattr(model_sym, 'fc2'):
+    #     model_sym.fc2.qconfig = None
+    #     model_sym.relu2.qconfig = None 
         
     torch.ao.quantization.prepare(model_sym, inplace=True)
 
@@ -200,15 +200,14 @@ def run_experiment():
     # B. Configuration
     model_pot.qconfig = get_custome_pot_qconfig()
     
-    if hasattr(model_pot, 'conv1'):
-        model_pot.conv1.qconfig = None
-        model_pot.relu1.qconfig = None 
-        # model_sym.quant.qconfig = None
+    # if hasattr(model_pot, 'conv1'):
+    #     model_pot.conv1.qconfig = None
+    #     model_pot.relu1.qconfig = None 
 
-    # Letzte Schicht (fc2)
-    if hasattr(model_pot, 'fc2'):
-        model_pot.fc2.qconfig = None
-        model_pot.relu2.qconfig = None 
+    # # Letzte Schicht (fc2)
+    # if hasattr(model_pot, 'fc2'):
+    #     model_pot.fc2.qconfig = None
+    #     model_pot.relu2.qconfig = None 
         
     torch.ao.quantization.prepare(model_pot, inplace=True)
 

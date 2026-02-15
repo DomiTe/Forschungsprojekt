@@ -41,7 +41,6 @@ class CustomeAffineObserver(MinMaxObserver):
 class CustomeSymmetricActivationObserver(MinMaxObserver):
     """
     For ACTIVATIONS (Per-Tensor, Unsigned quint8).
-    Uses 'Midpoint Quantization' to handle negative inputs on CPU.
     """
     def calculate_qparams(self):
         min_val, max_val = self.min_val, self.max_val

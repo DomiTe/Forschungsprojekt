@@ -1,4 +1,5 @@
 .venv/
-# results/
+results/tests
 uv.lock
 data/
+.python-version

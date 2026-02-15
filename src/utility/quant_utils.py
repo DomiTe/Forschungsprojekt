@@ -31,12 +31,11 @@ def fuse_layers(model):
     
     # Define candidates for fusion based on model architecture
     fusion_candidates = [
-        ['conv1', 'relu1'],
-        ['conv2', 'relu2'],
-        ['conv3', 'relu3'],
-        ['conv4', 'relu4'],
+        ['conv1', 'bn1', 'relu1'],
+        ['conv2', 'bn2', 'relu2'],
+        ['conv3', 'bn3', 'relu3'],
+        ['conv4', 'bn4', 'relu4'],
         ['fc1', 'relu5'],
-        ['fc2', 'relu6']
     ] 
     
     # Only fuse layers that actually exist
@@ -82,14 +81,14 @@ def get_custome_affine_qconfig():
 def get_custome_symmetric_qconfig():
     """
     Symmetric Quantization (Hardware-Aware).
-    - Activations: Unsigned [0, 255] with ZP=128 (Midpoint) to handle negative inputs on CPU.
+    - Activations: 
     - Weights: Signed [-127, 127] with ZP=0.
     """
     return torch.ao.quantization.QConfig(
         activation=CustomeSymmetricActivationObserver.with_args(
             dtype=torch.quint8, 
-            quant_min=0, 
-            quant_max=255, 
+            quant_min=-127, 
+            quant_max=127, 
             reduce_range=False,
             qscheme=torch.per_tensor_symmetric
         ),
@@ -106,14 +105,14 @@ def get_custome_symmetric_qconfig():
 def get_custome_pot_qconfig():
     """
     Power-of-Two (PoT) Quantization.
-    - Activations: Midpoint Power of Two (ZP=128) with PoT Scales.
+    - Activations:
     - Weights: Strict Symmetric (ZP=0) with PoT Scales (2^k).
     """
     return torch.ao.quantization.QConfig(
         activation=CustomePoTActivationObserver.with_args(
             dtype=torch.quint8,
-            quant_min=0,
-            quant_max=255,
+            quant_min=-127,
+            quant_max=127,
             reduce_range=False,
             qscheme=torch.per_tensor_symmetric
         ),

@@ -11,12 +11,27 @@ else:
     PIN_MEMORY = False
 
 # DATASET Configuration
-DATASET_NAME = "POKEMON" # Options: "MNIST" , "CER" , "POKEMON"
+DATASET_NAME = "CIFAR10" # Options: "MNIST" , "CIFAR10" , "POKEMON"
 
 if DATASET_NAME == "MNIST":
     IMAGE_SIZE = 28
     CHANNELS = 1       # Black/White
     NUM_CLASSES = 10
+
+if DATASET_NAME == "FASHION_MNIST":
+    IMAGE_SIZE = 28
+    CHANNELS = 1       # Black/White
+    NUM_CLASSES = 10
+
+elif DATASET_NAME == "CIFAR10":
+    IMAGE_SIZE = 32 
+    CHANNELS = 3       # RGB
+    NUM_CLASSES = 10
+    
+elif DATASET_NAME == "CIFAR100":
+    IMAGE_SIZE = 32 
+    CHANNELS = 3       # RGB
+    NUM_CLASSES = 100
     
 elif DATASET_NAME == "POKEMON":
     IMAGE_SIZE = 64
@@ -27,7 +42,7 @@ elif DATASET_NAME == "POKEMON":
 BATCH_SIZE = 64
 TEST_BATCH_SIZE = 1000
 LEARNING_RATE = 0.001
-EPOCHS = 150 
+EPOCHS = 50 
 
 # Model Architecture
 KERNEL_SIZE = 3
@@ -73,9 +88,9 @@ os.makedirs(QUANTIZED_MODELS, exist_ok=True)
 os.makedirs(CSV_DIR, exist_ok=True)
 
 # Data Paths 
-BASELINE_MODEL_PATH = os.path.join(MODELS_DIR, f"baseline_float32.pt")
+BASELINE_MODEL_PATH = os.path.join(MODELS_DIR, "baseline_float32.pt")
 
 # CSV Data for results
-EXPERIMENT_CSV_PATH = os.path.join(CSV_DIR, f"quantization_results_{DATASET_NAME}.csv")
-SENSITIVITY_CSV_PATH = os.path.join(CSV_DIR, f"sensitivity_{DATASET_NAME}.csv")
-LOG_FILE_PATH = os.path.join(LOG_DIR, f"experiment.log")
+EXPERIMENT_CSV_PATH = os.path.join(CSV_DIR, "quantization_results_{DATASET_NAME}.csv")
+SENSITIVITY_CSV_PATH = os.path.join(CSV_DIR, "sensitivity_{DATASET_NAME}.csv")
+LOG_FILE_PATH = os.path.join(LOG_DIR, "experiment.log")

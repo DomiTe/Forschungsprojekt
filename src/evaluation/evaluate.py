@@ -2,20 +2,17 @@ import torch
 import torch.nn.functional as F
 import time
 import logging
-from typing import Tuple
+from typing import Dict
+from sklearn.metrics import precision_recall_fscore_support
 from src.utility.config import DEVICE
 
 logger = logging.getLogger(__name__)
 
 def evaluate(
     model: torch.nn.Module, loader: torch.utils.data.DataLoader, desc: str
-) -> Tuple[float, float]:
+) -> Dict[str, float]:
     """
-    Evaluiert das Modell auf dem gegebenen DataLoader.
-    
-    Returns:
-        accuracy (float): Genauigkeit in Prozent
-        inference_time (float): Gesamtzeit für die Inferenz in Sekunden
+    Evaluates the model and returns a dictionary of performance metrics.
     """
     model.eval()
     model.to(DEVICE)
@@ -23,57 +20,56 @@ def evaluate(
     correct = 0
     test_loss = 0
     num_samples = len(loader.dataset)
+    all_preds = []
+    all_targets = []
 
-    # --- 1. WARM-UP (Wichtig für präzise Zeitmessung) ---
-    # Wir schicken ein paar Dummy-Batches durch, damit Caches gefüllt sind.
-    # Das Ergebnis verwerfen wir.
+    # --- 1. WARM-UP ---
     if DEVICE.type == "cuda":
         warmup_batches = 5
         with torch.no_grad():
             for i, (data, target) in enumerate(loader):
-                if i >= warmup_batches:
-                    break
-                data = data.to(DEVICE)
-                model(data)
-        torch.cuda.synchronize() # Warten bis Warm-up fertig ist
+                if i >= warmup_batches: break
+                model(data.to(DEVICE))
+        torch.cuda.synchronize()
 
-    logger.info(f"Starting evaluation: {desc} (Sample Size: {num_samples})")
+    logger.info(f"Starting evaluation: {desc}")
     
-    # --- 2. ECHTE MESSUNG ---
+    # --- 2. MEASUREMENT ---
     start_time = time.time()
-
     with torch.no_grad():
         for data, target in loader:
             data, target = data.to(DEVICE), target.to(DEVICE)
-            
-            # Forward Pass
             output = model(data)
 
-            # Metrics
-            test_loss += F.nll_loss(output, target, reduction="sum").item()
-            pred = output.argmax(dim=1, keepdim=True)
-            correct += pred.eq(target.view_as(pred)).sum().item()
+            # Standard Metrics
+            test_loss += F.cross_entropy(output, target, reduction="sum").item()
+            pred = output.argmax(dim=1)
+            correct += (pred == target).sum().item()
+            
+            # Collect for Scikit-Learn
+            all_preds.extend(pred.cpu().numpy())
+            all_targets.extend(target.cpu().numpy())
 
-    # Synchronisieren für exakte Zeit auf GPU
     if DEVICE.type == "cuda":
         torch.cuda.synchronize()
+    inference_time = time.time() - start_time
 
-    end_time = time.time()
-    inference_time = end_time - start_time
-
-    # --- 3. BERECHNUNG & LOGGING ---
-    test_loss /= num_samples
+    # --- 3. CALCULATE ADVANCED METRICS ---
+    precision, recall, f1, _ = precision_recall_fscore_support(
+        all_targets, all_preds, average='macro', zero_division=0
+    )
+    
     accuracy = 100.0 * correct / num_samples
     
-    # Latenz pro Bild (in Millisekunden) ist oft interessant für Vergleiche
-    latency_ms = (inference_time / num_samples) * 1000 
-
     logger.info(
-        f"Evaluation Result [{desc}] - "
-        f"Acc: {accuracy:.2f}% | "
-        f"Loss: {test_loss:.4f} | "
-        f"Total Time: {inference_time:.4f}s | "
-        f"Latency: {latency_ms:.4f} ms/img"
+        f"Result [{desc}] - Acc: {accuracy:.2f}% | F1: {f1:.4f} | "
+        f"Prec: {precision:.4f} | Rec: {recall:.4f} | Time: {inference_time:.2f}s"
     )
 
-    return accuracy, inference_time
+    return {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "inference_time": inference_time
+    }

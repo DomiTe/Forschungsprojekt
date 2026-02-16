@@ -5,6 +5,7 @@ import logging
 from src.model import CNN
 from src.train import train_model
 from src.evaluation.evaluate import evaluate
+from src.evaluation.fidelity import calculate_fidelity_metrics
 from src.utility.quantization_calibration import calibrate_model
 from src.utility.utils import (
     get_data_loaders, 
@@ -12,7 +13,8 @@ from src.utility.utils import (
     save_csv, 
     setup_global_logging, 
     run_sensitivity_analysis,
-    plot_training_curves
+    plot_training_curves,
+    save_quantization_plots  # Ensure this is added to your utils.py
 )
 from src.utility.config import (
     DEVICE, 
@@ -43,77 +45,108 @@ def run_experiment():
         logger.info("Kein Baseline-Modell gefunden. Starte Training...")
         model, history = train_model(train_loader, test_loader, num_classes)
 
-    # Sicherstellen, dass Baseline im Float-Modus ist
     if hasattr(model, 'convert_to_baseline'):
         model.convert_to_baseline()
     
     # 3. Baseline Evaluieren
     logger.info("Evaluiere Baseline (Float32)...")
-    acc_base, time_base = evaluate(model, test_loader, "Baseline Float32")
+    base_metrics = evaluate(model, test_loader, "Baseline Float32")
+    acc_base = base_metrics['accuracy']
+    time_base = base_metrics['inference_time']
     size_base = get_model_size(model)
     logger.info(f"Baseline -> Acc: {acc_base:.2f}%, Time: {time_base:.4f}s, Size: {size_base:.2f}MB")
 
-    plot_training_curves(history)
-
     # 4. Definition der Experimente
     experiment_configs = EXPERIMENT_CONFIGS
-
     results = []
     
     # Baseline Resultat
     results.append({
-        "config_name": "Baseline (Float32)",
-        "method": "float",
-        "bits": 32,
-        "accuracy": acc_base,
-        "inference_time": time_base,
-        "model_size_mb": size_base,
-        "drop_percentage": 0.0
-    })
+    "config_name": "Baseline (Float32)",
+    "method": "float",
+    "bits": 32,
+    "accuracy": acc_base,
+    "precision": base_metrics['precision'],
+    "recall": base_metrics['recall'],
+    "f1_score": base_metrics['f1_score'],
+    "sqnr_db": 100.0,
+    "kl_divergence": 0.0,
+    "avg_mse": 0.0,
+    "inference_time": time_base,
+    "model_size_mb": size_base,
+    "drop_percentage": 0.0
+})
 
     # 5. Systematische Schleife
     for conf in experiment_configs:
         logger.info(f"--- Starte Experiment: {conf['name']} ---")
         
         model_quant = copy.deepcopy(model)
-
         model_quant.convert_to_quantized(method=conf['method'], bits=conf['bits'])
-        
         calibrate_model(model_quant, train_loader, num_batches=10, device=DEVICE)
 
-        acc, time_inf = evaluate(model_quant, test_loader, conf['name'])
-        
-        drop = acc_base - acc
-        
-        logger.info(f"Ergebnis {conf['name']}: Acc={acc:.2f}% (Drop: {drop:.2f})")
+        # 1. Deep Fidelity Evaluation (Logits comparison)
+        model.eval()
+        model_quant.eval()
+        total_mse, total_sqnr, total_kl = 0, 0, 0
+        num_eval_batches = 10
 
-        logger.info(f"Konvertiere Gewichte zu INT{conf['bits']} für Speicherung...")
-        model_quant.permanently_quantize_weights()
+        with torch.no_grad():
+            for i, (imgs, _) in enumerate(test_loader):
+                if i >= num_eval_batches: break 
+                imgs = imgs.to(DEVICE)
+                b_out, q_out = model(imgs), model_quant(imgs)
+                
+                mse, sqnr, kl = calculate_fidelity_metrics(b_out, q_out)
+                total_mse += mse
+                total_sqnr += sqnr
+                total_kl += kl
 
-        save_path = os.path.join(QUANTIZED_MODELS, f"model_{conf['name']}.pt")
-        torch.save(model_quant.state_dict(), save_path)
-
-        real_size_mb = os.path.getsize(save_path) / (1024 * 1024)
-        logger.info(f"Gespeicherte Modellgröße: {real_size_mb:.2f} MB")
+        avg_sqnr = total_sqnr / num_eval_batches
+        avg_kl = total_kl / num_eval_batches
+        avg_mse = total_mse / num_eval_batches
         
+        # 2. Performance Evaluation (Class metrics)
+        # Ensure evaluate() returns a DICT with accuracy, precision, recall, f1, inference_time
+        eval_res = evaluate(model_quant, test_loader, conf['name'])
+
         results.append({
             "config_name": conf['name'],
             "method": conf['method'],
             "bits": conf['bits'],
-            "accuracy": acc,
-            "inference_time": time_inf,
-            "model_size_mb": real_size_mb,
-            "drop_percentage": drop
+            "accuracy": eval_res['accuracy'],
+            "precision": eval_res['precision'],
+            "recall": eval_res['recall'],
+            "f1_score": eval_res['f1_score'],
+            "sqnr_db": avg_sqnr,
+            "kl_divergence": avg_kl,
+            "avg_mse": avg_mse,
+            "inference_time": eval_res['inference_time'],
+            "model_size_mb": 0, # Calculated after saving
+            "drop_percentage": acc_base - eval_res['accuracy']
         })
-        
+
+        # 3. Save Model State
+        model_quant.permanently_quantize_weights()
         save_path = os.path.join(QUANTIZED_MODELS, f"model_{conf['name']}.pt")
         torch.save(model_quant.state_dict(), save_path)
+        
+        # Update size in the last added result
+        results[-1]["model_size_mb"] = os.path.getsize(save_path) / (1024 * 1024)
 
-    # 6. Ergebnisse speichern (Funktion kommt jetzt aus utils)
-    save_csv(results, EXPERIMENT_CSV_PATH, 
-             ['config_name', 'method', 'bits', 'accuracy', 'inference_time', 'model_size_mb', 'drop_percentage'])
+    # 6. Ergebnisse speichern & Plots generieren
+    fieldnames = [
+        'config_name', 'method', 'bits', 'accuracy', 'precision', 'recall', 
+        'f1_score', 'sqnr_db', 'kl_divergence', 'avg_mse', 'inference_time', 
+        'model_size_mb', 'drop_percentage'
+    ]
 
-    # 7. Sensitivitätsanalyse (Funktion kommt jetzt aus utils)
+    save_csv(results, EXPERIMENT_CSV_PATH, fieldnames)
+    
+    # New: Save the visualization plots created in the notebook
+    save_quantization_plots(results)
+
+    # 7. Sensitivitätsanalyse
     run_sensitivity_analysis(
         model, 
         test_loader, 

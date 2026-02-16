@@ -43,13 +43,57 @@ def get_data_loaders():
     """
     Die Hauptfunktion zum Laden der Daten.
     """
-    if DATASET_NAME == "MNIST":
+    if DATASET_NAME == "CIFAR10":
+        return _get_cifar10_loaders()
+    elif DATASET_NAME == "CIFAR100":
+        return _get_cifar100_loaders()
+    elif DATASET_NAME == "MNIST":
         return _get_mnist_loaders()
     elif DATASET_NAME == "POKEMON":
         return _get_pokemon_loaders()
     else:
         raise ValueError(f"Unbekanntes Dataset in Config: {DATASET_NAME}")
+    
+def _get_cifar10_loaders():
+    transform_train = transforms.Compose([
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)) # COMMENTED OUT
+    ])
+    transform_test = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)) # COMMENTED OUT
+    ])
+    train_dataset = datasets.CIFAR10(DATA_DIR, train=True, download=True, transform=transform_train)
+    test_dataset = datasets.CIFAR10(DATA_DIR, train=False, download=True, transform=transform_test)
+    
+    kwargs = {"num_workers": 2, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+    return DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs), \
+           DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs), 10
 
+def _get_cifar100_loaders():
+    transform_train = transforms.Compose([
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)) # COMMENTED OUT
+    ])
+    transform_test = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # transforms.Normalize((0.5071, 0.4867, 0.4408), (0.2675, 0.2565, 0.2761)) # COMMENTED OUT
+    ])
+    train_dataset = datasets.CIFAR100(DATA_DIR, train=True, download=True, transform=transform_train)
+    test_dataset = datasets.CIFAR100(DATA_DIR, train=False, download=True, transform=transform_test)
+    
+    kwargs = {"num_workers": 2, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+    return DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs), \
+           DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs), 100
+           
 def _get_mnist_loaders():
     transform = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
@@ -182,10 +226,11 @@ def run_sensitivity_analysis(base_model, test_loader, method='symmetric', bits=8
         if isinstance(module, QuantizedLayerMixin):
             quantizable_modules.append((name, module))
             
-    # 2. Baseline Accuracy messen (sollte der Float-Accuracy entsprechen)
-    # Sicherstellen, dass alles auf Float steht
+    # 2. Baseline Accuracy messen
     model.convert_to_baseline()
-    base_acc, _ = evaluate(model, test_loader, "Sensitivity Baseline")
+    # KORREKTUR: Dictionary abfangen statt Unpacking
+    base_metrics = evaluate(model, test_loader, "Sensitivity Baseline")
+    base_acc = base_metrics['accuracy']
 
     # 3. Schleife durch alle Layer
     for name, module in quantizable_modules:
@@ -193,7 +238,10 @@ def run_sensitivity_analysis(base_model, test_loader, method='symmetric', bits=8
         module.prepare_quantization(method=method, bits=bits)
         
         # Evaluieren
-        acc, _ = evaluate(model, test_loader, f"Layer: {name}")
+        # KORREKTUR: Auch hier das Dictionary abfangen
+        eval_metrics = evaluate(model, test_loader, f"Layer: {name}")
+        acc = eval_metrics['accuracy']
+        
         drop = base_acc - acc
         
         results.append({
@@ -222,3 +270,81 @@ def setup_global_logging():
             logging.StreamHandler(sys.stdout)
         ]
     )
+    
+def save_quantization_plots(results_list):
+    """
+    Generates and saves separate bar charts for every evaluation metric in the results.
+    """
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import os
+    from src.utility.config import LOG_DIR
+
+    df = pd.DataFrame(results_list)
+    
+    # All metrics to be plotted separately
+    metrics = [
+        'accuracy', 'precision', 'recall', 'f1_score', 
+        'sqnr_db', 'kl_divergence', 'avg_mse', 
+        'inference_time', 'model_size_mb', 'drop_percentage'
+    ]
+
+    plt.style.use('ggplot') # Use a clean, readable style
+
+    for metric in metrics:
+        if metric not in df.columns:
+            continue
+            
+        plt.figure(figsize=(12, 6))
+        
+        # Sort values: Descending for "good" metrics, Ascending for "bad" metrics (errors/time)
+        is_error_metric = metric in ['kl_divergence', 'avg_mse', 'inference_time', 'drop_percentage']
+        temp_df = df.sort_values(by=metric, ascending=is_error_metric)
+        
+        bars = plt.bar(temp_df['config_name'], temp_df[metric], color='skyblue', edgecolor='navy')
+        
+        # Add data labels on top of each bar for precision
+        for bar in bars:
+            yval = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width()/2, yval, round(yval, 4), va='bottom', ha='center', fontsize=9)
+
+        plt.title(f"Quantization Analysis: {metric.replace('_', ' ').title()}")
+        plt.ylabel(metric.replace('_', ' ').title())
+        plt.xticks(rotation=45, ha='right')
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        plt.tight_layout()
+        
+        # Save each plot to results/logs
+        plot_path = os.path.join(LOG_DIR, f"plot_{metric}.png")
+        plt.savefig(plot_path)
+        plt.close()
+    
+def save_individual_plots(results_list):
+    """
+    Saves a separate bar chart for every evaluation metric.
+    """
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    
+    df = pd.DataFrame(results_list)
+    # Define which columns represent plottable metrics
+    metrics = ['accuracy', 'sqnr_db', 'kl_divergence', 'avg_mse', 
+               'precision', 'recall', 'f1_score', 'inference_time']
+
+    for metric in metrics:
+        if metric not in df.columns: continue
+            
+        plt.figure(figsize=(12, 6))
+        # Sort values to make comparisons easier
+        temp_df = df.sort_values(by=metric, ascending=False)
+        
+        plt.bar(temp_df['config_name'], temp_df[metric], color='skyblue', edgecolor='navy')
+        plt.title(f"Comparison: {metric.replace('_', ' ').title()}")
+        plt.ylabel(metric.replace('_', ' ').title())
+        plt.xticks(rotation=45, ha='right')
+        plt.grid(axis='y', linestyle='--', alpha=0.7)
+        plt.tight_layout()
+        
+        plot_path = os.path.join(LOG_DIR, f"plot_{metric}.png")
+        plt.savefig(plot_path)
+        plt.close()

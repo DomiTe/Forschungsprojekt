@@ -1,3 +1,6 @@
 .venv/
 results/
 uv.lock
+data/
+.python-version
+.vscode/

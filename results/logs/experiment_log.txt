@@ -1,220 +1,526 @@
-2026-02-16 16:27:55 [INFO] Experiment: Lade Datensätze...
-2026-02-16 16:27:56 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
-2026-02-16 16:28:41 [INFO] Experiment: Lade Datensätze...
-2026-02-16 16:28:42 [INFO] Experiment: Kein Baseline-Modell gefunden. Starte Training...
-2026-02-16 16:28:42 [INFO] src.train: Starte Training auf Device: cuda
-2026-02-16 16:28:50 [INFO] src.train: Ep 1: Train Acc: 43.38% | Val Acc: 45.91%
-2026-02-16 16:28:50 [INFO] src.train: Saved best model (43.3780%)
-2026-02-16 16:28:59 [INFO] src.train: Ep 2: Train Acc: 56.37% | Val Acc: 54.71%
-2026-02-16 16:28:59 [INFO] src.train: Saved best model (56.3720%)
-2026-02-16 16:29:07 [INFO] src.train: Ep 3: Train Acc: 62.08% | Val Acc: 48.20%
-2026-02-16 16:29:07 [INFO] src.train: Saved best model (62.0760%)
-2026-02-16 16:29:15 [INFO] src.train: Ep 4: Train Acc: 65.75% | Val Acc: 67.63%
-2026-02-16 16:29:15 [INFO] src.train: Saved best model (65.7520%)
-2026-02-16 16:29:23 [INFO] src.train: Ep 5: Train Acc: 67.88% | Val Acc: 69.97%
-2026-02-16 16:29:23 [INFO] src.train: Saved best model (67.8800%)
-2026-02-16 16:29:31 [INFO] src.train: Ep 6: Train Acc: 70.21% | Val Acc: 71.18%
-2026-02-16 16:29:31 [INFO] src.train: Saved best model (70.2140%)
-2026-02-16 16:29:39 [INFO] src.train: Ep 7: Train Acc: 71.89% | Val Acc: 71.29%
-2026-02-16 16:29:39 [INFO] src.train: Saved best model (71.8920%)
-2026-02-16 16:29:48 [INFO] src.train: Ep 8: Train Acc: 73.02% | Val Acc: 67.10%
-2026-02-16 16:29:48 [INFO] src.train: Saved best model (73.0160%)
-2026-02-16 16:29:56 [INFO] src.train: Ep 9: Train Acc: 74.30% | Val Acc: 73.31%
-2026-02-16 16:29:56 [INFO] src.train: Saved best model (74.2960%)
-2026-02-16 16:30:04 [INFO] src.train: Ep 10: Train Acc: 75.15% | Val Acc: 76.70%
-2026-02-16 16:30:04 [INFO] src.train: Saved best model (75.1540%)
-2026-02-16 16:30:12 [INFO] src.train: Ep 11: Train Acc: 76.18% | Val Acc: 72.93%
-2026-02-16 16:30:12 [INFO] src.train: Saved best model (76.1760%)
-2026-02-16 16:30:20 [INFO] src.train: Ep 12: Train Acc: 77.11% | Val Acc: 75.96%
-2026-02-16 16:30:20 [INFO] src.train: Saved best model (77.1080%)
-2026-02-16 16:30:28 [INFO] src.train: Ep 13: Train Acc: 77.75% | Val Acc: 77.50%
-2026-02-16 16:30:28 [INFO] src.train: Saved best model (77.7520%)
-2026-02-16 16:30:36 [INFO] src.train: Ep 14: Train Acc: 78.51% | Val Acc: 79.87%
-2026-02-16 16:30:36 [INFO] src.train: Saved best model (78.5100%)
-2026-02-16 16:30:44 [INFO] src.train: Ep 15: Train Acc: 78.89% | Val Acc: 79.51%
-2026-02-16 16:30:44 [INFO] src.train: Saved best model (78.8880%)
-2026-02-16 16:30:52 [INFO] src.train: Ep 16: Train Acc: 79.43% | Val Acc: 81.11%
-2026-02-16 16:30:52 [INFO] src.train: Saved best model (79.4260%)
-2026-02-16 16:31:00 [INFO] src.train: Ep 17: Train Acc: 79.86% | Val Acc: 79.37%
-2026-02-16 16:31:00 [INFO] src.train: Saved best model (79.8620%)
-2026-02-16 16:31:08 [INFO] src.train: Ep 18: Train Acc: 80.31% | Val Acc: 80.54%
-2026-02-16 16:31:08 [INFO] src.train: Saved best model (80.3100%)
-2026-02-16 16:31:16 [INFO] src.train: Ep 19: Train Acc: 80.68% | Val Acc: 78.45%
-2026-02-16 16:31:16 [INFO] src.train: Saved best model (80.6760%)
-2026-02-16 16:31:24 [INFO] src.train: Ep 20: Train Acc: 80.93% | Val Acc: 81.06%
-2026-02-16 16:31:24 [INFO] src.train: Saved best model (80.9320%)
-2026-02-16 16:31:32 [INFO] src.train: Ep 21: Train Acc: 81.36% | Val Acc: 76.22%
-2026-02-16 16:31:32 [INFO] src.train: Saved best model (81.3640%)
-2026-02-16 16:31:40 [INFO] src.train: Ep 22: Train Acc: 81.51% | Val Acc: 80.88%
-2026-02-16 16:31:40 [INFO] src.train: Saved best model (81.5100%)
-2026-02-16 16:31:48 [INFO] src.train: Ep 23: Train Acc: 81.54% | Val Acc: 79.74%
-2026-02-16 16:31:48 [INFO] src.train: Saved best model (81.5420%)
-2026-02-16 16:31:56 [INFO] src.train: Ep 24: Train Acc: 82.27% | Val Acc: 77.35%
-2026-02-16 16:31:56 [INFO] src.train: Saved best model (82.2700%)
-2026-02-16 16:32:04 [INFO] src.train: Ep 25: Train Acc: 82.38% | Val Acc: 82.91%
-2026-02-16 16:32:04 [INFO] src.train: Saved best model (82.3840%)
-2026-02-16 16:32:12 [INFO] src.train: Ep 26: Train Acc: 82.79% | Val Acc: 81.30%
-2026-02-16 16:32:12 [INFO] src.train: Saved best model (82.7880%)
-2026-02-16 16:32:20 [INFO] src.train: Ep 27: Train Acc: 82.80% | Val Acc: 82.49%
-2026-02-16 16:32:20 [INFO] src.train: Saved best model (82.7980%)
-2026-02-16 16:32:28 [INFO] src.train: Ep 28: Train Acc: 82.85% | Val Acc: 81.75%
-2026-02-16 16:32:28 [INFO] src.train: Saved best model (82.8480%)
-2026-02-16 16:32:36 [INFO] src.train: Ep 29: Train Acc: 82.96% | Val Acc: 80.22%
-2026-02-16 16:32:36 [INFO] src.train: Saved best model (82.9580%)
-2026-02-16 16:32:44 [INFO] src.train: Ep 30: Train Acc: 83.25% | Val Acc: 83.15%
-2026-02-16 16:32:44 [INFO] src.train: Saved best model (83.2460%)
-2026-02-16 16:32:52 [INFO] src.train: Ep 31: Train Acc: 83.62% | Val Acc: 82.04%
-2026-02-16 16:32:52 [INFO] src.train: Saved best model (83.6160%)
-2026-02-16 16:33:00 [INFO] src.train: Ep 32: Train Acc: 83.38% | Val Acc: 82.26%
-2026-02-16 16:33:08 [INFO] src.train: Ep 33: Train Acc: 83.63% | Val Acc: 82.81%
-2026-02-16 16:33:08 [INFO] src.train: Saved best model (83.6300%)
-2026-02-16 16:33:16 [INFO] src.train: Ep 34: Train Acc: 83.76% | Val Acc: 82.00%
-2026-02-16 16:33:16 [INFO] src.train: Saved best model (83.7580%)
-2026-02-16 16:33:24 [INFO] src.train: Ep 35: Train Acc: 84.10% | Val Acc: 84.02%
-2026-02-16 16:33:24 [INFO] src.train: Saved best model (84.0980%)
-2026-02-16 16:33:33 [INFO] src.train: Ep 36: Train Acc: 84.19% | Val Acc: 82.98%
-2026-02-16 16:33:33 [INFO] src.train: Saved best model (84.1860%)
-2026-02-16 16:33:41 [INFO] src.train: Ep 37: Train Acc: 84.18% | Val Acc: 82.48%
-2026-02-16 16:33:49 [INFO] src.train: Ep 38: Train Acc: 84.33% | Val Acc: 81.38%
-2026-02-16 16:33:49 [INFO] src.train: Saved best model (84.3300%)
-2026-02-16 16:33:57 [INFO] src.train: Ep 39: Train Acc: 84.40% | Val Acc: 82.76%
-2026-02-16 16:33:57 [INFO] src.train: Saved best model (84.3980%)
-2026-02-16 16:34:05 [INFO] src.train: Ep 40: Train Acc: 84.66% | Val Acc: 82.11%
-2026-02-16 16:34:05 [INFO] src.train: Saved best model (84.6640%)
-2026-02-16 16:34:13 [INFO] src.train: Ep 41: Train Acc: 84.78% | Val Acc: 83.38%
-2026-02-16 16:34:13 [INFO] src.train: Saved best model (84.7820%)
-2026-02-16 16:34:21 [INFO] src.train: Ep 42: Train Acc: 84.91% | Val Acc: 84.97%
-2026-02-16 16:34:21 [INFO] src.train: Saved best model (84.9100%)
-2026-02-16 16:34:29 [INFO] src.train: Ep 43: Train Acc: 84.96% | Val Acc: 82.22%
-2026-02-16 16:34:29 [INFO] src.train: Saved best model (84.9600%)
-2026-02-16 16:34:37 [INFO] src.train: Ep 44: Train Acc: 84.89% | Val Acc: 82.35%
-2026-02-16 16:34:45 [INFO] src.train: Ep 45: Train Acc: 85.20% | Val Acc: 82.30%
-2026-02-16 16:34:45 [INFO] src.train: Saved best model (85.2040%)
-2026-02-16 16:34:53 [INFO] src.train: Ep 46: Train Acc: 85.19% | Val Acc: 82.07%
-2026-02-16 16:35:01 [INFO] src.train: Ep 47: Train Acc: 85.13% | Val Acc: 84.42%
-2026-02-16 16:35:09 [INFO] src.train: Ep 48: Train Acc: 85.54% | Val Acc: 83.53%
-2026-02-16 16:35:09 [INFO] src.train: Saved best model (85.5360%)
-2026-02-16 16:35:17 [INFO] src.train: Ep 49: Train Acc: 85.65% | Val Acc: 82.99%
-2026-02-16 16:35:17 [INFO] src.train: Saved best model (85.6460%)
-2026-02-16 16:35:25 [INFO] src.train: Ep 50: Train Acc: 85.45% | Val Acc: 84.90%
-2026-02-16 16:35:25 [INFO] src.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
-2026-02-16 16:35:25 [INFO] Experiment: Evaluiere Baseline (Float32)...
-2026-02-16 16:35:26 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
-2026-02-16 16:35:26 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 16:35:26 [INFO] Experiment: Baseline -> Acc: 84.90%, Time: 0.4725s, Size: 5.53MB
-2026-02-16 16:35:26 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
-2026-02-16 16:35:26 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 16:35:26 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 16:35:27 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
-2026-02-16 16:35:28 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 16:35:28 [INFO] Experiment: --- Starte Experiment: Sym_INT4 ---
-2026-02-16 16:35:28 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 16:35:28 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 16:35:29 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT4
-2026-02-16 16:35:30 [INFO] src.evaluation.evaluate: Result [Sym_INT4] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 16:35:30 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
-2026-02-16 16:35:30 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 16:35:30 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 16:35:31 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
-2026-02-16 16:35:31 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 16:35:31 [INFO] Experiment: --- Starte Experiment: Aff_INT4 ---
-2026-02-16 16:35:31 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 16:35:31 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 16:35:32 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT4
-2026-02-16 16:35:33 [INFO] src.evaluation.evaluate: Result [Aff_INT4] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 16:35:33 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
-2026-02-16 16:35:33 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 16:35:33 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 16:35:34 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
-2026-02-16 16:35:35 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 16:35:35 [INFO] Experiment: --- Starte Experiment: Po2_INT4 ---
-2026-02-16 16:35:35 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 16:35:35 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 16:35:36 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT4
-2026-02-16 16:35:36 [INFO] src.evaluation.evaluate: Result [Po2_INT4] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 16:35:36 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_{DATASET_NAME}.csv
-2026-02-16 16:35:37 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
-2026-02-16 16:35:37 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
-2026-02-16 16:35:38 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.49s
-2026-02-16 16:35:38 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
-2026-02-16 16:35:38 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.49s
-2026-02-16 16:35:38 [INFO] src.utility.utils: Layer conv1: Drop = 0.00%
-2026-02-16 16:35:39 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
-2026-02-16 16:35:39 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 16:35:39 [INFO] src.utility.utils: Layer conv2: Drop = 0.00%
-2026-02-16 16:35:40 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
-2026-02-16 16:35:40 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 16:35:40 [INFO] src.utility.utils: Layer conv3: Drop = 0.00%
-2026-02-16 16:35:40 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
-2026-02-16 16:35:41 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 16:35:41 [INFO] src.utility.utils: Layer conv4: Drop = 0.00%
-2026-02-16 16:35:41 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
-2026-02-16 16:35:42 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 16:35:42 [INFO] src.utility.utils: Layer fc1: Drop = 0.00%
-2026-02-16 16:35:42 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
-2026-02-16 16:35:42 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 16:35:42 [INFO] src.utility.utils: Layer fc2: Drop = 0.00%
-2026-02-16 16:35:42 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis.csv
-2026-02-16 16:35:42 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
-2026-02-16 18:42:03 [INFO] Experiment: Lade Datensätze...
-2026-02-16 18:42:04 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
-2026-02-16 18:42:04 [INFO] Experiment: Evaluiere Baseline (Float32)...
-2026-02-16 18:42:04 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
-2026-02-16 18:42:05 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 18:42:05 [INFO] Experiment: Baseline -> Acc: 84.90%, Time: 0.4788s, Size: 5.53MB
-2026-02-16 18:42:05 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
-2026-02-16 18:42:05 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 18:42:05 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 18:42:06 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
-2026-02-16 18:42:07 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 18:42:07 [INFO] Experiment: --- Starte Experiment: Sym_INT4 ---
-2026-02-16 18:42:07 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 18:42:07 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 18:42:08 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT4
-2026-02-16 18:42:08 [INFO] src.evaluation.evaluate: Result [Sym_INT4] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.50s
-2026-02-16 18:42:08 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
-2026-02-16 18:42:08 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 18:42:08 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 18:42:10 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
-2026-02-16 18:42:10 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.49s
-2026-02-16 18:42:10 [INFO] Experiment: --- Starte Experiment: Aff_INT4 ---
-2026-02-16 18:42:10 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 18:42:10 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 18:42:11 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT4
-2026-02-16 18:42:12 [INFO] src.evaluation.evaluate: Result [Aff_INT4] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 18:42:12 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
-2026-02-16 18:42:12 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 18:42:12 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 18:42:13 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
-2026-02-16 18:42:13 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.49s
-2026-02-16 18:42:13 [INFO] Experiment: --- Starte Experiment: Po2_INT4 ---
-2026-02-16 18:42:13 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
-2026-02-16 18:42:14 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
-2026-02-16 18:42:15 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT4
-2026-02-16 18:42:15 [INFO] src.evaluation.evaluate: Result [Po2_INT4] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.49s
-2026-02-16 18:42:15 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_{DATASET_NAME}.csv
-2026-02-16 18:42:16 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
-2026-02-16 18:42:16 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
-2026-02-16 18:42:17 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.49s
-2026-02-16 18:42:17 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
-2026-02-16 18:42:17 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.48s
-2026-02-16 18:42:17 [INFO] src.utility.utils: Layer conv1: Drop = 0.00%
-2026-02-16 18:42:18 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
-2026-02-16 18:42:18 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 18:42:18 [INFO] src.utility.utils: Layer conv2: Drop = 0.00%
-2026-02-16 18:42:18 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
-2026-02-16 18:42:19 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 18:42:19 [INFO] src.utility.utils: Layer conv3: Drop = 0.00%
-2026-02-16 18:42:19 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
-2026-02-16 18:42:20 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 18:42:20 [INFO] src.utility.utils: Layer conv4: Drop = 0.00%
-2026-02-16 18:42:20 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
-2026-02-16 18:42:20 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 18:42:20 [INFO] src.utility.utils: Layer fc1: Drop = 0.00%
-2026-02-16 18:42:21 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
-2026-02-16 18:42:21 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.90% | F1: 0.8491 | Prec: 0.8523 | Rec: 0.8490 | Time: 0.47s
-2026-02-16 18:42:21 [INFO] src.utility.utils: Layer fc2: Drop = 0.00%
-2026-02-16 18:42:21 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis.csv
-2026-02-16 18:42:21 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
-2026-02-16 18:43:15 [INFO] Experiment: Lade Datensätze...
-2026-02-16 18:43:16 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:27:58 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:27:59 [INFO] Experiment: Kein Baseline-Modell gefunden. Starte Training...
+2026-02-19 12:27:59 [INFO] src.train: Starte Training auf Device: cuda
+2026-02-19 12:28:08 [INFO] src.train: Ep 1: Train Acc: 43.10% | Val Acc: 43.96%
+2026-02-19 12:28:08 [INFO] src.train: Saved best model (43.1020%)
+2026-02-19 12:28:16 [INFO] src.train: Ep 2: Train Acc: 56.12% | Val Acc: 34.48%
+2026-02-19 12:28:16 [INFO] src.train: Saved best model (56.1220%)
+2026-02-19 12:28:24 [INFO] src.train: Ep 3: Train Acc: 61.42% | Val Acc: 57.04%
+2026-02-19 12:28:24 [INFO] src.train: Saved best model (61.4240%)
+2026-02-19 12:28:32 [INFO] src.train: Ep 4: Train Acc: 64.71% | Val Acc: 68.72%
+2026-02-19 12:28:32 [INFO] src.train: Saved best model (64.7080%)
+2026-02-19 12:28:40 [INFO] src.train: Ep 5: Train Acc: 67.53% | Val Acc: 67.78%
+2026-02-19 12:28:40 [INFO] src.train: Saved best model (67.5260%)
+2026-02-19 12:28:47 [INFO] src.train: Ep 6: Train Acc: 69.42% | Val Acc: 68.87%
+2026-02-19 12:28:47 [INFO] src.train: Saved best model (69.4160%)
+2026-02-19 12:28:55 [INFO] src.train: Ep 7: Train Acc: 70.82% | Val Acc: 71.54%
+2026-02-19 12:28:55 [INFO] src.train: Saved best model (70.8200%)
+2026-02-19 12:29:03 [INFO] src.train: Ep 8: Train Acc: 72.58% | Val Acc: 74.01%
+2026-02-19 12:29:03 [INFO] src.train: Saved best model (72.5820%)
+2026-02-19 12:29:11 [INFO] src.train: Ep 9: Train Acc: 73.74% | Val Acc: 72.87%
+2026-02-19 12:29:11 [INFO] src.train: Saved best model (73.7380%)
+2026-02-19 12:29:19 [INFO] src.train: Ep 10: Train Acc: 74.70% | Val Acc: 75.28%
+2026-02-19 12:29:19 [INFO] src.train: Saved best model (74.6960%)
+2026-02-19 12:29:27 [INFO] src.train: Ep 11: Train Acc: 75.86% | Val Acc: 75.91%
+2026-02-19 12:29:27 [INFO] src.train: Saved best model (75.8620%)
+2026-02-19 12:29:35 [INFO] src.train: Ep 12: Train Acc: 76.77% | Val Acc: 78.34%
+2026-02-19 12:29:35 [INFO] src.train: Saved best model (76.7700%)
+2026-02-19 12:29:43 [INFO] src.train: Ep 13: Train Acc: 77.18% | Val Acc: 72.79%
+2026-02-19 12:29:43 [INFO] src.train: Saved best model (77.1760%)
+2026-02-19 12:29:50 [INFO] src.train: Ep 14: Train Acc: 77.96% | Val Acc: 79.22%
+2026-02-19 12:29:51 [INFO] src.train: Saved best model (77.9560%)
+2026-02-19 12:29:58 [INFO] src.train: Ep 15: Train Acc: 78.55% | Val Acc: 79.72%
+2026-02-19 12:29:58 [INFO] src.train: Saved best model (78.5540%)
+2026-02-19 12:30:06 [INFO] src.train: Ep 16: Train Acc: 78.67% | Val Acc: 77.06%
+2026-02-19 12:30:06 [INFO] src.train: Saved best model (78.6660%)
+2026-02-19 12:30:14 [INFO] src.train: Ep 17: Train Acc: 79.52% | Val Acc: 80.02%
+2026-02-19 12:30:14 [INFO] src.train: Saved best model (79.5220%)
+2026-02-19 12:30:22 [INFO] src.train: Ep 18: Train Acc: 79.78% | Val Acc: 80.20%
+2026-02-19 12:30:22 [INFO] src.train: Saved best model (79.7800%)
+2026-02-19 12:30:30 [INFO] src.train: Ep 19: Train Acc: 80.22% | Val Acc: 81.11%
+2026-02-19 12:30:30 [INFO] src.train: Saved best model (80.2240%)
+2026-02-19 12:30:38 [INFO] src.train: Ep 20: Train Acc: 80.18% | Val Acc: 81.55%
+2026-02-19 12:30:46 [INFO] src.train: Ep 21: Train Acc: 81.01% | Val Acc: 82.19%
+2026-02-19 12:30:46 [INFO] src.train: Saved best model (81.0080%)
+2026-02-19 12:30:53 [INFO] src.train: Ep 22: Train Acc: 81.37% | Val Acc: 80.47%
+2026-02-19 12:30:53 [INFO] src.train: Saved best model (81.3700%)
+2026-02-19 12:31:01 [INFO] src.train: Ep 23: Train Acc: 81.57% | Val Acc: 78.77%
+2026-02-19 12:31:01 [INFO] src.train: Saved best model (81.5700%)
+2026-02-19 12:31:09 [INFO] src.train: Ep 24: Train Acc: 81.61% | Val Acc: 81.21%
+2026-02-19 12:31:09 [INFO] src.train: Saved best model (81.6120%)
+2026-02-19 12:31:17 [INFO] src.train: Ep 25: Train Acc: 82.02% | Val Acc: 79.88%
+2026-02-19 12:31:17 [INFO] src.train: Saved best model (82.0220%)
+2026-02-19 12:31:25 [INFO] src.train: Ep 26: Train Acc: 82.32% | Val Acc: 79.89%
+2026-02-19 12:31:25 [INFO] src.train: Saved best model (82.3240%)
+2026-02-19 12:31:33 [INFO] src.train: Ep 27: Train Acc: 82.61% | Val Acc: 80.06%
+2026-02-19 12:31:33 [INFO] src.train: Saved best model (82.6140%)
+2026-02-19 12:31:41 [INFO] src.train: Ep 28: Train Acc: 82.76% | Val Acc: 80.31%
+2026-02-19 12:31:41 [INFO] src.train: Saved best model (82.7640%)
+2026-02-19 12:31:49 [INFO] src.train: Ep 29: Train Acc: 82.92% | Val Acc: 84.48%
+2026-02-19 12:31:49 [INFO] src.train: Saved best model (82.9180%)
+2026-02-19 12:31:57 [INFO] src.train: Ep 30: Train Acc: 83.20% | Val Acc: 84.09%
+2026-02-19 12:31:57 [INFO] src.train: Saved best model (83.1960%)
+2026-02-19 12:32:05 [INFO] src.train: Ep 31: Train Acc: 83.17% | Val Acc: 81.77%
+2026-02-19 12:32:12 [INFO] src.train: Ep 32: Train Acc: 83.53% | Val Acc: 82.50%
+2026-02-19 12:32:12 [INFO] src.train: Saved best model (83.5300%)
+2026-02-19 12:32:20 [INFO] src.train: Ep 33: Train Acc: 83.40% | Val Acc: 83.87%
+2026-02-19 12:32:28 [INFO] src.train: Ep 34: Train Acc: 83.67% | Val Acc: 84.09%
+2026-02-19 12:32:28 [INFO] src.train: Saved best model (83.6720%)
+2026-02-19 12:32:36 [INFO] src.train: Ep 35: Train Acc: 83.92% | Val Acc: 82.74%
+2026-02-19 12:32:36 [INFO] src.train: Saved best model (83.9220%)
+2026-02-19 12:32:44 [INFO] src.train: Ep 36: Train Acc: 83.78% | Val Acc: 82.31%
+2026-02-19 12:32:52 [INFO] src.train: Ep 37: Train Acc: 84.21% | Val Acc: 83.91%
+2026-02-19 12:32:52 [INFO] src.train: Saved best model (84.2080%)
+2026-02-19 12:33:00 [INFO] src.train: Ep 38: Train Acc: 84.22% | Val Acc: 85.38%
+2026-02-19 12:33:00 [INFO] src.train: Saved best model (84.2220%)
+2026-02-19 12:33:08 [INFO] src.train: Ep 39: Train Acc: 84.26% | Val Acc: 80.87%
+2026-02-19 12:33:08 [INFO] src.train: Saved best model (84.2620%)
+2026-02-19 12:33:15 [INFO] src.train: Ep 40: Train Acc: 84.41% | Val Acc: 79.89%
+2026-02-19 12:33:15 [INFO] src.train: Saved best model (84.4140%)
+2026-02-19 12:33:23 [INFO] src.train: Ep 41: Train Acc: 84.29% | Val Acc: 82.11%
+2026-02-19 12:33:31 [INFO] src.train: Ep 42: Train Acc: 84.48% | Val Acc: 83.46%
+2026-02-19 12:33:31 [INFO] src.train: Saved best model (84.4760%)
+2026-02-19 12:33:39 [INFO] src.train: Ep 43: Train Acc: 84.81% | Val Acc: 82.59%
+2026-02-19 12:33:39 [INFO] src.train: Saved best model (84.8140%)
+2026-02-19 12:33:47 [INFO] src.train: Ep 44: Train Acc: 84.87% | Val Acc: 84.66%
+2026-02-19 12:33:47 [INFO] src.train: Saved best model (84.8740%)
+2026-02-19 12:33:55 [INFO] src.train: Ep 45: Train Acc: 84.90% | Val Acc: 83.86%
+2026-02-19 12:33:55 [INFO] src.train: Saved best model (84.8980%)
+2026-02-19 12:34:03 [INFO] src.train: Ep 46: Train Acc: 84.90% | Val Acc: 81.15%
+2026-02-19 12:34:11 [INFO] src.train: Ep 47: Train Acc: 85.15% | Val Acc: 82.70%
+2026-02-19 12:34:11 [INFO] src.train: Saved best model (85.1480%)
+2026-02-19 12:34:18 [INFO] src.train: Ep 48: Train Acc: 85.01% | Val Acc: 83.56%
+2026-02-19 12:34:26 [INFO] src.train: Ep 49: Train Acc: 85.24% | Val Acc: 82.00%
+2026-02-19 12:34:26 [INFO] src.train: Saved best model (85.2420%)
+2026-02-19 12:34:34 [INFO] src.train: Ep 50: Train Acc: 85.30% | Val Acc: 84.62%
+2026-02-19 12:34:34 [INFO] src.train: Saved best model (85.3040%)
+2026-02-19 12:34:34 [INFO] src.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:34:34 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:34:35 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:34:35 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:34:35 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4721s, Size: 5.53MB
+2026-02-19 12:34:35 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:37:38 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:37:39 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:37:39 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:37:39 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:37:40 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.48s
+2026-02-19 12:37:40 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4751s, Size: 5.53MB
+2026-02-19 12:37:40 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:38:47 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:38:48 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:38:48 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:38:48 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:38:49 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:38:49 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4742s, Size: 5.53MB
+2026-02-19 12:38:49 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:38:49 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:38:49 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:38:50 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:38:51 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.48% | F1: 0.8470 | Prec: 0.8572 | Rec: 0.8448 | Time: 0.64s
+2026-02-19 12:38:51 [INFO] Experiment: --- Starte Experiment: Sym_INT4 ---
+2026-02-19 12:38:51 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:38:51 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:38:53 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT4
+2026-02-19 12:38:53 [INFO] src.evaluation.evaluate: Result [Sym_INT4] - Acc: 33.56% | F1: 0.2783 | Prec: 0.5225 | Rec: 0.3356 | Time: 0.65s
+2026-02-19 12:38:53 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:38:53 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:38:53 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:38:55 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:38:55 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.55% | F1: 0.8474 | Prec: 0.8576 | Rec: 0.8455 | Time: 0.64s
+2026-02-19 12:38:55 [INFO] Experiment: --- Starte Experiment: Aff_INT4 ---
+2026-02-19 12:38:55 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:38:55 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:38:57 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT4
+2026-02-19 12:38:57 [INFO] src.evaluation.evaluate: Result [Aff_INT4] - Acc: 64.17% | F1: 0.6249 | Prec: 0.7069 | Rec: 0.6417 | Time: 0.65s
+2026-02-19 12:38:57 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:38:57 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:38:58 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:38:59 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:39:00 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.35% | F1: 0.8456 | Prec: 0.8578 | Rec: 0.8435 | Time: 0.64s
+2026-02-19 12:39:00 [INFO] Experiment: --- Starte Experiment: Po2_INT4 ---
+2026-02-19 12:39:00 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:39:00 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:39:01 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT4
+2026-02-19 12:39:02 [INFO] src.evaluation.evaluate: Result [Po2_INT4] - Acc: 25.44% | F1: 0.2298 | Prec: 0.4663 | Rec: 0.2544 | Time: 0.65s
+2026-02-19 12:39:02 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_{DATASET_NAME}.csv
+2026-02-19 12:39:02 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
+2026-02-19 12:39:03 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:39:03 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:39:03 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:39:04 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.30% | F1: 0.8454 | Prec: 0.8564 | Rec: 0.8430 | Time: 0.46s
+2026-02-19 12:39:04 [INFO] src.utility.utils: Layer conv1: Drop = 0.32%
+2026-02-19 12:39:04 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:39:05 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.73% | F1: 0.8490 | Prec: 0.8581 | Rec: 0.8473 | Time: 0.46s
+2026-02-19 12:39:05 [INFO] src.utility.utils: Layer conv2: Drop = -0.11%
+2026-02-19 12:39:05 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
+2026-02-19 12:39:05 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.60% | F1: 0.8479 | Prec: 0.8580 | Rec: 0.8460 | Time: 0.46s
+2026-02-19 12:39:05 [INFO] src.utility.utils: Layer conv3: Drop = 0.02%
+2026-02-19 12:39:06 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
+2026-02-19 12:39:06 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:39:06 [INFO] src.utility.utils: Layer conv4: Drop = 0.00%
+2026-02-19 12:39:06 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
+2026-02-19 12:39:07 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.61% | F1: 0.8480 | Prec: 0.8578 | Rec: 0.8461 | Time: 0.46s
+2026-02-19 12:39:07 [INFO] src.utility.utils: Layer fc1: Drop = 0.01%
+2026-02-19 12:39:07 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
+2026-02-19 12:39:08 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.64% | F1: 0.8483 | Prec: 0.8581 | Rec: 0.8464 | Time: 0.46s
+2026-02-19 12:39:08 [INFO] src.utility.utils: Layer fc2: Drop = -0.02%
+2026-02-19 12:39:08 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis.csv
+2026-02-19 12:39:08 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
+2026-02-19 12:46:07 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:46:07 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:46:07 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:46:08 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:46:09 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:46:09 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4726s, Size: 5.53MB
+2026-02-19 12:46:09 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:46:09 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:46:09 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:46:10 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:46:11 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.46% | F1: 0.8469 | Prec: 0.8574 | Rec: 0.8446 | Time: 0.64s
+2026-02-19 12:46:11 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:46:11 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:46:11 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:46:12 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:46:13 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.46% | F1: 0.8465 | Prec: 0.8565 | Rec: 0.8446 | Time: 0.64s
+2026-02-19 12:46:13 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:46:13 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:46:13 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:46:14 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:46:15 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.34% | F1: 0.8454 | Prec: 0.8572 | Rec: 0.8434 | Time: 0.64s
+2026-02-19 12:46:15 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_{DATASET_NAME}.csv
+2026-02-19 12:46:16 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: affine, Bits: 8) ---
+2026-02-19 12:46:16 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:46:16 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.49s
+2026-02-19 12:46:17 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:46:17 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.57% | F1: 0.8476 | Prec: 0.8575 | Rec: 0.8457 | Time: 0.50s
+2026-02-19 12:46:17 [INFO] src.utility.utils: Layer conv1: Drop = 0.05%
+2026-02-19 12:46:17 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:46:18 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.65% | F1: 0.8484 | Prec: 0.8583 | Rec: 0.8465 | Time: 0.49s
+2026-02-19 12:46:18 [INFO] src.utility.utils: Layer conv2: Drop = -0.03%
+2026-02-19 12:46:18 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
+2026-02-19 12:46:19 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.56% | F1: 0.8474 | Prec: 0.8573 | Rec: 0.8456 | Time: 0.48s
+2026-02-19 12:46:19 [INFO] src.utility.utils: Layer conv3: Drop = 0.06%
+2026-02-19 12:46:19 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
+2026-02-19 12:46:19 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.61% | F1: 0.8480 | Prec: 0.8577 | Rec: 0.8461 | Time: 0.48s
+2026-02-19 12:46:19 [INFO] src.utility.utils: Layer conv4: Drop = 0.01%
+2026-02-19 12:46:20 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
+2026-02-19 12:46:20 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.63% | F1: 0.8482 | Prec: 0.8580 | Rec: 0.8463 | Time: 0.47s
+2026-02-19 12:46:20 [INFO] src.utility.utils: Layer fc1: Drop = -0.01%
+2026-02-19 12:46:20 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
+2026-02-19 12:46:21 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8577 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:46:21 [INFO] src.utility.utils: Layer fc2: Drop = 0.00%
+2026-02-19 12:46:21 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis.csv
+2026-02-19 12:46:21 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
+2026-02-19 12:48:18 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:48:19 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:48:19 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:48:20 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:48:20 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.48s
+2026-02-19 12:48:20 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4776s, Size: 5.53MB
+2026-02-19 12:48:20 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:48:20 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:48:20 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:48:22 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:48:22 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.29% | F1: 0.8451 | Prec: 0.8554 | Rec: 0.8429 | Time: 0.65s
+2026-02-19 12:48:22 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:48:22 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:48:22 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:48:24 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:48:24 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.52% | F1: 0.8470 | Prec: 0.8569 | Rec: 0.8452 | Time: 0.65s
+2026-02-19 12:48:24 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:48:24 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:48:24 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:48:26 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:48:27 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.33% | F1: 0.8454 | Prec: 0.8573 | Rec: 0.8433 | Time: 0.64s
+2026-02-19 12:48:27 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-19 12:48:27 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: affine, Bits: 8) ---
+2026-02-19 12:48:27 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:48:28 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.48s
+2026-02-19 12:48:28 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:48:29 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.57% | F1: 0.8476 | Prec: 0.8575 | Rec: 0.8457 | Time: 0.48s
+2026-02-19 12:48:29 [INFO] src.utility.utils: Layer conv1: Drop = 0.05%
+2026-02-19 12:48:29 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:48:29 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.65% | F1: 0.8484 | Prec: 0.8583 | Rec: 0.8465 | Time: 0.46s
+2026-02-19 12:48:29 [INFO] src.utility.utils: Layer conv2: Drop = -0.03%
+2026-02-19 12:48:30 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
+2026-02-19 12:48:30 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.56% | F1: 0.8474 | Prec: 0.8573 | Rec: 0.8456 | Time: 0.47s
+2026-02-19 12:48:30 [INFO] src.utility.utils: Layer conv3: Drop = 0.06%
+2026-02-19 12:48:30 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
+2026-02-19 12:48:31 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.61% | F1: 0.8480 | Prec: 0.8577 | Rec: 0.8461 | Time: 0.47s
+2026-02-19 12:48:31 [INFO] src.utility.utils: Layer conv4: Drop = 0.01%
+2026-02-19 12:48:31 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
+2026-02-19 12:48:32 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.63% | F1: 0.8482 | Prec: 0.8580 | Rec: 0.8463 | Time: 0.47s
+2026-02-19 12:48:32 [INFO] src.utility.utils: Layer fc1: Drop = -0.01%
+2026-02-19 12:48:32 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
+2026-02-19 12:48:32 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8577 | Rec: 0.8462 | Time: 0.46s
+2026-02-19 12:48:32 [INFO] src.utility.utils: Layer fc2: Drop = 0.00%
+2026-02-19 12:48:32 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis_affine.csv
+2026-02-19 12:48:32 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
+2026-02-19 12:49:42 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:49:43 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:49:43 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:49:43 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:49:44 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.48s
+2026-02-19 12:49:44 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4780s, Size: 5.53MB
+2026-02-19 12:49:44 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:49:44 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:49:44 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:49:45 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:49:46 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.28% | F1: 0.8450 | Prec: 0.8556 | Rec: 0.8428 | Time: 0.65s
+2026-02-19 12:49:46 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:49:46 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:49:46 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:49:48 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:49:48 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.59% | F1: 0.8477 | Prec: 0.8576 | Rec: 0.8459 | Time: 0.65s
+2026-02-19 12:49:48 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:49:48 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:49:48 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:49:50 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:49:50 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.29% | F1: 0.8450 | Prec: 0.8573 | Rec: 0.8429 | Time: 0.65s
+2026-02-19 12:49:50 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-19 12:49:51 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
+2026-02-19 12:49:51 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:49:52 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.48s
+2026-02-19 12:49:52 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:49:53 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.30% | F1: 0.8454 | Prec: 0.8564 | Rec: 0.8430 | Time: 0.48s
+2026-02-19 12:49:53 [INFO] src.utility.utils: Layer conv1: Drop = 0.32%
+2026-02-19 12:49:53 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:50:22 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:50:22 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:50:22 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:50:23 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:50:24 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.48s
+2026-02-19 12:50:24 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4825s, Size: 5.53MB
+2026-02-19 12:50:24 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:50:24 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:50:24 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:50:25 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:50:26 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.39% | F1: 0.8462 | Prec: 0.8569 | Rec: 0.8439 | Time: 0.65s
+2026-02-19 12:50:26 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:50:26 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:50:26 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:50:27 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:50:28 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.53% | F1: 0.8472 | Prec: 0.8571 | Rec: 0.8453 | Time: 0.65s
+2026-02-19 12:50:28 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:50:28 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:50:28 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:50:30 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:50:30 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.31% | F1: 0.8452 | Prec: 0.8569 | Rec: 0.8431 | Time: 0.65s
+2026-02-19 12:50:30 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-19 12:50:31 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
+2026-02-19 12:50:31 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:50:32 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:50:32 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:50:32 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.30% | F1: 0.8454 | Prec: 0.8564 | Rec: 0.8430 | Time: 0.47s
+2026-02-19 12:50:32 [INFO] src.utility.utils: Layer conv1: Drop = 0.32%
+2026-02-19 12:50:33 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:51:44 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:51:45 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:51:45 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:51:46 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:51:46 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:51:46 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4739s, Size: 5.53MB
+2026-02-19 12:51:46 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:51:46 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:51:46 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:51:48 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:51:48 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.50% | F1: 0.8468 | Prec: 0.8567 | Rec: 0.8450 | Time: 0.64s
+2026-02-19 12:51:48 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:51:48 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:51:48 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:51:50 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:51:50 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.42% | F1: 0.8464 | Prec: 0.8566 | Rec: 0.8442 | Time: 0.64s
+2026-02-19 12:51:50 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:51:50 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:51:50 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:51:52 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:51:53 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.25% | F1: 0.8447 | Prec: 0.8568 | Rec: 0.8425 | Time: 0.66s
+2026-02-19 12:51:53 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-19 12:51:53 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
+2026-02-19 12:51:53 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:51:54 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:51:54 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:51:55 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.30% | F1: 0.8454 | Prec: 0.8564 | Rec: 0.8430 | Time: 0.49s
+2026-02-19 12:51:55 [INFO] src.utility.utils: Layer conv1: Drop = 0.32%
+2026-02-19 12:51:55 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:54:03 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:54:04 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:54:04 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:54:05 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:54:05 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.48s
+2026-02-19 12:54:05 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4752s, Size: 5.53MB
+2026-02-19 12:54:05 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:54:05 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:54:05 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:54:07 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:54:07 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.57% | F1: 0.8475 | Prec: 0.8575 | Rec: 0.8457 | Time: 0.65s
+2026-02-19 12:54:07 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:54:07 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:54:07 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:54:09 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:54:09 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.26% | F1: 0.8449 | Prec: 0.8556 | Rec: 0.8426 | Time: 0.65s
+2026-02-19 12:54:09 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:54:09 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:54:09 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:54:11 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:54:11 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.36% | F1: 0.8457 | Prec: 0.8576 | Rec: 0.8436 | Time: 0.64s
+2026-02-19 12:54:11 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-19 12:54:12 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
+2026-02-19 12:54:12 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:54:13 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:54:13 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:54:13 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.30% | F1: 0.8454 | Prec: 0.8564 | Rec: 0.8430 | Time: 0.48s
+2026-02-19 12:54:13 [INFO] src.utility.utils: Layer conv1: Drop = 0.32%
+2026-02-19 12:54:14 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:54:14 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.73% | F1: 0.8490 | Prec: 0.8581 | Rec: 0.8473 | Time: 0.47s
+2026-02-19 12:54:14 [INFO] src.utility.utils: Layer conv2: Drop = -0.11%
+2026-02-19 12:54:14 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
+2026-02-19 12:54:15 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.60% | F1: 0.8479 | Prec: 0.8580 | Rec: 0.8460 | Time: 0.46s
+2026-02-19 12:54:15 [INFO] src.utility.utils: Layer conv3: Drop = 0.02%
+2026-02-19 12:54:15 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
+2026-02-19 12:54:16 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.46s
+2026-02-19 12:54:16 [INFO] src.utility.utils: Layer conv4: Drop = 0.00%
+2026-02-19 12:54:16 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
+2026-02-19 12:54:16 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.61% | F1: 0.8480 | Prec: 0.8578 | Rec: 0.8461 | Time: 0.46s
+2026-02-19 12:54:16 [INFO] src.utility.utils: Layer fc1: Drop = 0.01%
+2026-02-19 12:54:17 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
+2026-02-19 12:54:17 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.64% | F1: 0.8483 | Prec: 0.8581 | Rec: 0.8464 | Time: 0.47s
+2026-02-19 12:54:17 [INFO] src.utility.utils: Layer fc2: Drop = -0.02%
+2026-02-19 12:54:17 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis_symmetric.csv
+2026-02-19 12:54:17 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
+2026-02-19 12:58:25 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:58:26 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:58:26 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:58:27 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:58:28 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.48s
+2026-02-19 12:58:28 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4784s, Size: 5.53MB
+2026-02-19 12:58:28 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:58:28 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:58:28 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:58:29 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:58:30 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.50% | F1: 0.8469 | Prec: 0.8569 | Rec: 0.8450 | Time: 0.64s
+2026-02-19 12:58:30 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:58:30 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:58:30 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:58:31 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:58:32 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.37% | F1: 0.8460 | Prec: 0.8567 | Rec: 0.8437 | Time: 0.64s
+2026-02-19 12:58:32 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:58:32 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:58:32 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:58:33 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:58:34 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.38% | F1: 0.8459 | Prec: 0.8579 | Rec: 0.8438 | Time: 0.65s
+2026-02-19 12:58:34 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-19 12:58:34 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: symmetric, Bits: 8) ---
+2026-02-19 12:58:35 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:58:35 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.47s
+2026-02-19 12:58:35 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:58:36 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.30% | F1: 0.8454 | Prec: 0.8564 | Rec: 0.8430 | Time: 0.48s
+2026-02-19 12:58:36 [INFO] src.utility.utils: Layer conv1: Drop = 0.32%
+2026-02-19 12:58:36 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:58:37 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.73% | F1: 0.8490 | Prec: 0.8581 | Rec: 0.8473 | Time: 0.47s
+2026-02-19 12:58:37 [INFO] src.utility.utils: Layer conv2: Drop = -0.11%
+2026-02-19 12:58:37 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
+2026-02-19 12:58:37 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.60% | F1: 0.8479 | Prec: 0.8580 | Rec: 0.8460 | Time: 0.47s
+2026-02-19 12:58:37 [INFO] src.utility.utils: Layer conv3: Drop = 0.02%
+2026-02-19 12:58:38 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
+2026-02-19 12:58:38 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.46s
+2026-02-19 12:58:38 [INFO] src.utility.utils: Layer conv4: Drop = 0.00%
+2026-02-19 12:58:38 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
+2026-02-19 12:58:39 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.61% | F1: 0.8480 | Prec: 0.8578 | Rec: 0.8461 | Time: 0.46s
+2026-02-19 12:58:39 [INFO] src.utility.utils: Layer fc1: Drop = 0.01%
+2026-02-19 12:58:39 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
+2026-02-19 12:58:40 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.64% | F1: 0.8483 | Prec: 0.8581 | Rec: 0.8464 | Time: 0.48s
+2026-02-19 12:58:40 [INFO] src.utility.utils: Layer fc2: Drop = -0.02%
+2026-02-19 12:58:40 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis_symmetric.csv
+2026-02-19 12:58:40 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
+2026-02-19 12:58:48 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:58:49 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:58:49 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:58:50 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:58:50 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.49s
+2026-02-19 12:58:50 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.4879s, Size: 5.53MB
+2026-02-19 12:58:50 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:58:50 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:58:50 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:58:52 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:58:53 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.50% | F1: 0.8468 | Prec: 0.8568 | Rec: 0.8450 | Time: 0.67s
+2026-02-19 12:58:53 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:58:53 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:58:53 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:58:54 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:58:55 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.42% | F1: 0.8465 | Prec: 0.8574 | Rec: 0.8442 | Time: 0.66s
+2026-02-19 12:58:55 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:58:55 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:58:55 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:58:56 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:58:57 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.36% | F1: 0.8458 | Prec: 0.8578 | Rec: 0.8436 | Time: 0.66s
+2026-02-19 12:58:57 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-19 12:58:57 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: affine, Bits: 8) ---
+2026-02-19 12:58:58 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:58:58 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.46s
+2026-02-19 12:58:59 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:58:59 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.57% | F1: 0.8476 | Prec: 0.8575 | Rec: 0.8457 | Time: 0.46s
+2026-02-19 12:58:59 [INFO] src.utility.utils: Layer conv1: Drop = 0.05%
+2026-02-19 12:58:59 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:59:00 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.65% | F1: 0.8484 | Prec: 0.8583 | Rec: 0.8465 | Time: 0.46s
+2026-02-19 12:59:00 [INFO] src.utility.utils: Layer conv2: Drop = -0.03%
+2026-02-19 12:59:00 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
+2026-02-19 12:59:00 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.56% | F1: 0.8474 | Prec: 0.8573 | Rec: 0.8456 | Time: 0.46s
+2026-02-19 12:59:00 [INFO] src.utility.utils: Layer conv3: Drop = 0.06%
+2026-02-19 12:59:01 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
+2026-02-19 12:59:01 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.61% | F1: 0.8480 | Prec: 0.8577 | Rec: 0.8461 | Time: 0.46s
+2026-02-19 12:59:01 [INFO] src.utility.utils: Layer conv4: Drop = 0.01%
+2026-02-19 12:59:01 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
+2026-02-19 12:59:02 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.63% | F1: 0.8482 | Prec: 0.8580 | Rec: 0.8463 | Time: 0.46s
+2026-02-19 12:59:02 [INFO] src.utility.utils: Layer fc1: Drop = -0.01%
+2026-02-19 12:59:02 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
+2026-02-19 12:59:03 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8577 | Rec: 0.8462 | Time: 0.46s
+2026-02-19 12:59:03 [INFO] src.utility.utils: Layer fc2: Drop = 0.00%
+2026-02-19 12:59:03 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis_affine.csv
+2026-02-19 12:59:03 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===
+2026-02-19 12:59:17 [INFO] Experiment: Lade Datensätze...
+2026-02-19 12:59:18 [INFO] Experiment: Load Baseline-Model: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-19 12:59:18 [INFO] Experiment: Evaluiere Baseline (Float32)...
+2026-02-19 12:59:19 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32
+2026-02-19 12:59:19 [INFO] src.evaluation.evaluate: Result [Baseline Float32] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.51s
+2026-02-19 12:59:19 [INFO] Experiment: Baseline -> Acc: 84.62%, Time: 0.5075s, Size: 5.53MB
+2026-02-19 12:59:19 [INFO] Experiment: --- Starte Experiment: Aff_INT8 ---
+2026-02-19 12:59:19 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:59:19 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:59:21 [INFO] src.evaluation.evaluate: Starting evaluation: Aff_INT8
+2026-02-19 12:59:22 [INFO] src.evaluation.evaluate: Result [Aff_INT8] - Acc: 84.55% | F1: 0.8473 | Prec: 0.8572 | Rec: 0.8455 | Time: 0.66s
+2026-02-19 12:59:22 [INFO] Experiment: --- Starte Experiment: Sym_INT8 ---
+2026-02-19 12:59:22 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:59:22 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:59:23 [INFO] src.evaluation.evaluate: Starting evaluation: Sym_INT8
+2026-02-19 12:59:24 [INFO] src.evaluation.evaluate: Result [Sym_INT8] - Acc: 84.32% | F1: 0.8453 | Prec: 0.8560 | Rec: 0.8432 | Time: 0.66s
+2026-02-19 12:59:24 [INFO] Experiment: --- Starte Experiment: Po2_INT8 ---
+2026-02-19 12:59:24 [INFO] src.utility.quantization_calibration: Start Calibration (10 batches)...
+2026-02-19 12:59:24 [INFO] src.utility.quantization_calibration: Calibration complete. Activation params updated.
+2026-02-19 12:59:25 [INFO] src.evaluation.evaluate: Starting evaluation: Po2_INT8
+2026-02-19 12:59:26 [INFO] src.evaluation.evaluate: Result [Po2_INT8] - Acc: 84.33% | F1: 0.8453 | Prec: 0.8574 | Rec: 0.8433 | Time: 0.67s
+2026-02-19 12:59:26 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/quantization_results_CIFAR10.csv
+2026-02-19 12:59:27 [INFO] src.utility.utils: --- Starte Sensitivitätsanalyse (Method: power2, Bits: 8) ---
+2026-02-19 12:59:27 [INFO] src.evaluation.evaluate: Starting evaluation: Sensitivity Baseline
+2026-02-19 12:59:27 [INFO] src.evaluation.evaluate: Result [Sensitivity Baseline] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.46s
+2026-02-19 12:59:28 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv1
+2026-02-19 12:59:28 [INFO] src.evaluation.evaluate: Result [Layer: conv1] - Acc: 84.67% | F1: 0.8482 | Prec: 0.8573 | Rec: 0.8467 | Time: 0.47s
+2026-02-19 12:59:28 [INFO] src.utility.utils: Layer conv1: Drop = -0.05%
+2026-02-19 12:59:28 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv2
+2026-02-19 12:59:29 [INFO] src.evaluation.evaluate: Result [Layer: conv2] - Acc: 84.56% | F1: 0.8481 | Prec: 0.8593 | Rec: 0.8456 | Time: 0.46s
+2026-02-19 12:59:29 [INFO] src.utility.utils: Layer conv2: Drop = 0.06%
+2026-02-19 12:59:29 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv3
+2026-02-19 12:59:30 [INFO] src.evaluation.evaluate: Result [Layer: conv3] - Acc: 84.48% | F1: 0.8469 | Prec: 0.8585 | Rec: 0.8448 | Time: 0.49s
+2026-02-19 12:59:30 [INFO] src.utility.utils: Layer conv3: Drop = 0.14%
+2026-02-19 12:59:30 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: conv4
+2026-02-19 12:59:30 [INFO] src.evaluation.evaluate: Result [Layer: conv4] - Acc: 84.65% | F1: 0.8483 | Prec: 0.8580 | Rec: 0.8465 | Time: 0.47s
+2026-02-19 12:59:30 [INFO] src.utility.utils: Layer conv4: Drop = -0.03%
+2026-02-19 12:59:31 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc1
+2026-02-19 12:59:31 [INFO] src.evaluation.evaluate: Result [Layer: fc1] - Acc: 84.62% | F1: 0.8481 | Prec: 0.8579 | Rec: 0.8462 | Time: 0.46s
+2026-02-19 12:59:31 [INFO] src.utility.utils: Layer fc1: Drop = 0.00%
+2026-02-19 12:59:31 [INFO] src.evaluation.evaluate: Starting evaluation: Layer: fc2
+2026-02-19 12:59:32 [INFO] src.evaluation.evaluate: Result [Layer: fc2] - Acc: 84.64% | F1: 0.8483 | Prec: 0.8581 | Rec: 0.8464 | Time: 0.47s
+2026-02-19 12:59:32 [INFO] src.utility.utils: Layer fc2: Drop = -0.02%
+2026-02-19 12:59:32 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/FSP-Fake_quant/Forschungsprojekt/results/csv/sensitivity_analysis_power2.csv
+2026-02-19 12:59:32 [INFO] Experiment: === Alle Experimente erfolgreich abgeschlossen ===

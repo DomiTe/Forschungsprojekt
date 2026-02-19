@@ -29,13 +29,29 @@ class Quantization:
         x_dequant = (x_int - zero_point) * scale
 
         return x_dequant, x_int
-
+    
     @staticmethod
-    def affine_quantization(tensor: torch.Tensor, num_bits: int = 8) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    def _get_min_max(tensor: torch.Tensor, dim=None) -> Tuple[torch.Tensor, torch.Tensor]:
+        """
+        Calculates min/max dynamically based on channel dimensions.
+        """  
+        if dim is None:
+            # Standard Per-Tensor
+            return tensor.min(), tensor.max()
+        else:
+            # Per-Channel: keepdim=True ensures the shape stays (C, 1, 1, 1) 
+            # so it broadcasts correctly when dividing the weights later.
+            t_min = torch.amin(tensor, dim=dim, keepdim=True)
+            t_max = torch.amax(tensor, dim=dim, keepdim=True)
+            return t_min, t_max
+        
+    @staticmethod
+    def affine_quantization(tensor: torch.Tensor, num_bits: int = 8, dim=None) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Asymmetric (Affine). Maps [min, max] -> [0, 2^b - 1].
         """
-        t_min, t_max = tensor.min(), tensor.max()
+        t_min, t_max = Quantization._get_min_max(tensor, dim=dim)        
+        
         q_min, q_max = 0, (2 ** num_bits) - 1
 
         scale = (t_max - t_min) / float(q_max - q_min)
@@ -48,47 +64,40 @@ class Quantization:
         return x_dequant, x_int, scale, zero_point
 
     @staticmethod
-    def symmetric_quantization(tensor: torch.Tensor, num_bits: int = 8, is_activation: bool = False) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    def symmetric_quantization(tensor: torch.Tensor, num_bits: int = 8, dim=None) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Symmetric Quantization.
         - Weights: Signed [-127, 127], ZP=0
-        - Activations (if positive): Unsigned [0, 255], ZP=0 (Your "Unnormalized" trick)
+        - Activations (if positive): Unsigned [0, 255], ZP=0
         """
-        t_abs = torch.abs(tensor).max()
-        
-        if is_activation:
-            # Unsigned Symmetric for Activations (Unnormalized 0-1 input)
-            q_min, q_max = 0, (2 ** num_bits) - 1
-            # Map [0, max] -> [0, 255]
-            scale = t_abs / float(q_max) 
-        else:
-            # Signed Symmetric for Weights
-            q_min = -(2 ** (num_bits - 1)) + 1 # -127
-            q_max = (2 ** (num_bits - 1)) - 1  # 127
-            # Map [-max, max] -> [-127, 127]
-            scale = t_abs / float(q_max)
+        t_min, t_max = Quantization._get_min_max(tensor, dim=dim)        
 
+        q_max = (2 ** (num_bits - 1)) - 1  # 127
+        q_min = -q_max                     #- 127
+
+        t_abs_max = torch.max(torch.abs(t_min), torch.abs(t_max))
+        
+        scale = t_abs_max / float(q_max)
         zero_point = torch.tensor(0.0).to(tensor.device)
         
         x_dequant, x_int = Quantization._core_quantization(tensor, scale, zero_point, q_min, q_max)
         return x_dequant, x_int, scale, zero_point
 
     @staticmethod
-    def power_of_two_quantization(tensor: torch.Tensor, num_bits: int = 8, is_activation: bool = False) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    def power_of_two_quantization(tensor: torch.Tensor, num_bits: int = 8, dim=None) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """
         Power-of-Two (PoT).
         Same limits as Symmetric, but Scale is rounded to nearest 2^k.
         """
-        t_abs = torch.abs(tensor).max()
-        
-        if is_activation:
-            q_min, q_max = 0, (2 ** num_bits) - 1
-            scale_ideal = t_abs / float(q_max)
-        else:
-            q_min = -(2 ** (num_bits - 1)) + 1
-            q_max = (2 ** (num_bits - 1)) - 1
-            scale_ideal = t_abs / float(q_max)
+        t_min, t_max = Quantization._get_min_max(tensor, dim=dim)        
 
+        q_max = (2 ** (num_bits - 1)) - 1  # 127
+        q_min = -q_max                     #- 127
+
+        t_abs_max = torch.max(torch.abs(t_min), torch.abs(t_max))
+        
+        scale_ideal = t_abs_max / float(q_max)
+        
         # Force Scale to 2^k
         # log2(0) protection
         scale_ideal = torch.max(scale_ideal, torch.tensor(1e-6))
@@ -119,3 +128,4 @@ class Quantization:
             scale = torch.tensor(1.0, device=tensor.device)
 
         return Quantization._core_quantization(tensor, scale, zero_point, q_min, q_max)
+    

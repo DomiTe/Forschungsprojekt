@@ -35,20 +35,32 @@ class QuantizedLayerMixin:
         self.quant_method = method
         self.num_bits = bits
         
+        # Determine reduction dimensions for per-channel quantization
+        if isinstance(self, nn.Conv2d):
+            # Conv2d weights: (C_out, C_in, kH, kW)
+            w_dim = (1, 2, 3)
+        elif isinstance(self, nn.Linear):
+            # Linear weights: (out_features, in_features)
+            w_dim = 1
+        else:
+            w_dim = None
+            
         # Berechne Parameter für die Gewichte (W)
         if method == 'affine':
-            _, _, scale, zp = Quantization.affine_quantization(self.weight, num_bits=bits)
+            _, _, scale, zp = Quantization.affine_quantization(self.weight, num_bits=bits, dim=w_dim)
         elif method == 'power2':
-             _, _, scale, zp = Quantization.power_of_two_quantization(self.weight, num_bits=bits)
+             _, _, scale, zp = Quantization.power_of_two_quantization(self.weight, num_bits=bits, dim=w_dim)
         else: # symmetric
-            _, _, scale, zp = Quantization.symmetric_quantization(self.weight, num_bits=bits)
-            
-        self.weight_scale.copy_(scale)
-        self.weight_zero_point.copy_(zp)
+            _, _, scale, zp = Quantization.symmetric_quantization(self.weight, num_bits=bits, dim=w_dim)
+        
+        self.weight_scale.data = scale.clone().detach()
+        self.weight_zero_point.data = zp.clone().detach()
+        # self.weight_scale.copy_(scale)
+        # self.weight_zero_point.copy_(zp)
         self.quant_mode = True
 
-        logger.debug(f"Layer prepared: {method} ({bits} bit). Scale={scale:.4f}")
-
+        logger.debug(f"Layer prepared: {method} ({bits} bit). Scale shape={scale.shape}")
+    
     def convert_weights_to_int8(self):
         """
         Wandelt die gespeicherten Float-Gewichte physisch in INT8/UINT8 um.

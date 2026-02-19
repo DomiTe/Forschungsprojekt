@@ -1,10 +1,13 @@
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 import torch
 import os
 import copy
 import sys
 import csv
 import logging
-import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
 from torch.utils.data import DataLoader, random_split
 from src.utility.config import (
@@ -215,47 +218,47 @@ def run_sensitivity_analysis(base_model, test_loader, method='symmetric', bits=8
     logger.info(f"--- Starte Sensitivitätsanalyse (Method: {method}, Bits: {bits}) ---")
     results = []
     
-    # Wir brauchen eine saubere Kopie
+    # Create a clean copy
     model = copy.deepcopy(base_model)
     model.eval()
     model.to(DEVICE)
     
-    # 1. Alle Module finden, die wir quantisieren können
+    # Find all quantizable modules
     quantizable_modules = []
     for name, module in model.named_modules():
         if isinstance(module, QuantizedLayerMixin):
             quantizable_modules.append((name, module))
             
-    # 2. Baseline Accuracy messen
+    # Measure Baseline Accuracy
     model.convert_to_baseline()
-    # KORREKTUR: Dictionary abfangen statt Unpacking
     base_metrics = evaluate(model, test_loader, "Sensitivity Baseline")
     base_acc = base_metrics['accuracy']
 
-    # 3. Schleife durch alle Layer
+    # Loop through all layers
     for name, module in quantizable_modules:
-        # Nur diesen einen Layer quantisieren
+        # Quantize only this specific layer
         module.prepare_quantization(method=method, bits=bits)
         
-        # Evaluieren
-        # KORREKTUR: Auch hier das Dictionary abfangen
+        # Evaluate
         eval_metrics = evaluate(model, test_loader, f"Layer: {name}")
         acc = eval_metrics['accuracy']
         
         drop = base_acc - acc
         
+        # Append result including the baseline accuracy
         results.append({
             "layer_name": name,
+            "base_accuracy": base_acc, 
             "accuracy": acc,
             "drop": drop
         })
         
         logger.info(f"Layer {name}: Drop = {drop:.2f}%")
         
-        # WICHTIG: Layer wieder auf Float zurücksetzen für den nächsten Durchlauf
+        # Reset layer to float for the next iteration
         module.disable_quantization()
         
-    save_csv(results, "sensitivity_analysis.csv", ["layer_name", "accuracy", "drop"])
+    save_csv(results, f"sensitivity_analysis_{method}.csv", ["layer_name", "base_accuracy", "accuracy", "drop"])
     return results
 
 def setup_global_logging():

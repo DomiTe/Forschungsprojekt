@@ -52,17 +52,17 @@ STRIDE = 1
 
 # List of experiments in a loop
 EXPERIMENT_CONFIGS = [
-    {"method": "symmetric", "bits": 8, "name": "Sym_INT8"},
-    {"method": "symmetric", "bits": 4, "name": "Sym_INT4"},
     {"method": "affine",    "bits": 8, "name": "Aff_INT8"},
-    {"method": "affine",    "bits": 4, "name": "Aff_INT4"},
+    # {"method": "affine",    "bits": 4, "name": "Aff_INT4"},
+    {"method": "symmetric", "bits": 8, "name": "Sym_INT8"},
+    # {"method": "symmetric", "bits": 4, "name": "Sym_INT4"},
     {"method": "power2",    "bits": 8, "name": "Po2_INT8"},
-    {"method": "power2",    "bits": 4, "name": "Po2_INT4"}, # Optional
+    # {"method": "power2",    "bits": 4, "name": "Po2_INT4"}, # Optional
 ]
 
 # Configuration for sensitivity layer analysis
 SENSITIVITY_CONFIG = {
-    "method": "symmetric",
+    "method": "power2",
     "bits": 8
 }
 
@@ -91,6 +91,6 @@ os.makedirs(CSV_DIR, exist_ok=True)
 BASELINE_MODEL_PATH = os.path.join(MODELS_DIR, "baseline_float32.pt")
 
 # CSV Data for results
-EXPERIMENT_CSV_PATH = os.path.join(CSV_DIR, "quantization_results_{DATASET_NAME}.csv")
-SENSITIVITY_CSV_PATH = os.path.join(CSV_DIR, "sensitivity_{DATASET_NAME}.csv")
+EXPERIMENT_CSV_PATH = os.path.join(CSV_DIR, f"quantization_results_{DATASET_NAME}.csv")
+SENSITIVITY_CSV_PATH = os.path.join(CSV_DIR, f"sensitivity_{DATASET_NAME}_{SENSITIVITY_CONFIG['method']}.csv")
 LOG_FILE_PATH = os.path.join(LOG_DIR, "experiment.log")

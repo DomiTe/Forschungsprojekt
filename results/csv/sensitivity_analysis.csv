@@ -1,7 +1,0 @@
-layer_name,accuracy,drop
-conv1,84.9,0.0
-conv2,84.9,0.0
-conv3,84.9,0.0
-conv4,84.9,0.0
-fc1,84.9,0.0
-fc2,84.9,0.0

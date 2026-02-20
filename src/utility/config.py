@@ -11,7 +11,7 @@ else:
     PIN_MEMORY = False
 
 # DATASET Configuration
-DATASET_NAME = "MNIST" # Options: "MNIST" , "CIFAR10" , "POKEMON"
+DATASET_NAME = "CIFAR10" # Options: "MNIST" , "CIFAR10" , "POKEMON"
 
 if DATASET_NAME == "MNIST":
     IMAGE_SIZE = 28
@@ -53,11 +53,11 @@ STRIDE = 1
 # List of experiments in a loop
 EXPERIMENT_CONFIGS = [
     {"method": "symmetric", "bits": 8, "name": "Sym_INT8"},
-    {"method": "symmetric", "bits": 4, "name": "Sym_INT4"},
+    # {"method": "symmetric", "bits": 4, "name": "Sym_INT4"},
     {"method": "affine",    "bits": 8, "name": "Aff_INT8"},
-    {"method": "affine",    "bits": 4, "name": "Aff_INT4"},
+    # {"method": "affine",    "bits": 4, "name": "Aff_INT4"},
     {"method": "power2",    "bits": 8, "name": "Po2_INT8"},
-    {"method": "power2",    "bits": 4, "name": "Po2_INT4"}, # Optional
+    # {"method": "power2",    "bits": 4, "name": "Po2_INT4"}, # Optional
 ]
 
 # Configuration for sensitivity layer analysis
@@ -88,9 +88,11 @@ os.makedirs(QUANTIZED_MODELS, exist_ok=True)
 os.makedirs(CSV_DIR, exist_ok=True)
 
 # Data Paths 
-BASELINE_MODEL_PATH = os.path.join(MODELS_DIR, f"baseline_float32.pt")
-
+BASELINE_MODEL_PATH = os.path.join(MODELS_DIR, "baseline_float32.pt")
+QUANTIZED_AFFINE_PATH = os.path.join(QUANTIZED_MODELS, "model_Affine_PTQ.pt")
+QUANTIZED_SYM_PATH = os.path.join(QUANTIZED_MODELS, "model_Symmetric_PTQ.pt")
+QUANTIZED_POT_PATH = os.path.join(QUANTIZED_MODELS, "model_PoT_PTQ.pt")
 # CSV Data for results
 EXPERIMENT_CSV_PATH = os.path.join(CSV_DIR, f"quantization_results_{DATASET_NAME}.csv")
 SENSITIVITY_CSV_PATH = os.path.join(CSV_DIR, f"sensitivity_{DATASET_NAME}.csv")
-LOG_FILE_PATH = os.path.join(LOG_DIR, f"experiment.log")
+LOG_FILE_PATH = os.path.join(LOG_DIR, "experiment.log")

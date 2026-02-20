@@ -2,20 +2,21 @@ import torch
 import torch.nn.functional as F
 import time
 import logging
-from typing import Tuple
+import numpy as np
+from sklearn.metrics import precision_score, recall_score, f1_score
+from typing import Dict, Tuple, Any
 from src.utility.config import DEVICE
 
 logger = logging.getLogger(__name__)
 
 def evaluate(
-    model: torch.nn.Module, loader: torch.utils.data.DataLoader, desc: str, device=DEVICE
-) -> Tuple[float, float]:
+    model: torch.nn.Module, 
+    loader: torch.utils.data.DataLoader, 
+    desc: str, 
+    device=DEVICE
+) -> Dict[str, float]:
     """
-    Evaluiert das Modell auf dem gegebenen DataLoader.
-    
-    Returns:
-        accuracy (float): Genauigkeit in Prozent
-        inference_time (float): Gesamtzeit für die Inferenz in Sekunden
+    Evaluates the model and returns a comprehensive dictionary of metrics.
     """
 
     if isinstance(device, str):
@@ -24,60 +25,70 @@ def evaluate(
     model.eval()
     model.to(device)
 
-    correct = 0
     test_loss = 0
+    correct = 0
     num_samples = len(loader.dataset)
+    
+    all_targets = []
+    all_preds = []
 
-    # --- 1. WARM-UP (Wichtig für präzise Zeitmessung) ---
-    # Wir schicken ein paar Dummy-Batches durch, damit Caches gefüllt sind.
-    # Das Ergebnis verwerfen wir.
+    # --- 1. WARM-UP ---
     if device.type == "cuda":
         warmup_batches = 5
         with torch.no_grad():
             for i, (data, target) in enumerate(loader):
-                if i >= warmup_batches:
-                    break
+                if i >= warmup_batches: break
                 data = data.to(device)
                 model(data)
-        torch.cuda.synchronize() # Warten bis Warm-up fertig ist
+        torch.cuda.synchronize()
 
     logger.info(f"Starting evaluation: {desc} (Sample Size: {num_samples})")
     
-    # --- 2. ECHTE MESSUNG ---
+    # --- 2. MEASUREMENT ---
     start_time = time.time()
 
     with torch.no_grad():
         for data, target in loader:
             data, target = data.to(device), target.to(device)
             
-            # Forward Pass
             output = model(data)
-
-            # Metrics
+            
+            # Loss & Accuracy
             test_loss += F.cross_entropy(output, target, reduction="sum").item()
             pred = output.argmax(dim=1, keepdim=True)
             correct += pred.eq(target.view_as(pred)).sum().item()
+            
+            # Collect for Scikit-Learn Metrics
+            all_preds.extend(pred.cpu().numpy().flatten())
+            all_targets.extend(target.cpu().numpy())
 
-    # Synchronisieren für exakte Zeit auf GPU
     if device.type == "cuda":
         torch.cuda.synchronize()
 
     end_time = time.time()
     inference_time = end_time - start_time
 
-    # --- 3. BERECHNUNG & LOGGING ---
+    # --- 3. METRICS ---
     test_loss /= num_samples
     accuracy = 100.0 * correct / num_samples
     
-    # Latenz pro Bild (in Millisekunden) ist oft interessant für Vergleiche
-    latency_ms = (inference_time / num_samples) * 1000 
+    # Calculate Precision, Recall, F1 (Macro Average handles multi-class well)
+    precision = precision_score(all_targets, all_preds, average='macro', zero_division=0)
+    recall = recall_score(all_targets, all_preds, average='macro', zero_division=0)
+    f1 = f1_score(all_targets, all_preds, average='macro', zero_division=0)
 
     logger.info(
-        f"Evaluation Result [{desc}] - "
-        f"Acc: {accuracy:.2f}% | "
-        f"Loss: {test_loss:.4f} | "
-        f"Total Time: {inference_time:.4f}s | "
-        f"Latency: {latency_ms:.4f} ms/img"
+        f"Evaluation [{desc}] - "
+        f"Acc: {accuracy:.2f}%, F1: {f1:.4f}, Prec: {precision:.4f}, Rec: {recall:.4f}, "
+        f"Time: {inference_time:.4f}s"
     )
 
-    return accuracy, inference_time
+    # Return a dictionary for easier CSV logging later
+    return {
+        "accuracy": accuracy,
+        "precision": precision,
+        "recall": recall,
+        "f1_score": f1,
+        "loss": test_loss,
+        "inference_time": inference_time
+    }

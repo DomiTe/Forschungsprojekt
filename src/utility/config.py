@@ -11,7 +11,7 @@ else:
     PIN_MEMORY = False
 
 # DATASET Configuration
-DATASET_NAME = "CIFAR100" # Options: "MNIST" , "CIFAR10" , "POKEMON"
+DATASET_NAME = "MNIST" # Options: "MNIST" , "CIFAR10" , "POKEMON"
 
 if DATASET_NAME == "MNIST":
     IMAGE_SIZE = 28

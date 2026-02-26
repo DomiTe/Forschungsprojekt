@@ -1,9 +1,5 @@
 .venv/
 notebooks/data
-results/tests/cifar100
-results/tests/pokemon
-results/tests/mnist
-results/tests/fashion_mnist
 uv.lock
 data/
 .python-version

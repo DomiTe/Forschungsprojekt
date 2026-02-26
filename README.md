@@ -1,5 +1,3 @@
-TODO: CIFAR100, MNIST, FASHION, POKEMON TESTS 
-
 TODO: REPORT WRITING
 
 # Investigating Quantization Strategies for Deep Learning Models

@@ -18,7 +18,7 @@ from src.utility.config import (
     DATASET_NAME,
     DEVICE
 )
-from src.layers import QuantizedLayerMixin
+#from src.layers import QuantizedLayerMixin
 from src.evaluation.evaluate import evaluate
 
 logger = logging.getLogger(__name__)
@@ -47,6 +47,12 @@ def get_data_loaders():
         return _get_mnist_loaders()
     elif DATASET_NAME == "POKEMON":
         return _get_pokemon_loaders()
+    elif DATASET_NAME == "CIFAR10":
+        return _get_cifar10_loaders()
+    elif DATASET_NAME == "CIFAR100":
+        return _get_cifar100_loaders()
+    elif DATASET_NAME == "FASHION_MNIST":
+        return _get_fashion_loaders()
     else:
         raise ValueError(f"Unbekanntes Dataset in Config: {DATASET_NAME}")
 
@@ -54,7 +60,7 @@ def _get_mnist_loaders():
     transform = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
-        transforms.Normalize((0.1307,), (0.3081,))
+        # transforms.Normalize((0.1307,), (0.3081,))
     ])
     
     # Download=True ist wichtig für den ersten Run
@@ -66,23 +72,98 @@ def _get_mnist_loaders():
     
     return train_loader, test_loader, 10 # num_classes
 
+def _get_fashion_loaders():
+    transform = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # transforms.Normalize((0.2860,), (0.3530,))    
+    ])
+    
+    # Download=True ist wichtig für den ersten Run
+    train_dataset = datasets.FashionMNIST(DATA_DIR, train=True, download=True, transform=transform)
+    test_dataset = datasets.FashionMNIST(DATA_DIR, train=False, download=True, transform=transform)
+    
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, pin_memory=PIN_MEMORY)
+    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, pin_memory=PIN_MEMORY)
+    
+    return train_loader, test_loader, 10 # num_classes
+
+def _get_cifar10_loaders():
+    # standard augmentation for CIFAR-10 training
+    transform_train = transforms.Compose([
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # standard CIFAR-10 mean and std
+        # transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+    ])
+
+    # no augmentation for testing, only resize and normalize
+    transform_test = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+        # transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
+    ])
+    
+    # fetch training and test datasets
+    train_dataset = datasets.CIFAR10(DATA_DIR, train=True, download=True, transform=transform_train)
+    test_dataset = datasets.CIFAR10(DATA_DIR, train=False, download=True, transform=transform_test)
+    
+    kwargs = {"num_workers": 2, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+    
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
+    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    
+    logger.info(f"CIFAR-10 loaded: {len(train_dataset)} Train, {len(test_dataset)} Test.")
+    
+    return train_loader, test_loader, 10 # num_classes
+
+def _get_cifar100_loaders():
+    # standard augmentation for CIFAR-10 training
+    transform_train = transforms.Compose([
+        transforms.RandomCrop(32, padding=4),
+        transforms.RandomHorizontalFlip(),
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+    ])
+
+    # no augmentation for testing, only resize and normalize
+    transform_test = transforms.Compose([
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
+        transforms.ToTensor(),
+    ])
+    
+    # fetch training and test datasets
+    train_dataset = datasets.CIFAR100(DATA_DIR, train=True, download=True, transform=transform_train)
+    test_dataset = datasets.CIFAR100(DATA_DIR, train=False, download=True, transform=transform_test)
+    
+    kwargs = {"num_workers": 2, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+    
+    train_loader = DataLoader(train_dataset, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
+    test_loader = DataLoader(test_dataset, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
+    
+    logger.info(f"CIFAR-100 loaded: {len(train_dataset)} Train, {len(test_dataset)} Test.")
+    
+    return train_loader, test_loader, 100 # num_classes
+
 def _get_pokemon_loaders():
     # 1. Transform für TRAINING
     # WICHTIG: Wir nutzen jetzt (0.5, 0.5, 0.5) statt der ResNet-Werte
     transform_train = transforms.Compose([
-        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)), # Nimmt die 64 aus der Config
+        transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomRotation(15),
         transforms.ColorJitter(brightness=0.2, contrast=0.2),
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) # Standard Normalisierung
+        # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) # Standard Normalisierung
     ])
 
     # 2. Transform für VALIDIERUNG (Keine Augmentation)
     transform_val = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
-        transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
+        # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
     
     # Pfad zum Ordner "PokemonData" (wo die 150 Ordner drin sind)
@@ -163,52 +244,6 @@ def save_csv(results, filename, fieldnames):
             writer.writerow(row)
     logger.info(f"Daten gespeichert unter: {filepath}")
 
-def run_sensitivity_analysis(base_model, test_loader, method='symmetric', bits=8):
-    """
-    Untersucht Layer-weise Empfindlichkeit:
-    Quantisiert immer nur EINEN Layer, lässt alle anderen auf Float.
-    """
-    logger.info(f"--- Starte Sensitivitätsanalyse (Method: {method}, Bits: {bits}) ---")
-    results = []
-    
-    # Wir brauchen eine saubere Kopie
-    model = copy.deepcopy(base_model)
-    model.eval()
-    model.to(DEVICE)
-    
-    # 1. Alle Module finden, die wir quantisieren können
-    quantizable_modules = []
-    for name, module in model.named_modules():
-        if isinstance(module, QuantizedLayerMixin):
-            quantizable_modules.append((name, module))
-            
-    # 2. Baseline Accuracy messen (sollte der Float-Accuracy entsprechen)
-    # Sicherstellen, dass alles auf Float steht
-    model.convert_to_baseline()
-    base_acc, _ = evaluate(model, test_loader, "Sensitivity Baseline")
-
-    # 3. Schleife durch alle Layer
-    for name, module in quantizable_modules:
-        # Nur diesen einen Layer quantisieren
-        module.prepare_quantization(method=method, bits=bits)
-        
-        # Evaluieren
-        acc, _ = evaluate(model, test_loader, f"Layer: {name}")
-        drop = base_acc - acc
-        
-        results.append({
-            "layer_name": name,
-            "accuracy": acc,
-            "drop": drop
-        })
-        
-        logger.info(f"Layer {name}: Drop = {drop:.2f}%")
-        
-        # WICHTIG: Layer wieder auf Float zurücksetzen für den nächsten Durchlauf
-        module.disable_quantization()
-        
-    save_csv(results, "sensitivity_analysis.csv", ["layer_name", "accuracy", "drop"])
-    return results
 
 def setup_global_logging():
     log_filename = os.path.join(LOG_DIR, "experiment_log.txt")

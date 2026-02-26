@@ -1,0 +1,209 @@
+2026-02-24 11:14:49 [INFO] Experiment: Loading datasets...
+2026-02-24 11:14:49 [INFO] Experiment: No baseline found. Starting training...
+2026-02-24 11:14:49 [INFO] src.model_cnn.train: Starte Training auf Device: cuda
+2026-02-24 11:14:59 [INFO] src.model_cnn.train: Ep 1: Train Acc: 79.74% | Val Acc: 84.68%
+2026-02-24 11:14:59 [INFO] src.model_cnn.train: Saved best model (79.7433%)
+2026-02-24 11:15:08 [INFO] src.model_cnn.train: Ep 2: Train Acc: 86.44% | Val Acc: 84.84%
+2026-02-24 11:15:08 [INFO] src.model_cnn.train: Saved best model (86.4433%)
+2026-02-24 11:15:18 [INFO] src.model_cnn.train: Ep 3: Train Acc: 88.22% | Val Acc: 89.17%
+2026-02-24 11:15:18 [INFO] src.model_cnn.train: Saved best model (88.2183%)
+2026-02-24 11:15:28 [INFO] src.model_cnn.train: Ep 4: Train Acc: 89.14% | Val Acc: 90.15%
+2026-02-24 11:15:28 [INFO] src.model_cnn.train: Saved best model (89.1367%)
+2026-02-24 11:15:37 [INFO] src.model_cnn.train: Ep 5: Train Acc: 89.83% | Val Acc: 90.06%
+2026-02-24 11:15:37 [INFO] src.model_cnn.train: Saved best model (89.8300%)
+2026-02-24 11:15:47 [INFO] src.model_cnn.train: Ep 6: Train Acc: 90.49% | Val Acc: 91.14%
+2026-02-24 11:15:47 [INFO] src.model_cnn.train: Saved best model (90.4867%)
+2026-02-24 11:15:56 [INFO] src.model_cnn.train: Ep 7: Train Acc: 90.95% | Val Acc: 90.46%
+2026-02-24 11:15:56 [INFO] src.model_cnn.train: Saved best model (90.9467%)
+2026-02-24 11:16:06 [INFO] src.model_cnn.train: Ep 8: Train Acc: 91.35% | Val Acc: 90.74%
+2026-02-24 11:16:06 [INFO] src.model_cnn.train: Saved best model (91.3483%)
+2026-02-24 11:16:15 [INFO] src.model_cnn.train: Ep 9: Train Acc: 91.46% | Val Acc: 88.77%
+2026-02-24 11:16:15 [INFO] src.model_cnn.train: Saved best model (91.4617%)
+2026-02-24 11:16:25 [INFO] src.model_cnn.train: Ep 10: Train Acc: 91.85% | Val Acc: 91.49%
+2026-02-24 11:16:25 [INFO] src.model_cnn.train: Saved best model (91.8483%)
+2026-02-24 11:16:35 [INFO] src.model_cnn.train: Ep 11: Train Acc: 92.05% | Val Acc: 91.76%
+2026-02-24 11:16:35 [INFO] src.model_cnn.train: Saved best model (92.0517%)
+2026-02-24 11:16:45 [INFO] src.model_cnn.train: Ep 12: Train Acc: 92.34% | Val Acc: 92.33%
+2026-02-24 11:16:45 [INFO] src.model_cnn.train: Saved best model (92.3383%)
+2026-02-24 11:16:55 [INFO] src.model_cnn.train: Ep 13: Train Acc: 92.46% | Val Acc: 91.91%
+2026-02-24 11:16:55 [INFO] src.model_cnn.train: Saved best model (92.4600%)
+2026-02-24 11:17:04 [INFO] src.model_cnn.train: Ep 14: Train Acc: 92.72% | Val Acc: 91.84%
+2026-02-24 11:17:04 [INFO] src.model_cnn.train: Saved best model (92.7183%)
+2026-02-24 11:17:14 [INFO] src.model_cnn.train: Ep 15: Train Acc: 92.85% | Val Acc: 91.53%
+2026-02-24 11:17:14 [INFO] src.model_cnn.train: Saved best model (92.8483%)
+2026-02-24 11:17:24 [INFO] src.model_cnn.train: Ep 16: Train Acc: 92.98% | Val Acc: 91.90%
+2026-02-24 11:17:24 [INFO] src.model_cnn.train: Saved best model (92.9833%)
+2026-02-24 11:17:33 [INFO] src.model_cnn.train: Ep 17: Train Acc: 93.10% | Val Acc: 92.40%
+2026-02-24 11:17:33 [INFO] src.model_cnn.train: Saved best model (93.0983%)
+2026-02-24 11:17:43 [INFO] src.model_cnn.train: Ep 18: Train Acc: 93.17% | Val Acc: 90.34%
+2026-02-24 11:17:43 [INFO] src.model_cnn.train: Saved best model (93.1667%)
+2026-02-24 11:17:53 [INFO] src.model_cnn.train: Ep 19: Train Acc: 93.32% | Val Acc: 92.22%
+2026-02-24 11:17:53 [INFO] src.model_cnn.train: Saved best model (93.3167%)
+2026-02-24 11:18:03 [INFO] src.model_cnn.train: Ep 20: Train Acc: 93.57% | Val Acc: 92.37%
+2026-02-24 11:18:03 [INFO] src.model_cnn.train: Saved best model (93.5667%)
+2026-02-24 11:18:13 [INFO] src.model_cnn.train: Ep 21: Train Acc: 93.69% | Val Acc: 92.55%
+2026-02-24 11:18:13 [INFO] src.model_cnn.train: Saved best model (93.6950%)
+2026-02-24 11:18:24 [INFO] src.model_cnn.train: Ep 22: Train Acc: 93.74% | Val Acc: 92.81%
+2026-02-24 11:18:24 [INFO] src.model_cnn.train: Saved best model (93.7400%)
+2026-02-24 11:18:34 [INFO] src.model_cnn.train: Ep 23: Train Acc: 93.91% | Val Acc: 91.70%
+2026-02-24 11:18:34 [INFO] src.model_cnn.train: Saved best model (93.9133%)
+2026-02-24 11:18:44 [INFO] src.model_cnn.train: Ep 24: Train Acc: 93.83% | Val Acc: 92.61%
+2026-02-24 11:18:54 [INFO] src.model_cnn.train: Ep 25: Train Acc: 93.99% | Val Acc: 92.62%
+2026-02-24 11:18:54 [INFO] src.model_cnn.train: Saved best model (93.9883%)
+2026-02-24 11:19:04 [INFO] src.model_cnn.train: Ep 26: Train Acc: 94.10% | Val Acc: 92.89%
+2026-02-24 11:19:04 [INFO] src.model_cnn.train: Saved best model (94.0967%)
+2026-02-24 11:19:14 [INFO] src.model_cnn.train: Ep 27: Train Acc: 94.14% | Val Acc: 92.28%
+2026-02-24 11:19:14 [INFO] src.model_cnn.train: Saved best model (94.1400%)
+2026-02-24 11:19:24 [INFO] src.model_cnn.train: Ep 28: Train Acc: 94.17% | Val Acc: 92.46%
+2026-02-24 11:19:24 [INFO] src.model_cnn.train: Saved best model (94.1700%)
+2026-02-24 11:19:34 [INFO] src.model_cnn.train: Ep 29: Train Acc: 94.27% | Val Acc: 91.87%
+2026-02-24 11:19:34 [INFO] src.model_cnn.train: Saved best model (94.2683%)
+2026-02-24 11:19:44 [INFO] src.model_cnn.train: Ep 30: Train Acc: 94.32% | Val Acc: 92.05%
+2026-02-24 11:19:44 [INFO] src.model_cnn.train: Saved best model (94.3200%)
+2026-02-24 11:19:54 [INFO] src.model_cnn.train: Ep 31: Train Acc: 94.36% | Val Acc: 93.29%
+2026-02-24 11:19:54 [INFO] src.model_cnn.train: Saved best model (94.3583%)
+2026-02-24 11:20:04 [INFO] src.model_cnn.train: Ep 32: Train Acc: 94.61% | Val Acc: 92.74%
+2026-02-24 11:20:04 [INFO] src.model_cnn.train: Saved best model (94.6067%)
+2026-02-24 11:20:14 [INFO] src.model_cnn.train: Ep 33: Train Acc: 94.58% | Val Acc: 92.71%
+2026-02-24 11:20:24 [INFO] src.model_cnn.train: Ep 34: Train Acc: 94.71% | Val Acc: 93.10%
+2026-02-24 11:20:24 [INFO] src.model_cnn.train: Saved best model (94.7067%)
+2026-02-24 11:20:33 [INFO] src.model_cnn.train: Ep 35: Train Acc: 94.88% | Val Acc: 93.24%
+2026-02-24 11:20:33 [INFO] src.model_cnn.train: Saved best model (94.8833%)
+2026-02-24 11:20:43 [INFO] src.model_cnn.train: Ep 36: Train Acc: 94.96% | Val Acc: 91.19%
+2026-02-24 11:20:43 [INFO] src.model_cnn.train: Saved best model (94.9567%)
+2026-02-24 11:20:53 [INFO] src.model_cnn.train: Ep 37: Train Acc: 95.01% | Val Acc: 92.53%
+2026-02-24 11:20:53 [INFO] src.model_cnn.train: Saved best model (95.0100%)
+2026-02-24 11:21:03 [INFO] src.model_cnn.train: Ep 38: Train Acc: 95.04% | Val Acc: 92.40%
+2026-02-24 11:21:03 [INFO] src.model_cnn.train: Saved best model (95.0417%)
+2026-02-24 11:21:12 [INFO] src.model_cnn.train: Ep 39: Train Acc: 95.11% | Val Acc: 92.01%
+2026-02-24 11:21:12 [INFO] src.model_cnn.train: Saved best model (95.1050%)
+2026-02-24 11:21:23 [INFO] src.model_cnn.train: Ep 40: Train Acc: 95.23% | Val Acc: 91.88%
+2026-02-24 11:21:23 [INFO] src.model_cnn.train: Saved best model (95.2300%)
+2026-02-24 11:21:32 [INFO] src.model_cnn.train: Ep 41: Train Acc: 95.09% | Val Acc: 92.65%
+2026-02-24 11:21:42 [INFO] src.model_cnn.train: Ep 42: Train Acc: 95.36% | Val Acc: 92.59%
+2026-02-24 11:21:42 [INFO] src.model_cnn.train: Saved best model (95.3650%)
+2026-02-24 11:21:51 [INFO] src.model_cnn.train: Ep 43: Train Acc: 95.40% | Val Acc: 92.50%
+2026-02-24 11:21:51 [INFO] src.model_cnn.train: Saved best model (95.3967%)
+2026-02-24 11:22:00 [INFO] src.model_cnn.train: Ep 44: Train Acc: 95.48% | Val Acc: 92.63%
+2026-02-24 11:22:00 [INFO] src.model_cnn.train: Saved best model (95.4800%)
+2026-02-24 11:22:10 [INFO] src.model_cnn.train: Ep 45: Train Acc: 95.63% | Val Acc: 92.75%
+2026-02-24 11:22:10 [INFO] src.model_cnn.train: Saved best model (95.6300%)
+2026-02-24 11:22:19 [INFO] src.model_cnn.train: Ep 46: Train Acc: 95.62% | Val Acc: 92.03%
+2026-02-24 11:22:29 [INFO] src.model_cnn.train: Ep 47: Train Acc: 95.58% | Val Acc: 92.55%
+2026-02-24 11:22:38 [INFO] src.model_cnn.train: Ep 48: Train Acc: 95.74% | Val Acc: 92.65%
+2026-02-24 11:22:38 [INFO] src.model_cnn.train: Saved best model (95.7417%)
+2026-02-24 11:22:47 [INFO] src.model_cnn.train: Ep 49: Train Acc: 95.69% | Val Acc: 92.26%
+2026-02-24 11:22:57 [INFO] src.model_cnn.train: Ep 50: Train Acc: 95.82% | Val Acc: 92.46%
+2026-02-24 11:22:57 [INFO] src.model_cnn.train: Saved best model (95.8183%)
+2026-02-24 11:22:57 [INFO] src.model_cnn.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-02-24 11:22:57 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-02-24 11:22:57 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-02-24 11:23:05 [INFO] src.evaluation.evaluate: Evaluation [Baseline Float32] - Acc: 92.46%, F1: 0.9250, Prec: 0.9260, Rec: 0.9246, Time: 8.2546s
+2026-02-24 11:23:05 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-02-24 11:23:05 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-02-24 11:23:06 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-02-24 11:23:07 [INFO] src.evaluation.evaluate: Evaluation [Affine_PTQ] - Acc: 92.28%, F1: 0.9233, Prec: 0.9245, Rec: 0.9228, Time: 1.8586s
+2026-02-24 11:23:08 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_FASHION_MNIST.csv
+2026-02-24 11:23:08 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-02-24 11:23:08 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-02-24 11:23:08 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-02-24 11:23:10 [INFO] src.evaluation.evaluate: Evaluation [Symmetric_PTQ] - Acc: 92.31%, F1: 0.9235, Prec: 0.9246, Rec: 0.9231, Time: 1.5860s
+2026-02-24 11:23:10 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_FASHION_MNIST.csv
+2026-02-24 11:23:10 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-02-24 11:23:10 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-02-24 11:23:10 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-02-24 11:23:12 [INFO] src.evaluation.evaluate: Evaluation [PoT_PTQ] - Acc: 92.10%, F1: 0.9217, Prec: 0.9235, Rec: 0.9210, Time: 1.5733s
+2026-02-24 11:23:12 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_FASHION_MNIST.csv
+2026-02-24 11:23:12 [INFO] Experiment: --- Starting Experiment: Detailed Fake Quantization Analysis ---
+2026-02-24 11:23:12 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-02-24 11:23:12 [INFO] Experiment: Evaluating TOTAL performance for: Affine (Fake Quant)
+2026-02-24 11:23:13 [INFO] src.evaluation.evaluate: Starting evaluation: Affine FakeQuant (Sample Size: 10000)
+2026-02-24 11:23:24 [INFO] src.evaluation.evaluate: Evaluation [Affine FakeQuant] - Acc: 92.56%, F1: 0.9259, Prec: 0.9267, Rec: 0.9256, Time: 11.3787s
+2026-02-24 11:23:24 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_FASHION_MNIST.csv
+2026-02-24 11:23:24 [INFO] Experiment: --- Starting Comprehensive Layer-wise Analysis ---
+2026-02-24 11:23:30 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline (Sample Size: 10000)
+2026-02-24 11:23:37 [INFO] src.evaluation.evaluate: Evaluation [Baseline] - Acc: 92.46%, F1: 0.9250, Prec: 0.9260, Rec: 0.9246, Time: 7.3680s
+2026-02-24 11:23:37 [INFO] Experiment: Analyzing 7 layers: ['quant', 'conv1', 'conv2', 'conv3', 'conv4', 'fc1', 'fc2']
+2026-02-24 11:23:39 [INFO] Experiment: Analyzing Layer: quant...
+2026-02-24 11:23:40 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: quant (Sample Size: 10000)
+2026-02-24 11:23:48 [INFO] src.evaluation.evaluate: Evaluation [Sens: quant] - Acc: 92.46%, F1: 0.9250, Prec: 0.9260, Rec: 0.9246, Time: 7.4407s
+2026-02-24 11:23:48 [INFO] Experiment: Analyzing Layer: conv1...
+2026-02-24 11:23:50 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv1 (Sample Size: 10000)
+2026-02-24 11:23:57 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv1] - Acc: 92.55%, F1: 0.9259, Prec: 0.9269, Rec: 0.9255, Time: 7.7037s
+2026-02-24 11:23:57 [INFO] Experiment: Analyzing Layer: conv2...
+2026-02-24 11:23:59 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv2 (Sample Size: 10000)
+2026-02-24 11:24:08 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv2] - Acc: 92.51%, F1: 0.9255, Prec: 0.9265, Rec: 0.9251, Time: 8.0318s
+2026-02-24 11:24:08 [INFO] Experiment: Analyzing Layer: conv3...
+2026-02-24 11:24:10 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv3 (Sample Size: 10000)
+2026-02-24 11:24:19 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv3] - Acc: 92.44%, F1: 0.9248, Prec: 0.9258, Rec: 0.9244, Time: 8.5853s
+2026-02-24 11:24:19 [INFO] Experiment: Analyzing Layer: conv4...
+2026-02-24 11:24:22 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv4 (Sample Size: 10000)
+2026-02-24 11:24:32 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv4] - Acc: 92.45%, F1: 0.9249, Prec: 0.9259, Rec: 0.9245, Time: 9.4626s
+2026-02-24 11:24:32 [INFO] Experiment: Analyzing Layer: fc1...
+2026-02-24 11:24:33 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: fc1 (Sample Size: 10000)
+2026-02-24 11:24:40 [INFO] src.evaluation.evaluate: Evaluation [Sens: fc1] - Acc: 92.51%, F1: 0.9255, Prec: 0.9265, Rec: 0.9251, Time: 7.4441s
+2026-02-24 11:24:40 [INFO] Experiment: Analyzing Layer: fc2...
+2026-02-24 11:24:42 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: fc2 (Sample Size: 10000)
+2026-02-24 11:24:49 [INFO] src.evaluation.evaluate: Evaluation [Sens: fc2] - Acc: 92.54%, F1: 0.9257, Prec: 0.9265, Rec: 0.9254, Time: 7.4231s
+2026-02-24 11:24:49 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/analysis_fake_quant_Affine.csv
+2026-02-24 11:24:49 [INFO] Experiment: Evaluating TOTAL performance for: Symmetric (Fake Quant)
+2026-02-24 11:24:50 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric FakeQuant (Sample Size: 10000)
+2026-02-24 11:25:01 [INFO] src.evaluation.evaluate: Evaluation [Symmetric FakeQuant] - Acc: 92.63%, F1: 0.9266, Prec: 0.9275, Rec: 0.9263, Time: 11.2798s
+2026-02-24 11:25:01 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_FASHION_MNIST.csv
+2026-02-24 11:25:01 [INFO] Experiment: --- Starting Comprehensive Layer-wise Analysis ---
+2026-02-24 11:25:07 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline (Sample Size: 10000)
+2026-02-24 11:25:14 [INFO] src.evaluation.evaluate: Evaluation [Baseline] - Acc: 92.46%, F1: 0.9250, Prec: 0.9260, Rec: 0.9246, Time: 7.3797s
+2026-02-24 11:25:14 [INFO] Experiment: Analyzing 7 layers: ['quant', 'conv1', 'conv2', 'conv3', 'conv4', 'fc1', 'fc2']
+2026-02-24 11:25:16 [INFO] Experiment: Analyzing Layer: quant...
+2026-02-24 11:25:18 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: quant (Sample Size: 10000)
+2026-02-24 11:25:25 [INFO] src.evaluation.evaluate: Evaluation [Sens: quant] - Acc: 92.57%, F1: 0.9261, Prec: 0.9271, Rec: 0.9257, Time: 7.4259s
+2026-02-24 11:25:25 [INFO] Experiment: Analyzing Layer: conv1...
+2026-02-24 11:25:27 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv1 (Sample Size: 10000)
+2026-02-24 11:25:35 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv1] - Acc: 92.47%, F1: 0.9252, Prec: 0.9263, Rec: 0.9247, Time: 7.6874s
+2026-02-24 11:25:35 [INFO] Experiment: Analyzing Layer: conv2...
+2026-02-24 11:25:37 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv2 (Sample Size: 10000)
+2026-02-24 11:25:45 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv2] - Acc: 92.55%, F1: 0.9259, Prec: 0.9268, Rec: 0.9255, Time: 7.9487s
+2026-02-24 11:25:45 [INFO] Experiment: Analyzing Layer: conv3...
+2026-02-24 11:25:47 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv3 (Sample Size: 10000)
+2026-02-24 11:25:56 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv3] - Acc: 92.51%, F1: 0.9255, Prec: 0.9265, Rec: 0.9251, Time: 8.4852s
+2026-02-24 11:25:56 [INFO] Experiment: Analyzing Layer: conv4...
+2026-02-24 11:25:59 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv4 (Sample Size: 10000)
+2026-02-24 11:26:09 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv4] - Acc: 92.46%, F1: 0.9250, Prec: 0.9260, Rec: 0.9246, Time: 9.7130s
+2026-02-24 11:26:09 [INFO] Experiment: Analyzing Layer: fc1...
+2026-02-24 11:26:11 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: fc1 (Sample Size: 10000)
+2026-02-24 11:26:18 [INFO] src.evaluation.evaluate: Evaluation [Sens: fc1] - Acc: 92.50%, F1: 0.9254, Prec: 0.9264, Rec: 0.9250, Time: 7.5616s
+2026-02-24 11:26:18 [INFO] Experiment: Analyzing Layer: fc2...
+2026-02-24 11:26:20 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: fc2 (Sample Size: 10000)
+2026-02-24 11:26:27 [INFO] src.evaluation.evaluate: Evaluation [Sens: fc2] - Acc: 92.47%, F1: 0.9250, Prec: 0.9258, Rec: 0.9247, Time: 7.5454s
+2026-02-24 11:26:27 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/analysis_fake_quant_Symmetric.csv
+2026-02-24 11:26:27 [INFO] Experiment: Evaluating TOTAL performance for: PoT (Fake Quant)
+2026-02-24 11:26:28 [INFO] src.evaluation.evaluate: Starting evaluation: PoT FakeQuant (Sample Size: 10000)
+2026-02-24 11:26:40 [INFO] src.evaluation.evaluate: Evaluation [PoT FakeQuant] - Acc: 92.49%, F1: 0.9254, Prec: 0.9266, Rec: 0.9249, Time: 11.4860s
+2026-02-24 11:26:40 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_FASHION_MNIST.csv
+2026-02-24 11:26:40 [INFO] Experiment: --- Starting Comprehensive Layer-wise Analysis ---
+2026-02-24 11:26:45 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline (Sample Size: 10000)
+2026-02-24 11:26:53 [INFO] src.evaluation.evaluate: Evaluation [Baseline] - Acc: 92.46%, F1: 0.9250, Prec: 0.9260, Rec: 0.9246, Time: 7.5142s
+2026-02-24 11:26:53 [INFO] Experiment: Analyzing 7 layers: ['quant', 'conv1', 'conv2', 'conv3', 'conv4', 'fc1', 'fc2']
+2026-02-24 11:26:55 [INFO] Experiment: Analyzing Layer: quant...
+2026-02-24 11:26:56 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: quant (Sample Size: 10000)
+2026-02-24 11:27:04 [INFO] src.evaluation.evaluate: Evaluation [Sens: quant] - Acc: 92.51%, F1: 0.9255, Prec: 0.9265, Rec: 0.9251, Time: 7.6189s
+2026-02-24 11:27:04 [INFO] Experiment: Analyzing Layer: conv1...
+2026-02-24 11:27:06 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv1 (Sample Size: 10000)
+2026-02-24 11:27:14 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv1] - Acc: 92.44%, F1: 0.9249, Prec: 0.9263, Rec: 0.9244, Time: 7.8262s
+2026-02-24 11:27:14 [INFO] Experiment: Analyzing Layer: conv2...
+2026-02-24 11:27:16 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv2 (Sample Size: 10000)
+2026-02-24 11:27:24 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv2] - Acc: 92.49%, F1: 0.9254, Prec: 0.9266, Rec: 0.9249, Time: 8.0931s
+2026-02-24 11:27:24 [INFO] Experiment: Analyzing Layer: conv3...
+2026-02-24 11:27:26 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv3 (Sample Size: 10000)
+2026-02-24 11:27:35 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv3] - Acc: 92.47%, F1: 0.9251, Prec: 0.9262, Rec: 0.9247, Time: 8.6054s
+2026-02-24 11:27:35 [INFO] Experiment: Analyzing Layer: conv4...
+2026-02-24 11:27:38 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: conv4 (Sample Size: 10000)
+2026-02-24 11:27:48 [INFO] src.evaluation.evaluate: Evaluation [Sens: conv4] - Acc: 92.47%, F1: 0.9251, Prec: 0.9261, Rec: 0.9247, Time: 9.6555s
+2026-02-24 11:27:48 [INFO] Experiment: Analyzing Layer: fc1...
+2026-02-24 11:27:50 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: fc1 (Sample Size: 10000)
+2026-02-24 11:27:57 [INFO] src.evaluation.evaluate: Evaluation [Sens: fc1] - Acc: 92.49%, F1: 0.9253, Prec: 0.9263, Rec: 0.9249, Time: 7.5373s
+2026-02-24 11:27:57 [INFO] Experiment: Analyzing Layer: fc2...
+2026-02-24 11:27:59 [INFO] src.evaluation.evaluate: Starting evaluation: Sens: fc2 (Sample Size: 10000)
+2026-02-24 11:28:06 [INFO] src.evaluation.evaluate: Evaluation [Sens: fc2] - Acc: 92.52%, F1: 0.9255, Prec: 0.9263, Rec: 0.9252, Time: 7.5289s
+2026-02-24 11:28:06 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/analysis_fake_quant_PoT.csv
+2026-02-24 11:28:06 [INFO] Experiment: === All Experiments Completed ===

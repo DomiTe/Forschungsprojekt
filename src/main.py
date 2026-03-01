@@ -92,6 +92,16 @@ def run_experiment():
         calibrate_model(m, train_loader, num_batches=10, device='cpu')
         torch.ao.quantization.convert(m, inplace=True)
 
+        analyzer = LayerAnalyzer(
+            model=model, # Your Baseline Float32 model
+            loader=test_loader, 
+            device='cpu', 
+            qconfig=m.qconfig
+        )
+
+        logger.info(f"Analyzing real quantization fidelity for {exp_name}...")
+        analyzer.run_real_quant_analysis(quantized_model=m, output_csv=f"fidelity_{exp_name}.csv")
+
         metrics = evaluate(m, test_loader, exp_name, device=torch.device('cpu'))
         save_path = os.path.join(QUANTIZED_MODELS, f"model_{exp_name}.pt")
         torch.jit.save(torch.jit.script(m), save_path)

@@ -84,27 +84,41 @@ def run_experiment():
     # --- Helper for Real PTQ ---
     def run_ptq(exp_name, qconfig_fn, method_key):
         logger.info(f"--- Starting Experiment: {exp_name} ---")
+        save_path = os.path.join(QUANTIZED_MODELS, f"model_{exp_name}.pt")
+        
+        # 1. Setup the structure (needed for both loading and training)
         m = copy.deepcopy(model).to('cpu')
         m.eval()
         m = fuse_layers(m)
-        m.qconfig = qconfig_fn()
+        current_qconfig = qconfig_fn()
+        m.qconfig = current_qconfig
         torch.ao.quantization.prepare(m, inplace=True)
-        calibrate_model(m, train_loader, num_batches=10, device='cpu')
-        torch.ao.quantization.convert(m, inplace=True)
 
+        if os.path.exists(save_path):
+            logger.info(f"Quantized state found at {save_path}. Loading...")
+            # We must convert to quantized form BEFORE loading the state_dict
+            # so the quantized parameters (weight/scale/zp) exist in the object
+            torch.ao.quantization.convert(m, inplace=True)
+            m.load_state_dict(torch.load(save_path, map_location='cpu'))
+        else:
+            logger.info("No quantized model found. Running full PTQ pipeline...")
+            calibrate_model(m, train_loader, num_batches=10, device='cpu')
+            torch.ao.quantization.convert(m, inplace=True)
+            # Save state_dict instead of JIT
+            torch.save(m.state_dict(), save_path)
+        
+        # m is now a standard quantized nn.Module, which supports hooks!
         analyzer = LayerAnalyzer(
-            model=model, # Your Baseline Float32 model
+            float_model=fuse_layers(copy.deepcopy(model).to('cpu')).eval(), 
             loader=test_loader, 
             device='cpu', 
-            qconfig=m.qconfig
+            qconfig=current_qconfig
         )
 
         logger.info(f"Analyzing real quantization fidelity for {exp_name}...")
+        # This will now work because m supports register_forward_hook
         analyzer.run_real_quant_analysis(quantized_model=m, output_csv=f"fidelity_{exp_name}.csv")
-
         metrics = evaluate(m, test_loader, exp_name, device=torch.device('cpu'))
-        save_path = os.path.join(QUANTIZED_MODELS, f"model_{exp_name}.pt")
-        torch.jit.save(torch.jit.script(m), save_path)
         
         results.append({
             "config_name": exp_name,
@@ -128,55 +142,55 @@ def run_experiment():
     # ---------------------------------------------------------
     # Experiment 4: Fake Quantization Analysis (Global + Layer-wise)
     # ---------------------------------------------------------
-    logger.info("--- Starting Experiment: Detailed Fake Quantization Analysis ---")
+    # logger.info("--- Starting Experiment: Detailed Fake Quantization Analysis ---")
     
-    model_for_analysis = copy.deepcopy(model).to('cpu')
-    model_for_analysis.eval()
-    model_for_analysis = fuse_layers(model_for_analysis)
+    # model_for_analysis = copy.deepcopy(model).to('cpu')
+    # model_for_analysis.eval()
+    # model_for_analysis = fuse_layers(model_for_analysis)
     
-    analysis_configs = [
-        ("Affine", get_fake_quant_affine_config(), "affine_fake"),
-        ("Symmetric", get_fake_quant_symmetric_config(), "symmetric_fake"),
-        ("PoT", get_fake_quant_pot_config(), "pot_fake"),
-    ]
+    # analysis_configs = [
+    #     ("Affine", get_fake_quant_affine_config(), "affine_fake"),
+    #     ("Symmetric", get_fake_quant_symmetric_config(), "symmetric_fake"),
+    #     ("PoT", get_fake_quant_pot_config(), "pot_fake"),
+    # ]
     
-    for method_name, qconfig, method_key in analysis_configs:
-        logger.info(f"Evaluating TOTAL performance for: {method_name} (Fake Quant)")
+    # for method_name, qconfig, method_key in analysis_configs:
+    #     logger.info(f"Evaluating TOTAL performance for: {method_name} (Fake Quant)")
         
-        # 1. Create and prepare the simulated model
-        model_fake = copy.deepcopy(model_for_analysis)
-        model_fake.qconfig = qconfig
-        torch.ao.quantization.prepare(model_fake, inplace=True)
+    #     # 1. Create and prepare the simulated model
+    #     model_fake = copy.deepcopy(model_for_analysis)
+    #     model_fake.qconfig = qconfig
+    #     torch.ao.quantization.prepare(model_fake, inplace=True)
         
-        # 2. Calibrate the simulated model
-        calibrate_model(model_fake, train_loader, num_batches=10, device='cpu')
+    #     # 2. Calibrate the simulated model
+    #     calibrate_model(model_fake, train_loader, num_batches=10, device='cpu')
         
-        # 3. Global Evaluation (Total Numbers)
-        metrics_fake = evaluate(model_fake, test_loader, f"{method_name} FakeQuant", device=torch.device('cpu'))
+    #     # 3. Global Evaluation (Total Numbers)
+    #     metrics_fake = evaluate(model_fake, test_loader, f"{method_name} FakeQuant", device=torch.device('cpu'))
         
-        # 4. Add to main results CSV for direct comparison
-        results.append({
-            "config_name": f"{method_name}_FakeSim",
-            "method": method_key,
-            "bits": 8,
-            "accuracy": metrics_fake['accuracy'],
-            "f1_score": metrics_fake['f1_score'],
-            "precision": metrics_fake['precision'],
-            "recall": metrics_fake['recall'],
-            "inference_time": metrics_fake['inference_time'],
-            "model_size_mb": size_base,
-            "drop_percentage": acc_base - metrics_fake['accuracy']
-        })
-        save_csv(results, EXPERIMENT_CSV_PATH, list(results[0].keys()))
+    #     # 4. Add to main results CSV for direct comparison
+    #     results.append({
+    #         "config_name": f"{method_name}_FakeSim",
+    #         "method": method_key,
+    #         "bits": 8,
+    #         "accuracy": metrics_fake['accuracy'],
+    #         "f1_score": metrics_fake['f1_score'],
+    #         "precision": metrics_fake['precision'],
+    #         "recall": metrics_fake['recall'],
+    #         "inference_time": metrics_fake['inference_time'],
+    #         "model_size_mb": size_base,
+    #         "drop_percentage": acc_base - metrics_fake['accuracy']
+    #     })
+    #     save_csv(results, EXPERIMENT_CSV_PATH, list(results[0].keys()))
 
-        # 5. Run Detailed Layer-wise Analyzer (MSE, SQNR, KL)
-        analyzer = LayerAnalyzer(
-            float_model=model_for_analysis, 
-            loader=test_loader, 
-            device=torch.device('cpu'),
-            qconfig=qconfig
-        )
-        analyzer.run_layer_wise_analysis(output_csv=f"analysis_fake_quant_{method_name}.csv")
+    #     # 5. Run Detailed Layer-wise Analyzer (MSE, SQNR, KL)
+    #     analyzer = LayerAnalyzer(
+    #         float_model=model_for_analysis, 
+    #         loader=test_loader, 
+    #         device=torch.device('cpu'),
+    #         qconfig=qconfig
+    #     )
+    #     analyzer.run_layer_wise_analysis(output_csv=f"analysis_fake_quant_{method_name}.csv")
 
     logger.info("=== All Experiments Completed ===")
 

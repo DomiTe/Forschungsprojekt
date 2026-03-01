@@ -154,56 +154,56 @@ class LayerAnalyzer:
         save_csv(results, output_csv, results[0].keys())
         return results
 
-def run_real_quant_analysis(self, quantized_model, output_csv="real_layer_analysis.csv"):
-    """
-    Analyzes fidelity for models converted with torch.ao.quantization.convert.
-    """
-    logger.info("--- Starting Real Quantized Layer-wise Analysis ---")
-    
-    activations_float = {}
-    activations_real = {}
+    def run_real_quant_analysis(self, quantized_model, output_csv="real_layer_analysis.csv"):
+        """
+        Analyzes fidelity for models converted with torch.ao.quantization.convert.
+        """
+        logger.info("--- Starting Real Quantized Layer-wise Analysis ---")
+        
+        activations_float = {}
+        activations_real = {}
 
-    def get_hook(store_dict, name, is_quantized=False):
-        def hook(model, input, output):
-            # Real quantized layers output quantized tensors; we must dequantize to compare
-            if is_quantized and hasattr(output, 'dequantize'):
-                store_dict[name] = output.dequantize().detach().cpu()
-            else:
-                store_dict[name] = output.detach().cpu()
-        return hook
+        def get_hook(store_dict, name, is_quantized=False):
+            def hook(model, input, output):
+                # Real quantized layers output quantized tensors; we must dequantize to compare
+                if is_quantized and hasattr(output, 'dequantize'):
+                    store_dict[name] = output.dequantize().detach().cpu()
+                else:
+                    store_dict[name] = output.detach().cpu()
+            return hook
 
-    layers_to_hook = ['conv1', 'conv2', 'conv3', 'conv4', 'fc1', 'fc2']
-    hooks = []
+        layers_to_hook = ['conv1', 'conv2', 'conv3', 'conv4', 'fc1', 'fc2']
+        hooks = []
 
-    # Register hooks on both models
-    for name, module in self.float_model.named_modules():
-        if name in layers_to_hook:
-            hooks.append(module.register_forward_hook(get_hook(activations_float, name)))
-            
-    for name, module in quantized_model.named_modules():
-        if name in layers_to_hook:
-            hooks.append(module.register_forward_hook(get_hook(activations_real, name, is_quantized=True)))
+        # Register hooks on both models
+        for name, module in self.float_model.named_modules():
+            if name in layers_to_hook:
+                hooks.append(module.register_forward_hook(get_hook(activations_float, name)))
+                
+        for name, module in quantized_model.named_modules():
+            if name in layers_to_hook:
+                hooks.append(module.register_forward_hook(get_hook(activations_real, name, is_quantized=True)))
 
-    # Run inference to capture activations
-    inputs, _ = next(iter(self.loader))
-    inputs = inputs.to(self.device)
-    self.float_model(inputs)
-    quantized_model(inputs)
+        # Run inference to capture activations
+        inputs, _ = next(iter(self.loader))
+        inputs = inputs.to(self.device)
+        self.float_model(inputs)
+        quantized_model(inputs)
 
-    # Calculate metrics
-    results = []
-    for name in layers_to_hook:
-        if name in activations_float and name in activations_real:
-            mse, sqnr, kl = self.compute_fidelity_metrics(
-                activations_float[name], activations_real[name]
-            )
-            results.append({
-                "layer_name": name,
-                "avg_mse": mse,
-                "sqnr_db": sqnr,
-                "kl_divergence": kl
-            })
+        # Calculate metrics
+        results = []
+        for name in layers_to_hook:
+            if name in activations_float and name in activations_real:
+                mse, sqnr, kl = self.compute_fidelity_metrics(
+                    activations_float[name], activations_real[name]
+                )
+                results.append({
+                    "layer_name": name,
+                    "avg_mse": mse,
+                    "sqnr_db": sqnr,
+                    "kl_divergence": kl
+                })
 
-    for h in hooks: h.remove()
-    save_csv(results, output_csv, results[0].keys())
-    return results
+        for h in hooks: h.remove()
+        save_csv(results, output_csv, results[0].keys())
+        return results

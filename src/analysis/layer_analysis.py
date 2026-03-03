@@ -3,6 +3,9 @@ import torch.nn as nn
 import numpy as np
 import copy
 import logging
+import collections
+import statistics
+
 from src.evaluation.evaluate import evaluate
 from src.torch_quantization.quantization_calibration import calibrate_model
 from src.utility.utils import save_csv
@@ -158,14 +161,14 @@ class LayerAnalyzer:
         """
         Analyzes fidelity for models converted with torch.ao.quantization.convert.
         """
-        logger.info("--- Starting Real Quantized Layer-wise Analysis ---")
+        logger.info("--- Starting Real Quantized Layer-wise Analysis over full test set ---")
         
         activations_float = {}
         activations_real = {}
 
         def get_hook(store_dict, name, is_quantized=False):
             def hook(model, input, output):
-                # Real quantized layers output quantized tensors; we must dequantize to compare
+                # dequantize to compare
                 if is_quantized and hasattr(output, 'dequantize'):
                     store_dict[name] = output.dequantize().detach().cpu()
                 else:
@@ -175,35 +178,55 @@ class LayerAnalyzer:
         layers_to_hook = ['conv1', 'conv2', 'conv3', 'conv4', 'fc1', 'fc2']
         hooks = []
 
-        # Register hooks on both models
+        # hook float model
         for name, module in self.float_model.named_modules():
             if name in layers_to_hook:
                 hooks.append(module.register_forward_hook(get_hook(activations_float, name)))
                 
+        # hook quantized model
         for name, module in quantized_model.named_modules():
             if name in layers_to_hook:
                 hooks.append(module.register_forward_hook(get_hook(activations_real, name, is_quantized=True)))
 
-        # Run inference to capture activations
-        inputs, _ = next(iter(self.loader))
-        inputs = inputs.to(self.device)
-        self.float_model(inputs)
-        quantized_model(inputs)
+        # store metrics for all batches
+        batch_metrics = collections.defaultdict(lambda: {"mse": [], "sqnr": [], "kl": []})
 
-        # Calculate metrics
+        # iterate over entire dataloader
+        with torch.no_grad():
+            for inputs, _ in self.loader:
+                inputs = inputs.to(self.device)
+                self.float_model(inputs)
+                quantized_model(inputs)
+
+                # calculate and store metrics for current batch
+                for name in layers_to_hook:
+                    if name in activations_float and name in activations_real:
+                        mse, sqnr, kl = self.compute_fidelity_metrics(
+                            activations_float[name], activations_real[name]
+                        )
+                        batch_metrics[name]["mse"].append(mse)
+                        batch_metrics[name]["sqnr"].append(sqnr)
+                        batch_metrics[name]["kl"].append(kl)
+
+        # calculate final stats across all batches
         results = []
         for name in layers_to_hook:
-            if name in activations_float and name in activations_real:
-                mse, sqnr, kl = self.compute_fidelity_metrics(
-                    activations_float[name], activations_real[name]
-                )
+            if name in batch_metrics:
+                mse_list = batch_metrics[name]["mse"]
+                sqnr_list = batch_metrics[name]["sqnr"]
+                kl_list = batch_metrics[name]["kl"]
+                
+                # compute stats
                 results.append({
                     "layer_name": name,
-                    "avg_mse": mse,
-                    "sqnr_db": sqnr,
-                    "kl_divergence": kl
+                    "avg_mse": statistics.mean(mse_list),
+                    "batch_mse_std": statistics.stdev(mse_list) if len(mse_list) > 1 else 0.0,
+                    "sqnr_db": statistics.mean(sqnr_list),
+                    "batch_sqnr_std": statistics.stdev(sqnr_list) if len(sqnr_list) > 1 else 0.0,
+                    "kl_divergence": statistics.mean(kl_list),
+                    "batch_kl_std": statistics.stdev(kl_list) if len(kl_list) > 1 else 0.0
                 })
 
         for h in hooks: h.remove()
-        save_csv(results, output_csv, results[0].keys())
+        save_csv(results, output_csv, list(results[0].keys()))
         return results

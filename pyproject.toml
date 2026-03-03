@@ -29,6 +29,8 @@ dependencies = [
     "scikit-learn>=1.8.0",
     "torchsummary>=1.5.1",
     "ninja>=1.13.0",
+    "collection>=0.1.6",
+    "statistics>=1.0.3.5",
 ]
 [tool.uv]
 index = [

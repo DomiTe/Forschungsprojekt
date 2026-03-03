@@ -66,7 +66,8 @@ def evaluate(
         torch.cuda.synchronize()
 
     end_time = time.time()
-    inference_time = end_time - start_time
+    total_time_seconds = end_time - start_time
+    inference_time_ms = (total_time_seconds * 1000) / num_samples
 
     # --- 3. METRICS ---
     test_loss /= num_samples
@@ -80,7 +81,7 @@ def evaluate(
     logger.info(
         f"Evaluation [{desc}] - "
         f"Acc: {accuracy:.2f}%, F1: {f1:.4f}, Prec: {precision:.4f}, Rec: {recall:.4f}, "
-        f"Time: {inference_time:.4f}s"
+        f"Time: {inference_time_ms:.4f}ms"
     )
 
     # Return a dictionary for easier CSV logging later
@@ -90,5 +91,5 @@ def evaluate(
         "recall": recall,
         "f1_score": f1,
         "loss": test_loss,
-        "inference_time": inference_time
+        "inference_time_ms": inference_time_ms
     }

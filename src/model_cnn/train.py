@@ -3,7 +3,6 @@ import torch.optim as optim
 import torch.nn as nn
 import os
 from tqdm import tqdm 
-# from torch.utils.tensorboard import SummaryWriter
 import logging
 
 from src.model_cnn.model import CNN
@@ -23,14 +22,13 @@ def train_model(train_loader, test_loader, num_classes):
     Trainiert das CNN als Float32-Baseline und speichert es ab.
     """
     logger.info(f"Starte Training auf Device: {DEVICE}")
-    # writer = SummaryWriter(log_dir=LOG_DIR)
 
     # Modell initialisieren
     model = CNN(num_classes=num_classes).to(DEVICE)
     
-    # Sicherstellen, dass wir im Float-Modus starten (falls Layers Default anders haben)
-    if hasattr(model, 'convert_to_baseline'):
-        model.convert_to_baseline()
+    # REDUNDANT
+    # if hasattr(model, 'convert_to_baseline'):
+    #     model.convert_to_baseline()
 
     optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE, weight_decay=1e-4)
     criterion = nn.CrossEntropyLoss()
@@ -86,12 +84,6 @@ def train_model(train_loader, test_loader, num_classes):
         train_acc = 100 * correct_train / total_train
         avg_val_loss = val_loss / len(test_loader)
         val_acc = 100 * correct_val / total_val
-        
-        # Logging
-        # writer.add_scalar('Loss/train', avg_train_loss, epoch)
-        # writer.add_scalar('Accuracy/train', train_acc, epoch)
-        # writer.add_scalar('Loss/val', avg_val_loss, epoch)
-        # writer.add_scalar('Accuracy/val', val_acc, epoch)
 
         logger.info(f"Ep {epoch+1}: Train Acc: {train_acc:.2f}% | Val Acc: {val_acc:.2f}%")
         
@@ -109,7 +101,5 @@ def train_model(train_loader, test_loader, num_classes):
     save_path = os.path.join(MODELS_DIR, "baseline_float32.pt")
     torch.save(model.state_dict(), save_path)
     logger.info(f"Training abgeschlossen. Baseline gespeichert unter: {save_path}")
-    
-    # writer.close()
     
     return model, history

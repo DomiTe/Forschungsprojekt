@@ -1,7 +1,6 @@
 import torch
 from torch.ao.quantization import FakeQuantize
 
-# Project Imports
 from src.torch_quantization.custom_observer import (
     CustomeAffineObserver,
     CustomeSymmetricActivationObserver,
@@ -10,9 +9,8 @@ from src.torch_quantization.custom_observer import (
     CustomePoTWeightObserver
 )
 
-# ==========================================
-# REDUCTED
-# ==========================================
+# ========================================== REDUNDANT FILE =================================================
+# Note: Not needed anymore due to real quantization analysation of layers but keeping it here for documentation purposes
 
 
 # ==========================================

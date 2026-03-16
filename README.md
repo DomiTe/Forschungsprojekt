@@ -1,53 +1,45 @@
-TODO: REPORT WRITING
-
-# Investigating Quantization Strategies for Deep Learning Models
-
-This repository contains the implementation and experimental results for the research paper:
-
-**"Investigating Quantization Strategies for Deep Learning Models: Schichtweise Fidelity-Analyse und Hardware-Simulation: Ein Vergleich von Affiner, Symmetrischer und PoT-Quantisierung"**
+# Investigating of Quantization Strategies for Deep Learning Models (RESEARCH PROJECT FOR MASTERS DEGREE AT HTW BERLIN)
 
 ## Project Overview
 
-This project evaluates the trade-offs between different **Post-Training Quantization (PTQ)** strategies on x86 hardware. It specifically investigates the "Fidelity-Loss" across network layers, analyzing how **Symmetric** and **Power-of-Two (PoT)** schemes compare against the **Affine** baseline when dealing with unnormalized data distributions.
+This project evaluates the impact of 8-bit Post-Training Quantization (PTQ) strategies on a Convolutional Neural Network (CNN). It explores the trade-offs between model compression, inference speed, and predictive accuracy across datasets of varying complexity.
 
 ### Key Research Questions
 
-1. **RQ1:** How does the choice of quantization (Affine, Symmetric, Power-of-Two) affect the accuracy and latency of a CNN?
-2. **RQ2:** In which network layers are performance losses concentrated, and how does layer sensitivity differ between robust (CIFAR) and sensitive datasets?
+* **Methodological Impact**: How do affine, symmetric, and Power-of-Two (PoT) quantization schemes affect accuracy and latency across different data distributions? 
+
+* **Layer Sensitivity**: In which specific network layers do quantization-induced performance losses primarily concentrate? 
+
+
 
 ## Methodologies & Implementation
 
-The project utilizes the **PyTorch 2.2 `fbgemm` backend** to simulate and execute quantization on x86 CPUs.
+* **Quantization Schemes**: Implementation of Affine (asymmetric), Symmetric, and simulated Power-of-Two (PoT) 8-bit quantization.
 
-* **Affine (Asymmetric):** Mapping the range  to  using a floating-point Scale () and Integer Zero-Point ().
-* **Symmetric:** Fixing  to optimize hardware execution, though potentially leading to "Bit-Waste" in asymmetric distributions.
-* **Power-of-Two (PoT):** Restricting scaling factors to  to replace multiplications with bit-shifts.
-* **Fidelity Tracking:** Use of **Forward Hooks** to capture inter-layer tensors and calculate MSE, SQNR, and KL-Divergence.
+* **Architecture**: A 4-block CNN utilizing Batch Normalization to center activations, to make efficient symmetric and PoT quantization.
+
+* **Fidelity Metrics**: Layer-wise analysis using Signal-to-Quantization-Noise-Ratio (SQNR), Mean Squared Error (MSE), and Kullback-Leibler (KL) Divergence.
+
+* **Framework**: Built with PyTorch 2.9.1 (torch.ao) and benchmarked on x86 architecture (fbgemm backend).
+
+
 
 ## Key Results
 
 ### Global Performance Comparison (CIFAR-10)
 
-The following table summarizes the performance of a 4-block CNN architecture. Note that Affine quantization effectively maintained baseline accuracy by avoiding signal degradation in the input layer.
+* **Storage**: Consistently reduced model size by ~74.5% (from 5.53 MB to ~1.4 MB).
+* **Latency**: Improved inference speed by ~75.9% on x86 hardware.
+* **Accuracy**: Affine quantization proved most robust, maintaining accuracy within 0.05% of the FP32 baseline ($84.48\%$ vs. $84.43\%$).
 
-| Config | Method | Acc (%) | F1-Score | Time (s) | Drop (%) |
-| --- | --- | --- | --- | --- | --- |
-| **Baseline** | Float32 | 85.23 | 0.853 | 52.65 | 0.0 |
-| **Affine_PTQ** | Affine | **85.44** | 0.855 | 14.35 | -0.21 |
-| **Symmetric_PTQ** | Symmetric | 84.85 | 0.849 | 12.55 | 0.38 |
-| **PoT_PTQ** | PoT | 83.82 | 0.839 | 12.55 | 1.41 |
 
 ### Layer-wise Fidelity Analysis
 
-The analysis highlights the **"Input Shock"**—a massive drop in signal quality occurring in the first layer when using symmetric schemes on strictly positive data (e.g., after `QuantStub`).
+* **Error Localization**: Signal degradation is minimal in early convolutional layers but concentrates heavily in deep Fully-Connected (FC) layers.
 
-| Layer | Method | MSE | SQNR (dB) | KL-Div |
-| --- | --- | --- | --- | --- |
-| **quant (Input)** | Affine |  | **114.6** | 0.0 |
-| **quant (Input)** | Symmetric |  | **47.8** | 26.2 |
-| **quant (Input)** | PoT |  | 47.4 | 29.0 |
+* **Fidelity Collapse**: In sensitive datasets (e.g., Pokémon), SQNR for symmetric/PoT methods can drop to near 0 dB in final layers, leading to significant accuracy loss.
 
-> **Observation:** Symmetric quantization effectively uses only 7-bit resolution for unnormalized  data, explaining the superiority of Affine methods for the input stage.
+
 
 ## Project Structure
 
@@ -81,9 +73,12 @@ The analysis highlights the **"Input Shock"**—a massive drop in signal quality
 └── pyproject.toml                      # Project dependencies (uv)
 ```
 
+
 ## Usage
 
 ### 1. Installation
+
+Ensure Python 3.12.0+ is installed. Use `uv` to install dependencies:
 
 ```bash
 uv sync
@@ -91,21 +86,18 @@ uv sync
 
 ### 2. Execution
 
-Ensure the dataset and method are set in `config.py`, then run:
+Run the main script to train the baseline and execute the PTQ pipeline:
 
 ```bash
-uv run main.py
+uv run src/main.py
 ```
-
-The script will perform a three-phase execution:
-
-1. **Train/Load** FP32 Baseline.
-2. **Calibrate** using the validation set to determine  and .
-3. **Convert** to INT8 and evaluate layer-wise metrics.
 
 ## References
 
-* **Nagel et al. (2021):** *A White Paper on Neural Network Quantization*.
-* **Wu et al. (2020):** *Integer Quantization for Deep Learning Inference*.
-* **Lee et al. (2022):** *Quantune: Post-training quantization with hardware-aware tuning*.
+* Krishnamoorthi, R. "Quantizing Deep Convolutional Networks for Efficient Inference: A Whitepaper." (2018). 
 
+
+* Nagel, M., et al. "A White Paper on Neural Network Quantization." (2021). 
+
+
+* Gholami, A., et al. "A Survey of Quantization Methods for Efficient Neural Network Inference." (2021).

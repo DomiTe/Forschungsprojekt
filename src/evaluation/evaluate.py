@@ -32,7 +32,7 @@ def evaluate(
     all_targets = []
     all_preds = []
 
-    # --- 1. WARM-UP ---
+    # --- WARM-UP ---
     if device.type == "cuda":
         warmup_batches = 5
         with torch.no_grad():
@@ -44,7 +44,7 @@ def evaluate(
 
     logger.info(f"Starting evaluation: {desc} (Sample Size: {num_samples})")
     
-    # --- 2. MEASUREMENT ---
+    # --- MEASUREMENT ---
     start_time = time.time()
 
     with torch.no_grad():
@@ -69,11 +69,11 @@ def evaluate(
     total_time_seconds = end_time - start_time
     inference_time_ms = (total_time_seconds * 1000) / num_samples
 
-    # --- 3. METRICS ---
+    # --- METRICS ---
     test_loss /= num_samples
     accuracy = 100.0 * correct / num_samples
     
-    # Calculate Precision, Recall, F1 (Macro Average handles multi-class well)
+    # Calculate Precision, Recall, F1
     precision = precision_score(all_targets, all_preds, average='macro', zero_division=0)
     recall = recall_score(all_targets, all_preds, average='macro', zero_division=0)
     f1 = f1_score(all_targets, all_preds, average='macro', zero_division=0)
@@ -84,7 +84,7 @@ def evaluate(
         f"Time: {inference_time_ms:.4f}ms"
     )
 
-    # Return a dictionary for easier CSV logging later
+    # Return a dictionary
     return {
         "accuracy": accuracy,
         "precision": precision,

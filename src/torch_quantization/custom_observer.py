@@ -1,23 +1,27 @@
 import torch
 from torch.ao.quantization.observer import MinMaxObserver, PerChannelMinMaxObserver
 
+# ==========================================
+# AFFINE ACTIVATION & WEIGHT
+# ==========================================
+
 class CustomeAffineObserver(MinMaxObserver):
     """
     Implements Affine Quantization (Asymmetric).
     Maps [min, max] -> [0, 255] directly.
     """
     def calculate_qparams(self):
-        # 1. Get min/max from the observed data
+        # Get min/max from the observed data
         min_val, max_val = self.min_val, self.max_val
         
         # Guard against empty tensors
         if min_val == float("inf") or max_val == float("-inf"):
             return torch.tensor([1.0]), torch.tensor([0])
             
-        # 2. Get q_min and q_max (e.g., 0 and 255)
+        # 2Get q_min and q_max (e.g., 0 and 255)
         q_min, q_max = self.quant_min, self.quant_max
         
-        # 3. Calculate Scale (S)
+        # Calculate Scale (S)
         # Formula: S = (x_max - x_min) / (q_max - q_min)
         numerator = max_val - min_val
         denominator = float(q_max - q_min)
@@ -25,7 +29,7 @@ class CustomeAffineObserver(MinMaxObserver):
         scale = numerator / denominator
         scale = torch.max(scale, torch.tensor(1e-6)) # Avoid division by zero
         
-        # 4. Calculate Zero Point (Z)
+        # Calculate Zero Point (Z)
         # Formula: Z = round(q_min - x_min / S)
         zero_point = q_min - (min_val / scale)
         zero_point = torch.round(zero_point)
@@ -36,7 +40,7 @@ class CustomeAffineObserver(MinMaxObserver):
         return scale, zero_point.int()
 
 # ==========================================
-# 1. SYMMETRIC ACTIVATION
+# SYMMETRIC ACTIVATION
 # ==========================================
 class CustomeSymmetricActivationObserver(MinMaxObserver):
     """
@@ -47,22 +51,14 @@ class CustomeSymmetricActivationObserver(MinMaxObserver):
         
         max_abs = torch.max(torch.abs(min_val), torch.abs(max_val))
         
-        # 2. Scale Calculation (Full Symmetric Range)
+        # Scale Calculation (Full Symmetric Range)
         # Maps [-max_abs, +max_abs] to 254 levels
         # Formula: Scale = Total_Range / Levels
         scale = (2 * max_abs) / 254.0
         scale = torch.max(scale, torch.tensor(1e-6))
         
-        # 3. Force Midpoint Zero Point
-        # Maps real 0.0 -> integer 128.
-        # Required for FBGEMM to handle negative inputs with unsigned int8.
+        # Force Zero Point at 0
         zero_point = torch.tensor(0).int()
-        
-        # if min_val >= 0:
-        #     zero_point = torch.tensor(0).int()
-        # else:
-        #     # Shift to midpoint for quint8
-        #     zero_point = torch.tensor(128).int()
         
         return scale, zero_point
 
@@ -72,25 +68,23 @@ class CustomeSymmetricActivationObserver(MinMaxObserver):
 class CustomeSymmetricWeightObserver(PerChannelMinMaxObserver):
     """
     For WEIGHTS (Per-Channel, Signed qint8).
-    Strictly follows Standard Symmetric mapping [-127, 127].
     """
     def calculate_qparams(self):
         min_val, max_val = self.min_val, self.max_val
         if min_val.numel() == 0 or max_val.numel() == 0:
              return torch.tensor([1.0]), torch.tensor([0])
         
-        # 1. Find absolute max to center range at 0
+        # Find absolute max to center range at 0
         max_abs = torch.max(torch.abs(min_val), torch.abs(max_val))
 
-        # 2. Scale Calculation (Signed Int8)
+        # Scale Calculation (Signed Int8)
         # Maps [0, max_abs] to [0, 127]. 
         # Denominator is 127.0 for qint8.
         denominator = 127.0 
         scale = max_abs / denominator
         scale = torch.max(scale, torch.tensor(1e-6))
         
-        # 3. Force Zero Point to 0
-        # Strict definition of Symmetric Quantization.
+        # Force Zero Point to 0
         zero_point = torch.zeros_like(scale).int()
         
         return scale, zero_point.int()
@@ -101,34 +95,25 @@ class CustomeSymmetricWeightObserver(PerChannelMinMaxObserver):
 class CustomePoTActivationObserver(MinMaxObserver):
     """
     For ACTIVATIONS (Power-of-Two).
-    Combines PoT Scaling with Midpoint ZP for CPU compatibility.
     """
     def calculate_qparams(self):
         min_val, max_val = self.min_val, self.max_val
         if min_val == float("inf") or max_val == float("-inf"):
             return torch.tensor([1.0]), torch.tensor([0])
-            
-        # 1. Percentile Clipping 
+        
+        # Find absolute max
         max_abs = torch.max(torch.abs(min_val), torch.abs(max_val))
 
-        # 2. Calculate Initial Scale
+        # Calculate Initial Scale
         # Maps symmetric range to 254 levels
         scale = (2 * max_abs) / 254.0
         scale = torch.max(scale, torch.tensor(1e-6))
         
-        # 3. Power-of-Two Rounding
-        # Force scale to be 2^k (e.g., 2^-5, 2^-4)
+        # Power-of-Two Rounding
+        # Force scale to be 2^k
         scale = torch.pow(2.0, torch.round(torch.log2(scale)))
         
-        # 4. Force Midpoint Zero Point
-        # Essential for accuracy on signed inputs with quint8.
         zero_point = torch.tensor(0).int()
-        
-        # if min_val >= 0:
-        #     zero_point = torch.tensor(0).int()
-        # else:
-        #     # Shift to midpoint for quint8
-        #     zero_point = torch.tensor(128).int()
 
         return scale, zero_point
 
@@ -142,16 +127,16 @@ class CustomePoTWeightObserver(PerChannelMinMaxObserver):
         if min_val.numel() == 0 or max_val.numel() == 0:
              return torch.tensor([1.0]), torch.tensor([0])
 
-        # 1. Find absolute max
+        # Find absolute max
         max_abs = torch.max(torch.abs(min_val), torch.abs(max_val))
         
-        # 2. Calculate Signed Scale
+        # Calculate Signed Scale
         scale = max_abs / 127.0
         scale = torch.max(scale, torch.tensor(1e-6))
         
-        # 3. Power-of-Two Rounding
+        # Power-of-Two Rounding
         # Rounds log2(scale) to nearest integer k, then 2^k
         scale = torch.pow(2.0, torch.round(torch.log2(scale)))
         
-        # 4. Force Zero Point to 0
+        # Force Zero Point to 0
         return scale, torch.zeros_like(scale).int()

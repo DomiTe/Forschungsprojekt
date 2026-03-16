@@ -18,7 +18,6 @@ from src.utility.config import (
     DATASET_NAME,
     DEVICE
 )
-#from src.layers import QuantizedLayerMixin
 from src.evaluation.evaluate import evaluate
 
 logger = logging.getLogger(__name__)
@@ -60,10 +59,8 @@ def _get_mnist_loaders():
     transform = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
-        # transforms.Normalize((0.1307,), (0.3081,))
     ])
     
-    # Download=True ist wichtig für den ersten Run
     train_dataset = datasets.MNIST(DATA_DIR, train=True, download=True, transform=transform)
     test_dataset = datasets.MNIST(DATA_DIR, train=False, download=True, transform=transform)
     
@@ -75,11 +72,9 @@ def _get_mnist_loaders():
 def _get_fashion_loaders():
     transform = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
-        transforms.ToTensor(),
-        # transforms.Normalize((0.2860,), (0.3530,))    
+        transforms.ToTensor(), 
     ])
     
-    # Download=True ist wichtig für den ersten Run
     train_dataset = datasets.FashionMNIST(DATA_DIR, train=True, download=True, transform=transform)
     test_dataset = datasets.FashionMNIST(DATA_DIR, train=False, download=True, transform=transform)
     
@@ -89,24 +84,19 @@ def _get_fashion_loaders():
     return train_loader, test_loader, 10 # num_classes
 
 def _get_cifar10_loaders():
-    # standard augmentation for CIFAR-10 training
+    
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
-        # standard CIFAR-10 mean and std
-        # transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
     ])
 
-    # no augmentation for testing, only resize and normalize
     transform_test = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
-        # transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
     ])
     
-    # fetch training and test datasets
     train_dataset = datasets.CIFAR10(DATA_DIR, train=True, download=True, transform=transform_train)
     test_dataset = datasets.CIFAR10(DATA_DIR, train=False, download=True, transform=transform_test)
     
@@ -120,7 +110,6 @@ def _get_cifar10_loaders():
     return train_loader, test_loader, 10 # num_classes
 
 def _get_cifar100_loaders():
-    # standard augmentation for CIFAR-10 training
     transform_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
         transforms.RandomHorizontalFlip(),
@@ -128,13 +117,11 @@ def _get_cifar100_loaders():
         transforms.ToTensor(),
     ])
 
-    # no augmentation for testing, only resize and normalize
     transform_test = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
     ])
     
-    # fetch training and test datasets
     train_dataset = datasets.CIFAR100(DATA_DIR, train=True, download=True, transform=transform_train)
     test_dataset = datasets.CIFAR100(DATA_DIR, train=False, download=True, transform=transform_test)
     
@@ -148,46 +135,33 @@ def _get_cifar100_loaders():
     return train_loader, test_loader, 100 # num_classes
 
 def _get_pokemon_loaders():
-    # 1. Transform für TRAINING
-    # WICHTIG: Wir nutzen jetzt (0.5, 0.5, 0.5) statt der ResNet-Werte
+
     transform_train = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.RandomHorizontalFlip(),
         transforms.RandomRotation(15),
         transforms.ColorJitter(brightness=0.2, contrast=0.2),
         transforms.ToTensor(),
-        # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)) # Standard Normalisierung
     ])
 
-    # 2. Transform für VALIDIERUNG (Keine Augmentation)
     transform_val = transforms.Compose([
         transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
         transforms.ToTensor(),
-        # transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
     ])
     
-    # Pfad zum Ordner "PokemonData" (wo die 150 Ordner drin sind)
     dataset_path = os.path.join(DATA_DIR, "PokemonData") 
     
-    # --- Der Split-Trick (Sauberer Weg) ---
-    
-    # Wir laden das Dataset ZWEIMAL (einmal mit Train-Transform, einmal mit Val-Transform)
     train_dataset_full = datasets.ImageFolder(root=dataset_path, transform=transform_train)
     val_dataset_full = datasets.ImageFolder(root=dataset_path, transform=transform_val)
     
-    # Größe berechnen (80% / 20%)
     total_len = len(train_dataset_full)
     train_size = int(0.8 * total_len)
     val_size = total_len - train_size
     
-    # WICHTIG: Denselben Seed nutzen, damit die Indices identisch sind!
     generator = torch.Generator().manual_seed(42)
     
-    # Wir splitten BEIDE Datasets identisch
-    # train_data nimmt den Teil aus dem Dataset MIT Augmentation
     train_data, _ = random_split(train_dataset_full, [train_size, val_size], generator=generator)
     
-    # val_data nimmt den (identischen) Teil aus dem Dataset OHNE Augmentation
     _, val_data = random_split(val_dataset_full, [train_size, val_size], generator=generator)
     
     kwargs = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
@@ -195,7 +169,6 @@ def _get_pokemon_loaders():
     train_loader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, **kwargs)
     val_loader = DataLoader(val_data, batch_size=TEST_BATCH_SIZE, shuffle=False, **kwargs)
     
-    # Anzahl Klassen auslesen
     num_classes = len(train_dataset_full.classes)
     
     logger.info(f"Gen-1 Dataset geladen: {len(train_data)} Train, {len(val_data)} Val. Klassen: {num_classes}")
@@ -204,6 +177,7 @@ def _get_pokemon_loaders():
     return train_loader, val_loader, num_classes
 
 def plot_training_curves(history):
+    
     epochs = range(1, len(history['train_loss']) + 1)
     
     plt.figure(figsize=(14, 6))
@@ -234,6 +208,7 @@ def plot_training_curves(history):
 
 def save_csv(results, filename, fieldnames):
     """Hilfsfunktion zum Speichern von Listen in CSV"""
+    
     filepath = os.path.join(CSV_DIR, filename)
     file_exists = os.path.isfile(filepath)
     
@@ -246,6 +221,7 @@ def save_csv(results, filename, fieldnames):
 
 
 def setup_global_logging():
+    
     log_filename = os.path.join(LOG_DIR, "experiment_log.txt")
     os.makedirs(os.path.dirname(log_filename), exist_ok=True)
     logging.basicConfig(

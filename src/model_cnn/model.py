@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.ao.quantization import QuantStub, DeQuantStub
 from src.utility.config import KERNEL_SIZE, STRIDE, CHANNELS, NUM_CLASSES
-# from src.layers import QuantizedConv2d, QuantizedLinear, QuantizedLayerMixin
 
 class CNN(nn.Module):
     def __init__(self, num_classes=NUM_CLASSES):
@@ -34,7 +33,6 @@ class CNN(nn.Module):
         self.relu5 = nn.ReLU()
         
         self.fc2 = nn.Linear(1024, num_classes, bias=True)
-        # self.relu6 = nn.ReLU()
         
         self.dequant = DeQuantStub()
 
@@ -43,8 +41,6 @@ class CNN(nn.Module):
 
         x = self.quant(x)
         x = self.relu1(self.bn1(self.conv1(x)))
-        
-        # x = self.quant(x)
         
         x = self.relu2(self.bn2(self.conv2(x)))
         x = self.relu3(self.bn3(self.conv3(x)))
@@ -56,7 +52,6 @@ class CNN(nn.Module):
         x = self.dropout(x)
         x = self.relu5(self.fc1(x))
         
-        # x = self.dequant(x)
         x = self.fc2(x)
         x = self.dequant(x)
         

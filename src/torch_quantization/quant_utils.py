@@ -1,14 +1,11 @@
 import torch
 import logging
 
-
-# PyTorch Quantization Imports
 from torch.ao.quantization import (
     QConfig,
     fuse_modules,
 )
 
-# Project Imports
 from src.model_cnn.model import CNN
 
 from src.torch_quantization.custom_observer import (
@@ -24,18 +21,18 @@ logger = logging.getLogger("Experiment")
 def fuse_layers(model):
     """
     Fuses layers to improve inference speed and accuracy.
-    Pattern: [Conv, ReLU] -> [FusedConvReLU]
-    Note: If Batch Norm exists, fuse as ['conv', 'bn', 'relu'].
+    Pattern: [Conv, BatchNorm,  ReLU] -> [FusedConvBnReLU]
     """
-    model.eval() # Fusion requires eval mode
+    model.eval()
     
-    # Define candidates for fusion based on model architecture
+    # Define layers for fusion based on model architecture
+    # Fully-Connected Layers wont be fused for better comparison of conv- and fc-layers
+    # Because only fc1 would be fused with relu5 but since fc2 doesnt have a relu activation I wanted it to be uniform for the CNN-architecture
     fusion_candidates = [
         ['conv1', 'bn1', 'relu1'],
         ['conv2', 'bn2', 'relu2'],
         ['conv3', 'bn3', 'relu3'],
         ['conv4', 'bn4', 'relu4'],
-        # ['fc1', 'relu5'],
     ] 
     
     # Only fuse layers that actually exist
@@ -85,6 +82,7 @@ def get_custome_symmetric_qconfig():
     Symmetric Quantization (Hardware-Aware).
     - Activations: [-127, 127 ] with ZP=0.
     - Weights: Signed [-127, 127] with ZP=0.
+    - Note: Due to Relu and Torch.AO. restriction we only look at Act >= 0 (uint8) values.
     """
     return torch.ao.quantization.QConfig(
         activation=CustomeSymmetricActivationObserver.with_args(
@@ -109,6 +107,7 @@ def get_custome_pot_qconfig():
     Power-of-Two (PoT) Quantization.
     - Activations: [-127, 127 ] with ZP=0.
     - Weights: Strict Symmetric (ZP=0) with PoT Scales (2^k).
+    - Note: Due to Relu and Torch.AO. restriction we only look at Act >= 0 (uint8) values.
     """
     return torch.ao.quantization.QConfig(
         activation=CustomePoTActivationObserver.with_args(

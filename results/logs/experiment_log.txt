@@ -1,0 +1,830 @@
+2026-05-30 12:58:29 [INFO] __main__: === Pipeline start: 4 models - 5 datasets = 20 runs ===
+2026-05-30 12:58:29 [INFO] __main__: 
+============================================================
+2026-05-30 12:58:29 [INFO] __main__: Loading dataset: MNIST
+2026-05-30 12:58:29 [INFO] __main__: 
+--- Run 1/20: cnn on MNIST ---
+2026-05-30 12:58:29 [INFO] src.model_cnn.train: Model: cnn | Dataset: MNIST | Size: 5.53 MB | Params: 1,448,650
+2026-05-30 12:58:40 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.1968 A 93.56% | Val L 0.0518 A 98.27% | Train 10.0s  Val 0.8s
+2026-05-30 12:58:50 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.0637 A 98.01% | Val L 0.0357 A 98.83% | Train 9.4s  Val 0.8s
+2026-05-30 12:59:01 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.0416 A 98.75% | Val L 0.0297 A 99.01% | Train 9.3s  Val 0.8s
+2026-05-30 12:59:01 [INFO] src.model_cnn.train: Best validation accuracy: 99.01%
+2026-05-30 12:59:01 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_MNIST_float32.pt
+2026-05-30 12:59:01 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 12:59:01 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 12:59:01 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 12:59:01 [INFO] src.utility.utils:          1 |     10.848 |     10.031 |      0.817
+2026-05-30 12:59:01 [INFO] src.utility.utils:          2 |     10.184 |      9.388 |      0.797
+2026-05-30 12:59:01 [INFO] src.utility.utils:          3 |     10.114 |      9.313 |      0.801
+2026-05-30 12:59:01 [INFO] src.utility.utils: 
+Total wall-clock time: 31.1s  (0.52 min)
+2026-05-30 12:59:01 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_MNIST.csv
+2026-05-30 12:59:01 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_MNIST.png
+2026-05-30 12:59:01 [INFO] __main__: Finished cnn/MNIST: best_val_acc=99.01%  time=0.5 min
+2026-05-30 12:59:01 [INFO] __main__: 
+--- Run 2/20: resnet18_scratch on MNIST ---
+2026-05-30 12:59:01 [ERROR] __main__: FAILED resnet18_scratch/MNIST: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/Forschungsprojekt/src/main.py", line 76, in main
+    _, history, _ = train_model(
+                    ^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 88, in train_model
+    model = build_model(num_classes, model_name, channels, image_size).to(DEVICE)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 45, in build_model
+    from src.model_cnn.resnet18 import ResNet18
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/resnet18.py", line 16, in <module>
+    from torch.ao.quantization import QuantStub, DeQuantStub, FloatFunctional
+ImportError: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+2026-05-30 12:59:01 [INFO] __main__: 
+--- Run 3/20: resnet18_pretrained on MNIST ---
+2026-05-30 12:59:11 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: MNIST | Size: 42.67 MB | Params: 11,175,370
+2026-05-30 12:59:19 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.9959 A 76.93% | Val L 0.1754 A 94.45% | Train 8.2s  Val 0.5s
+2026-05-30 12:59:28 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.1371 A 95.91% | Val L 0.0751 A 97.54% | Train 7.9s  Val 0.5s
+2026-05-30 12:59:36 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.0724 A 97.79% | Val L 0.0513 A 98.33% | Train 7.9s  Val 0.6s
+2026-05-30 12:59:36 [INFO] src.model_cnn.train: Best validation accuracy: 98.33%
+2026-05-30 12:59:36 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_MNIST_float32.pt
+2026-05-30 12:59:36 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 12:59:36 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 12:59:36 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 12:59:36 [INFO] src.utility.utils:          1 |      8.732 |      8.198 |      0.534
+2026-05-30 12:59:36 [INFO] src.utility.utils:          2 |      8.393 |      7.868 |      0.525
+2026-05-30 12:59:36 [INFO] src.utility.utils:          3 |      8.454 |      7.897 |      0.557
+2026-05-30 12:59:36 [INFO] src.utility.utils: 
+Total wall-clock time: 25.6s  (0.43 min)
+2026-05-30 12:59:36 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_MNIST.csv
+2026-05-30 12:59:36 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_MNIST.png
+2026-05-30 12:59:36 [INFO] __main__: Finished resnet18_pretrained/MNIST: best_val_acc=98.33%  time=0.6 min
+2026-05-30 12:59:36 [INFO] __main__: 
+--- Run 4/20: resnet50_pretrained on MNIST ---
+2026-05-30 12:59:58 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: MNIST | Size: 89.93 MB | Params: 23,522,250
+2026-05-30 13:00:15 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.2727 A 92.31% | Val L 0.1281 A 95.65% | Train 16.3s  Val 0.8s
+2026-05-30 13:00:32 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.0757 A 97.91% | Val L 0.0699 A 97.76% | Train 16.0s  Val 0.8s
+2026-05-30 13:00:49 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.0333 A 99.04% | Val L 0.0312 A 99.02% | Train 16.7s  Val 0.8s
+2026-05-30 13:00:50 [INFO] src.model_cnn.train: Best validation accuracy: 99.02%
+2026-05-30 13:00:50 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_MNIST_float32.pt
+2026-05-30 13:00:50 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:00:50 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:00:50 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:00:50 [INFO] src.utility.utils:          1 |     17.093 |     16.297 |      0.795
+2026-05-30 13:00:50 [INFO] src.utility.utils:          2 |     16.828 |     16.049 |      0.779
+2026-05-30 13:00:50 [INFO] src.utility.utils:          3 |     17.565 |     16.724 |      0.841
+2026-05-30 13:00:50 [INFO] src.utility.utils: 
+Total wall-clock time: 51.5s  (0.86 min)
+2026-05-30 13:00:50 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_MNIST.csv
+2026-05-30 13:00:50 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_MNIST.png
+2026-05-30 13:00:50 [INFO] __main__: Finished resnet50_pretrained/MNIST: best_val_acc=99.02%  time=1.2 min
+2026-05-30 13:00:50 [INFO] __main__: 
+============================================================
+2026-05-30 13:00:50 [INFO] __main__: Loading dataset: FASHION_MNIST
+2026-05-30 13:00:50 [INFO] __main__: 
+--- Run 5/20: cnn on FASHION_MNIST ---
+2026-05-30 13:00:50 [INFO] src.model_cnn.train: Model: cnn | Dataset: FASHION_MNIST | Size: 5.53 MB | Params: 1,448,650
+2026-05-30 13:01:01 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.6049 A 77.46% | Val L 0.4767 A 83.55% | Train 10.3s  Val 0.8s
+2026-05-30 13:01:12 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.3897 A 85.45% | Val L 0.8350 A 69.30% | Train 10.5s  Val 0.9s
+2026-05-30 13:01:23 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.3031 A 88.78% | Val L 0.2885 A 89.62% | Train 10.1s  Val 0.8s
+2026-05-30 13:01:23 [INFO] src.model_cnn.train: Best validation accuracy: 89.62%
+2026-05-30 13:01:23 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_FASHION_MNIST_float32.pt
+2026-05-30 13:01:23 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:01:23 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:01:23 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:01:23 [INFO] src.utility.utils:          1 |     11.102 |     10.252 |       0.85
+2026-05-30 13:01:23 [INFO] src.utility.utils:          2 |     11.345 |     10.458 |      0.887
+2026-05-30 13:01:23 [INFO] src.utility.utils:          3 |     10.971 |     10.148 |      0.823
+2026-05-30 13:01:23 [INFO] src.utility.utils: 
+Total wall-clock time: 33.4s  (0.56 min)
+2026-05-30 13:01:23 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_FASHION_MNIST.csv
+2026-05-30 13:01:23 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_FASHION_MNIST.png
+2026-05-30 13:01:23 [INFO] __main__: Finished cnn/FASHION_MNIST: best_val_acc=89.62%  time=0.6 min
+2026-05-30 13:01:23 [INFO] __main__: 
+--- Run 6/20: resnet18_scratch on FASHION_MNIST ---
+2026-05-30 13:01:23 [ERROR] __main__: FAILED resnet18_scratch/FASHION_MNIST: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/Forschungsprojekt/src/main.py", line 76, in main
+    _, history, _ = train_model(
+                    ^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 88, in train_model
+    model = build_model(num_classes, model_name, channels, image_size).to(DEVICE)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 45, in build_model
+    from src.model_cnn.resnet18 import ResNet18
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/resnet18.py", line 16, in <module>
+    from torch.ao.quantization import QuantStub, DeQuantStub, FloatFunctional
+ImportError: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+2026-05-30 13:01:23 [INFO] __main__: 
+--- Run 7/20: resnet18_pretrained on FASHION_MNIST ---
+2026-05-30 13:01:23 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: FASHION_MNIST | Size: 42.67 MB | Params: 11,175,370
+2026-05-30 13:01:33 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 1.1757 A 68.57% | Val L 0.6673 A 74.74% | Train 8.7s  Val 0.6s
+2026-05-30 13:01:42 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.4780 A 82.39% | Val L 0.4822 A 82.68% | Train 8.5s  Val 0.6s
+2026-05-30 13:01:51 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.3713 A 86.21% | Val L 0.3785 A 85.77% | Train 8.6s  Val 0.6s
+2026-05-30 13:01:51 [INFO] src.model_cnn.train: Best validation accuracy: 85.77%
+2026-05-30 13:01:51 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_FASHION_MNIST_float32.pt
+2026-05-30 13:01:51 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:01:51 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:01:51 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:01:51 [INFO] src.utility.utils:          1 |      9.263 |      8.684 |      0.579
+2026-05-30 13:01:51 [INFO] src.utility.utils:          2 |      9.104 |      8.539 |      0.565
+2026-05-30 13:01:51 [INFO] src.utility.utils:          3 |      9.215 |      8.648 |      0.566
+2026-05-30 13:01:51 [INFO] src.utility.utils: 
+Total wall-clock time: 27.6s  (0.46 min)
+2026-05-30 13:01:51 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_FASHION_MNIST.csv
+2026-05-30 13:01:51 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_FASHION_MNIST.png
+2026-05-30 13:01:51 [INFO] __main__: Finished resnet18_pretrained/FASHION_MNIST: best_val_acc=85.77%  time=0.5 min
+2026-05-30 13:01:51 [INFO] __main__: 
+--- Run 8/20: resnet50_pretrained on FASHION_MNIST ---
+2026-05-30 13:01:51 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: FASHION_MNIST | Size: 89.93 MB | Params: 23,522,250
+2026-05-30 13:02:10 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.5772 A 80.08% | Val L 0.3972 A 85.52% | Train 17.6s  Val 0.9s
+2026-05-30 13:02:28 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.3418 A 87.88% | Val L 0.3501 A 86.97% | Train 17.9s  Val 0.8s
+2026-05-30 13:02:47 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.2431 A 91.17% | Val L 0.2587 A 90.62% | Train 17.7s  Val 0.8s
+2026-05-30 13:02:47 [INFO] src.model_cnn.train: Best validation accuracy: 90.62%
+2026-05-30 13:02:47 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_FASHION_MNIST_float32.pt
+2026-05-30 13:02:47 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:02:47 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:02:47 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:02:47 [INFO] src.utility.utils:          1 |     18.445 |     17.584 |      0.861
+2026-05-30 13:02:47 [INFO] src.utility.utils:          2 |     18.688 |     17.875 |      0.813
+2026-05-30 13:02:47 [INFO] src.utility.utils:          3 |     18.474 |     17.659 |      0.815
+2026-05-30 13:02:47 [INFO] src.utility.utils: 
+Total wall-clock time: 55.6s  (0.93 min)
+2026-05-30 13:02:47 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_FASHION_MNIST.csv
+2026-05-30 13:02:47 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_FASHION_MNIST.png
+2026-05-30 13:02:47 [INFO] __main__: Finished resnet50_pretrained/FASHION_MNIST: best_val_acc=90.62%  time=0.9 min
+2026-05-30 13:02:47 [INFO] __main__: 
+============================================================
+2026-05-30 13:02:47 [INFO] __main__: Loading dataset: CIFAR10
+2026-05-30 13:02:48 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-05-30 13:02:48 [INFO] __main__: 
+--- Run 9/20: cnn on CIFAR10 ---
+2026-05-30 13:02:48 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR10 | Size: 5.53 MB | Params: 1,449,226
+2026-05-30 13:02:56 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 1.7345 A 35.42% | Val L 1.5291 A 44.88% | Train 8.0s  Val 0.5s
+2026-05-30 13:03:05 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.3370 A 51.05% | Val L 1.3455 A 52.52% | Train 8.0s  Val 0.5s
+2026-05-30 13:03:13 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.0773 A 61.12% | Val L 0.9310 A 66.13% | Train 7.8s  Val 0.5s
+2026-05-30 13:03:13 [INFO] src.model_cnn.train: Best validation accuracy: 66.13%
+2026-05-30 13:03:13 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_CIFAR10_float32.pt
+2026-05-30 13:03:13 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:03:13 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:03:13 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:03:13 [INFO] src.utility.utils:          1 |      8.495 |      7.954 |      0.541
+2026-05-30 13:03:13 [INFO] src.utility.utils:          2 |      8.572 |      8.047 |      0.525
+2026-05-30 13:03:13 [INFO] src.utility.utils:          3 |      8.353 |      7.832 |      0.521
+2026-05-30 13:03:13 [INFO] src.utility.utils: 
+Total wall-clock time: 25.4s  (0.42 min)
+2026-05-30 13:03:13 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_CIFAR10.csv
+2026-05-30 13:03:14 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_CIFAR10.png
+2026-05-30 13:03:14 [INFO] __main__: Finished cnn/CIFAR10: best_val_acc=66.13%  time=0.4 min
+2026-05-30 13:03:14 [INFO] __main__: 
+--- Run 10/20: resnet18_scratch on CIFAR10 ---
+2026-05-30 13:03:14 [ERROR] __main__: FAILED resnet18_scratch/CIFAR10: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/Forschungsprojekt/src/main.py", line 76, in main
+    _, history, _ = train_model(
+                    ^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 88, in train_model
+    model = build_model(num_classes, model_name, channels, image_size).to(DEVICE)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 45, in build_model
+    from src.model_cnn.resnet18 import ResNet18
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/resnet18.py", line 16, in <module>
+    from torch.ao.quantization import QuantStub, DeQuantStub, FloatFunctional
+ImportError: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+2026-05-30 13:03:14 [INFO] __main__: 
+--- Run 11/20: resnet18_pretrained on CIFAR10 ---
+2026-05-30 13:03:14 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: CIFAR10 | Size: 42.69 MB | Params: 11,181,642
+2026-05-30 13:03:19 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 2.4865 A 23.87% | Val L 1.6764 A 37.67% | Train 4.7s  Val 0.3s
+2026-05-30 13:03:24 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.5742 A 41.90% | Val L 1.7635 A 48.50% | Train 4.7s  Val 0.3s
+2026-05-30 13:03:29 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.3306 A 51.74% | Val L 1.3123 A 54.57% | Train 4.7s  Val 0.3s
+2026-05-30 13:03:29 [INFO] src.model_cnn.train: Best validation accuracy: 54.57%
+2026-05-30 13:03:29 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_CIFAR10_float32.pt
+2026-05-30 13:03:29 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:03:29 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:03:29 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:03:29 [INFO] src.utility.utils:          1 |      5.045 |      4.703 |      0.341
+2026-05-30 13:03:29 [INFO] src.utility.utils:          2 |      5.026 |      4.685 |      0.341
+2026-05-30 13:03:29 [INFO] src.utility.utils:          3 |      5.017 |      4.679 |      0.337
+2026-05-30 13:03:29 [INFO] src.utility.utils: 
+Total wall-clock time: 15.1s  (0.25 min)
+2026-05-30 13:03:29 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_CIFAR10.csv
+2026-05-30 13:03:29 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_CIFAR10.png
+2026-05-30 13:03:29 [INFO] __main__: Finished resnet18_pretrained/CIFAR10: best_val_acc=54.57%  time=0.3 min
+2026-05-30 13:03:29 [INFO] __main__: 
+--- Run 12/20: resnet50_pretrained on CIFAR10 ---
+2026-05-30 13:03:29 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: CIFAR10 | Size: 89.96 MB | Params: 23,528,522
+2026-05-30 13:03:42 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 2.1491 A 21.69% | Val L 1.8024 A 30.61% | Train 12.7s  Val 0.4s
+2026-05-30 13:03:55 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.6922 A 36.24% | Val L 1.5893 A 42.60% | Train 12.8s  Val 0.4s
+2026-05-30 13:04:08 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.4413 A 46.89% | Val L 1.3143 A 52.08% | Train 12.4s  Val 0.4s
+2026-05-30 13:04:08 [INFO] src.model_cnn.train: Best validation accuracy: 52.08%
+2026-05-30 13:04:08 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_CIFAR10_float32.pt
+2026-05-30 13:04:08 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:04:08 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:04:08 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:04:08 [INFO] src.utility.utils:          1 |     13.078 |      12.66 |      0.419
+2026-05-30 13:04:08 [INFO] src.utility.utils:          2 |     13.165 |     12.754 |      0.411
+2026-05-30 13:04:08 [INFO] src.utility.utils:          3 |     12.787 |     12.393 |      0.394
+2026-05-30 13:04:08 [INFO] src.utility.utils: 
+Total wall-clock time: 39.0s  (0.65 min)
+2026-05-30 13:04:08 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_CIFAR10.csv
+2026-05-30 13:04:08 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_CIFAR10.png
+2026-05-30 13:04:08 [INFO] __main__: Finished resnet50_pretrained/CIFAR10: best_val_acc=52.08%  time=0.7 min
+2026-05-30 13:04:08 [INFO] __main__: 
+============================================================
+2026-05-30 13:04:08 [INFO] __main__: Loading dataset: CIFAR100
+2026-05-30 13:04:09 [INFO] src.utility.utils: CIFAR-100: 50000 train / 10000 test
+2026-05-30 13:04:09 [INFO] __main__: 
+--- Run 13/20: cnn on CIFAR100 ---
+2026-05-30 13:04:09 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR100 | Size: 5.88 MB | Params: 1,541,476
+2026-05-30 13:04:17 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.0467 A 7.63% | Val L 3.7968 A 10.73% | Train 7.6s  Val 0.5s
+2026-05-30 13:04:26 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.6204 A 13.77% | Val L 3.5206 A 16.38% | Train 7.8s  Val 0.5s
+2026-05-30 13:04:34 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.2050 A 21.23% | Val L 3.0892 A 23.35% | Train 8.0s  Val 0.6s
+2026-05-30 13:04:34 [INFO] src.model_cnn.train: Best validation accuracy: 23.35%
+2026-05-30 13:04:34 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_CIFAR100_float32.pt
+2026-05-30 13:04:34 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:04:34 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:04:34 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:04:34 [INFO] src.utility.utils:          1 |      8.156 |      7.636 |      0.519
+2026-05-30 13:04:34 [INFO] src.utility.utils:          2 |      8.276 |      7.759 |      0.517
+2026-05-30 13:04:34 [INFO] src.utility.utils:          3 |      8.561 |      7.999 |      0.562
+2026-05-30 13:04:34 [INFO] src.utility.utils: 
+Total wall-clock time: 25.0s  (0.42 min)
+2026-05-30 13:04:34 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_CIFAR100.csv
+2026-05-30 13:04:34 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_CIFAR100.png
+2026-05-30 13:04:34 [INFO] __main__: Finished cnn/CIFAR100: best_val_acc=23.35%  time=0.4 min
+2026-05-30 13:04:34 [INFO] __main__: 
+--- Run 14/20: resnet18_scratch on CIFAR100 ---
+2026-05-30 13:04:34 [ERROR] __main__: FAILED resnet18_scratch/CIFAR100: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/Forschungsprojekt/src/main.py", line 76, in main
+    _, history, _ = train_model(
+                    ^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 88, in train_model
+    model = build_model(num_classes, model_name, channels, image_size).to(DEVICE)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 45, in build_model
+    from src.model_cnn.resnet18 import ResNet18
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/resnet18.py", line 16, in <module>
+    from torch.ao.quantization import QuantStub, DeQuantStub, FloatFunctional
+ImportError: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+2026-05-30 13:04:34 [INFO] __main__: 
+--- Run 15/20: resnet18_pretrained on CIFAR100 ---
+2026-05-30 13:04:34 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: CIFAR100 | Size: 42.87 MB | Params: 11,227,812
+2026-05-30 13:04:39 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.8300 A 2.11% | Val L 4.2677 A 3.55% | Train 4.9s  Val 0.3s
+2026-05-30 13:04:45 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 4.0466 A 6.29% | Val L 3.8185 A 9.66% | Train 4.9s  Val 0.3s
+2026-05-30 13:04:50 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.6550 A 12.37% | Val L 3.5200 A 14.72% | Train 5.2s  Val 0.4s
+2026-05-30 13:04:50 [INFO] src.model_cnn.train: Best validation accuracy: 14.72%
+2026-05-30 13:04:50 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_CIFAR100_float32.pt
+2026-05-30 13:04:50 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:04:50 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:04:50 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:04:50 [INFO] src.utility.utils:          1 |      5.232 |      4.882 |       0.35
+2026-05-30 13:04:50 [INFO] src.utility.utils:          2 |      5.269 |       4.92 |      0.349
+2026-05-30 13:04:50 [INFO] src.utility.utils:          3 |      5.565 |      5.199 |      0.366
+2026-05-30 13:04:50 [INFO] src.utility.utils: 
+Total wall-clock time: 16.1s  (0.27 min)
+2026-05-30 13:04:50 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_CIFAR100.csv
+2026-05-30 13:04:51 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_CIFAR100.png
+2026-05-30 13:04:51 [INFO] __main__: Finished resnet18_pretrained/CIFAR100: best_val_acc=14.72%  time=0.3 min
+2026-05-30 13:04:51 [INFO] __main__: 
+--- Run 16/20: resnet50_pretrained on CIFAR100 ---
+2026-05-30 13:04:51 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: CIFAR100 | Size: 90.66 MB | Params: 23,712,932
+2026-05-30 13:05:04 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.1012 A 6.59% | Val L 3.9290 A 7.95% | Train 12.9s  Val 0.4s
+2026-05-30 13:05:17 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.5731 A 13.81% | Val L 3.4218 A 15.78% | Train 12.9s  Val 0.4s
+2026-05-30 13:05:31 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 2.9802 A 23.74% | Val L 2.8774 A 26.26% | Train 12.9s  Val 0.4s
+2026-05-30 13:05:31 [INFO] src.model_cnn.train: Best validation accuracy: 26.26%
+2026-05-30 13:05:31 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_CIFAR100_float32.pt
+2026-05-30 13:05:31 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:05:31 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:05:31 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:05:31 [INFO] src.utility.utils:          1 |     13.291 |     12.878 |      0.413
+2026-05-30 13:05:31 [INFO] src.utility.utils:          2 |     13.334 |     12.917 |      0.417
+2026-05-30 13:05:31 [INFO] src.utility.utils:          3 |     13.358 |     12.939 |      0.419
+2026-05-30 13:05:31 [INFO] src.utility.utils: 
+Total wall-clock time: 40.0s  (0.67 min)
+2026-05-30 13:05:31 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_CIFAR100.csv
+2026-05-30 13:05:31 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_CIFAR100.png
+2026-05-30 13:05:31 [INFO] __main__: Finished resnet50_pretrained/CIFAR100: best_val_acc=26.26%  time=0.7 min
+2026-05-30 13:05:31 [INFO] __main__: 
+============================================================
+2026-05-30 13:05:31 [INFO] __main__: Loading dataset: POKEMON
+2026-05-30 13:05:31 [INFO] src.utility.utils: Pokemon: 5456 train / 1364 val — 150 classes
+2026-05-30 13:05:31 [INFO] __main__: 
+--- Run 17/20: cnn on POKEMON ---
+2026-05-30 13:05:31 [INFO] src.model_cnn.train: Model: cnn | Dataset: POKEMON | Size: 6.08 MB | Params: 1,592,726
+2026-05-30 13:05:51 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.5205 A 4.97% | Val L 3.9892 A 8.65% | Train 16.8s  Val 3.0s
+2026-05-30 13:06:09 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.7764 A 11.49% | Val L 3.4350 A 16.28% | Train 15.4s  Val 2.9s
+2026-05-30 13:06:27 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.2864 A 18.42% | Val L 3.0464 A 23.61% | Train 14.6s  Val 2.9s
+2026-05-30 13:06:27 [INFO] src.model_cnn.train: Best validation accuracy: 23.61%
+2026-05-30 13:06:27 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_POKEMON_float32.pt
+2026-05-30 13:06:27 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:06:27 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:06:27 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:06:27 [INFO] src.utility.utils:          1 |     19.805 |     16.771 |      3.034
+2026-05-30 13:06:27 [INFO] src.utility.utils:          2 |     18.242 |     15.352 |       2.89
+2026-05-30 13:06:27 [INFO] src.utility.utils:          3 |     17.459 |     14.569 |      2.891
+2026-05-30 13:06:27 [INFO] src.utility.utils: 
+Total wall-clock time: 55.5s  (0.93 min)
+2026-05-30 13:06:27 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_POKEMON.csv
+2026-05-30 13:06:27 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_POKEMON.png
+2026-05-30 13:06:27 [INFO] __main__: Finished cnn/POKEMON: best_val_acc=23.61%  time=0.9 min
+2026-05-30 13:06:27 [INFO] __main__: 
+--- Run 18/20: resnet18_scratch on POKEMON ---
+2026-05-30 13:06:27 [ERROR] __main__: FAILED resnet18_scratch/POKEMON: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/Forschungsprojekt/src/main.py", line 76, in main
+    _, history, _ = train_model(
+                    ^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 88, in train_model
+    model = build_model(num_classes, model_name, channels, image_size).to(DEVICE)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/train.py", line 45, in build_model
+    from src.model_cnn.resnet18 import ResNet18
+  File "/home/dominic/Desktop/Forschungsprojekt/src/model_cnn/resnet18.py", line 16, in <module>
+    from torch.ao.quantization import QuantStub, DeQuantStub, FloatFunctional
+ImportError: cannot import name 'FloatFunctional' from 'torch.ao.quantization' (/home/dominic/Desktop/Forschungsprojekt/.venv/lib/python3.12/site-packages/torch/ao/quantization/__init__.py)
+2026-05-30 13:06:27 [INFO] __main__: 
+--- Run 19/20: resnet18_pretrained on POKEMON ---
+2026-05-30 13:06:27 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: POKEMON | Size: 42.97 MB | Params: 11,253,462
+2026-05-30 13:06:42 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 5.8170 A 1.17% | Val L 6.2803 A 0.59% | Train 12.7s  Val 2.7s
+2026-05-30 13:06:59 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 4.6289 A 2.29% | Val L 4.5627 A 2.79% | Train 14.0s  Val 2.6s
+2026-05-30 13:07:16 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 4.2049 A 3.65% | Val L 3.9696 A 6.52% | Train 14.2s  Val 2.6s
+2026-05-30 13:07:16 [INFO] src.model_cnn.train: Best validation accuracy: 6.52%
+2026-05-30 13:07:16 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_POKEMON_float32.pt
+2026-05-30 13:07:16 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:07:16 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:07:16 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:07:16 [INFO] src.utility.utils:          1 |     15.413 |     12.671 |      2.742
+2026-05-30 13:07:16 [INFO] src.utility.utils:          2 |     16.654 |     14.034 |      2.621
+2026-05-30 13:07:16 [INFO] src.utility.utils:          3 |     16.783 |     14.159 |      2.624
+2026-05-30 13:07:16 [INFO] src.utility.utils: 
+Total wall-clock time: 48.9s  (0.81 min)
+2026-05-30 13:07:16 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_POKEMON.csv
+2026-05-30 13:07:16 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_POKEMON.png
+2026-05-30 13:07:16 [INFO] __main__: Finished resnet18_pretrained/POKEMON: best_val_acc=6.52%  time=0.8 min
+2026-05-30 13:07:16 [INFO] __main__: 
+--- Run 20/20: resnet50_pretrained on POKEMON ---
+2026-05-30 13:07:16 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: POKEMON | Size: 91.05 MB | Params: 23,815,382
+2026-05-30 13:07:32 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 3.2992 A 26.30% | Val L 2.6442 A 37.76% | Train 13.8s  Val 2.6s
+2026-05-30 13:07:50 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.4509 A 61.03% | Val L 1.3532 A 67.89% | Train 14.4s  Val 2.8s
+2026-05-30 13:08:08 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.5294 A 84.75% | Val L 0.3313 A 90.54% | Train 15.0s  Val 2.9s
+2026-05-30 13:08:08 [INFO] src.model_cnn.train: Best validation accuracy: 90.54%
+2026-05-30 13:08:08 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_POKEMON_float32.pt
+2026-05-30 13:08:08 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:08:08 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:08:08 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:08:08 [INFO] src.utility.utils:          1 |     16.427 |     13.822 |      2.605
+2026-05-30 13:08:08 [INFO] src.utility.utils:          2 |     17.156 |     14.382 |      2.773
+2026-05-30 13:08:08 [INFO] src.utility.utils:          3 |     17.892 |     15.007 |      2.885
+2026-05-30 13:08:08 [INFO] src.utility.utils: 
+Total wall-clock time: 51.5s  (0.86 min)
+2026-05-30 13:08:08 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_POKEMON.csv
+2026-05-30 13:08:08 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_POKEMON.png
+2026-05-30 13:08:08 [INFO] __main__: Finished resnet50_pretrained/POKEMON: best_val_acc=90.54%  time=0.9 min
+2026-05-30 13:08:08 [INFO] __main__: Summary saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/pipeline_summary.csv
+2026-05-30 13:08:08 [INFO] __main__: 
+=== PIPELINE SUMMARY ===
+2026-05-30 13:08:08 [INFO] __main__: Model                    Dataset          Best Val Acc Time (min)   Status
+2026-05-30 13:08:08 [INFO] __main__: --------------------------------------------------------------------------
+2026-05-30 13:08:08 [INFO] __main__: cnn                      MNIST                   99.01        0.5       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet18_scratch         MNIST                   ERROR        0.0   failed
+2026-05-30 13:08:08 [INFO] __main__: resnet18_pretrained      MNIST                   98.33        0.6       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet50_pretrained      MNIST                   99.02        1.2       ok
+2026-05-30 13:08:08 [INFO] __main__: cnn                      FASHION_MNIST           89.62        0.6       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet18_scratch         FASHION_MNIST           ERROR        0.0   failed
+2026-05-30 13:08:08 [INFO] __main__: resnet18_pretrained      FASHION_MNIST           85.77        0.5       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet50_pretrained      FASHION_MNIST           90.62        0.9       ok
+2026-05-30 13:08:08 [INFO] __main__: cnn                      CIFAR10                 66.13        0.4       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet18_scratch         CIFAR10                 ERROR        0.0   failed
+2026-05-30 13:08:08 [INFO] __main__: resnet18_pretrained      CIFAR10                 54.57        0.3       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet50_pretrained      CIFAR10                 52.08        0.7       ok
+2026-05-30 13:08:08 [INFO] __main__: cnn                      CIFAR100                23.35        0.4       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet18_scratch         CIFAR100                ERROR        0.0   failed
+2026-05-30 13:08:08 [INFO] __main__: resnet18_pretrained      CIFAR100                14.72        0.3       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet50_pretrained      CIFAR100                26.26        0.7       ok
+2026-05-30 13:08:08 [INFO] __main__: cnn                      POKEMON                 23.61        0.9       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet18_scratch         POKEMON                 ERROR        0.0   failed
+2026-05-30 13:08:08 [INFO] __main__: resnet18_pretrained      POKEMON                  6.52        0.8       ok
+2026-05-30 13:08:08 [INFO] __main__: resnet50_pretrained      POKEMON                 90.54        0.9       ok
+2026-05-30 13:08:08 [INFO] __main__: === Pipeline complete ===
+2026-05-30 13:47:46 [INFO] __main__: === Pipeline start: 4 models - 5 datasets = 20 runs ===
+2026-05-30 13:47:46 [INFO] __main__: 
+============================================================
+2026-05-30 13:47:46 [INFO] __main__: Loading dataset: MNIST
+2026-05-30 13:47:46 [INFO] __main__: 
+--- Run 1/20: cnn on MNIST ---
+2026-05-30 13:47:46 [INFO] src.model_cnn.train: Model: cnn | Dataset: MNIST | Size: 5.53 MB | Params: 1,448,650
+2026-05-30 13:47:57 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.2059 A 93.33% | Val L 0.0565 A 98.12% | Train 10.0s  Val 0.9s
+2026-05-30 13:48:08 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.0634 A 98.06% | Val L 0.0398 A 98.64% | Train 10.6s  Val 0.9s
+2026-05-30 13:48:19 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.0398 A 98.78% | Val L 0.0295 A 99.14% | Train 10.5s  Val 0.9s
+2026-05-30 13:48:19 [INFO] src.model_cnn.train: Best validation accuracy: 99.14%
+2026-05-30 13:48:20 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_MNIST_float32.pt
+2026-05-30 13:48:20 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:48:20 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:48:20 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:48:20 [INFO] src.utility.utils:          1 |     10.948 |     10.047 |      0.901
+2026-05-30 13:48:20 [INFO] src.utility.utils:          2 |     11.436 |     10.561 |      0.875
+2026-05-30 13:48:20 [INFO] src.utility.utils:          3 |     11.362 |     10.497 |      0.865
+2026-05-30 13:48:20 [INFO] src.utility.utils: 
+Total wall-clock time: 33.7s  (0.56 min)
+2026-05-30 13:48:20 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_MNIST.csv
+2026-05-30 13:48:20 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_MNIST.png
+2026-05-30 13:48:20 [INFO] __main__: Finished cnn/MNIST: best_val_acc=99.14%  time=0.6 min
+2026-05-30 13:48:20 [INFO] __main__: 
+--- Run 2/20: resnet18_scratch on MNIST ---
+2026-05-30 13:48:20 [INFO] src.model_cnn.train: Model: resnet18_scratch | Dataset: MNIST | Size: 42.66 MB | Params: 11,172,810
+2026-05-30 13:48:34 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.4936 A 85.10% | Val L 0.0659 A 97.91% | Train 13.2s  Val 0.9s
+2026-05-30 13:48:48 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.0547 A 98.41% | Val L 0.0386 A 98.69% | Train 13.2s  Val 0.9s
+2026-05-30 13:49:02 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.0248 A 99.29% | Val L 0.0197 A 99.29% | Train 13.1s  Val 0.9s
+2026-05-30 13:49:02 [INFO] src.model_cnn.train: Best validation accuracy: 99.29%
+2026-05-30 13:49:02 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_scratch_MNIST_float32.pt
+2026-05-30 13:49:02 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:49:02 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:49:02 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:49:02 [INFO] src.utility.utils:          1 |     14.176 |     13.238 |      0.939
+2026-05-30 13:49:02 [INFO] src.utility.utils:          2 |     14.139 |     13.191 |      0.947
+2026-05-30 13:49:02 [INFO] src.utility.utils:          3 |     14.039 |     13.097 |      0.942
+2026-05-30 13:49:02 [INFO] src.utility.utils: 
+Total wall-clock time: 42.4s  (0.71 min)
+2026-05-30 13:49:02 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_scratch_MNIST.csv
+2026-05-30 13:49:02 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_scratch_MNIST.png
+2026-05-30 13:49:02 [INFO] __main__: Finished resnet18_scratch/MNIST: best_val_acc=99.29%  time=0.7 min
+2026-05-30 13:49:02 [INFO] __main__: 
+--- Run 3/20: resnet18_pretrained on MNIST ---
+2026-05-30 13:49:02 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: MNIST | Size: 42.67 MB | Params: 11,175,370
+2026-05-30 13:49:12 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.7994 A 81.18% | Val L 0.2453 A 92.21% | Train 9.2s  Val 0.6s
+2026-05-30 13:49:22 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.1362 A 95.70% | Val L 0.0989 A 97.08% | Train 9.3s  Val 0.6s
+2026-05-30 13:49:32 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.0747 A 97.71% | Val L 0.0570 A 98.17% | Train 9.3s  Val 0.6s
+2026-05-30 13:49:32 [INFO] src.model_cnn.train: Best validation accuracy: 98.17%
+2026-05-30 13:49:32 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_MNIST_float32.pt
+2026-05-30 13:49:32 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:49:32 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:49:32 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:49:32 [INFO] src.utility.utils:          1 |      9.837 |      9.215 |      0.621
+2026-05-30 13:49:32 [INFO] src.utility.utils:          2 |      9.906 |      9.291 |      0.615
+2026-05-30 13:49:32 [INFO] src.utility.utils:          3 |      9.908 |      9.307 |      0.601
+2026-05-30 13:49:32 [INFO] src.utility.utils: 
+Total wall-clock time: 29.7s  (0.49 min)
+2026-05-30 13:49:32 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_MNIST.csv
+2026-05-30 13:49:32 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_MNIST.png
+2026-05-30 13:49:32 [INFO] __main__: Finished resnet18_pretrained/MNIST: best_val_acc=98.17%  time=0.5 min
+2026-05-30 13:49:32 [INFO] __main__: 
+--- Run 4/20: resnet50_pretrained on MNIST ---
+2026-05-30 13:49:32 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: MNIST | Size: 89.93 MB | Params: 23,522,250
+2026-05-30 13:49:52 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.2849 A 91.81% | Val L 0.1833 A 94.08% | Train 18.4s  Val 0.9s
+2026-05-30 13:50:11 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.0785 A 97.85% | Val L 0.0910 A 97.24% | Train 18.5s  Val 0.9s
+2026-05-30 13:50:30 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.0335 A 99.06% | Val L 0.0275 A 99.18% | Train 18.4s  Val 0.9s
+2026-05-30 13:50:30 [INFO] src.model_cnn.train: Best validation accuracy: 99.18%
+2026-05-30 13:50:31 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_MNIST_float32.pt
+2026-05-30 13:50:31 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:50:31 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:50:31 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:50:31 [INFO] src.utility.utils:          1 |     19.309 |     18.424 |      0.885
+2026-05-30 13:50:31 [INFO] src.utility.utils:          2 |     19.378 |     18.502 |      0.876
+2026-05-30 13:50:31 [INFO] src.utility.utils:          3 |      19.21 |     18.358 |      0.853
+2026-05-30 13:50:31 [INFO] src.utility.utils: 
+Total wall-clock time: 57.9s  (0.96 min)
+2026-05-30 13:50:31 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_MNIST.csv
+2026-05-30 13:50:31 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_MNIST.png
+2026-05-30 13:50:31 [INFO] __main__: Finished resnet50_pretrained/MNIST: best_val_acc=99.18%  time=1.0 min
+2026-05-30 13:50:31 [INFO] __main__: 
+============================================================
+2026-05-30 13:50:31 [INFO] __main__: Loading dataset: FASHION_MNIST
+2026-05-30 13:50:31 [INFO] __main__: 
+--- Run 5/20: cnn on FASHION_MNIST ---
+2026-05-30 13:50:31 [INFO] src.model_cnn.train: Model: cnn | Dataset: FASHION_MNIST | Size: 5.53 MB | Params: 1,448,650
+2026-05-30 13:50:42 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.6054 A 77.53% | Val L 0.4715 A 83.19% | Train 10.5s  Val 0.9s
+2026-05-30 13:50:54 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.3942 A 85.41% | Val L 0.4523 A 83.53% | Train 10.6s  Val 0.9s
+2026-05-30 13:51:05 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.3030 A 88.81% | Val L 0.2954 A 89.36% | Train 10.6s  Val 0.9s
+2026-05-30 13:51:05 [INFO] src.model_cnn.train: Best validation accuracy: 89.36%
+2026-05-30 13:51:05 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_FASHION_MNIST_float32.pt
+2026-05-30 13:51:05 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:51:05 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:51:05 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:51:05 [INFO] src.utility.utils:          1 |     11.393 |     10.494 |      0.899
+2026-05-30 13:51:05 [INFO] src.utility.utils:          2 |     11.552 |     10.627 |      0.925
+2026-05-30 13:51:05 [INFO] src.utility.utils:          3 |     11.529 |     10.641 |      0.888
+2026-05-30 13:51:05 [INFO] src.utility.utils: 
+Total wall-clock time: 34.5s  (0.57 min)
+2026-05-30 13:51:05 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_FASHION_MNIST.csv
+2026-05-30 13:51:05 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_FASHION_MNIST.png
+2026-05-30 13:51:05 [INFO] __main__: Finished cnn/FASHION_MNIST: best_val_acc=89.36%  time=0.6 min
+2026-05-30 13:51:05 [INFO] __main__: 
+--- Run 6/20: resnet18_scratch on FASHION_MNIST ---
+2026-05-30 13:51:05 [INFO] src.model_cnn.train: Model: resnet18_scratch | Dataset: FASHION_MNIST | Size: 42.66 MB | Params: 11,172,810
+2026-05-30 13:51:20 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.8447 A 71.97% | Val L 0.4362 A 83.33% | Train 13.5s  Val 1.0s
+2026-05-30 13:51:34 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.3492 A 87.19% | Val L 0.3541 A 86.74% | Train 13.5s  Val 0.9s
+2026-05-30 13:51:48 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.2512 A 90.70% | Val L 0.2785 A 89.66% | Train 13.2s  Val 0.9s
+2026-05-30 13:51:48 [INFO] src.model_cnn.train: Best validation accuracy: 89.66%
+2026-05-30 13:51:48 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_scratch_FASHION_MNIST_float32.pt
+2026-05-30 13:51:48 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:51:48 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:51:48 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:51:48 [INFO] src.utility.utils:          1 |     14.505 |     13.544 |      0.961
+2026-05-30 13:51:48 [INFO] src.utility.utils:          2 |     14.439 |      13.49 |      0.949
+2026-05-30 13:51:48 [INFO] src.utility.utils:          3 |     14.109 |     13.165 |      0.944
+2026-05-30 13:51:48 [INFO] src.utility.utils: 
+Total wall-clock time: 43.1s  (0.72 min)
+2026-05-30 13:51:48 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_scratch_FASHION_MNIST.csv
+2026-05-30 13:51:48 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_scratch_FASHION_MNIST.png
+2026-05-30 13:51:48 [INFO] __main__: Finished resnet18_scratch/FASHION_MNIST: best_val_acc=89.66%  time=0.7 min
+2026-05-30 13:51:48 [INFO] __main__: 
+--- Run 7/20: resnet18_pretrained on FASHION_MNIST ---
+2026-05-30 13:51:49 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: FASHION_MNIST | Size: 42.67 MB | Params: 11,175,370
+2026-05-30 13:51:58 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 1.7361 A 49.49% | Val L 0.7555 A 68.83% | Train 9.3s  Val 0.6s
+2026-05-30 13:52:08 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.5957 A 78.06% | Val L 0.5764 A 78.63% | Train 9.3s  Val 0.6s
+2026-05-30 13:52:18 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.4237 A 84.59% | Val L 0.4448 A 82.83% | Train 9.3s  Val 0.6s
+2026-05-30 13:52:18 [INFO] src.model_cnn.train: Best validation accuracy: 82.83%
+2026-05-30 13:52:18 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_FASHION_MNIST_float32.pt
+2026-05-30 13:52:18 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:52:18 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:52:18 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:52:18 [INFO] src.utility.utils:          1 |      9.913 |      9.305 |      0.609
+2026-05-30 13:52:18 [INFO] src.utility.utils:          2 |      9.906 |      9.298 |      0.607
+2026-05-30 13:52:18 [INFO] src.utility.utils:          3 |      9.956 |      9.338 |      0.618
+2026-05-30 13:52:18 [INFO] src.utility.utils: 
+Total wall-clock time: 29.8s  (0.50 min)
+2026-05-30 13:52:18 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_FASHION_MNIST.csv
+2026-05-30 13:52:19 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_FASHION_MNIST.png
+2026-05-30 13:52:19 [INFO] __main__: Finished resnet18_pretrained/FASHION_MNIST: best_val_acc=82.83%  time=0.5 min
+2026-05-30 13:52:19 [INFO] __main__: 
+--- Run 8/20: resnet50_pretrained on FASHION_MNIST ---
+2026-05-30 13:52:19 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: FASHION_MNIST | Size: 89.93 MB | Params: 23,522,250
+2026-05-30 13:52:38 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 0.6891 A 75.79% | Val L 0.4634 A 82.73% | Train 18.6s  Val 0.9s
+2026-05-30 13:52:57 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 0.3880 A 85.96% | Val L 0.3932 A 85.65% | Train 18.3s  Val 0.9s
+2026-05-30 13:53:17 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.2842 A 89.67% | Val L 0.3015 A 89.09% | Train 18.5s  Val 0.9s
+2026-05-30 13:53:17 [INFO] src.model_cnn.train: Best validation accuracy: 89.09%
+2026-05-30 13:53:17 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_FASHION_MNIST_float32.pt
+2026-05-30 13:53:17 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:53:17 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:53:17 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:53:17 [INFO] src.utility.utils:          1 |     19.431 |     18.552 |      0.878
+2026-05-30 13:53:17 [INFO] src.utility.utils:          2 |      19.21 |     18.347 |      0.863
+2026-05-30 13:53:17 [INFO] src.utility.utils:          3 |     19.342 |     18.474 |      0.869
+2026-05-30 13:53:17 [INFO] src.utility.utils: 
+Total wall-clock time: 58.0s  (0.97 min)
+2026-05-30 13:53:17 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_FASHION_MNIST.csv
+2026-05-30 13:53:17 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_FASHION_MNIST.png
+2026-05-30 13:53:17 [INFO] __main__: Finished resnet50_pretrained/FASHION_MNIST: best_val_acc=89.09%  time=1.0 min
+2026-05-30 13:53:17 [INFO] __main__: 
+============================================================
+2026-05-30 13:53:17 [INFO] __main__: Loading dataset: CIFAR10
+2026-05-30 13:53:18 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-05-30 13:53:18 [INFO] __main__: 
+--- Run 9/20: cnn on CIFAR10 ---
+2026-05-30 13:53:18 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR10 | Size: 5.53 MB | Params: 1,449,226
+2026-05-30 13:53:26 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 1.7652 A 34.22% | Val L 1.4659 A 46.13% | Train 7.8s  Val 0.5s
+2026-05-30 13:53:34 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.3723 A 50.06% | Val L 1.2164 A 56.17% | Train 7.8s  Val 0.5s
+2026-05-30 13:53:43 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.1124 A 59.88% | Val L 1.0410 A 62.87% | Train 7.9s  Val 0.5s
+2026-05-30 13:53:43 [INFO] src.model_cnn.train: Best validation accuracy: 62.87%
+2026-05-30 13:53:43 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_CIFAR10_float32.pt
+2026-05-30 13:53:43 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:53:43 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:53:43 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:53:43 [INFO] src.utility.utils:          1 |      8.365 |      7.828 |      0.537
+2026-05-30 13:53:43 [INFO] src.utility.utils:          2 |      8.349 |      7.815 |      0.534
+2026-05-30 13:53:43 [INFO] src.utility.utils:          3 |      8.402 |      7.867 |      0.536
+2026-05-30 13:53:43 [INFO] src.utility.utils: 
+Total wall-clock time: 25.1s  (0.42 min)
+2026-05-30 13:53:43 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_CIFAR10.csv
+2026-05-30 13:53:43 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_CIFAR10.png
+2026-05-30 13:53:43 [INFO] __main__: Finished cnn/CIFAR10: best_val_acc=62.87%  time=0.4 min
+2026-05-30 13:53:43 [INFO] __main__: 
+--- Run 10/20: resnet18_scratch on CIFAR10 ---
+2026-05-30 13:53:43 [INFO] src.model_cnn.train: Model: resnet18_scratch | Dataset: CIFAR10 | Size: 42.66 MB | Params: 11,173,962
+2026-05-30 13:53:53 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 1.9100 A 29.71% | Val L 1.5821 A 41.14% | Train 9.5s  Val 0.6s
+2026-05-30 13:54:03 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.3692 A 50.08% | Val L 1.1827 A 58.18% | Train 9.5s  Val 0.6s
+2026-05-30 13:54:14 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.0013 A 63.95% | Val L 0.9314 A 67.19% | Train 9.5s  Val 0.6s
+2026-05-30 13:54:14 [INFO] src.model_cnn.train: Best validation accuracy: 67.19%
+2026-05-30 13:54:14 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_scratch_CIFAR10_float32.pt
+2026-05-30 13:54:14 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:54:14 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:54:14 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:54:14 [INFO] src.utility.utils:          1 |      10.11 |      9.491 |      0.619
+2026-05-30 13:54:14 [INFO] src.utility.utils:          2 |     10.107 |      9.487 |      0.621
+2026-05-30 13:54:14 [INFO] src.utility.utils:          3 |     10.099 |      9.478 |      0.621
+2026-05-30 13:54:14 [INFO] src.utility.utils: 
+Total wall-clock time: 30.3s  (0.51 min)
+2026-05-30 13:54:14 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_scratch_CIFAR10.csv
+2026-05-30 13:54:14 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_scratch_CIFAR10.png
+2026-05-30 13:54:14 [INFO] __main__: Finished resnet18_scratch/CIFAR10: best_val_acc=67.19%  time=0.5 min
+2026-05-30 13:54:14 [INFO] __main__: 
+--- Run 11/20: resnet18_pretrained on CIFAR10 ---
+2026-05-30 13:54:14 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: CIFAR10 | Size: 42.69 MB | Params: 11,181,642
+2026-05-30 13:54:19 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 2.3857 A 23.00% | Val L 1.9286 A 26.50% | Train 5.1s  Val 0.4s
+2026-05-30 13:54:25 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.7148 A 35.38% | Val L 1.6175 A 41.17% | Train 5.1s  Val 0.4s
+2026-05-30 13:54:30 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.5150 A 43.73% | Val L 1.4708 A 45.10% | Train 5.1s  Val 0.4s
+2026-05-30 13:54:30 [INFO] src.model_cnn.train: Best validation accuracy: 45.10%
+2026-05-30 13:54:30 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_CIFAR10_float32.pt
+2026-05-30 13:54:30 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:54:30 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:54:30 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:54:30 [INFO] src.utility.utils:          1 |      5.503 |      5.133 |       0.37
+2026-05-30 13:54:30 [INFO] src.utility.utils:          2 |      5.475 |      5.104 |      0.371
+2026-05-30 13:54:30 [INFO] src.utility.utils:          3 |      5.436 |      5.064 |      0.373
+2026-05-30 13:54:30 [INFO] src.utility.utils: 
+Total wall-clock time: 16.4s  (0.27 min)
+2026-05-30 13:54:30 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_CIFAR10.csv
+2026-05-30 13:54:30 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_CIFAR10.png
+2026-05-30 13:54:30 [INFO] __main__: Finished resnet18_pretrained/CIFAR10: best_val_acc=45.10%  time=0.3 min
+2026-05-30 13:54:30 [INFO] __main__: 
+--- Run 12/20: resnet50_pretrained on CIFAR10 ---
+2026-05-30 13:54:31 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: CIFAR10 | Size: 89.96 MB | Params: 23,528,522
+2026-05-30 13:54:43 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 2.2882 A 15.13% | Val L 1.9270 A 22.81% | Train 12.4s  Val 0.4s
+2026-05-30 13:54:56 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.9194 A 22.96% | Val L 1.9103 A 25.96% | Train 12.5s  Val 0.4s
+2026-05-30 13:55:09 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.7120 A 33.67% | Val L 1.7894 A 34.74% | Train 12.4s  Val 0.4s
+2026-05-30 13:55:09 [INFO] src.model_cnn.train: Best validation accuracy: 34.74%
+2026-05-30 13:55:09 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_CIFAR10_float32.pt
+2026-05-30 13:55:09 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:55:09 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:55:09 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:55:09 [INFO] src.utility.utils:          1 |     12.842 |     12.424 |      0.418
+2026-05-30 13:55:09 [INFO] src.utility.utils:          2 |     12.864 |     12.454 |       0.41
+2026-05-30 13:55:09 [INFO] src.utility.utils:          3 |     12.856 |     12.446 |       0.41
+2026-05-30 13:55:09 [INFO] src.utility.utils: 
+Total wall-clock time: 38.6s  (0.64 min)
+2026-05-30 13:55:09 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_CIFAR10.csv
+2026-05-30 13:55:09 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_CIFAR10.png
+2026-05-30 13:55:09 [INFO] __main__: Finished resnet50_pretrained/CIFAR10: best_val_acc=34.74%  time=0.7 min
+2026-05-30 13:55:09 [INFO] __main__: 
+============================================================
+2026-05-30 13:55:09 [INFO] __main__: Loading dataset: CIFAR100
+2026-05-30 13:55:10 [INFO] src.utility.utils: CIFAR-100: 50000 train / 10000 test
+2026-05-30 13:55:10 [INFO] __main__: 
+--- Run 13/20: cnn on CIFAR100 ---
+2026-05-30 13:55:10 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR100 | Size: 5.88 MB | Params: 1,541,476
+2026-05-30 13:55:19 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.0738 A 6.95% | Val L 3.8170 A 10.88% | Train 7.9s  Val 0.5s
+2026-05-30 13:55:27 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.6830 A 12.85% | Val L 3.7028 A 14.11% | Train 7.9s  Val 0.5s
+2026-05-30 13:55:35 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.3288 A 19.01% | Val L 3.1562 A 22.60% | Train 7.8s  Val 0.5s
+2026-05-30 13:55:35 [INFO] src.model_cnn.train: Best validation accuracy: 22.60%
+2026-05-30 13:55:35 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_CIFAR100_float32.pt
+2026-05-30 13:55:35 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:55:35 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:55:35 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:55:35 [INFO] src.utility.utils:          1 |      8.401 |      7.858 |      0.543
+2026-05-30 13:55:35 [INFO] src.utility.utils:          2 |      8.392 |      7.856 |      0.537
+2026-05-30 13:55:35 [INFO] src.utility.utils:          3 |      8.364 |      7.829 |      0.535
+2026-05-30 13:55:35 [INFO] src.utility.utils: 
+Total wall-clock time: 25.2s  (0.42 min)
+2026-05-30 13:55:35 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_CIFAR100.csv
+2026-05-30 13:55:36 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_CIFAR100.png
+2026-05-30 13:55:36 [INFO] __main__: Finished cnn/CIFAR100: best_val_acc=22.60%  time=0.4 min
+2026-05-30 13:55:36 [INFO] __main__: 
+--- Run 14/20: resnet18_scratch on CIFAR100 ---
+2026-05-30 13:55:36 [INFO] src.model_cnn.train: Model: resnet18_scratch | Dataset: CIFAR100 | Size: 42.84 MB | Params: 11,220,132
+2026-05-30 13:55:46 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.0892 A 6.58% | Val L 3.9313 A 10.41% | Train 9.4s  Val 0.6s
+2026-05-30 13:55:56 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.4155 A 17.16% | Val L 3.3152 A 20.06% | Train 9.4s  Val 0.6s
+2026-05-30 13:56:06 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 2.7391 A 30.19% | Val L 2.5303 A 34.22% | Train 9.5s  Val 0.6s
+2026-05-30 13:56:06 [INFO] src.model_cnn.train: Best validation accuracy: 34.22%
+2026-05-30 13:56:06 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_scratch_CIFAR100_float32.pt
+2026-05-30 13:56:06 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:56:06 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:56:06 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:56:06 [INFO] src.utility.utils:          1 |     10.042 |      9.424 |      0.618
+2026-05-30 13:56:06 [INFO] src.utility.utils:          2 |      10.06 |      9.443 |      0.617
+2026-05-30 13:56:06 [INFO] src.utility.utils:          3 |     10.143 |      9.503 |      0.639
+2026-05-30 13:56:06 [INFO] src.utility.utils: 
+Total wall-clock time: 30.2s  (0.50 min)
+2026-05-30 13:56:06 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_scratch_CIFAR100.csv
+2026-05-30 13:56:06 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_scratch_CIFAR100.png
+2026-05-30 13:56:06 [INFO] __main__: Finished resnet18_scratch/CIFAR100: best_val_acc=34.22%  time=0.5 min
+2026-05-30 13:56:06 [INFO] __main__: 
+--- Run 15/20: resnet18_pretrained on CIFAR100 ---
+2026-05-30 13:56:06 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: CIFAR100 | Size: 42.87 MB | Params: 11,227,812
+2026-05-30 13:56:12 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.7293 A 2.72% | Val L 4.2391 A 5.29% | Train 5.3s  Val 0.4s
+2026-05-30 13:56:17 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.9467 A 7.81% | Val L 3.7079 A 11.17% | Train 5.2s  Val 0.4s
+2026-05-30 13:56:23 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.5399 A 14.21% | Val L 3.4072 A 17.01% | Train 5.1s  Val 0.4s
+2026-05-30 13:56:23 [INFO] src.model_cnn.train: Best validation accuracy: 17.01%
+2026-05-30 13:56:23 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_CIFAR100_float32.pt
+2026-05-30 13:56:23 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:56:23 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:56:23 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:56:23 [INFO] src.utility.utils:          1 |      5.666 |      5.289 |      0.377
+2026-05-30 13:56:23 [INFO] src.utility.utils:          2 |      5.605 |      5.227 |      0.378
+2026-05-30 13:56:23 [INFO] src.utility.utils:          3 |      5.434 |      5.065 |      0.369
+2026-05-30 13:56:23 [INFO] src.utility.utils: 
+Total wall-clock time: 16.7s  (0.28 min)
+2026-05-30 13:56:23 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_CIFAR100.csv
+2026-05-30 13:56:23 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_CIFAR100.png
+2026-05-30 13:56:23 [INFO] __main__: Finished resnet18_pretrained/CIFAR100: best_val_acc=17.01%  time=0.3 min
+2026-05-30 13:56:23 [INFO] __main__: 
+--- Run 16/20: resnet50_pretrained on CIFAR100 ---
+2026-05-30 13:56:23 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: CIFAR100 | Size: 90.66 MB | Params: 23,712,932
+2026-05-30 13:56:36 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.5236 A 2.10% | Val L 4.5141 A 3.47% | Train 12.4s  Val 0.4s
+2026-05-30 13:56:49 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 4.0720 A 6.05% | Val L 3.8741 A 8.96% | Train 12.4s  Val 0.4s
+2026-05-30 13:57:02 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.6147 A 12.60% | Val L 3.5282 A 15.24% | Train 12.4s  Val 0.5s
+2026-05-30 13:57:02 [INFO] src.model_cnn.train: Best validation accuracy: 15.24%
+2026-05-30 13:57:02 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_CIFAR100_float32.pt
+2026-05-30 13:57:02 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:57:02 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:57:02 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:57:02 [INFO] src.utility.utils:          1 |     12.802 |     12.401 |      0.401
+2026-05-30 13:57:02 [INFO] src.utility.utils:          2 |     12.787 |     12.395 |      0.391
+2026-05-30 13:57:02 [INFO] src.utility.utils:          3 |     12.866 |     12.391 |      0.474
+2026-05-30 13:57:02 [INFO] src.utility.utils: 
+Total wall-clock time: 38.5s  (0.64 min)
+2026-05-30 13:57:02 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_CIFAR100.csv
+2026-05-30 13:57:02 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_CIFAR100.png
+2026-05-30 13:57:02 [INFO] __main__: Finished resnet50_pretrained/CIFAR100: best_val_acc=15.24%  time=0.7 min
+2026-05-30 13:57:02 [INFO] __main__: 
+============================================================
+2026-05-30 13:57:02 [INFO] __main__: Loading dataset: POKEMON
+2026-05-30 13:57:02 [INFO] src.utility.utils: Pokemon: 5456 train / 1364 val — 150 classes
+2026-05-30 13:57:02 [INFO] __main__: 
+--- Run 17/20: cnn on POKEMON ---
+2026-05-30 13:57:02 [INFO] src.model_cnn.train: Model: cnn | Dataset: POKEMON | Size: 6.08 MB | Params: 1,592,726
+2026-05-30 13:57:22 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.5653 A 4.11% | Val L 4.1968 A 7.04% | Train 16.3s  Val 3.1s
+2026-05-30 13:57:41 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.8619 A 10.74% | Val L 3.8732 A 12.24% | Train 16.8s  Val 3.1s
+2026-05-30 13:58:02 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.3338 A 19.08% | Val L 3.1538 A 22.95% | Train 17.5s  Val 3.0s
+2026-05-30 13:58:02 [INFO] src.model_cnn.train: Best validation accuracy: 22.95%
+2026-05-30 13:58:02 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_cnn_POKEMON_float32.pt
+2026-05-30 13:58:02 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:58:02 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:58:02 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:58:02 [INFO] src.utility.utils:          1 |     19.469 |     16.345 |      3.124
+2026-05-30 13:58:02 [INFO] src.utility.utils:          2 |     19.847 |     16.789 |      3.058
+2026-05-30 13:58:02 [INFO] src.utility.utils:          3 |     20.513 |     17.489 |      3.024
+2026-05-30 13:58:02 [INFO] src.utility.utils: 
+Total wall-clock time: 59.8s  (1.00 min)
+2026-05-30 13:58:02 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_cnn_POKEMON.csv
+2026-05-30 13:58:02 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_cnn_POKEMON.png
+2026-05-30 13:58:02 [INFO] __main__: Finished cnn/POKEMON: best_val_acc=22.95%  time=1.0 min
+2026-05-30 13:58:02 [INFO] __main__: 
+--- Run 18/20: resnet18_scratch on POKEMON ---
+2026-05-30 13:58:02 [INFO] src.model_cnn.train: Model: resnet18_scratch | Dataset: POKEMON | Size: 42.97 MB | Params: 11,253,462
+2026-05-30 13:58:19 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.9796 A 2.13% | Val L 4.4900 A 3.30% | Train 13.7s  Val 2.8s
+2026-05-30 13:58:36 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 4.0924 A 7.22% | Val L 3.8343 A 9.38% | Train 14.6s  Val 3.0s
+2026-05-30 13:58:54 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.2737 A 17.25% | Val L 3.0113 A 20.53% | Train 14.5s  Val 2.9s
+2026-05-30 13:58:54 [INFO] src.model_cnn.train: Best validation accuracy: 20.53%
+2026-05-30 13:58:54 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_scratch_POKEMON_float32.pt
+2026-05-30 13:58:54 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:58:54 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:58:54 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:58:54 [INFO] src.utility.utils:          1 |     16.469 |     13.651 |      2.818
+2026-05-30 13:58:54 [INFO] src.utility.utils:          2 |     17.524 |     14.569 |      2.956
+2026-05-30 13:58:54 [INFO] src.utility.utils:          3 |     17.374 |     14.523 |      2.851
+2026-05-30 13:58:54 [INFO] src.utility.utils: 
+Total wall-clock time: 51.4s  (0.86 min)
+2026-05-30 13:58:54 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_scratch_POKEMON.csv
+2026-05-30 13:58:54 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_scratch_POKEMON.png
+2026-05-30 13:58:54 [INFO] __main__: Finished resnet18_scratch/POKEMON: best_val_acc=20.53%  time=0.9 min
+2026-05-30 13:58:54 [INFO] __main__: 
+--- Run 19/20: resnet18_pretrained on POKEMON ---
+2026-05-30 13:58:54 [INFO] src.model_cnn.train: Model: resnet18_pretrained | Dataset: POKEMON | Size: 42.97 MB | Params: 11,253,462
+2026-05-30 13:59:12 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 5.8660 A 1.52% | Val L 5.0047 A 1.98% | Train 15.1s  Val 2.9s
+2026-05-30 13:59:28 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 4.5338 A 2.77% | Val L 4.3562 A 3.89% | Train 13.8s  Val 2.8s
+2026-05-30 13:59:47 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 4.2613 A 4.07% | Val L 4.1025 A 4.91% | Train 15.6s  Val 2.7s
+2026-05-30 13:59:47 [INFO] src.model_cnn.train: Best validation accuracy: 4.91%
+2026-05-30 13:59:47 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet18_pretrained_POKEMON_float32.pt
+2026-05-30 13:59:47 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:59:47 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 13:59:47 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 13:59:47 [INFO] src.utility.utils:          1 |     18.024 |     15.115 |      2.909
+2026-05-30 13:59:47 [INFO] src.utility.utils:          2 |     16.587 |     13.797 |       2.79
+2026-05-30 13:59:47 [INFO] src.utility.utils:          3 |     18.349 |     15.616 |      2.733
+2026-05-30 13:59:47 [INFO] src.utility.utils: 
+Total wall-clock time: 53.0s  (0.88 min)
+2026-05-30 13:59:47 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet18_pretrained_POKEMON.csv
+2026-05-30 13:59:47 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet18_pretrained_POKEMON.png
+2026-05-30 13:59:47 [INFO] __main__: Finished resnet18_pretrained/POKEMON: best_val_acc=4.91%  time=0.9 min
+2026-05-30 13:59:47 [INFO] __main__: 
+--- Run 20/20: resnet50_pretrained on POKEMON ---
+2026-05-30 13:59:47 [INFO] src.model_cnn.train: Model: resnet50_pretrained | Dataset: POKEMON | Size: 91.05 MB | Params: 23,815,382
+2026-05-30 14:00:03 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 3.2319 A 28.48% | Val L 2.8239 A 36.88% | Train 13.5s  Val 2.7s
+2026-05-30 14:00:20 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.4083 A 62.65% | Val L 0.8990 A 74.27% | Train 13.8s  Val 2.7s
+2026-05-30 14:00:36 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.4963 A 85.69% | Val L 0.2583 A 92.30% | Train 13.9s  Val 2.7s
+2026-05-30 14:00:37 [INFO] src.model_cnn.train: Best validation accuracy: 92.30%
+2026-05-30 14:00:37 [INFO] src.model_cnn.train: Model saved → /home/dominic/Desktop/Forschungsprojekt/results/models/baseline_resnet50_pretrained_POKEMON_float32.pt
+2026-05-30 14:00:37 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 14:00:37 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-05-30 14:00:37 [INFO] src.utility.utils: -------------------------------------------------
+2026-05-30 14:00:37 [INFO] src.utility.utils:          1 |      16.26 |     13.548 |      2.712
+2026-05-30 14:00:37 [INFO] src.utility.utils:          2 |     16.491 |     13.836 |      2.655
+2026-05-30 14:00:37 [INFO] src.utility.utils:          3 |     16.563 |     13.864 |      2.699
+2026-05-30 14:00:37 [INFO] src.utility.utils: 
+Total wall-clock time: 49.3s  (0.82 min)
+2026-05-30 14:00:37 [INFO] src.utility.utils: Timing data saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/timing_resnet50_pretrained_POKEMON.csv
+2026-05-30 14:00:37 [INFO] src.utility.utils: Training curves saved → /home/dominic/Desktop/Forschungsprojekt/results/logs/training_curves_resnet50_pretrained_POKEMON.png
+2026-05-30 14:00:37 [INFO] __main__: Finished resnet50_pretrained/POKEMON: best_val_acc=92.30%  time=0.8 min
+2026-05-30 14:00:37 [INFO] __main__: Summary saved → /home/dominic/Desktop/Forschungsprojekt/results/csv/pipeline_summary.csv
+2026-05-30 14:00:37 [INFO] __main__: 
+=== PIPELINE SUMMARY ===
+2026-05-30 14:00:37 [INFO] __main__: Model                    Dataset          Best Val Acc Time (min)   Status
+2026-05-30 14:00:37 [INFO] __main__: --------------------------------------------------------------------------
+2026-05-30 14:00:37 [INFO] __main__: cnn                      MNIST                   99.14        0.6       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_scratch         MNIST                   99.29        0.7       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_pretrained      MNIST                   98.17        0.5       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet50_pretrained      MNIST                   99.18        1.0       ok
+2026-05-30 14:00:37 [INFO] __main__: cnn                      FASHION_MNIST           89.36        0.6       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_scratch         FASHION_MNIST           89.66        0.7       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_pretrained      FASHION_MNIST           82.83        0.5       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet50_pretrained      FASHION_MNIST           89.09        1.0       ok
+2026-05-30 14:00:37 [INFO] __main__: cnn                      CIFAR10                 62.87        0.4       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_scratch         CIFAR10                 67.19        0.5       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_pretrained      CIFAR10                 45.10        0.3       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet50_pretrained      CIFAR10                 34.74        0.7       ok
+2026-05-30 14:00:37 [INFO] __main__: cnn                      CIFAR100                22.60        0.4       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_scratch         CIFAR100                34.22        0.5       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_pretrained      CIFAR100                17.01        0.3       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet50_pretrained      CIFAR100                15.24        0.7       ok
+2026-05-30 14:00:37 [INFO] __main__: cnn                      POKEMON                 22.95        1.0       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_scratch         POKEMON                 20.53        0.9       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet18_pretrained      POKEMON                  4.91        0.9       ok
+2026-05-30 14:00:37 [INFO] __main__: resnet50_pretrained      POKEMON                 92.30        0.8       ok
+2026-05-30 14:00:37 [INFO] __main__: === Pipeline complete ===

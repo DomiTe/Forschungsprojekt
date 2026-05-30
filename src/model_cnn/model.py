@@ -5,12 +5,12 @@ from torch.ao.quantization import QuantStub, DeQuantStub
 from src.utility.config import KERNEL_SIZE, STRIDE, CHANNELS, NUM_CLASSES
 
 class CNN(nn.Module):
-    def __init__(self, num_classes=NUM_CLASSES):
+    def __init__(self, num_classes=NUM_CLASSES, channels=CHANNELS):
         super(CNN, self).__init__()
-        
+
         self.quant = QuantStub()
 
-        self.conv1 = nn.Conv2d(CHANNELS, 32, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1, bias=True)
+        self.conv1 = nn.Conv2d(channels, 32, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1, bias=True)
         self.bn1 = nn.BatchNorm2d(32)
         self.relu1 = nn.ReLU()
         

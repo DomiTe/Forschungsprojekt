@@ -44,8 +44,8 @@ This project evaluates the impact of 8-bit Post-Training Quantization (PTQ) stra
 ## Project Structure
 
 ```bash
-├── main.py                             # Entry point for training and experiments
 ├── src
+│   ├── main.py                         # Entry point for training and experiments
 │   ├── analysis
 │   │   └── layer_analysis.py           # Metrics for MSE, SQNR, and KL-Divergence
 │   ├── evaluation

@@ -3,9 +3,11 @@ utils.py — data loaders, logging, timing, and plotting helpers.
 
 New additions compared to the original:
   - ImageNet loader (_get_imagenet_loaders)
+  - ImageNet100 loader (_get_imagenet100_loaders)
   - TimingTracker  — records per-epoch and total train/val wall-clock times
   - save_timing_csv — persists timing results
   - Normalisation means/stds added for CIFAR datasets
+  - measure_throughput — single-batch-shape latency/throughput benchmark
 """
 
 import os
@@ -24,6 +26,7 @@ from src.utility.config import (
     PIN_MEMORY,
     DATA_DIR,
     IMAGENET_DIR,
+    IMAGENET100_DIR,
     LOG_DIR,
     CSV_DIR,
     BATCH_SIZE,
@@ -44,6 +47,7 @@ _NORM = {
     "CIFAR100":      {"mean": (0.5071, 0.4867, 0.4408),    "std": (0.2675, 0.2565, 0.2761)},
     "POKEMON":       {"mean": (0.5,    0.5,    0.5),       "std": (0.5,    0.5,    0.5)},
     "IMAGENET":      {"mean": (0.485,  0.456,  0.406),     "std": (0.229,  0.224,  0.225)},
+    "IMAGENET100":   {"mean": (0.485,  0.456,  0.406),     "std": (0.229,  0.224,  0.225)},
 }
 
 
@@ -58,8 +62,14 @@ def get_model_size(model: torch.nn.Module) -> float:
     return (param_size + buffer_size) / 1024 ** 2
 
 
-def get_data_loaders(dataset_name: str = DATASET_NAME):
-    """Dispatch to the correct dataset loader."""
+def get_data_loaders(dataset_name: str = DATASET_NAME, batch_size: int | None = None):
+    """
+    Dispatch to the correct dataset loader.
+
+    batch_size, when given, overrides BATCH_SIZE for the *train* loader only
+    (the test/val loader always uses TEST_BATCH_SIZE) -- e.g. Hessian-trace
+    computation needs a much smaller batch than normal training.
+    """
     if dataset_name not in DATASET_SPECS:
         raise ValueError(f"Unknown dataset: {dataset_name}")
     image_size = DATASET_SPECS[dataset_name]["image_size"]
@@ -70,8 +80,57 @@ def get_data_loaders(dataset_name: str = DATASET_NAME):
         "CIFAR100":      _get_cifar100_loaders,
         "POKEMON":       _get_pokemon_loaders,
         "IMAGENET":      _get_imagenet_loaders,
+        "IMAGENET100":   _get_imagenet100_loaders,
     }
-    return dispatch[dataset_name](image_size)
+    return dispatch[dataset_name](image_size, batch_size)
+
+
+def measure_throughput(
+    model: torch.nn.Module,
+    device: torch.device,
+    input_shape: tuple,
+    warmup: int = 20,
+    iters: int = 100,
+) -> dict:
+    """
+    Single-batch-shape latency/throughput benchmark. input_shape includes
+    the batch dimension (e.g. (1, channels, H, W)).
+
+    Synchronizes around timed CUDA work so kernel-launch queuing doesn't
+    make async GPU ops look free; a no-op on CPU. Reports the median (not
+    mean) of `iters` runs to stay robust against one-off stalls.
+
+    Returns: dict with keys latency_ms (median), throughput_fps.
+    """
+    model.eval()
+    dummy_input = torch.randn(input_shape, device=device)
+
+    with torch.no_grad():
+        for _ in range(warmup):
+            _ = model(dummy_input)
+        if device.type == "cuda":
+            torch.cuda.synchronize()
+
+        latencies_ms = []
+        for _ in range(iters):
+            start = time.perf_counter()
+            _ = model(dummy_input)
+            if device.type == "cuda":
+                torch.cuda.synchronize()
+            latencies_ms.append((time.perf_counter() - start) * 1000.0)
+
+    latencies_ms.sort()
+    mid = len(latencies_ms) // 2
+    median_latency_ms = (
+        latencies_ms[mid] if len(latencies_ms) % 2
+        else (latencies_ms[mid - 1] + latencies_ms[mid]) / 2.0
+    )
+    throughput_fps = input_shape[0] * 1000.0 / median_latency_ms
+
+    return {
+        "latency_ms": median_latency_ms,
+        "throughput_fps": throughput_fps,
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -171,7 +230,7 @@ def _norm(name: str):
     return _NORM.get(name, {"mean": (0.5,), "std": (0.5,)})
 
 
-def _get_mnist_loaders(image_size: int):
+def _get_mnist_loaders(image_size: int, batch_size: int | None = None):
     n = _norm("MNIST")
     tf = transforms.Compose([
         transforms.Resize((image_size, image_size)),
@@ -180,12 +239,12 @@ def _get_mnist_loaders(image_size: int):
     ])
     train = datasets.MNIST(DATA_DIR, train=True,  download=True, transform=tf)
     test  = datasets.MNIST(DATA_DIR, train=False, download=True, transform=tf)
-    return (DataLoader(train, batch_size=BATCH_SIZE,      shuffle=True,  pin_memory=PIN_MEMORY),
-            DataLoader(test,  batch_size=TEST_BATCH_SIZE, shuffle=False, pin_memory=PIN_MEMORY),
+    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  pin_memory=PIN_MEMORY),
+            DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, pin_memory=PIN_MEMORY),
             10)
 
 
-def _get_fashion_loaders(image_size: int):
+def _get_fashion_loaders(image_size: int, batch_size: int | None = None):
     n = _norm("FASHION_MNIST")
     tf = transforms.Compose([
         transforms.Resize((image_size, image_size)),
@@ -194,12 +253,12 @@ def _get_fashion_loaders(image_size: int):
     ])
     train = datasets.FashionMNIST(DATA_DIR, train=True,  download=True, transform=tf)
     test  = datasets.FashionMNIST(DATA_DIR, train=False, download=True, transform=tf)
-    return (DataLoader(train, batch_size=BATCH_SIZE,      shuffle=True,  pin_memory=PIN_MEMORY),
-            DataLoader(test,  batch_size=TEST_BATCH_SIZE, shuffle=False, pin_memory=PIN_MEMORY),
+    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  pin_memory=PIN_MEMORY),
+            DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, pin_memory=PIN_MEMORY),
             10)
 
 
-def _get_cifar10_loaders(image_size: int):
+def _get_cifar10_loaders(image_size: int, batch_size: int | None = None):
     n = _norm("CIFAR10")
     tf_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
@@ -217,12 +276,12 @@ def _get_cifar10_loaders(image_size: int):
     test  = datasets.CIFAR10(DATA_DIR, train=False, download=True, transform=tf_test)
     kw = {"num_workers": 8, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
     logger.info(f"CIFAR-10: {len(train)} train / {len(test)} test")
-    return (DataLoader(train, batch_size=BATCH_SIZE,      shuffle=True,  **kw),
-            DataLoader(test,  batch_size=TEST_BATCH_SIZE, shuffle=False, **kw),
+    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
+            DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
             10)
 
 
-def _get_cifar100_loaders(image_size: int):
+def _get_cifar100_loaders(image_size: int, batch_size: int | None = None):
     n = _norm("CIFAR100")
     tf_train = transforms.Compose([
         transforms.RandomCrop(32, padding=4),
@@ -240,12 +299,12 @@ def _get_cifar100_loaders(image_size: int):
     test  = datasets.CIFAR100(DATA_DIR, train=False, download=True, transform=tf_test)
     kw = {"num_workers": 8, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
     logger.info(f"CIFAR-100: {len(train)} train / {len(test)} test")
-    return (DataLoader(train, batch_size=BATCH_SIZE,      shuffle=True,  **kw),
-            DataLoader(test,  batch_size=TEST_BATCH_SIZE, shuffle=False, **kw),
+    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
+            DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
             100)
 
 
-def _get_pokemon_loaders(image_size: int):
+def _get_pokemon_loaders(image_size: int, batch_size: int | None = None):
     n = _norm("POKEMON")
     tf_train = transforms.Compose([
         transforms.Resize((image_size, image_size)),
@@ -272,12 +331,12 @@ def _get_pokemon_loaders(image_size: int):
     kw = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
     num_classes  = len(full_train.classes)
     logger.info(f"Pokemon: {len(train_data)} train / {len(val_data)} val — {num_classes} classes")
-    return (DataLoader(train_data, batch_size=BATCH_SIZE,      shuffle=True,  **kw),
-            DataLoader(val_data,   batch_size=TEST_BATCH_SIZE, shuffle=False, **kw),
+    return (DataLoader(train_data, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
+            DataLoader(val_data,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
             num_classes)
 
 
-def _get_imagenet_loaders(image_size: int):
+def _get_imagenet_loaders(image_size: int, batch_size: int | None = None):
     """
     Expects ImageNet data laid out as:
         data/imagenet/train/<class_dir>/*.JPEG
@@ -310,11 +369,48 @@ def _get_imagenet_loaders(image_size: int):
         )
     train = datasets.ImageFolder(train_dir, transform=tf_train)
     val   = datasets.ImageFolder(val_dir,   transform=tf_val)
-    kw = {"num_workers": 8, "pin_memory": PIN_MEMORY, "persistent_workers": True} if PIN_MEMORY else {"num_workers": 4}
+    kw = {"num_workers": 0, "pin_memory": PIN_MEMORY, "persistent_workers": False} if PIN_MEMORY else {"num_workers": 0}
     logger.info(f"ImageNet: {len(train)} train / {len(val)} val")
-    return (DataLoader(train, batch_size=BATCH_SIZE,      shuffle=True,  **kw),
-            DataLoader(val,   batch_size=TEST_BATCH_SIZE, shuffle=False, **kw),
+    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
+            DataLoader(val,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
             1000)
+
+
+def _get_imagenet100_loaders(image_size: int, batch_size: int | None = None):
+    """
+    100-class subset of ImageNet. Expects data laid out as:
+        data/imagenet100/train/<class_dir>/*.JPEG
+        data/imagenet100/val/<class_dir>/*.JPEG
+    """
+    n = _norm("IMAGENET100")
+    tf_train = transforms.Compose([
+        transforms.RandomResizedCrop(image_size),
+        transforms.RandomHorizontalFlip(),
+        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
+        transforms.ToTensor(),
+        transforms.Normalize(n["mean"], n["std"]),
+    ])
+    tf_val = transforms.Compose([
+        transforms.Resize(256),
+        transforms.CenterCrop(image_size),
+        transforms.ToTensor(),
+        transforms.Normalize(n["mean"], n["std"]),
+    ])
+    train_dir = os.path.join(IMAGENET100_DIR, "train")
+    val_dir   = os.path.join(IMAGENET100_DIR, "val")
+    if not os.path.isdir(train_dir) or not os.path.isdir(val_dir):
+        raise FileNotFoundError(
+            f"IMAGENET100 not found at {IMAGENET100_DIR}.\n"
+            "Expected sub-directories: train/ and val/"
+        )
+    train = datasets.ImageFolder(train_dir, transform=tf_train)
+    val   = datasets.ImageFolder(val_dir,   transform=tf_val)
+    kw = {"num_workers": 0, "pin_memory": PIN_MEMORY, "persistent_workers": False} if PIN_MEMORY else {"num_workers": 0}
+    num_classes = len(train.classes)
+    logger.info(f"ImageNet100: {len(train)} train / {len(val)} val across {num_classes} classes")
+    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
+            DataLoader(val,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
+            num_classes)
 
 
 # ---------------------------------------------------------------------------

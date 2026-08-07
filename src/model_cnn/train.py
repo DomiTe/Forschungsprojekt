@@ -53,9 +53,18 @@ def build_model(num_classes: int, model_name: str, channels: int, image_size: in
         from src.model_cnn.pretrained_resnet18 import get_pretrained_resnet50
         return get_pretrained_resnet50(num_classes=num_classes, channels=channels)
 
+    elif model_name == "resnet18_no_weights":
+        from src.model_cnn.pretrained_resnet18 import get_resnet18_no_weights
+        return get_resnet18_no_weights(num_classes=num_classes, channels=channels, image_size=image_size)
+
+    elif model_name == "resnet50_no_weights":
+        from src.model_cnn.pretrained_resnet18 import get_resnet50_no_weights
+        return get_resnet50_no_weights(num_classes=num_classes, channels=channels, image_size=image_size)
+
     else:
         raise ValueError(f"Unknown model_name '{model_name}'. "
-                         "Choose: cnn | resnet18_scratch | resnet18_pretrained | resnet50_pretrained")
+                         "Choose: cnn | resnet18_scratch | resnet18_pretrained | resnet50_pretrained | "
+                         "resnet18_no_weights | resnet50_no_weights")
 
 
 # ---------------------------------------------------------------------------

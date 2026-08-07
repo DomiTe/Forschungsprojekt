@@ -1,0 +1,2 @@
+model,dataset,stage,backend,num_threads,fp32_acc,int8_acc,acc_delta,fp32_size_mb,int8_size_mb,size_reduction_x,conv_quantized,linear_quantized,eval_subset_batches
+cnn,CIFAR10,PTQ,fbgemm,16,22.03,22.05,0.019999999999999574,5.528807640075684,1.419846534729004,3.8939473420843527,True,True,

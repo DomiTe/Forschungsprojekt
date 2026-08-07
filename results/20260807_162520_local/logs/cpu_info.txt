@@ -1,0 +1,6 @@
+CPU model: AMD Ryzen 7 7700X 8-Core Processor
+Threads used (torch.set_num_threads): 16
+AVX-512 available: True
+AVX-512 VNNI available: True
+torch.__version__: 2.13.0+cu130
+Active quantized engine: fbgemm

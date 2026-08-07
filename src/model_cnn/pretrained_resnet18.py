@@ -14,7 +14,7 @@ Fine-tuning strategy (configurable via FINETUNE_MODE):
 import torch
 import torch.nn as nn
 from torchvision import models
-from src.utility.config import NUM_CLASSES, CHANNELS
+from src.utility.config import NUM_CLASSES, CHANNELS, IMAGE_SIZE
 
 # "full" | "head" | "gradual"
 FINETUNE_MODE = "full"
@@ -33,6 +33,20 @@ def _adapt_first_conv(model: nn.Module, channels: int) -> None:
     # average pretrained RGB weights across channel dim for warm initialisation
     with torch.no_grad():
         model.conv1.weight.copy_(old.weight.mean(dim=1, keepdim=True))
+
+
+def _adapt_stem_for_cifar(model: nn.Module, channels: int) -> None:
+    """
+    CIFAR-sized (<=32px) images are far smaller than ImageNet's native
+    224px, so torchvision's default 7x7/stride-2 stem + maxpool would
+    throw away most of the image's resolution before the first residual
+    block even runs. Swap in a 3x3/stride-1 stem and drop the maxpool --
+    the same adaptation src/model_cnn/resnet18.py's own from-scratch
+    ResNet18 documents for its 32px case ("32-px images -> 3x3 stem,
+    stride=1, no maxpool"), applied here to the torchvision architecture.
+    """
+    model.conv1 = nn.Conv2d(channels, 64, kernel_size=3, stride=1, padding=1, bias=False)
+    model.maxpool = nn.Identity()
 
 
 def get_pretrained_resnet18(
@@ -77,6 +91,36 @@ def get_pretrained_resnet50(
             if "fc" not in name:
                 param.requires_grad = False
 
+    return model
+
+
+def get_resnet18_no_weights(
+    num_classes: int = NUM_CLASSES,
+    channels: int    = CHANNELS,
+    image_size: int  = IMAGE_SIZE,
+) -> nn.Module:
+    """Torchvision ResNet-18 architecture with randomly initialised weights (no ImageNet pretraining)."""
+    model = models.resnet18(weights=None)
+    if image_size <= 32:
+        _adapt_stem_for_cifar(model, channels)
+    else:
+        _adapt_first_conv(model, channels)
+    model.fc = nn.Linear(model.fc.in_features, num_classes)
+    return model
+
+
+def get_resnet50_no_weights(
+    num_classes: int = NUM_CLASSES,
+    channels: int    = CHANNELS,
+    image_size: int  = IMAGE_SIZE,
+) -> nn.Module:
+    """Torchvision ResNet-50 architecture with randomly initialised weights (no ImageNet pretraining)."""
+    model = models.resnet50(weights=None)
+    if image_size <= 32:
+        _adapt_stem_for_cifar(model, channels)
+    else:
+        _adapt_first_conv(model, channels)
+    model.fc = nn.Linear(model.fc.in_features, num_classes)
     return model
 
 

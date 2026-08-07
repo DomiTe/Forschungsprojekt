@@ -1,0 +1,391 @@
+W0806 08:34:38.741000 3284216 .conda/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py:882: UserWarning: Using backward() with create_graph=True will create a reference cycle between the parameter and its gradient which can cause a memory leak. We recommend using autograd.grad when creating the graph to avoid this. If you have to use this function, make sure to reset the .grad fields of your parameters to None after use to break the cycle and avoid the leak. (Triggered internally at /pytorch/torch/csrc/autograd/engine.cpp:1299.)
+  return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4628: UserWarning: TypedStorage is deprecated. It will be removed in the future and UntypedStorage will be the only storage class. This should only matter to you if you are using storages directly.  To access UntypedStorage directly, use tensor.untyped_storage() instead of tensor.storage()
+  current_out_size = out_base.storage().size()
+Autotune Choices Stats:
+{"num_choices": 10, "num_triton_choices": 9, "best_kernel": "convolution", "best_time": 0.05939200147986412, "best_triton_pos": 1, "best_triton_time": 0.07168000191450119, "best_triton_kernel": "triton_convolution2d_2", "best_triton_kernel_desc": "ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=1024, BLOCK_N=16, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=1, num_warps=8"}
+AUTOTUNE convolution(1x3x224x224, 32x3x3x3)
+strides: [150528, 1, 672, 3], [27, 1, 9, 3]
+dtypes: torch.float32, torch.float32
+  convolution 0.0594 ms 100.0% 
+  triton_convolution2d_2 0.0717 ms 82.9% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=1024, BLOCK_N=16, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=1, num_warps=8
+  triton_convolution2d_1 0.0748 ms 79.5% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=256, BLOCK_N=32, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_8 0.1024 ms 58.0% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=128, BLOCK_N=32, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_5 0.1055 ms 56.3% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=256, BLOCK_N=32, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_3 0.1556 ms 38.2% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=128, BLOCK_N=32, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_0 0.1577 ms 37.7% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=32, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_7 0.1608 ms 36.9% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=32, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_6 0.1700 ms 34.9% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=128, BLOCK_N=32, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=3, num_warps=8
+  triton_convolution2d_4 0.1741 ms 34.1% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=32, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+SingleProcess AUTOTUNE benchmarking takes 0.2209 seconds and 1.5815 seconds precompiling for 10 choices
+Autotune Choices Stats:
+{"num_choices": 11, "num_triton_choices": 10, "best_kernel": "convolution", "best_time": 0.03174399957060814, "best_triton_pos": 1, "best_triton_time": 0.10444799810647964, "best_triton_kernel": "triton_convolution2d_9", "best_triton_kernel_desc": "ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4"}
+AUTOTUNE convolution(1x32x112x112, 64x32x3x3)
+strides: [32*s16*s82, s16*s82, s82, 1], [288, 9, 3, 1]
+dtypes: torch.float32, torch.float32
+  convolution 0.0317 ms 100.0% 
+  triton_convolution2d_9 0.1044 ms 30.4% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_13 0.1178 ms 27.0% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_12 0.1198 ms 26.5% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_16 0.1219 ms 26.1% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=3, num_warps=8
+  triton_convolution2d_14 0.1249 ms 25.4% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_18 0.1444 ms 22.0% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_17 0.1782 ms 17.8% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_15 0.1884 ms 16.8% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_10 0.2877 ms 11.0% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+SingleProcess AUTOTUNE benchmarking takes 19.5278 seconds and 7.2683 seconds precompiling for 11 choices
+Autotune Choices Stats:
+{"num_choices": 13, "num_triton_choices": 12, "best_kernel": "convolution", "best_time": 0.03174399957060814, "best_triton_pos": 1, "best_triton_time": 0.1228799968957901, "best_triton_kernel": "triton_convolution2d_23", "best_triton_kernel_desc": "ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4"}
+AUTOTUNE convolution(1x64x56x56, 128x64x3x3)
+strides: [64*s16*s82, s16*s82, s82, 1], [576, 9, 3, 1]
+dtypes: torch.float32, torch.float32
+  convolution 0.0317 ms 100.0% 
+  triton_convolution2d_23 0.1229 ms 25.8% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_19 0.1659 ms 19.1% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_24 0.1823 ms 17.4% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_27 0.2662 ms 11.9% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_22 0.2796 ms 11.4% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_30 0.3318 ms 9.6% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_28 0.3379 ms 9.4% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_26 0.3441 ms 9.2% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=3, num_warps=8
+  triton_convolution2d_25 0.3451 ms 9.2% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+SingleProcess AUTOTUNE benchmarking takes 44.6978 seconds and 13.4601 seconds precompiling for 13 choices
+[rank0]:E0806 08:42:21.698000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] Runtime error during autotuning: 
+[rank0]:E0806 08:42:21.698000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] No valid triton configs. OutOfMemoryError: out of resource: triton_convolution2d Required: 262144 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 08:42:21.698000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] Ignoring this choice.
+[rank0]:E0806 08:42:28.958000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] Runtime error during autotuning: 
+[rank0]:E0806 08:42:28.958000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] No valid triton configs. OutOfMemoryError: out of resource: triton_convolution2d Required: 294912 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 08:42:28.958000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] Ignoring this choice.
+[rank0]:E0806 08:42:48.899000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] Runtime error during autotuning: 
+[rank0]:E0806 08:42:48.899000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] No valid triton configs. OutOfMemoryError: out of resource: triton_convolution2d Required: 196608 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 08:42:48.899000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] Ignoring this choice.
+[rank0]:E0806 08:43:05.181000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] Runtime error during autotuning: 
+[rank0]:E0806 08:43:05.181000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] No valid triton configs. OutOfMemoryError: out of resource: triton_convolution2d Required: 196608 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 08:43:05.181000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/3_1] Ignoring this choice.
+Autotune Choices Stats:
+{"num_choices": 18, "num_triton_choices": 17, "best_kernel": "convolution", "best_time": 0.03379200026392937, "best_triton_pos": 1, "best_triton_time": 0.1955839991569519, "best_triton_kernel": "triton_convolution2d_35", "best_triton_kernel_desc": "ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4"}
+AUTOTUNE convolution(1x128x28x28, 256x128x3x3)
+strides: [128*s16*s82, s16*s82, s82, 1], [1152, 9, 3, 1]
+dtypes: torch.float32, torch.float32
+  convolution 0.0338 ms 100.0% 
+  triton_convolution2d_35 0.1956 ms 17.3% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_39 0.4588 ms 7.4% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_34 0.4782 ms 7.1% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_36 0.5591 ms 6.0% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=256, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_37 0.5622 ms 6.0% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_40 0.5929 ms 5.7% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_38 0.6124 ms 5.5% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=3, num_warps=8
+  triton_convolution2d_31 0.6205 ms 5.4% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=256, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_43 0.7219 ms 4.7% ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+SingleProcess AUTOTUNE benchmarking takes 107.6256 seconds and 23.9704 seconds precompiling for 18 choices
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_inductor/compile_fx.py:320: UserWarning: TensorFloat32 tensor cores for float32 matrix multiplication available but not enabled. Consider setting `torch.set_float32_matmul_precision('high')` for better performance.
+  warnings.warn(
+[rank0]:E0806 08:43:19.335000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/0_1] Runtime error during autotuning: 
+[rank0]:E0806 08:43:19.335000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/0_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 08:43:19.335000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/0_1] Ignoring this choice.
+[rank0]:E0806 08:43:21.565000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/0_1] Runtime error during autotuning: 
+[rank0]:E0806 08:43:21.565000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/0_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 08:43:21.565000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/0_1] Ignoring this choice.
+Autotune Choices Stats:
+{"num_choices": 19, "num_triton_choices": 18, "best_kernel": "addmm", "best_time": 0.014336000196635723, "best_triton_pos": 1, "best_triton_time": 0.04095999896526337, "best_triton_kernel": "triton_mm_52", "best_triton_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2"}
+AUTOTUNE addmm(1x1024, 1x1024, 1024x1024)
+strides: [0, 1], [1024, 1], [1, 1024]
+dtypes: torch.float32, torch.float32, torch.float32
+  addmm 0.0143 ms 100.0% 
+  triton_mm_52 0.0410 ms 35.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_51 0.0440 ms 32.6% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_49 0.0471 ms 30.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=2
+  triton_mm_50 0.0778 ms 18.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_62 0.0778 ms 18.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=4
+  triton_mm_61 0.0788 ms 18.2% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_56 0.0819 ms 17.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_55 0.0829 ms 17.3% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_48 0.0870 ms 16.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=1, num_warps=2
+SingleProcess AUTOTUNE benchmarking takes 9.2062 seconds and 2.1141 seconds precompiling for 19 choices
+[rank0]:E0806 08:43:34.015000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/1_1] Runtime error during autotuning: 
+[rank0]:E0806 08:43:34.015000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/1_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 08:43:34.015000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/1_1] Ignoring this choice.
+[rank0]:E0806 08:43:36.330000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/1_1] Runtime error during autotuning: 
+[rank0]:E0806 08:43:36.330000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/1_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 08:43:36.330000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/1_1] Ignoring this choice.
+Autotune Choices Stats:
+{"num_choices": 19, "num_triton_choices": 18, "best_kernel": "addmm", "best_time": 0.015359999611973763, "best_triton_pos": 1, "best_triton_time": 0.048128001391887665, "best_triton_kernel": "triton_mm_70", "best_triton_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2"}
+AUTOTUNE addmm(1x100, 1x1024, 1024x100)
+strides: [0, 1], [1024, 1], [1, 1024]
+dtypes: torch.float32, torch.float32, torch.float32
+  addmm 0.0154 ms 100.0% 
+  triton_mm_70 0.0481 ms 31.9% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_67 0.0512 ms 30.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=2
+  triton_mm_69 0.0522 ms 29.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_68 0.0788 ms 19.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_74 0.0788 ms 19.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_79 0.0788 ms 19.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_80 0.0788 ms 19.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=4
+  triton_mm_73 0.0819 ms 18.8% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_66 0.0911 ms 16.9% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=1, num_warps=2
+SingleProcess AUTOTUNE benchmarking takes 9.8009 seconds and 1.8812 seconds precompiling for 19 choices
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+Autotune Choices Stats:
+{"num_choices": 10, "num_triton_choices": 9, "best_kernel": "convolution", "best_time": 0.03686400130391121, "best_triton_pos": 1, "best_triton_time": 0.13312000036239624, "best_triton_kernel": "triton_convolution2d_91", "best_triton_kernel_desc": "ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=4, num_warps=4"}
+AUTOTUNE convolution(1x3x224x224, 64x3x7x7)
+strides: [3*s16*s82, s16*s82, s82, 1], [147, 49, 7, 1]
+dtypes: torch.float32, torch.float32
+  convolution 0.0369 ms 100.0% 
+  triton_convolution2d_91 0.1331 ms 27.7% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_84 0.1372 ms 26.9% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_88 0.1434 ms 25.7% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_90 0.1434 ms 25.7% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=3, num_warps=8
+  triton_convolution2d_87 0.1567 ms 23.5% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_92 0.1628 ms 22.6% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_89 0.2601 ms 14.2% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_85 0.5130 ms 7.2% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_86 0.5581 ms 6.6% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=1024, BLOCK_N=16, GROUPS=1, KERNEL_H=7, KERNEL_W=7, PADDING_H=3, PADDING_W=3, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=1, num_warps=8
+SingleProcess AUTOTUNE benchmarking takes 13.5554 seconds and 4.7605 seconds precompiling for 10 choices
+Autotune Choices Stats:
+{"num_choices": 13, "num_triton_choices": 12, "best_kernel": "convolution", "best_time": 0.026623999699950218, "best_triton_pos": 1, "best_triton_time": 0.10342399775981903, "best_triton_kernel": "triton_convolution2d_93", "best_triton_kernel_desc": "ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4"}
+AUTOTUNE convolution(1x64x56x56, 64x64x3x3)
+strides: [64*s16*s82, s16*s82, s82, 1], [576, 9, 3, 1]
+dtypes: torch.float32, torch.float32
+  convolution 0.0266 ms 100.0% 
+  triton_convolution2d_93 0.1034 ms 25.7% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_98 0.1147 ms 23.2% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_97 0.1167 ms 22.8% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_101 0.1382 ms 19.3% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_96 0.1802 ms 14.8% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_104 0.1812 ms 14.7% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_100 0.1915 ms 13.9% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=3, num_warps=8
+  triton_convolution2d_99 0.3277 ms 8.1% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_102 0.3348 ms 8.0% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+SingleProcess AUTOTUNE benchmarking takes 27.8063 seconds and 8.0818 seconds precompiling for 13 choices
+[rank0]:W0806 09:43:42.335000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:43:42.335000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 09:43:42.335000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:43:42.335000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+Autotune Choices Stats:
+{"num_choices": 13, "num_triton_choices": 12, "best_kernel": "convolution", "best_time": 0.02457600086927414, "best_triton_pos": 1, "best_triton_time": 0.11468800157308578, "best_triton_kernel": "triton_convolution2d_109", "best_triton_kernel_desc": "ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=4"}
+AUTOTUNE convolution(1x64x56x56, 128x64x3x3)
+strides: [64*s16*s82, s16*s82, s82, 1], [576, 9, 3, 1]
+dtypes: torch.float32, torch.float32
+  convolution 0.0246 ms 100.0% 
+  triton_convolution2d_109 0.1147 ms 21.4% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_105 0.1659 ms 14.8% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_110 0.1843 ms 13.3% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_113 0.2744 ms 9.0% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_108 0.2796 ms 8.8% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_114 0.3133 ms 7.8% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_116 0.3389 ms 7.3% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_111 0.3471 ms 7.1% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_112 0.3502 ms 7.0% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=2, STRIDE_W=2, UNROLL=False, num_stages=3, num_warps=8
+SingleProcess AUTOTUNE benchmarking takes 39.0073 seconds and 10.2683 seconds precompiling for 13 choices
+[rank0]:E0806 09:45:56.561000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] Runtime error during autotuning: 
+[rank0]:E0806 09:45:56.561000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] No valid triton configs. OutOfMemoryError: out of resource: triton_convolution2d Required: 262144 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 09:45:56.561000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] Ignoring this choice.
+[rank0]:E0806 09:46:03.908000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] Runtime error during autotuning: 
+[rank0]:E0806 09:46:03.908000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] No valid triton configs. OutOfMemoryError: out of resource: triton_convolution2d Required: 294912 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 09:46:03.908000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] Ignoring this choice.
+[rank0]:E0806 09:46:23.433000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] Runtime error during autotuning: 
+[rank0]:E0806 09:46:23.433000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] No valid triton configs. OutOfMemoryError: out of resource: triton_convolution2d Required: 196608 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 09:46:23.433000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [1/7_1] Ignoring this choice.
+Autotune Choices Stats:
+{"num_choices": 17, "num_triton_choices": 16, "best_kernel": "convolution", "best_time": 0.028672000393271446, "best_triton_pos": 1, "best_triton_time": 0.19251200556755066, "best_triton_kernel": "triton_convolution2d_121", "best_triton_kernel_desc": "ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4"}
+AUTOTUNE convolution(1x128x28x28, 128x128x3x3)
+strides: [128*s16*s82, s16*s82, s82, 1], [1152, 9, 3, 1]
+dtypes: torch.float32, torch.float32
+  convolution 0.0287 ms 100.0% 
+  triton_convolution2d_121 0.1925 ms 14.9% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_117 0.2939 ms 9.8% ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=4
+  triton_convolution2d_122 0.3123 ms 9.2% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_125 0.4465 ms 6.4% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=64, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_120 0.4762 ms 6.0% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_123 0.5601 ms 5.1% ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=256, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_126 0.5724 ms 5.0% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=64, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=4, num_warps=4
+  triton_convolution2d_128 0.5755 ms 5.0% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=2, num_warps=8
+  triton_convolution2d_124 0.5919 ms 4.8% ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=128, BLOCK_N=128, GROUPS=1, KERNEL_H=3, KERNEL_W=3, PADDING_H=1, PADDING_W=1, STRIDE_H=1, STRIDE_W=1, UNROLL=False, num_stages=3, num_warps=8
+SingleProcess AUTOTUNE benchmarking takes 84.7380 seconds and 21.0732 seconds precompiling for 17 choices
+[rank0]:W0806 09:46:25.657000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [1/8] torch._dynamo hit config.recompile_limit (8)
+[rank0]:W0806 09:46:25.657000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [1/8]    function: 'forward' (/scratch/dominic/Forschungsprojekt/src/quantization/quantizer.py:52)
+[rank0]:W0806 09:46:25.657000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [1/8]    last reason: 1/7: tensor 'input' size mismatch at index 1. expected 128, actual 64
+[rank0]:W0806 09:46:25.657000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [1/8] To log all recompilation reasons, use TORCH_LOGS="recompiles".
+[rank0]:W0806 09:46:25.657000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [1/8] To diagnose recompilation issues, see https://docs.pytorch.org/docs/main/user_guide/torch_compiler/compile/programming_model.recompilation.html
+[rank0]:W0806 09:46:26.004000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:46:26.004000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_100
+[rank0]:W0806 09:46:26.004000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:46:26.004000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 09:46:28.582000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:46:28.582000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 09:46:28.582000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:46:28.582000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 09:46:29.805000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:46:29.805000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_100
+[rank0]:W0806 09:46:29.805000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:46:29.805000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 09:46:30.872000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:46:30.872000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 09:46:30.872000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:46:30.872000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 09:46:30.977000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:46:30.977000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_100
+[rank0]:W0806 09:46:30.977000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:46:30.977000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 09:46:30.982000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:46:30.982000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 09:46:30.982000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:46:30.982000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:E0806 09:46:42.883000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/2_1] Runtime error during autotuning: 
+[rank0]:E0806 09:46:42.883000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/2_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 09:46:42.883000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/2_1] Ignoring this choice.
+[rank0]:E0806 09:46:45.138000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/2_1] Runtime error during autotuning: 
+[rank0]:E0806 09:46:45.138000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/2_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 09:46:45.138000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/2_1] Ignoring this choice.
+Autotune Choices Stats:
+{"num_choices": 19, "num_triton_choices": 18, "best_kernel": "addmm", "best_time": 0.014336000196635723, "best_triton_pos": 1, "best_triton_time": 0.028672000393271446, "best_triton_kernel": "triton_mm_134", "best_triton_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=2"}
+AUTOTUNE addmm(1x100, 1x512, 512x100)
+strides: [0, 1], [512, 1], [1, 512]
+dtypes: torch.float32, torch.float32, torch.float32
+  addmm 0.0143 ms 100.0% 
+  triton_mm_134 0.0287 ms 50.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=2
+  triton_mm_137 0.0287 ms 50.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_136 0.0297 ms 48.3% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_135 0.0430 ms 33.3% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_141 0.0430 ms 33.3% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_146 0.0430 ms 33.3% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_147 0.0430 ms 33.3% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=4
+  triton_mm_140 0.0451 ms 31.8% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_133 0.0492 ms 29.2% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=1, num_warps=2
+SingleProcess AUTOTUNE benchmarking takes 9.6183 seconds and 1.9167 seconds precompiling for 19 choices
+[rank0]:W0806 09:46:46.473000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:46:46.473000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 09:46:46.473000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:46:46.473000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 09:46:46.482000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 09:46:46.482000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_100
+[rank0]:W0806 09:46:46.482000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 09:46:46.482000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+[rank0]:E0806 11:26:48.690000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] Runtime error during autotuning: 
+[rank0]:E0806 11:26:48.690000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 11:26:48.690000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] Ignoring this choice.
+[rank0]:E0806 11:26:51.022000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] Runtime error during autotuning: 
+[rank0]:E0806 11:26:51.022000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0806 11:26:51.022000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] Ignoring this choice.
+Autotune Choices Stats:
+{"num_choices": 19, "num_triton_choices": 18, "best_kernel": "addmm", "best_time": 0.015359999611973763, "best_triton_pos": 1, "best_triton_time": 0.09011200070381165, "best_triton_kernel": "triton_mm_155", "best_triton_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2"}
+AUTOTUNE addmm(1x100, 1x2048, 2048x100)
+strides: [0, 1], [2048, 1], [1, 2048]
+dtypes: torch.float32, torch.float32, torch.float32
+  addmm 0.0154 ms 100.0% 
+  triton_mm_155 0.0901 ms 17.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_152 0.0952 ms 16.1% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=2
+  triton_mm_154 0.0993 ms 15.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_159 0.1495 ms 10.3% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_153 0.1516 ms 10.1% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_164 0.1516 ms 10.1% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_165 0.1516 ms 10.1% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=4
+  triton_mm_158 0.1567 ms 9.8% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_151 0.1751 ms 8.8% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=1, num_warps=2
+SingleProcess AUTOTUNE benchmarking takes 9.6266 seconds and 1.8570 seconds precompiling for 19 choices
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+Autotune Choices Stats:
+{"num_choices": 12, "num_triton_choices": 11, "best_kernel": "addmm", "best_time": 0.014336000196635723, "best_triton_pos": 1, "best_triton_time": 0.04608000069856644, "best_triton_kernel": "triton_mm_171", "best_triton_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1"}
+AUTOTUNE addmm(1x10, 1x1024, 1024x10)
+strides: [0, 1], [1024, 1], [1, 1024]
+dtypes: torch.float32, torch.float32, torch.float32
+  addmm 0.0143 ms 100.0% 
+  triton_mm_171 0.0461 ms 31.1% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_176 0.0461 ms 31.1% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=1
+  triton_mm_177 0.0461 ms 31.1% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=1
+  triton_mm_175 0.0471 ms 30.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=1
+  triton_mm_179 0.0471 ms 30.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_172 0.0481 ms 29.8% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_178 0.0481 ms 29.8% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=1
+  triton_mm_170 0.0522 ms 27.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=1
+  triton_mm_174 0.0614 ms 23.3% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=1
+SingleProcess AUTOTUNE benchmarking takes 5.2067 seconds and 1.1365 seconds precompiling for 12 choices
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+[rank0]:W0806 13:14:26.369000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 13:14:26.369000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 13:14:26.369000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 13:14:26.369000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 13:14:26.472000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 13:14:26.472000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_100
+[rank0]:W0806 13:14:26.472000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 13:14:26.472000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 13:14:26.718000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 13:14:26.718000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 13:14:26.718000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 13:14:26.718000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 13:14:26.722000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 13:14:26.722000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_100
+[rank0]:W0806 13:14:26.722000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 13:14:26.722000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 13:14:26.726000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 13:14:26.726000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 13:14:26.726000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 13:14:26.726000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 13:14:26.731000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 13:14:26.731000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_100
+[rank0]:W0806 13:14:26.731000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 13:14:26.731000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+[rank0]:W0806 13:14:26.736000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] skipping cudagraphs due to mutated inputs (1 instances). Found from : 
+[rank0]:W0806 13:14:26.736000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]    File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py", line 102, in torch_dynamo_resume_in_forward_at_96
+[rank0]:W0806 13:14:26.736000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs]     out += identity
+[rank0]:W0806 13:14:26.736000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
+Autotune Choices Stats:
+{"num_choices": 12, "num_triton_choices": 11, "best_kernel": "addmm", "best_time": 0.013311999849975109, "best_triton_pos": 1, "best_triton_time": 0.025599999353289604, "best_triton_kernel": "triton_mm_183", "best_triton_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1"}
+AUTOTUNE addmm(1x10, 1x512, 512x10)
+strides: [0, 1], [512, 1], [1, 512]
+dtypes: torch.float32, torch.float32, torch.float32
+  addmm 0.0133 ms 100.0% 
+  triton_mm_183 0.0256 ms 52.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_189 0.0256 ms 52.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=1
+  triton_mm_182 0.0266 ms 50.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_186 0.0266 ms 50.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=1
+  triton_mm_187 0.0266 ms 50.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=1
+  triton_mm_188 0.0266 ms 50.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=1
+  triton_mm_190 0.0266 ms 50.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_181 0.0287 ms 46.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=1
+  triton_mm_185 0.0338 ms 39.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=1
+SingleProcess AUTOTUNE benchmarking takes 5.1920 seconds and 1.0887 seconds precompiling for 12 choices
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+[rank0]:W0806 14:05:23.007000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [27/8] torch._dynamo hit config.recompile_limit (8)
+[rank0]:W0806 14:05:23.007000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [27/8]    function: 'torch_dynamo_resume_in_forward_at_154' (/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchvision/models/resnet.py:154)
+[rank0]:W0806 14:05:23.007000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [27/8]    last reason: 27/7: tensor 'identity' size mismatch at index 1. expected 2048, actual 64
+[rank0]:W0806 14:05:23.007000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [27/8] To log all recompilation reasons, use TORCH_LOGS="recompiles".
+[rank0]:W0806 14:05:23.007000 3284216 .conda/lib/python3.12/site-packages/torch/_dynamo/convert_frame.py:1853] [27/8] To diagnose recompilation issues, see https://docs.pytorch.org/docs/main/user_guide/torch_compiler/compile/programming_model.recompilation.html
+[rank0]:W0806 14:05:23.016000 3284216 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:434] [__cudagraphs] CUDAGraph supports dynamic shapes by recording a new graph for each distinct input size. Recording too many CUDAGraphs may lead to extra overhead. We have observed 9 distinct sizes. Please consider the following options for better performance: a) padding inputs to a few fixed number of shapes; or b) set torch._inductor.config.triton.cudagraph_skip_dynamic_graphs=True. Set torch._inductor.config.triton.cudagraph_dynamic_shape_warn_limit=None to silence this warning.
+Autotune Choices Stats:
+{"num_choices": 12, "num_triton_choices": 11, "best_kernel": "addmm", "best_time": 0.015359999611973763, "best_triton_pos": 1, "best_triton_time": 0.0870399996638298, "best_triton_kernel": "triton_mm_193", "best_triton_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1"}
+AUTOTUNE addmm(1x10, 1x2048, 2048x10)
+strides: [0, 1], [2048, 1], [1, 2048]
+dtypes: torch.float32, torch.float32, torch.float32
+  addmm 0.0154 ms 100.0% 
+  triton_mm_193 0.0870 ms 17.6% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_197 0.0870 ms 17.6% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=1
+  triton_mm_198 0.0870 ms 17.6% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=1
+  triton_mm_199 0.0870 ms 17.6% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=1
+  triton_mm_201 0.0881 ms 17.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_194 0.0901 ms 17.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=1
+  triton_mm_200 0.0901 ms 17.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=1
+  triton_mm_192 0.0973 ms 15.8% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=1
+  triton_mm_196 0.1178 ms 13.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=16, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=1
+SingleProcess AUTOTUNE benchmarking takes 5.1687 seconds and 1.1192 seconds precompiling for 12 choices
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)

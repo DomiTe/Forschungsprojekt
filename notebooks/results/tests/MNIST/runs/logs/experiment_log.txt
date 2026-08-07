@@ -1,0 +1,548 @@
+2026-03-03 11:18:06 [INFO] Experiment:  Starting Run 1/5
+2026-03-03 11:18:06 [INFO] Experiment: Loading datasets...
+2026-03-03 11:18:06 [INFO] Experiment: No baseline found. Starting training...
+2026-03-03 11:18:06 [INFO] src.model_cnn.train: Starte Training auf Device: cuda
+2026-03-03 11:18:16 [INFO] src.model_cnn.train: Ep 1: Train Acc: 94.59% | Val Acc: 98.17%
+2026-03-03 11:18:16 [INFO] src.model_cnn.train: Saved best model (94.5867%)
+2026-03-03 11:18:25 [INFO] src.model_cnn.train: Ep 2: Train Acc: 97.73% | Val Acc: 98.68%
+2026-03-03 11:18:25 [INFO] src.model_cnn.train: Saved best model (97.7300%)
+2026-03-03 11:18:34 [INFO] src.model_cnn.train: Ep 3: Train Acc: 98.24% | Val Acc: 98.70%
+2026-03-03 11:18:34 [INFO] src.model_cnn.train: Saved best model (98.2433%)
+2026-03-03 11:18:44 [INFO] src.model_cnn.train: Ep 4: Train Acc: 98.41% | Val Acc: 98.97%
+2026-03-03 11:18:44 [INFO] src.model_cnn.train: Saved best model (98.4100%)
+2026-03-03 11:18:53 [INFO] src.model_cnn.train: Ep 5: Train Acc: 98.52% | Val Acc: 99.00%
+2026-03-03 11:18:53 [INFO] src.model_cnn.train: Saved best model (98.5217%)
+2026-03-03 11:19:03 [INFO] src.model_cnn.train: Ep 6: Train Acc: 98.61% | Val Acc: 99.11%
+2026-03-03 11:19:03 [INFO] src.model_cnn.train: Saved best model (98.6133%)
+2026-03-03 11:19:12 [INFO] src.model_cnn.train: Ep 7: Train Acc: 98.66% | Val Acc: 99.20%
+2026-03-03 11:19:12 [INFO] src.model_cnn.train: Saved best model (98.6617%)
+2026-03-03 11:19:21 [INFO] src.model_cnn.train: Ep 8: Train Acc: 98.79% | Val Acc: 99.17%
+2026-03-03 11:19:21 [INFO] src.model_cnn.train: Saved best model (98.7900%)
+2026-03-03 11:19:31 [INFO] src.model_cnn.train: Ep 9: Train Acc: 98.89% | Val Acc: 98.80%
+2026-03-03 11:19:31 [INFO] src.model_cnn.train: Saved best model (98.8867%)
+2026-03-03 11:19:40 [INFO] src.model_cnn.train: Ep 10: Train Acc: 98.84% | Val Acc: 98.97%
+2026-03-03 11:19:50 [INFO] src.model_cnn.train: Ep 11: Train Acc: 99.03% | Val Acc: 99.30%
+2026-03-03 11:19:50 [INFO] src.model_cnn.train: Saved best model (99.0317%)
+2026-03-03 11:19:59 [INFO] src.model_cnn.train: Ep 12: Train Acc: 99.00% | Val Acc: 99.02%
+2026-03-03 11:20:08 [INFO] src.model_cnn.train: Ep 13: Train Acc: 99.03% | Val Acc: 98.92%
+2026-03-03 11:20:18 [INFO] src.model_cnn.train: Ep 14: Train Acc: 99.00% | Val Acc: 99.29%
+2026-03-03 11:20:27 [INFO] src.model_cnn.train: Ep 15: Train Acc: 99.01% | Val Acc: 98.97%
+2026-03-03 11:20:36 [INFO] src.model_cnn.train: Ep 16: Train Acc: 99.12% | Val Acc: 99.13%
+2026-03-03 11:20:36 [INFO] src.model_cnn.train: Saved best model (99.1200%)
+2026-03-03 11:20:46 [INFO] src.model_cnn.train: Ep 17: Train Acc: 99.10% | Val Acc: 99.18%
+2026-03-03 11:20:55 [INFO] src.model_cnn.train: Ep 18: Train Acc: 99.19% | Val Acc: 99.15%
+2026-03-03 11:20:55 [INFO] src.model_cnn.train: Saved best model (99.1850%)
+2026-03-03 11:21:05 [INFO] src.model_cnn.train: Ep 19: Train Acc: 99.10% | Val Acc: 99.14%
+2026-03-03 11:21:14 [INFO] src.model_cnn.train: Ep 20: Train Acc: 99.17% | Val Acc: 99.45%
+2026-03-03 11:21:23 [INFO] src.model_cnn.train: Ep 21: Train Acc: 99.16% | Val Acc: 99.35%
+2026-03-03 11:21:33 [INFO] src.model_cnn.train: Ep 22: Train Acc: 99.20% | Val Acc: 99.44%
+2026-03-03 11:21:33 [INFO] src.model_cnn.train: Saved best model (99.1967%)
+2026-03-03 11:21:42 [INFO] src.model_cnn.train: Ep 23: Train Acc: 99.16% | Val Acc: 98.88%
+2026-03-03 11:21:52 [INFO] src.model_cnn.train: Ep 24: Train Acc: 99.20% | Val Acc: 99.38%
+2026-03-03 11:21:52 [INFO] src.model_cnn.train: Saved best model (99.2000%)
+2026-03-03 11:22:01 [INFO] src.model_cnn.train: Ep 25: Train Acc: 99.22% | Val Acc: 99.29%
+2026-03-03 11:22:01 [INFO] src.model_cnn.train: Saved best model (99.2200%)
+2026-03-03 11:22:10 [INFO] src.model_cnn.train: Ep 26: Train Acc: 99.19% | Val Acc: 99.39%
+2026-03-03 11:22:20 [INFO] src.model_cnn.train: Ep 27: Train Acc: 99.22% | Val Acc: 99.24%
+2026-03-03 11:22:20 [INFO] src.model_cnn.train: Saved best model (99.2217%)
+2026-03-03 11:22:29 [INFO] src.model_cnn.train: Ep 28: Train Acc: 99.22% | Val Acc: 99.40%
+2026-03-03 11:22:38 [INFO] src.model_cnn.train: Ep 29: Train Acc: 99.31% | Val Acc: 99.35%
+2026-03-03 11:22:38 [INFO] src.model_cnn.train: Saved best model (99.3050%)
+2026-03-03 11:22:48 [INFO] src.model_cnn.train: Ep 30: Train Acc: 99.28% | Val Acc: 99.37%
+2026-03-03 11:22:57 [INFO] src.model_cnn.train: Ep 31: Train Acc: 99.26% | Val Acc: 99.29%
+2026-03-03 11:23:07 [INFO] src.model_cnn.train: Ep 32: Train Acc: 99.28% | Val Acc: 99.49%
+2026-03-03 11:23:16 [INFO] src.model_cnn.train: Ep 33: Train Acc: 99.27% | Val Acc: 99.19%
+2026-03-03 11:23:25 [INFO] src.model_cnn.train: Ep 34: Train Acc: 99.30% | Val Acc: 99.30%
+2026-03-03 11:23:35 [INFO] src.model_cnn.train: Ep 35: Train Acc: 99.28% | Val Acc: 99.28%
+2026-03-03 11:23:44 [INFO] src.model_cnn.train: Ep 36: Train Acc: 99.33% | Val Acc: 99.35%
+2026-03-03 11:23:44 [INFO] src.model_cnn.train: Saved best model (99.3267%)
+2026-03-03 11:23:53 [INFO] src.model_cnn.train: Ep 37: Train Acc: 99.28% | Val Acc: 99.49%
+2026-03-03 11:24:03 [INFO] src.model_cnn.train: Ep 38: Train Acc: 99.32% | Val Acc: 99.29%
+2026-03-03 11:24:12 [INFO] src.model_cnn.train: Ep 39: Train Acc: 99.31% | Val Acc: 99.37%
+2026-03-03 11:24:22 [INFO] src.model_cnn.train: Ep 40: Train Acc: 99.29% | Val Acc: 99.35%
+2026-03-03 11:24:31 [INFO] src.model_cnn.train: Ep 41: Train Acc: 99.37% | Val Acc: 99.40%
+2026-03-03 11:24:31 [INFO] src.model_cnn.train: Saved best model (99.3700%)
+2026-03-03 11:24:40 [INFO] src.model_cnn.train: Ep 42: Train Acc: 99.37% | Val Acc: 99.36%
+2026-03-03 11:24:50 [INFO] src.model_cnn.train: Ep 43: Train Acc: 99.30% | Val Acc: 99.40%
+2026-03-03 11:24:59 [INFO] src.model_cnn.train: Ep 44: Train Acc: 99.34% | Val Acc: 99.30%
+2026-03-03 11:25:09 [INFO] src.model_cnn.train: Ep 45: Train Acc: 99.43% | Val Acc: 99.41%
+2026-03-03 11:25:09 [INFO] src.model_cnn.train: Saved best model (99.4333%)
+2026-03-03 11:25:18 [INFO] src.model_cnn.train: Ep 46: Train Acc: 99.36% | Val Acc: 99.12%
+2026-03-03 11:25:27 [INFO] src.model_cnn.train: Ep 47: Train Acc: 99.33% | Val Acc: 99.38%
+2026-03-03 11:25:37 [INFO] src.model_cnn.train: Ep 48: Train Acc: 99.30% | Val Acc: 99.37%
+2026-03-03 11:25:46 [INFO] src.model_cnn.train: Ep 49: Train Acc: 99.39% | Val Acc: 99.27%
+2026-03-03 11:25:55 [INFO] src.model_cnn.train: Ep 50: Train Acc: 99.35% | Val Acc: 99.24%
+2026-03-03 11:25:55 [INFO] src.model_cnn.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-03-03 11:25:55 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-03-03 11:25:55 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-03-03 11:26:04 [INFO] src.evaluation.evaluate: Evaluation [Baseline Float32] - Acc: 99.24%, F1: 0.9923, Prec: 0.9924, Rec: 0.9923, Time: 0.8230ms
+2026-03-03 11:26:04 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-03-03 11:26:04 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:26:04 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:26:04 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:26:04 [INFO] Experiment: Analyzing real quantization fidelity for Affine_PTQ...
+2026-03-03 11:26:04 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:26:46 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Affine_PTQ_run_0.csv
+2026-03-03 11:26:46 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-03-03 11:26:48 [INFO] src.evaluation.evaluate: Evaluation [Affine_PTQ] - Acc: 99.25%, F1: 0.9924, Prec: 0.9925, Rec: 0.9924, Time: 0.1809ms
+2026-03-03 11:26:48 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-03-03 11:26:48 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:26:48 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:26:49 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:26:49 [INFO] Experiment: Analyzing real quantization fidelity for Symmetric_PTQ...
+2026-03-03 11:26:49 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:27:30 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Symmetric_PTQ_run_0.csv
+2026-03-03 11:27:30 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-03-03 11:27:31 [INFO] src.evaluation.evaluate: Evaluation [Symmetric_PTQ] - Acc: 99.28%, F1: 0.9928, Prec: 0.9929, Rec: 0.9927, Time: 0.1543ms
+2026-03-03 11:27:31 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-03-03 11:27:31 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:27:31 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:27:32 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:27:32 [INFO] Experiment: Analyzing real quantization fidelity for PoT_PTQ...
+2026-03-03 11:27:32 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:28:13 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_PoT_PTQ_run_0.csv
+2026-03-03 11:28:13 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-03-03 11:28:14 [INFO] src.evaluation.evaluate: Evaluation [PoT_PTQ] - Acc: 99.23%, F1: 0.9923, Prec: 0.9924, Rec: 0.9922, Time: 0.1548ms
+2026-03-03 11:28:14 [INFO] Experiment:  Starting Run 2/5
+2026-03-03 11:28:14 [INFO] Experiment: Loading datasets...
+2026-03-03 11:28:14 [INFO] Experiment: No baseline found. Starting training...
+2026-03-03 11:28:14 [INFO] src.model_cnn.train: Starte Training auf Device: cuda
+2026-03-03 11:28:24 [INFO] src.model_cnn.train: Ep 1: Train Acc: 94.22% | Val Acc: 97.51%
+2026-03-03 11:28:24 [INFO] src.model_cnn.train: Saved best model (94.2150%)
+2026-03-03 11:28:33 [INFO] src.model_cnn.train: Ep 2: Train Acc: 97.76% | Val Acc: 98.29%
+2026-03-03 11:28:33 [INFO] src.model_cnn.train: Saved best model (97.7567%)
+2026-03-03 11:28:43 [INFO] src.model_cnn.train: Ep 3: Train Acc: 98.14% | Val Acc: 99.03%
+2026-03-03 11:28:43 [INFO] src.model_cnn.train: Saved best model (98.1433%)
+2026-03-03 11:28:52 [INFO] src.model_cnn.train: Ep 4: Train Acc: 98.41% | Val Acc: 98.89%
+2026-03-03 11:28:52 [INFO] src.model_cnn.train: Saved best model (98.4067%)
+2026-03-03 11:29:01 [INFO] src.model_cnn.train: Ep 5: Train Acc: 98.52% | Val Acc: 98.91%
+2026-03-03 11:29:01 [INFO] src.model_cnn.train: Saved best model (98.5233%)
+2026-03-03 11:29:11 [INFO] src.model_cnn.train: Ep 6: Train Acc: 98.59% | Val Acc: 99.10%
+2026-03-03 11:29:11 [INFO] src.model_cnn.train: Saved best model (98.5917%)
+2026-03-03 11:29:20 [INFO] src.model_cnn.train: Ep 7: Train Acc: 98.76% | Val Acc: 99.34%
+2026-03-03 11:29:20 [INFO] src.model_cnn.train: Saved best model (98.7567%)
+2026-03-03 11:29:30 [INFO] src.model_cnn.train: Ep 8: Train Acc: 98.83% | Val Acc: 99.10%
+2026-03-03 11:29:30 [INFO] src.model_cnn.train: Saved best model (98.8267%)
+2026-03-03 11:29:39 [INFO] src.model_cnn.train: Ep 9: Train Acc: 98.81% | Val Acc: 99.25%
+2026-03-03 11:29:49 [INFO] src.model_cnn.train: Ep 10: Train Acc: 98.92% | Val Acc: 99.33%
+2026-03-03 11:29:49 [INFO] src.model_cnn.train: Saved best model (98.9200%)
+2026-03-03 11:29:58 [INFO] src.model_cnn.train: Ep 11: Train Acc: 98.89% | Val Acc: 99.28%
+2026-03-03 11:30:07 [INFO] src.model_cnn.train: Ep 12: Train Acc: 98.98% | Val Acc: 99.17%
+2026-03-03 11:30:07 [INFO] src.model_cnn.train: Saved best model (98.9850%)
+2026-03-03 11:30:17 [INFO] src.model_cnn.train: Ep 13: Train Acc: 99.06% | Val Acc: 99.09%
+2026-03-03 11:30:17 [INFO] src.model_cnn.train: Saved best model (99.0583%)
+2026-03-03 11:30:26 [INFO] src.model_cnn.train: Ep 14: Train Acc: 99.03% | Val Acc: 99.04%
+2026-03-03 11:30:36 [INFO] src.model_cnn.train: Ep 15: Train Acc: 99.06% | Val Acc: 99.02%
+2026-03-03 11:30:36 [INFO] src.model_cnn.train: Saved best model (99.0633%)
+2026-03-03 11:30:45 [INFO] src.model_cnn.train: Ep 16: Train Acc: 99.07% | Val Acc: 99.09%
+2026-03-03 11:30:45 [INFO] src.model_cnn.train: Saved best model (99.0667%)
+2026-03-03 11:30:54 [INFO] src.model_cnn.train: Ep 17: Train Acc: 99.12% | Val Acc: 99.19%
+2026-03-03 11:30:54 [INFO] src.model_cnn.train: Saved best model (99.1217%)
+2026-03-03 11:31:04 [INFO] src.model_cnn.train: Ep 18: Train Acc: 99.12% | Val Acc: 99.12%
+2026-03-03 11:31:04 [INFO] src.model_cnn.train: Saved best model (99.1233%)
+2026-03-03 11:31:13 [INFO] src.model_cnn.train: Ep 19: Train Acc: 99.10% | Val Acc: 99.16%
+2026-03-03 11:31:23 [INFO] src.model_cnn.train: Ep 20: Train Acc: 99.20% | Val Acc: 99.31%
+2026-03-03 11:31:23 [INFO] src.model_cnn.train: Saved best model (99.2050%)
+2026-03-03 11:31:32 [INFO] src.model_cnn.train: Ep 21: Train Acc: 99.18% | Val Acc: 99.42%
+2026-03-03 11:31:41 [INFO] src.model_cnn.train: Ep 22: Train Acc: 99.12% | Val Acc: 99.34%
+2026-03-03 11:31:51 [INFO] src.model_cnn.train: Ep 23: Train Acc: 99.18% | Val Acc: 99.35%
+2026-03-03 11:32:00 [INFO] src.model_cnn.train: Ep 24: Train Acc: 99.23% | Val Acc: 99.41%
+2026-03-03 11:32:00 [INFO] src.model_cnn.train: Saved best model (99.2317%)
+2026-03-03 11:32:09 [INFO] src.model_cnn.train: Ep 25: Train Acc: 99.16% | Val Acc: 99.39%
+2026-03-03 11:32:19 [INFO] src.model_cnn.train: Ep 26: Train Acc: 99.23% | Val Acc: 99.19%
+2026-03-03 11:32:19 [INFO] src.model_cnn.train: Saved best model (99.2350%)
+2026-03-03 11:32:28 [INFO] src.model_cnn.train: Ep 27: Train Acc: 99.25% | Val Acc: 99.32%
+2026-03-03 11:32:28 [INFO] src.model_cnn.train: Saved best model (99.2483%)
+2026-03-03 11:32:38 [INFO] src.model_cnn.train: Ep 28: Train Acc: 99.29% | Val Acc: 99.24%
+2026-03-03 11:32:38 [INFO] src.model_cnn.train: Saved best model (99.2883%)
+2026-03-03 11:32:47 [INFO] src.model_cnn.train: Ep 29: Train Acc: 99.28% | Val Acc: 99.38%
+2026-03-03 11:32:56 [INFO] src.model_cnn.train: Ep 30: Train Acc: 99.33% | Val Acc: 99.34%
+2026-03-03 11:32:56 [INFO] src.model_cnn.train: Saved best model (99.3317%)
+2026-03-03 11:33:06 [INFO] src.model_cnn.train: Ep 31: Train Acc: 99.26% | Val Acc: 99.23%
+2026-03-03 11:33:15 [INFO] src.model_cnn.train: Ep 32: Train Acc: 99.20% | Val Acc: 99.45%
+2026-03-03 11:33:24 [INFO] src.model_cnn.train: Ep 33: Train Acc: 99.28% | Val Acc: 99.40%
+2026-03-03 11:33:34 [INFO] src.model_cnn.train: Ep 34: Train Acc: 99.31% | Val Acc: 99.38%
+2026-03-03 11:33:43 [INFO] src.model_cnn.train: Ep 35: Train Acc: 99.33% | Val Acc: 99.25%
+2026-03-03 11:33:43 [INFO] src.model_cnn.train: Saved best model (99.3333%)
+2026-03-03 11:33:53 [INFO] src.model_cnn.train: Ep 36: Train Acc: 99.24% | Val Acc: 99.19%
+2026-03-03 11:34:02 [INFO] src.model_cnn.train: Ep 37: Train Acc: 99.32% | Val Acc: 99.41%
+2026-03-03 11:34:11 [INFO] src.model_cnn.train: Ep 38: Train Acc: 99.33% | Val Acc: 99.42%
+2026-03-03 11:34:21 [INFO] src.model_cnn.train: Ep 39: Train Acc: 99.30% | Val Acc: 99.29%
+2026-03-03 11:34:30 [INFO] src.model_cnn.train: Ep 40: Train Acc: 99.31% | Val Acc: 99.34%
+2026-03-03 11:34:40 [INFO] src.model_cnn.train: Ep 41: Train Acc: 99.33% | Val Acc: 99.40%
+2026-03-03 11:34:49 [INFO] src.model_cnn.train: Ep 42: Train Acc: 99.38% | Val Acc: 99.42%
+2026-03-03 11:34:49 [INFO] src.model_cnn.train: Saved best model (99.3783%)
+2026-03-03 11:34:59 [INFO] src.model_cnn.train: Ep 43: Train Acc: 99.35% | Val Acc: 99.50%
+2026-03-03 11:35:08 [INFO] src.model_cnn.train: Ep 44: Train Acc: 99.34% | Val Acc: 99.31%
+2026-03-03 11:35:17 [INFO] src.model_cnn.train: Ep 45: Train Acc: 99.32% | Val Acc: 99.46%
+2026-03-03 11:35:27 [INFO] src.model_cnn.train: Ep 46: Train Acc: 99.36% | Val Acc: 99.26%
+2026-03-03 11:35:36 [INFO] src.model_cnn.train: Ep 47: Train Acc: 99.35% | Val Acc: 99.20%
+2026-03-03 11:35:46 [INFO] src.model_cnn.train: Ep 48: Train Acc: 99.38% | Val Acc: 99.25%
+2026-03-03 11:35:55 [INFO] src.model_cnn.train: Ep 49: Train Acc: 99.41% | Val Acc: 99.29%
+2026-03-03 11:35:55 [INFO] src.model_cnn.train: Saved best model (99.4083%)
+2026-03-03 11:36:04 [INFO] src.model_cnn.train: Ep 50: Train Acc: 99.40% | Val Acc: 99.32%
+2026-03-03 11:36:04 [INFO] src.model_cnn.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-03-03 11:36:04 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-03-03 11:36:04 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-03-03 11:36:13 [INFO] src.evaluation.evaluate: Evaluation [Baseline Float32] - Acc: 99.32%, F1: 0.9933, Prec: 0.9934, Rec: 0.9932, Time: 0.8228ms
+2026-03-03 11:36:13 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-03-03 11:36:13 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:36:13 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:36:13 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:36:13 [INFO] Experiment: Analyzing real quantization fidelity for Affine_PTQ...
+2026-03-03 11:36:13 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:36:55 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Affine_PTQ_run_1.csv
+2026-03-03 11:36:55 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-03-03 11:36:57 [INFO] src.evaluation.evaluate: Evaluation [Affine_PTQ] - Acc: 99.27%, F1: 0.9927, Prec: 0.9928, Rec: 0.9927, Time: 0.1812ms
+2026-03-03 11:36:57 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-03-03 11:36:57 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:36:57 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:36:58 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:36:58 [INFO] Experiment: Analyzing real quantization fidelity for Symmetric_PTQ...
+2026-03-03 11:36:58 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:37:38 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Symmetric_PTQ_run_1.csv
+2026-03-03 11:37:38 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-03-03 11:37:40 [INFO] src.evaluation.evaluate: Evaluation [Symmetric_PTQ] - Acc: 99.19%, F1: 0.9920, Prec: 0.9921, Rec: 0.9919, Time: 0.1545ms
+2026-03-03 11:37:40 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-03-03 11:37:40 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:37:40 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:37:40 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:37:40 [INFO] Experiment: Analyzing real quantization fidelity for PoT_PTQ...
+2026-03-03 11:37:40 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:38:21 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_PoT_PTQ_run_1.csv
+2026-03-03 11:38:21 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-03-03 11:38:22 [INFO] src.evaluation.evaluate: Evaluation [PoT_PTQ] - Acc: 99.16%, F1: 0.9916, Prec: 0.9918, Rec: 0.9916, Time: 0.1546ms
+2026-03-03 11:38:22 [INFO] Experiment:  Starting Run 3/5
+2026-03-03 11:38:22 [INFO] Experiment: Loading datasets...
+2026-03-03 11:38:22 [INFO] Experiment: No baseline found. Starting training...
+2026-03-03 11:38:22 [INFO] src.model_cnn.train: Starte Training auf Device: cuda
+2026-03-03 11:38:32 [INFO] src.model_cnn.train: Ep 1: Train Acc: 94.43% | Val Acc: 97.37%
+2026-03-03 11:38:32 [INFO] src.model_cnn.train: Saved best model (94.4267%)
+2026-03-03 11:38:41 [INFO] src.model_cnn.train: Ep 2: Train Acc: 97.77% | Val Acc: 98.80%
+2026-03-03 11:38:41 [INFO] src.model_cnn.train: Saved best model (97.7667%)
+2026-03-03 11:38:51 [INFO] src.model_cnn.train: Ep 3: Train Acc: 98.35% | Val Acc: 98.65%
+2026-03-03 11:38:51 [INFO] src.model_cnn.train: Saved best model (98.3517%)
+2026-03-03 11:39:00 [INFO] src.model_cnn.train: Ep 4: Train Acc: 98.49% | Val Acc: 99.22%
+2026-03-03 11:39:00 [INFO] src.model_cnn.train: Saved best model (98.4917%)
+2026-03-03 11:39:10 [INFO] src.model_cnn.train: Ep 5: Train Acc: 98.51% | Val Acc: 99.05%
+2026-03-03 11:39:10 [INFO] src.model_cnn.train: Saved best model (98.5067%)
+2026-03-03 11:39:19 [INFO] src.model_cnn.train: Ep 6: Train Acc: 98.64% | Val Acc: 99.08%
+2026-03-03 11:39:19 [INFO] src.model_cnn.train: Saved best model (98.6417%)
+2026-03-03 11:39:28 [INFO] src.model_cnn.train: Ep 7: Train Acc: 98.74% | Val Acc: 99.21%
+2026-03-03 11:39:28 [INFO] src.model_cnn.train: Saved best model (98.7400%)
+2026-03-03 11:39:38 [INFO] src.model_cnn.train: Ep 8: Train Acc: 98.83% | Val Acc: 99.24%
+2026-03-03 11:39:38 [INFO] src.model_cnn.train: Saved best model (98.8317%)
+2026-03-03 11:39:47 [INFO] src.model_cnn.train: Ep 9: Train Acc: 98.86% | Val Acc: 99.13%
+2026-03-03 11:39:47 [INFO] src.model_cnn.train: Saved best model (98.8617%)
+2026-03-03 11:39:57 [INFO] src.model_cnn.train: Ep 10: Train Acc: 98.90% | Val Acc: 99.13%
+2026-03-03 11:39:57 [INFO] src.model_cnn.train: Saved best model (98.9033%)
+2026-03-03 11:40:06 [INFO] src.model_cnn.train: Ep 11: Train Acc: 98.94% | Val Acc: 99.17%
+2026-03-03 11:40:06 [INFO] src.model_cnn.train: Saved best model (98.9450%)
+2026-03-03 11:40:15 [INFO] src.model_cnn.train: Ep 12: Train Acc: 98.97% | Val Acc: 99.16%
+2026-03-03 11:40:15 [INFO] src.model_cnn.train: Saved best model (98.9733%)
+2026-03-03 11:40:25 [INFO] src.model_cnn.train: Ep 13: Train Acc: 99.05% | Val Acc: 99.19%
+2026-03-03 11:40:25 [INFO] src.model_cnn.train: Saved best model (99.0467%)
+2026-03-03 11:40:34 [INFO] src.model_cnn.train: Ep 14: Train Acc: 99.00% | Val Acc: 99.12%
+2026-03-03 11:40:44 [INFO] src.model_cnn.train: Ep 15: Train Acc: 99.04% | Val Acc: 99.45%
+2026-03-03 11:40:53 [INFO] src.model_cnn.train: Ep 16: Train Acc: 99.08% | Val Acc: 99.39%
+2026-03-03 11:40:53 [INFO] src.model_cnn.train: Saved best model (99.0833%)
+2026-03-03 11:41:02 [INFO] src.model_cnn.train: Ep 17: Train Acc: 99.13% | Val Acc: 99.24%
+2026-03-03 11:41:02 [INFO] src.model_cnn.train: Saved best model (99.1333%)
+2026-03-03 11:41:12 [INFO] src.model_cnn.train: Ep 18: Train Acc: 99.11% | Val Acc: 99.23%
+2026-03-03 11:41:21 [INFO] src.model_cnn.train: Ep 19: Train Acc: 99.14% | Val Acc: 99.02%
+2026-03-03 11:41:21 [INFO] src.model_cnn.train: Saved best model (99.1400%)
+2026-03-03 11:41:31 [INFO] src.model_cnn.train: Ep 20: Train Acc: 99.12% | Val Acc: 99.38%
+2026-03-03 11:41:40 [INFO] src.model_cnn.train: Ep 21: Train Acc: 99.21% | Val Acc: 99.17%
+2026-03-03 11:41:40 [INFO] src.model_cnn.train: Saved best model (99.2133%)
+2026-03-03 11:41:50 [INFO] src.model_cnn.train: Ep 22: Train Acc: 99.21% | Val Acc: 99.16%
+2026-03-03 11:41:59 [INFO] src.model_cnn.train: Ep 23: Train Acc: 99.23% | Val Acc: 99.39%
+2026-03-03 11:41:59 [INFO] src.model_cnn.train: Saved best model (99.2267%)
+2026-03-03 11:42:08 [INFO] src.model_cnn.train: Ep 24: Train Acc: 99.16% | Val Acc: 99.45%
+2026-03-03 11:42:18 [INFO] src.model_cnn.train: Ep 25: Train Acc: 99.25% | Val Acc: 99.36%
+2026-03-03 11:42:18 [INFO] src.model_cnn.train: Saved best model (99.2450%)
+2026-03-03 11:42:27 [INFO] src.model_cnn.train: Ep 26: Train Acc: 99.23% | Val Acc: 99.30%
+2026-03-03 11:42:37 [INFO] src.model_cnn.train: Ep 27: Train Acc: 99.25% | Val Acc: 99.41%
+2026-03-03 11:42:37 [INFO] src.model_cnn.train: Saved best model (99.2483%)
+2026-03-03 11:42:46 [INFO] src.model_cnn.train: Ep 28: Train Acc: 99.22% | Val Acc: 99.27%
+2026-03-03 11:42:55 [INFO] src.model_cnn.train: Ep 29: Train Acc: 99.28% | Val Acc: 99.23%
+2026-03-03 11:42:55 [INFO] src.model_cnn.train: Saved best model (99.2767%)
+2026-03-03 11:43:05 [INFO] src.model_cnn.train: Ep 30: Train Acc: 99.27% | Val Acc: 99.29%
+2026-03-03 11:43:14 [INFO] src.model_cnn.train: Ep 31: Train Acc: 99.28% | Val Acc: 99.28%
+2026-03-03 11:43:14 [INFO] src.model_cnn.train: Saved best model (99.2850%)
+2026-03-03 11:43:24 [INFO] src.model_cnn.train: Ep 32: Train Acc: 99.35% | Val Acc: 99.29%
+2026-03-03 11:43:24 [INFO] src.model_cnn.train: Saved best model (99.3500%)
+2026-03-03 11:43:33 [INFO] src.model_cnn.train: Ep 33: Train Acc: 99.22% | Val Acc: 99.16%
+2026-03-03 11:43:42 [INFO] src.model_cnn.train: Ep 34: Train Acc: 99.27% | Val Acc: 99.22%
+2026-03-03 11:43:52 [INFO] src.model_cnn.train: Ep 35: Train Acc: 99.33% | Val Acc: 99.12%
+2026-03-03 11:44:01 [INFO] src.model_cnn.train: Ep 36: Train Acc: 99.29% | Val Acc: 99.45%
+2026-03-03 11:44:11 [INFO] src.model_cnn.train: Ep 37: Train Acc: 99.30% | Val Acc: 99.19%
+2026-03-03 11:44:20 [INFO] src.model_cnn.train: Ep 38: Train Acc: 99.29% | Val Acc: 99.18%
+2026-03-03 11:44:29 [INFO] src.model_cnn.train: Ep 39: Train Acc: 99.30% | Val Acc: 99.26%
+2026-03-03 11:44:39 [INFO] src.model_cnn.train: Ep 40: Train Acc: 99.31% | Val Acc: 99.45%
+2026-03-03 11:44:48 [INFO] src.model_cnn.train: Ep 41: Train Acc: 99.32% | Val Acc: 99.22%
+2026-03-03 11:44:58 [INFO] src.model_cnn.train: Ep 42: Train Acc: 99.30% | Val Acc: 99.36%
+2026-03-03 11:45:07 [INFO] src.model_cnn.train: Ep 43: Train Acc: 99.36% | Val Acc: 99.27%
+2026-03-03 11:45:07 [INFO] src.model_cnn.train: Saved best model (99.3550%)
+2026-03-03 11:45:16 [INFO] src.model_cnn.train: Ep 44: Train Acc: 99.35% | Val Acc: 99.26%
+2026-03-03 11:45:26 [INFO] src.model_cnn.train: Ep 45: Train Acc: 99.33% | Val Acc: 99.30%
+2026-03-03 11:45:35 [INFO] src.model_cnn.train: Ep 46: Train Acc: 99.33% | Val Acc: 99.32%
+2026-03-03 11:45:45 [INFO] src.model_cnn.train: Ep 47: Train Acc: 99.35% | Val Acc: 99.29%
+2026-03-03 11:45:54 [INFO] src.model_cnn.train: Ep 48: Train Acc: 99.35% | Val Acc: 99.41%
+2026-03-03 11:46:04 [INFO] src.model_cnn.train: Ep 49: Train Acc: 99.32% | Val Acc: 99.41%
+2026-03-03 11:46:13 [INFO] src.model_cnn.train: Ep 50: Train Acc: 99.43% | Val Acc: 99.35%
+2026-03-03 11:46:13 [INFO] src.model_cnn.train: Saved best model (99.4333%)
+2026-03-03 11:46:13 [INFO] src.model_cnn.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-03-03 11:46:13 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-03-03 11:46:13 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-03-03 11:46:21 [INFO] src.evaluation.evaluate: Evaluation [Baseline Float32] - Acc: 99.35%, F1: 0.9935, Prec: 0.9935, Rec: 0.9934, Time: 0.8232ms
+2026-03-03 11:46:21 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-03-03 11:46:21 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:46:21 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:46:22 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:46:22 [INFO] Experiment: Analyzing real quantization fidelity for Affine_PTQ...
+2026-03-03 11:46:22 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:47:03 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Affine_PTQ_run_2.csv
+2026-03-03 11:47:03 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-03-03 11:47:05 [INFO] src.evaluation.evaluate: Evaluation [Affine_PTQ] - Acc: 99.35%, F1: 0.9934, Prec: 0.9935, Rec: 0.9934, Time: 0.1812ms
+2026-03-03 11:47:05 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-03-03 11:47:05 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:47:05 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:47:06 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:47:06 [INFO] Experiment: Analyzing real quantization fidelity for Symmetric_PTQ...
+2026-03-03 11:47:06 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:47:46 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Symmetric_PTQ_run_2.csv
+2026-03-03 11:47:46 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-03-03 11:47:47 [INFO] src.evaluation.evaluate: Evaluation [Symmetric_PTQ] - Acc: 99.22%, F1: 0.9922, Prec: 0.9923, Rec: 0.9921, Time: 0.1539ms
+2026-03-03 11:47:47 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-03-03 11:47:47 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:47:47 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:47:48 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:47:48 [INFO] Experiment: Analyzing real quantization fidelity for PoT_PTQ...
+2026-03-03 11:47:48 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:48:28 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_PoT_PTQ_run_2.csv
+2026-03-03 11:48:28 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-03-03 11:48:30 [INFO] src.evaluation.evaluate: Evaluation [PoT_PTQ] - Acc: 99.28%, F1: 0.9927, Prec: 0.9928, Rec: 0.9927, Time: 0.1541ms
+2026-03-03 11:48:30 [INFO] Experiment:  Starting Run 4/5
+2026-03-03 11:48:30 [INFO] Experiment: Loading datasets...
+2026-03-03 11:48:30 [INFO] Experiment: No baseline found. Starting training...
+2026-03-03 11:48:30 [INFO] src.model_cnn.train: Starte Training auf Device: cuda
+2026-03-03 11:48:40 [INFO] src.model_cnn.train: Ep 1: Train Acc: 94.23% | Val Acc: 98.62%
+2026-03-03 11:48:40 [INFO] src.model_cnn.train: Saved best model (94.2317%)
+2026-03-03 11:48:49 [INFO] src.model_cnn.train: Ep 2: Train Acc: 97.77% | Val Acc: 98.80%
+2026-03-03 11:48:49 [INFO] src.model_cnn.train: Saved best model (97.7717%)
+2026-03-03 11:48:58 [INFO] src.model_cnn.train: Ep 3: Train Acc: 98.15% | Val Acc: 99.08%
+2026-03-03 11:48:58 [INFO] src.model_cnn.train: Saved best model (98.1500%)
+2026-03-03 11:49:08 [INFO] src.model_cnn.train: Ep 4: Train Acc: 98.40% | Val Acc: 98.38%
+2026-03-03 11:49:08 [INFO] src.model_cnn.train: Saved best model (98.4033%)
+2026-03-03 11:49:17 [INFO] src.model_cnn.train: Ep 5: Train Acc: 98.48% | Val Acc: 99.14%
+2026-03-03 11:49:17 [INFO] src.model_cnn.train: Saved best model (98.4817%)
+2026-03-03 11:49:27 [INFO] src.model_cnn.train: Ep 6: Train Acc: 98.65% | Val Acc: 99.07%
+2026-03-03 11:49:27 [INFO] src.model_cnn.train: Saved best model (98.6467%)
+2026-03-03 11:49:36 [INFO] src.model_cnn.train: Ep 7: Train Acc: 98.69% | Val Acc: 99.02%
+2026-03-03 11:49:36 [INFO] src.model_cnn.train: Saved best model (98.6933%)
+2026-03-03 11:49:45 [INFO] src.model_cnn.train: Ep 8: Train Acc: 98.81% | Val Acc: 98.63%
+2026-03-03 11:49:45 [INFO] src.model_cnn.train: Saved best model (98.8117%)
+2026-03-03 11:49:55 [INFO] src.model_cnn.train: Ep 9: Train Acc: 98.87% | Val Acc: 99.20%
+2026-03-03 11:49:55 [INFO] src.model_cnn.train: Saved best model (98.8717%)
+2026-03-03 11:50:04 [INFO] src.model_cnn.train: Ep 10: Train Acc: 98.83% | Val Acc: 99.26%
+2026-03-03 11:50:14 [INFO] src.model_cnn.train: Ep 11: Train Acc: 98.91% | Val Acc: 99.27%
+2026-03-03 11:50:14 [INFO] src.model_cnn.train: Saved best model (98.9133%)
+2026-03-03 11:50:23 [INFO] src.model_cnn.train: Ep 12: Train Acc: 98.98% | Val Acc: 99.11%
+2026-03-03 11:50:23 [INFO] src.model_cnn.train: Saved best model (98.9817%)
+2026-03-03 11:50:32 [INFO] src.model_cnn.train: Ep 13: Train Acc: 98.98% | Val Acc: 99.31%
+2026-03-03 11:50:42 [INFO] src.model_cnn.train: Ep 14: Train Acc: 99.06% | Val Acc: 99.29%
+2026-03-03 11:50:42 [INFO] src.model_cnn.train: Saved best model (99.0617%)
+2026-03-03 11:50:51 [INFO] src.model_cnn.train: Ep 15: Train Acc: 99.02% | Val Acc: 98.98%
+2026-03-03 11:51:00 [INFO] src.model_cnn.train: Ep 16: Train Acc: 99.13% | Val Acc: 98.83%
+2026-03-03 11:51:00 [INFO] src.model_cnn.train: Saved best model (99.1317%)
+2026-03-03 11:51:10 [INFO] src.model_cnn.train: Ep 17: Train Acc: 99.02% | Val Acc: 99.12%
+2026-03-03 11:51:19 [INFO] src.model_cnn.train: Ep 18: Train Acc: 99.19% | Val Acc: 99.24%
+2026-03-03 11:51:19 [INFO] src.model_cnn.train: Saved best model (99.1867%)
+2026-03-03 11:51:29 [INFO] src.model_cnn.train: Ep 19: Train Acc: 99.16% | Val Acc: 98.99%
+2026-03-03 11:51:38 [INFO] src.model_cnn.train: Ep 20: Train Acc: 99.18% | Val Acc: 99.33%
+2026-03-03 11:51:47 [INFO] src.model_cnn.train: Ep 21: Train Acc: 99.15% | Val Acc: 99.31%
+2026-03-03 11:51:57 [INFO] src.model_cnn.train: Ep 22: Train Acc: 99.19% | Val Acc: 99.13%
+2026-03-03 11:51:57 [INFO] src.model_cnn.train: Saved best model (99.1933%)
+2026-03-03 11:52:06 [INFO] src.model_cnn.train: Ep 23: Train Acc: 99.20% | Val Acc: 99.32%
+2026-03-03 11:52:06 [INFO] src.model_cnn.train: Saved best model (99.2017%)
+2026-03-03 11:52:16 [INFO] src.model_cnn.train: Ep 24: Train Acc: 99.23% | Val Acc: 99.43%
+2026-03-03 11:52:16 [INFO] src.model_cnn.train: Saved best model (99.2283%)
+2026-03-03 11:52:25 [INFO] src.model_cnn.train: Ep 25: Train Acc: 99.26% | Val Acc: 98.71%
+2026-03-03 11:52:25 [INFO] src.model_cnn.train: Saved best model (99.2617%)
+2026-03-03 11:52:35 [INFO] src.model_cnn.train: Ep 26: Train Acc: 99.23% | Val Acc: 99.32%
+2026-03-03 11:52:44 [INFO] src.model_cnn.train: Ep 27: Train Acc: 99.25% | Val Acc: 99.06%
+2026-03-03 11:52:53 [INFO] src.model_cnn.train: Ep 28: Train Acc: 99.27% | Val Acc: 99.37%
+2026-03-03 11:52:53 [INFO] src.model_cnn.train: Saved best model (99.2700%)
+2026-03-03 11:53:03 [INFO] src.model_cnn.train: Ep 29: Train Acc: 99.26% | Val Acc: 98.93%
+2026-03-03 11:53:12 [INFO] src.model_cnn.train: Ep 30: Train Acc: 99.24% | Val Acc: 99.42%
+2026-03-03 11:53:21 [INFO] src.model_cnn.train: Ep 31: Train Acc: 99.17% | Val Acc: 99.42%
+2026-03-03 11:53:31 [INFO] src.model_cnn.train: Ep 32: Train Acc: 99.26% | Val Acc: 99.35%
+2026-03-03 11:53:40 [INFO] src.model_cnn.train: Ep 33: Train Acc: 99.29% | Val Acc: 99.39%
+2026-03-03 11:53:40 [INFO] src.model_cnn.train: Saved best model (99.2900%)
+2026-03-03 11:53:50 [INFO] src.model_cnn.train: Ep 34: Train Acc: 99.25% | Val Acc: 99.28%
+2026-03-03 11:53:59 [INFO] src.model_cnn.train: Ep 35: Train Acc: 99.31% | Val Acc: 99.12%
+2026-03-03 11:53:59 [INFO] src.model_cnn.train: Saved best model (99.3133%)
+2026-03-03 11:54:08 [INFO] src.model_cnn.train: Ep 36: Train Acc: 99.32% | Val Acc: 99.43%
+2026-03-03 11:54:08 [INFO] src.model_cnn.train: Saved best model (99.3200%)
+2026-03-03 11:54:18 [INFO] src.model_cnn.train: Ep 37: Train Acc: 99.28% | Val Acc: 99.22%
+2026-03-03 11:54:27 [INFO] src.model_cnn.train: Ep 38: Train Acc: 99.31% | Val Acc: 99.35%
+2026-03-03 11:54:36 [INFO] src.model_cnn.train: Ep 39: Train Acc: 99.35% | Val Acc: 99.33%
+2026-03-03 11:54:36 [INFO] src.model_cnn.train: Saved best model (99.3467%)
+2026-03-03 11:54:46 [INFO] src.model_cnn.train: Ep 40: Train Acc: 99.29% | Val Acc: 99.33%
+2026-03-03 11:54:55 [INFO] src.model_cnn.train: Ep 41: Train Acc: 99.28% | Val Acc: 99.47%
+2026-03-03 11:55:05 [INFO] src.model_cnn.train: Ep 42: Train Acc: 99.36% | Val Acc: 99.36%
+2026-03-03 11:55:05 [INFO] src.model_cnn.train: Saved best model (99.3600%)
+2026-03-03 11:55:14 [INFO] src.model_cnn.train: Ep 43: Train Acc: 99.36% | Val Acc: 99.30%
+2026-03-03 11:55:23 [INFO] src.model_cnn.train: Ep 44: Train Acc: 99.28% | Val Acc: 99.15%
+2026-03-03 11:55:33 [INFO] src.model_cnn.train: Ep 45: Train Acc: 99.36% | Val Acc: 99.17%
+2026-03-03 11:55:42 [INFO] src.model_cnn.train: Ep 46: Train Acc: 99.30% | Val Acc: 99.42%
+2026-03-03 11:55:51 [INFO] src.model_cnn.train: Ep 47: Train Acc: 99.34% | Val Acc: 99.42%
+2026-03-03 11:56:01 [INFO] src.model_cnn.train: Ep 48: Train Acc: 99.37% | Val Acc: 99.43%
+2026-03-03 11:56:01 [INFO] src.model_cnn.train: Saved best model (99.3733%)
+2026-03-03 11:56:10 [INFO] src.model_cnn.train: Ep 49: Train Acc: 99.39% | Val Acc: 99.47%
+2026-03-03 11:56:10 [INFO] src.model_cnn.train: Saved best model (99.3883%)
+2026-03-03 11:56:20 [INFO] src.model_cnn.train: Ep 50: Train Acc: 99.33% | Val Acc: 99.30%
+2026-03-03 11:56:20 [INFO] src.model_cnn.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-03-03 11:56:20 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-03-03 11:56:20 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-03-03 11:56:28 [INFO] src.evaluation.evaluate: Evaluation [Baseline Float32] - Acc: 99.30%, F1: 0.9930, Prec: 0.9932, Rec: 0.9929, Time: 0.8238ms
+2026-03-03 11:56:28 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-03-03 11:56:28 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:56:28 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:56:29 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:56:29 [INFO] Experiment: Analyzing real quantization fidelity for Affine_PTQ...
+2026-03-03 11:56:29 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:57:11 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Affine_PTQ_run_3.csv
+2026-03-03 11:57:11 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-03-03 11:57:13 [INFO] src.evaluation.evaluate: Evaluation [Affine_PTQ] - Acc: 99.30%, F1: 0.9930, Prec: 0.9932, Rec: 0.9928, Time: 0.1817ms
+2026-03-03 11:57:13 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-03-03 11:57:13 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:57:13 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:57:13 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:57:13 [INFO] Experiment: Analyzing real quantization fidelity for Symmetric_PTQ...
+2026-03-03 11:57:13 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:57:55 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Symmetric_PTQ_run_3.csv
+2026-03-03 11:57:55 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-03-03 11:57:56 [INFO] src.evaluation.evaluate: Evaluation [Symmetric_PTQ] - Acc: 99.32%, F1: 0.9932, Prec: 0.9934, Rec: 0.9931, Time: 0.1570ms
+2026-03-03 11:57:56 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-03-03 11:57:56 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:57:56 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 11:57:57 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 11:57:57 [INFO] Experiment: Analyzing real quantization fidelity for PoT_PTQ...
+2026-03-03 11:57:57 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 11:58:38 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_PoT_PTQ_run_3.csv
+2026-03-03 11:58:38 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-03-03 11:58:40 [INFO] src.evaluation.evaluate: Evaluation [PoT_PTQ] - Acc: 99.21%, F1: 0.9921, Prec: 0.9923, Rec: 0.9919, Time: 0.1543ms
+2026-03-03 11:58:40 [INFO] Experiment:  Starting Run 5/5
+2026-03-03 11:58:40 [INFO] Experiment: Loading datasets...
+2026-03-03 11:58:40 [INFO] Experiment: No baseline found. Starting training...
+2026-03-03 11:58:40 [INFO] src.model_cnn.train: Starte Training auf Device: cuda
+2026-03-03 11:58:49 [INFO] src.model_cnn.train: Ep 1: Train Acc: 94.39% | Val Acc: 96.07%
+2026-03-03 11:58:49 [INFO] src.model_cnn.train: Saved best model (94.3917%)
+2026-03-03 11:58:59 [INFO] src.model_cnn.train: Ep 2: Train Acc: 97.80% | Val Acc: 98.70%
+2026-03-03 11:58:59 [INFO] src.model_cnn.train: Saved best model (97.8000%)
+2026-03-03 11:59:08 [INFO] src.model_cnn.train: Ep 3: Train Acc: 98.20% | Val Acc: 98.84%
+2026-03-03 11:59:08 [INFO] src.model_cnn.train: Saved best model (98.2033%)
+2026-03-03 11:59:18 [INFO] src.model_cnn.train: Ep 4: Train Acc: 98.39% | Val Acc: 99.04%
+2026-03-03 11:59:18 [INFO] src.model_cnn.train: Saved best model (98.3900%)
+2026-03-03 11:59:27 [INFO] src.model_cnn.train: Ep 5: Train Acc: 98.60% | Val Acc: 99.03%
+2026-03-03 11:59:27 [INFO] src.model_cnn.train: Saved best model (98.6033%)
+2026-03-03 11:59:36 [INFO] src.model_cnn.train: Ep 6: Train Acc: 98.69% | Val Acc: 98.82%
+2026-03-03 11:59:36 [INFO] src.model_cnn.train: Saved best model (98.6867%)
+2026-03-03 11:59:46 [INFO] src.model_cnn.train: Ep 7: Train Acc: 98.71% | Val Acc: 99.04%
+2026-03-03 11:59:46 [INFO] src.model_cnn.train: Saved best model (98.7100%)
+2026-03-03 11:59:55 [INFO] src.model_cnn.train: Ep 8: Train Acc: 98.80% | Val Acc: 99.29%
+2026-03-03 11:59:55 [INFO] src.model_cnn.train: Saved best model (98.7967%)
+2026-03-03 12:00:05 [INFO] src.model_cnn.train: Ep 9: Train Acc: 98.90% | Val Acc: 99.27%
+2026-03-03 12:00:05 [INFO] src.model_cnn.train: Saved best model (98.8983%)
+2026-03-03 12:00:14 [INFO] src.model_cnn.train: Ep 10: Train Acc: 98.90% | Val Acc: 99.17%
+2026-03-03 12:00:23 [INFO] src.model_cnn.train: Ep 11: Train Acc: 98.99% | Val Acc: 99.25%
+2026-03-03 12:00:23 [INFO] src.model_cnn.train: Saved best model (98.9917%)
+2026-03-03 12:00:33 [INFO] src.model_cnn.train: Ep 12: Train Acc: 98.98% | Val Acc: 99.17%
+2026-03-03 12:00:42 [INFO] src.model_cnn.train: Ep 13: Train Acc: 99.04% | Val Acc: 99.34%
+2026-03-03 12:00:42 [INFO] src.model_cnn.train: Saved best model (99.0400%)
+2026-03-03 12:00:52 [INFO] src.model_cnn.train: Ep 14: Train Acc: 99.08% | Val Acc: 99.03%
+2026-03-03 12:00:52 [INFO] src.model_cnn.train: Saved best model (99.0817%)
+2026-03-03 12:01:01 [INFO] src.model_cnn.train: Ep 15: Train Acc: 99.04% | Val Acc: 99.47%
+2026-03-03 12:01:10 [INFO] src.model_cnn.train: Ep 16: Train Acc: 99.11% | Val Acc: 99.18%
+2026-03-03 12:01:10 [INFO] src.model_cnn.train: Saved best model (99.1050%)
+2026-03-03 12:01:20 [INFO] src.model_cnn.train: Ep 17: Train Acc: 99.14% | Val Acc: 99.27%
+2026-03-03 12:01:20 [INFO] src.model_cnn.train: Saved best model (99.1450%)
+2026-03-03 12:01:29 [INFO] src.model_cnn.train: Ep 18: Train Acc: 99.08% | Val Acc: 99.33%
+2026-03-03 12:01:38 [INFO] src.model_cnn.train: Ep 19: Train Acc: 99.19% | Val Acc: 99.37%
+2026-03-03 12:01:38 [INFO] src.model_cnn.train: Saved best model (99.1900%)
+2026-03-03 12:01:48 [INFO] src.model_cnn.train: Ep 20: Train Acc: 99.11% | Val Acc: 99.12%
+2026-03-03 12:01:57 [INFO] src.model_cnn.train: Ep 21: Train Acc: 99.25% | Val Acc: 99.40%
+2026-03-03 12:01:57 [INFO] src.model_cnn.train: Saved best model (99.2550%)
+2026-03-03 12:02:07 [INFO] src.model_cnn.train: Ep 22: Train Acc: 99.13% | Val Acc: 99.21%
+2026-03-03 12:02:16 [INFO] src.model_cnn.train: Ep 23: Train Acc: 99.24% | Val Acc: 99.04%
+2026-03-03 12:02:25 [INFO] src.model_cnn.train: Ep 24: Train Acc: 99.17% | Val Acc: 99.30%
+2026-03-03 12:02:35 [INFO] src.model_cnn.train: Ep 25: Train Acc: 99.22% | Val Acc: 99.35%
+2026-03-03 12:02:44 [INFO] src.model_cnn.train: Ep 26: Train Acc: 99.21% | Val Acc: 99.35%
+2026-03-03 12:02:54 [INFO] src.model_cnn.train: Ep 27: Train Acc: 99.26% | Val Acc: 99.21%
+2026-03-03 12:02:54 [INFO] src.model_cnn.train: Saved best model (99.2633%)
+2026-03-03 12:03:03 [INFO] src.model_cnn.train: Ep 28: Train Acc: 99.22% | Val Acc: 99.42%
+2026-03-03 12:03:12 [INFO] src.model_cnn.train: Ep 29: Train Acc: 99.30% | Val Acc: 99.30%
+2026-03-03 12:03:12 [INFO] src.model_cnn.train: Saved best model (99.3017%)
+2026-03-03 12:03:22 [INFO] src.model_cnn.train: Ep 30: Train Acc: 99.23% | Val Acc: 99.17%
+2026-03-03 12:03:31 [INFO] src.model_cnn.train: Ep 31: Train Acc: 99.26% | Val Acc: 99.35%
+2026-03-03 12:03:41 [INFO] src.model_cnn.train: Ep 32: Train Acc: 99.30% | Val Acc: 99.25%
+2026-03-03 12:03:50 [INFO] src.model_cnn.train: Ep 33: Train Acc: 99.32% | Val Acc: 99.27%
+2026-03-03 12:03:50 [INFO] src.model_cnn.train: Saved best model (99.3217%)
+2026-03-03 12:03:59 [INFO] src.model_cnn.train: Ep 34: Train Acc: 99.26% | Val Acc: 99.39%
+2026-03-03 12:04:09 [INFO] src.model_cnn.train: Ep 35: Train Acc: 99.30% | Val Acc: 99.28%
+2026-03-03 12:04:18 [INFO] src.model_cnn.train: Ep 36: Train Acc: 99.27% | Val Acc: 99.39%
+2026-03-03 12:04:28 [INFO] src.model_cnn.train: Ep 37: Train Acc: 99.28% | Val Acc: 99.38%
+2026-03-03 12:04:37 [INFO] src.model_cnn.train: Ep 38: Train Acc: 99.36% | Val Acc: 99.12%
+2026-03-03 12:04:37 [INFO] src.model_cnn.train: Saved best model (99.3650%)
+2026-03-03 12:04:47 [INFO] src.model_cnn.train: Ep 39: Train Acc: 99.26% | Val Acc: 99.39%
+2026-03-03 12:04:56 [INFO] src.model_cnn.train: Ep 40: Train Acc: 99.31% | Val Acc: 99.32%
+2026-03-03 12:05:05 [INFO] src.model_cnn.train: Ep 41: Train Acc: 99.34% | Val Acc: 99.44%
+2026-03-03 12:05:15 [INFO] src.model_cnn.train: Ep 42: Train Acc: 99.34% | Val Acc: 99.35%
+2026-03-03 12:05:24 [INFO] src.model_cnn.train: Ep 43: Train Acc: 99.36% | Val Acc: 99.22%
+2026-03-03 12:05:34 [INFO] src.model_cnn.train: Ep 44: Train Acc: 99.37% | Val Acc: 99.31%
+2026-03-03 12:05:34 [INFO] src.model_cnn.train: Saved best model (99.3700%)
+2026-03-03 12:05:43 [INFO] src.model_cnn.train: Ep 45: Train Acc: 99.34% | Val Acc: 99.18%
+2026-03-03 12:05:52 [INFO] src.model_cnn.train: Ep 46: Train Acc: 99.32% | Val Acc: 99.41%
+2026-03-03 12:06:02 [INFO] src.model_cnn.train: Ep 47: Train Acc: 99.38% | Val Acc: 99.22%
+2026-03-03 12:06:02 [INFO] src.model_cnn.train: Saved best model (99.3817%)
+2026-03-03 12:06:11 [INFO] src.model_cnn.train: Ep 48: Train Acc: 99.36% | Val Acc: 99.16%
+2026-03-03 12:06:20 [INFO] src.model_cnn.train: Ep 49: Train Acc: 99.31% | Val Acc: 99.33%
+2026-03-03 12:06:30 [INFO] src.model_cnn.train: Ep 50: Train Acc: 99.40% | Val Acc: 99.50%
+2026-03-03 12:06:30 [INFO] src.model_cnn.train: Saved best model (99.4033%)
+2026-03-03 12:06:30 [INFO] src.model_cnn.train: Training abgeschlossen. Baseline gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/models/baseline_float32.pt
+2026-03-03 12:06:30 [INFO] Experiment: Evaluating Baseline (Float32)...
+2026-03-03 12:06:30 [INFO] src.evaluation.evaluate: Starting evaluation: Baseline Float32 (Sample Size: 10000)
+2026-03-03 12:06:38 [INFO] src.evaluation.evaluate: Evaluation [Baseline Float32] - Acc: 99.50%, F1: 0.9950, Prec: 0.9950, Rec: 0.9949, Time: 0.8248ms
+2026-03-03 12:06:38 [INFO] Experiment: --- Starting Experiment: Affine_PTQ ---
+2026-03-03 12:06:38 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 12:06:38 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 12:06:39 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 12:06:39 [INFO] Experiment: Analyzing real quantization fidelity for Affine_PTQ...
+2026-03-03 12:06:39 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 12:07:21 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Affine_PTQ_run_4.csv
+2026-03-03 12:07:21 [INFO] src.evaluation.evaluate: Starting evaluation: Affine_PTQ (Sample Size: 10000)
+2026-03-03 12:07:23 [INFO] src.evaluation.evaluate: Evaluation [Affine_PTQ] - Acc: 99.43%, F1: 0.9943, Prec: 0.9944, Rec: 0.9942, Time: 0.1810ms
+2026-03-03 12:07:23 [INFO] Experiment: --- Starting Experiment: Symmetric_PTQ ---
+2026-03-03 12:07:23 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 12:07:23 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 12:07:23 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 12:07:23 [INFO] Experiment: Analyzing real quantization fidelity for Symmetric_PTQ...
+2026-03-03 12:07:23 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 12:08:04 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Symmetric_PTQ_run_4.csv
+2026-03-03 12:08:04 [INFO] src.evaluation.evaluate: Starting evaluation: Symmetric_PTQ (Sample Size: 10000)
+2026-03-03 12:08:06 [INFO] src.evaluation.evaluate: Evaluation [Symmetric_PTQ] - Acc: 99.43%, F1: 0.9943, Prec: 0.9944, Rec: 0.9942, Time: 0.1545ms
+2026-03-03 12:08:06 [INFO] Experiment: --- Starting Experiment: PoT_PTQ ---
+2026-03-03 12:08:06 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 12:08:06 [INFO] Experiment: No quantized model found. Running full PTQ pipeline...
+2026-03-03 12:08:06 [INFO] Experiment: Fused layers: [['conv1', 'bn1', 'relu1'], ['conv2', 'bn2', 'relu2'], ['conv3', 'bn3', 'relu3'], ['conv4', 'bn4', 'relu4']]
+2026-03-03 12:08:06 [INFO] Experiment: Analyzing real quantization fidelity for PoT_PTQ...
+2026-03-03 12:08:06 [INFO] Experiment: --- Starting Real Quantized Layer-wise Analysis over full test set ---
+2026-03-03 12:08:47 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_PoT_PTQ_run_4.csv
+2026-03-03 12:08:47 [INFO] src.evaluation.evaluate: Starting evaluation: PoT_PTQ (Sample Size: 10000)
+2026-03-03 12:08:49 [INFO] src.evaluation.evaluate: Evaluation [PoT_PTQ] - Acc: 99.35%, F1: 0.9935, Prec: 0.9936, Rec: 0.9934, Time: 0.1557ms
+2026-03-03 12:08:49 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/quantization_results_MNIST.csv
+2026-03-03 12:08:49 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Affine_PTQ_AVG.csv
+2026-03-03 12:08:49 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_Symmetric_PTQ_AVG.csv
+2026-03-03 12:08:49 [INFO] src.utility.utils: Daten gespeichert unter: /home/dominic/Desktop/Research-Project/Forschungsprojekt/results/csv/fidelity_PoT_PTQ_AVG.csv
+2026-03-03 12:08:49 [INFO] Experiment: === All Experiments Completed ===

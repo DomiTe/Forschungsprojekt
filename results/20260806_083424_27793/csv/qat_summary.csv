@@ -1,0 +1,7 @@
+model,dataset,ptq_val_acc,qat_val_acc,acc_recovered,fp32_fps,qat_fps,speedup,status
+cnn,IMAGENET100,28.92,54.68,25.76,1455.7,302.0,0.21,ok
+resnet18_no_weights,IMAGENET100,69.46,82.58,13.12,507.4,111.7,0.22,ok
+resnet50_no_weights,IMAGENET100,54.90,83.78,28.88,204.2,19.7,0.10,ok
+cnn,CIFAR10,73.22,84.66,11.44,1444.6,464.4,0.32,ok
+resnet18_no_weights,CIFAR10,82.00,88.51,6.51,449.6,103.1,0.23,ok
+resnet50_no_weights,CIFAR10,50.13,86.82,36.69,187.6,35.9,0.19,ok

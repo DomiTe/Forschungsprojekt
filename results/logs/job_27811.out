@@ -1,0 +1,63 @@
+2026-08-06 16:41:38 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-06 16:41:38 [INFO] __main__: === Benchmark-Int8-Only: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-06 16:41:38 [INFO] __main__: 
+--- Benchmark-Int8 PTQ cnn on CIFAR10 ---
+2026-08-06 16:41:38 [INFO] __main__: [Benchmark-Int8] PTQ cnn/CIFAR10: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:41:47 [WARNING] src.analysis.benchmark: [Benchmark] fp32 latency-vs-batch fit has R^2=0.851 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:41:47 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.526 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:41:47 [INFO] __main__: [Benchmark-Int8] PTQ cnn/CIFAR10 | size 5.54MB -> 2.51MB (2.21x) | compute speedup 0.02x
+2026-08-06 16:41:47 [INFO] __main__: 
+--- Benchmark-Int8 QAT cnn on CIFAR10 ---
+2026-08-06 16:41:47 [INFO] __main__: [Benchmark-Int8] QAT cnn/CIFAR10: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:41:56 [WARNING] src.analysis.benchmark: [Benchmark] fp32 latency-vs-batch fit has R^2=0.127 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:41:56 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.484 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:41:56 [INFO] __main__: [Benchmark-Int8] QAT cnn/CIFAR10 | size 5.54MB -> 2.51MB (2.21x) | compute speedup 0.01x
+2026-08-06 16:41:56 [INFO] __main__: 
+--- Benchmark-Int8 PTQ resnet18_no_weights on CIFAR10 ---
+2026-08-06 16:41:56 [INFO] __main__: [Benchmark-Int8] PTQ resnet18_no_weights/CIFAR10: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:42:09 [WARNING] src.analysis.benchmark: [Benchmark] fp32 latency-vs-batch fit has R^2=0.862 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:42:09 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.001 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:42:09 [INFO] __main__: [Benchmark-Int8] PTQ resnet18_no_weights/CIFAR10 | size 42.70MB -> 42.61MB (1.00x) | compute speedup -8.32x
+2026-08-06 16:42:09 [INFO] __main__: 
+--- Benchmark-Int8 QAT resnet18_no_weights on CIFAR10 ---
+2026-08-06 16:42:09 [INFO] __main__: [Benchmark-Int8] QAT resnet18_no_weights/CIFAR10: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:42:22 [WARNING] src.analysis.benchmark: [Benchmark] fp32 latency-vs-batch fit has R^2=0.852 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:42:22 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.001 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:42:22 [INFO] __main__: [Benchmark-Int8] QAT resnet18_no_weights/CIFAR10 | size 42.70MB -> 42.61MB (1.00x) | compute speedup -7.66x
+2026-08-06 16:42:22 [INFO] __main__: 
+--- Benchmark-Int8 PTQ resnet50_no_weights on CIFAR10 ---
+2026-08-06 16:42:23 [INFO] __main__: [Benchmark-Int8] PTQ resnet50_no_weights/CIFAR10: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:42:50 [INFO] __main__: [Benchmark-Int8] PTQ resnet50_no_weights/CIFAR10 | size 90.03MB -> 89.80MB (1.00x) | compute speedup 0.95x
+2026-08-06 16:42:50 [INFO] __main__: 
+--- Benchmark-Int8 QAT resnet50_no_weights on CIFAR10 ---
+2026-08-06 16:42:52 [INFO] __main__: [Benchmark-Int8] QAT resnet50_no_weights/CIFAR10: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:43:19 [INFO] __main__: [Benchmark-Int8] QAT resnet50_no_weights/CIFAR10 | size 90.03MB -> 89.80MB (1.00x) | compute speedup 0.95x
+2026-08-06 16:43:19 [INFO] __main__: 
+--- Benchmark-Int8 PTQ cnn on IMAGENET100 ---
+2026-08-06 16:43:20 [INFO] __main__: [Benchmark-Int8] PTQ cnn/IMAGENET100: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:43:39 [INFO] __main__: [Benchmark-Int8] PTQ cnn/IMAGENET100 | size 5.89MB -> 2.59MB (2.27x) | compute speedup 1.06x
+2026-08-06 16:43:39 [INFO] __main__: 
+--- Benchmark-Int8 QAT cnn on IMAGENET100 ---
+2026-08-06 16:43:40 [INFO] __main__: [Benchmark-Int8] QAT cnn/IMAGENET100: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:43:59 [INFO] __main__: [Benchmark-Int8] QAT cnn/IMAGENET100 | size 5.89MB -> 2.59MB (2.27x) | compute speedup 1.05x
+2026-08-06 16:43:59 [INFO] __main__: 
+--- Benchmark-Int8 PTQ resnet18_no_weights on IMAGENET100 ---
+2026-08-06 16:44:00 [INFO] __main__: [Benchmark-Int8] PTQ resnet18_no_weights/IMAGENET100: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:44:21 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.557 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:44:21 [INFO] __main__: [Benchmark-Int8] PTQ resnet18_no_weights/IMAGENET100 | size 42.91MB -> 42.68MB (1.01x) | compute speedup 1.21x
+2026-08-06 16:44:21 [INFO] __main__: 
+--- Benchmark-Int8 QAT resnet18_no_weights on IMAGENET100 ---
+2026-08-06 16:44:22 [INFO] __main__: [Benchmark-Int8] QAT resnet18_no_weights/IMAGENET100: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:44:43 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.579 < 0.9; overhead/compute decomposition may be unreliable (raw sweep is still valid).
+2026-08-06 16:44:43 [INFO] __main__: [Benchmark-Int8] QAT resnet18_no_weights/IMAGENET100 | size 42.91MB -> 42.68MB (1.01x) | compute speedup 1.20x
+2026-08-06 16:44:43 [INFO] __main__: 
+--- Benchmark-Int8 PTQ resnet50_no_weights on IMAGENET100 ---
+2026-08-06 16:44:44 [INFO] __main__: [Benchmark-Int8] PTQ resnet50_no_weights/IMAGENET100: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:45:35 [INFO] __main__: [Benchmark-Int8] PTQ resnet50_no_weights/IMAGENET100 | size 90.76MB -> 90.00MB (1.01x) | compute speedup 0.94x
+2026-08-06 16:45:35 [INFO] __main__: 
+--- Benchmark-Int8 QAT resnet50_no_weights on IMAGENET100 ---
+2026-08-06 16:45:37 [INFO] __main__: [Benchmark-Int8] QAT resnet50_no_weights/IMAGENET100: quantized weight type = LinearActivationQuantizedTensor
+2026-08-06 16:46:29 [INFO] __main__: [Benchmark-Int8] QAT resnet50_no_weights/IMAGENET100 | size 90.76MB -> 90.00MB (1.01x) | compute speedup 0.94x
+2026-08-06 16:46:29 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260806_164127_27811/csv/benchmark_sweep.csv
+2026-08-06 16:46:29 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260806_164127_27811/csv/benchmark_summary.csv
+2026-08-06 16:46:29 [INFO] __main__: === Benchmark-Int8-Only complete ===

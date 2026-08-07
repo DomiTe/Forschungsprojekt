@@ -1,0 +1,51 @@
+2026-08-06 16:34:48 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-06 16:34:48 [INFO] __main__: === Benchmark-Int8-Only: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-06 16:34:48 [INFO] __main__: 
+--- Benchmark-Int8 PTQ cnn on CIFAR10 ---
+2026-08-06 16:34:53 [WARNING] src.analysis.benchmark: [Benchmark] fp32 latency-vs-batch fit has R^2=0.349 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:34:53 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.544 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:34:53 [INFO] __main__: [Benchmark-Int8] PTQ cnn/CIFAR10 | size 5.53MB -> 5.52MB (1.00x) | compute speedup 0.02x
+2026-08-06 16:34:53 [INFO] __main__: 
+--- Benchmark-Int8 QAT cnn on CIFAR10 ---
+2026-08-06 16:34:57 [WARNING] src.analysis.benchmark: [Benchmark] fp32 latency-vs-batch fit has R^2=0.264 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:34:57 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.628 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:34:57 [INFO] __main__: [Benchmark-Int8] QAT cnn/CIFAR10 | size 5.53MB -> 5.52MB (1.00x) | compute speedup 0.01x
+2026-08-06 16:34:57 [INFO] __main__: 
+--- Benchmark-Int8 PTQ resnet18_no_weights on CIFAR10 ---
+2026-08-06 16:35:04 [WARNING] src.analysis.benchmark: [Benchmark] fp32 latency-vs-batch fit has R^2=0.833 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:35:04 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.002 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:35:04 [INFO] __main__: [Benchmark-Int8] PTQ resnet18_no_weights/CIFAR10 | size 42.66MB -> 42.61MB (1.00x) | compute speedup -5.00x
+2026-08-06 16:35:04 [INFO] __main__: 
+--- Benchmark-Int8 QAT resnet18_no_weights on CIFAR10 ---
+2026-08-06 16:35:11 [WARNING] src.analysis.benchmark: [Benchmark] fp32 latency-vs-batch fit has R^2=0.854 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:35:11 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.001 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:35:11 [INFO] __main__: [Benchmark-Int8] QAT resnet18_no_weights/CIFAR10 | size 42.66MB -> 42.61MB (1.00x) | compute speedup -7.59x
+2026-08-06 16:35:11 [INFO] __main__: 
+--- Benchmark-Int8 PTQ resnet50_no_weights on CIFAR10 ---
+2026-08-06 16:35:26 [INFO] __main__: [Benchmark-Int8] PTQ resnet50_no_weights/CIFAR10 | size 89.93MB -> 89.80MB (1.00x) | compute speedup 0.94x
+2026-08-06 16:35:26 [INFO] __main__: 
+--- Benchmark-Int8 QAT resnet50_no_weights on CIFAR10 ---
+2026-08-06 16:35:40 [INFO] __main__: [Benchmark-Int8] QAT resnet50_no_weights/CIFAR10 | size 89.93MB -> 89.80MB (1.00x) | compute speedup 0.93x
+2026-08-06 16:35:40 [INFO] __main__: 
+--- Benchmark-Int8 PTQ cnn on IMAGENET100 ---
+2026-08-06 16:35:49 [INFO] __main__: [Benchmark-Int8] PTQ cnn/IMAGENET100 | size 5.88MB -> 5.88MB (1.00x) | compute speedup 1.07x
+2026-08-06 16:35:49 [INFO] __main__: 
+--- Benchmark-Int8 QAT cnn on IMAGENET100 ---
+2026-08-06 16:35:58 [INFO] __main__: [Benchmark-Int8] QAT cnn/IMAGENET100 | size 5.88MB -> 5.88MB (1.00x) | compute speedup 1.05x
+2026-08-06 16:35:58 [INFO] __main__: 
+--- Benchmark-Int8 PTQ resnet18_no_weights on IMAGENET100 ---
+2026-08-06 16:36:09 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.534 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:36:09 [INFO] __main__: [Benchmark-Int8] PTQ resnet18_no_weights/IMAGENET100 | size 42.87MB -> 42.81MB (1.00x) | compute speedup 1.21x
+2026-08-06 16:36:09 [INFO] __main__: 
+--- Benchmark-Int8 QAT resnet18_no_weights on IMAGENET100 ---
+2026-08-06 16:36:20 [WARNING] src.analysis.benchmark: [Benchmark] int8 latency-vs-batch fit has R^2=0.554 < 0.9; overhead/compute decomposition may be unreliable.
+2026-08-06 16:36:20 [INFO] __main__: [Benchmark-Int8] QAT resnet18_no_weights/IMAGENET100 | size 42.87MB -> 42.81MB (1.00x) | compute speedup 1.21x
+2026-08-06 16:36:20 [INFO] __main__: 
+--- Benchmark-Int8 PTQ resnet50_no_weights on IMAGENET100 ---
+2026-08-06 16:36:46 [INFO] __main__: [Benchmark-Int8] PTQ resnet50_no_weights/IMAGENET100 | size 90.66MB -> 90.53MB (1.00x) | compute speedup 0.94x
+2026-08-06 16:36:46 [INFO] __main__: 
+--- Benchmark-Int8 QAT resnet50_no_weights on IMAGENET100 ---
+2026-08-06 16:37:13 [INFO] __main__: [Benchmark-Int8] QAT resnet50_no_weights/IMAGENET100 | size 90.66MB -> 90.53MB (1.00x) | compute speedup 0.97x
+2026-08-06 16:37:13 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260806_163437_27810/csv/benchmark_sweep.csv
+2026-08-06 16:37:13 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260806_163437_27810/csv/benchmark_summary.csv
+2026-08-06 16:37:13 [INFO] __main__: === Benchmark-Int8-Only complete ===

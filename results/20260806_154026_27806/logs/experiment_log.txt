@@ -1,0 +1,30 @@
+2026-08-06 15:40:37 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-06 15:40:37 [INFO] __main__: === Deploy-Int8-Only: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-06 15:40:37 [INFO] __main__: 
+============================================================
+2026-08-06 15:40:37 [INFO] __main__: [Deploy-Int8] Loading dataset: IMAGENET100
+2026-08-06 15:40:37 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-06 15:40:37 [INFO] __main__: 
+--- Deploy-Int8 cnn on IMAGENET100 ---
+2026-08-06 15:40:59 [INFO] __main__: [Deploy-Int8] cnn/IMAGENET100 | PoT baked: 54.80% | Weight-only int8: 54.78% | Full int8: 54.70%
+2026-08-06 15:40:59 [INFO] __main__: 
+--- Deploy-Int8 resnet18_no_weights on IMAGENET100 ---
+2026-08-06 15:41:20 [INFO] __main__: [Deploy-Int8] resnet18_no_weights/IMAGENET100 | PoT baked: 82.64% | Weight-only int8: 82.62% | Full int8: 82.60%
+2026-08-06 15:41:20 [INFO] __main__: 
+--- Deploy-Int8 resnet50_no_weights on IMAGENET100 ---
+2026-08-06 15:41:42 [INFO] __main__: [Deploy-Int8] resnet50_no_weights/IMAGENET100 | PoT baked: 83.78% | Weight-only int8: 83.74% | Full int8: 83.72%
+2026-08-06 15:41:42 [INFO] __main__: 
+============================================================
+2026-08-06 15:41:42 [INFO] __main__: [Deploy-Int8] Loading dataset: CIFAR10
+2026-08-06 15:41:43 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-06 15:41:43 [INFO] __main__: 
+--- Deploy-Int8 cnn on CIFAR10 ---
+2026-08-06 15:41:46 [INFO] __main__: [Deploy-Int8] cnn/CIFAR10 | PoT baked: 84.68% | Weight-only int8: 84.68% | Full int8: 84.64%
+2026-08-06 15:41:46 [INFO] __main__: 
+--- Deploy-Int8 resnet18_no_weights on CIFAR10 ---
+2026-08-06 15:41:49 [INFO] __main__: [Deploy-Int8] resnet18_no_weights/CIFAR10 | PoT baked: 88.46% | Weight-only int8: 88.47% | Full int8: 88.49%
+2026-08-06 15:41:49 [INFO] __main__: 
+--- Deploy-Int8 resnet50_no_weights on CIFAR10 ---
+2026-08-06 15:41:55 [INFO] __main__: [Deploy-Int8] resnet50_no_weights/CIFAR10 | PoT baked: 86.48% | Weight-only int8: 86.48% | Full int8: 86.49%
+2026-08-06 15:41:55 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260806_154026_27806/csv/deployment_int8.csv
+2026-08-06 15:41:55 [INFO] __main__: === Deploy-Int8-Only complete ===

@@ -1,0 +1,7 @@
+model,dataset,pot_baked_acc,weight_only_int8_acc,full_int8_acc
+cnn,IMAGENET100,54.80,54.78,54.70
+resnet18_no_weights,IMAGENET100,82.64,82.62,82.60
+resnet50_no_weights,IMAGENET100,83.78,83.74,83.72
+cnn,CIFAR10,84.68,84.68,84.64
+resnet18_no_weights,CIFAR10,88.46,88.47,88.49
+resnet50_no_weights,CIFAR10,86.48,86.48,86.49

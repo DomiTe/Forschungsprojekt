@@ -1,0 +1,7 @@
+model,dataset,fp32_val_acc,ptq_val_acc,acc_drop,fp32_fps,ptq_fps,speedup,status
+cnn,IMAGENET100,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,failed
+resnet18_no_weights,IMAGENET100,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,failed
+resnet50_no_weights,IMAGENET100,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,failed
+cnn,CIFAR10,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,failed
+resnet18_no_weights,CIFAR10,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,failed
+resnet50_no_weights,CIFAR10,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,failed

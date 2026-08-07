@@ -1,0 +1,1138 @@
+2026-08-04 23:39:06 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-04 23:39:06 [INFO] __main__: 
+============================================================
+2026-08-04 23:39:06 [INFO] __main__: Loading dataset: IMAGENET100
+2026-08-04 23:39:06 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-04 23:39:07 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-04 23:39:07 [INFO] __main__: 
+--- Run 1/6: cnn on IMAGENET100 ---
+2026-08-04 23:39:07 [INFO] src.model_cnn.train: Model: cnn | Dataset: IMAGENET100 | Size: 5.88 MB | Params: 1,541,476
+2026-08-04 23:41:22 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 3.9471 A 9.45% | Val L 3.5787 A 14.82%
+2026-08-04 23:43:31 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 3.4632 A 17.12% | Val L 3.3078 A 20.82%
+2026-08-04 23:45:40 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 3.1769 A 22.71% | Val L 3.0370 A 24.94%
+2026-08-04 23:47:48 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 3.0080 A 26.01% | Val L 3.1425 A 23.62%
+2026-08-04 23:49:54 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 2.8914 A 28.47% | Val L 2.7760 A 29.78%
+2026-08-04 23:52:06 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 2.7955 A 30.57% | Val L 2.6203 A 33.94%
+2026-08-04 23:54:13 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 2.7223 A 31.86% | Val L 3.0582 A 27.48%
+2026-08-04 23:56:20 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 2.6633 A 33.29% | Val L 2.6828 A 32.06%
+2026-08-04 23:58:28 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 2.6240 A 34.11% | Val L 2.6136 A 35.18%
+2026-08-05 00:00:36 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 2.6001 A 34.71% | Val L 2.5882 A 35.18%
+2026-08-05 00:02:41 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 2.5627 A 35.55% | Val L 2.5905 A 35.02%
+2026-08-05 00:04:48 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 2.5322 A 36.10% | Val L 4.0521 A 23.28%
+2026-08-05 00:06:58 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 2.5127 A 36.46% | Val L 2.4444 A 37.96%
+2026-08-05 00:09:05 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 2.4889 A 36.88% | Val L 2.5340 A 35.90%
+2026-08-05 00:11:11 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 2.4815 A 37.34% | Val L 2.4657 A 37.94%
+2026-08-05 00:13:19 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 2.4624 A 37.50% | Val L 2.7508 A 33.64%
+2026-08-05 00:15:25 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 2.4435 A 37.91% | Val L 2.4257 A 38.40%
+2026-08-05 00:17:31 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 2.4441 A 37.87% | Val L 2.3862 A 39.12%
+2026-08-05 00:19:39 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 2.4312 A 38.37% | Val L 2.3881 A 38.44%
+2026-08-05 00:21:46 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 2.4149 A 38.87% | Val L 2.3062 A 40.42%
+2026-08-05 00:23:53 [INFO] src.model_cnn.train: Epoch  21/200 | LR 0.09730 | Train L 2.4143 A 38.58% | Val L 2.6441 A 35.10%
+2026-08-05 00:26:00 [INFO] src.model_cnn.train: Epoch  22/200 | LR 0.09704 | Train L 2.4062 A 39.00% | Val L 2.9442 A 32.16%
+2026-08-05 00:28:07 [INFO] src.model_cnn.train: Epoch  23/200 | LR 0.09677 | Train L 2.4049 A 38.92% | Val L 2.4462 A 38.18%
+2026-08-05 00:30:14 [INFO] src.model_cnn.train: Epoch  24/200 | LR 0.09649 | Train L 2.3931 A 39.24% | Val L 2.5416 A 36.28%
+2026-08-05 00:32:20 [INFO] src.model_cnn.train: Epoch  25/200 | LR 0.09619 | Train L 2.3849 A 39.26% | Val L 2.6174 A 35.88%
+2026-08-05 00:34:27 [INFO] src.model_cnn.train: Epoch  26/200 | LR 0.09589 | Train L 2.3754 A 39.38% | Val L 2.2733 A 41.80%
+2026-08-05 00:36:32 [INFO] src.model_cnn.train: Epoch  27/200 | LR 0.09557 | Train L 2.3746 A 39.69% | Val L 2.3860 A 39.38%
+2026-08-05 00:38:42 [INFO] src.model_cnn.train: Epoch  28/200 | LR 0.09524 | Train L 2.3698 A 39.60% | Val L 2.3110 A 42.00%
+2026-08-05 00:40:50 [INFO] src.model_cnn.train: Epoch  29/200 | LR 0.09490 | Train L 2.3630 A 39.91% | Val L 2.4619 A 39.44%
+2026-08-05 00:43:01 [INFO] src.model_cnn.train: Epoch  30/200 | LR 0.09455 | Train L 2.3608 A 39.95% | Val L 2.5675 A 36.92%
+2026-08-05 00:45:17 [INFO] src.model_cnn.train: Epoch  31/200 | LR 0.09419 | Train L 2.3610 A 39.90% | Val L 2.4159 A 38.36%
+2026-08-05 00:47:32 [INFO] src.model_cnn.train: Epoch  32/200 | LR 0.09382 | Train L 2.3492 A 40.07% | Val L 2.2491 A 42.52%
+2026-08-05 00:49:46 [INFO] src.model_cnn.train: Epoch  33/200 | LR 0.09343 | Train L 2.3511 A 40.01% | Val L 2.3174 A 41.22%
+2026-08-05 00:52:03 [INFO] src.model_cnn.train: Epoch  34/200 | LR 0.09304 | Train L 2.3439 A 40.16% | Val L 2.6656 A 35.10%
+2026-08-05 00:54:17 [INFO] src.model_cnn.train: Epoch  35/200 | LR 0.09263 | Train L 2.3417 A 40.30% | Val L 2.4185 A 39.30%
+2026-08-05 00:56:35 [INFO] src.model_cnn.train: Epoch  36/200 | LR 0.09222 | Train L 2.3400 A 40.45% | Val L 2.2675 A 42.22%
+2026-08-05 00:58:50 [INFO] src.model_cnn.train: Epoch  37/200 | LR 0.09179 | Train L 2.3397 A 40.45% | Val L 2.6340 A 34.18%
+2026-08-05 01:01:10 [INFO] src.model_cnn.train: Epoch  38/200 | LR 0.09135 | Train L 2.3350 A 40.43% | Val L 2.6665 A 36.78%
+2026-08-05 01:03:27 [INFO] src.model_cnn.train: Epoch  39/200 | LR 0.09091 | Train L 2.3359 A 40.55% | Val L 2.4564 A 37.98%
+2026-08-05 01:05:39 [INFO] src.model_cnn.train: Epoch  40/200 | LR 0.09045 | Train L 2.3217 A 40.61% | Val L 2.5943 A 35.88%
+2026-08-05 01:07:54 [INFO] src.model_cnn.train: Epoch  41/200 | LR 0.08998 | Train L 2.3212 A 40.72% | Val L 2.3042 A 40.80%
+2026-08-05 01:10:12 [INFO] src.model_cnn.train: Epoch  42/200 | LR 0.08951 | Train L 2.3201 A 40.66% | Val L 2.4515 A 36.84%
+2026-08-05 01:12:30 [INFO] src.model_cnn.train: Epoch  43/200 | LR 0.08902 | Train L 2.3160 A 40.80% | Val L 2.3119 A 41.46%
+2026-08-05 01:14:47 [INFO] src.model_cnn.train: Epoch  44/200 | LR 0.08853 | Train L 2.3104 A 40.87% | Val L 2.1908 A 44.38%
+2026-08-05 01:17:02 [INFO] src.model_cnn.train: Epoch  45/200 | LR 0.08802 | Train L 2.3149 A 41.12% | Val L 2.1139 A 45.06%
+2026-08-05 01:19:24 [INFO] src.model_cnn.train: Epoch  46/200 | LR 0.08751 | Train L 2.3027 A 41.12% | Val L 2.2583 A 42.82%
+2026-08-05 01:21:42 [INFO] src.model_cnn.train: Epoch  47/200 | LR 0.08698 | Train L 2.3042 A 41.11% | Val L 2.1690 A 44.08%
+2026-08-05 01:24:01 [INFO] src.model_cnn.train: Epoch  48/200 | LR 0.08645 | Train L 2.3073 A 41.09% | Val L 2.3068 A 41.58%
+2026-08-05 01:26:20 [INFO] src.model_cnn.train: Epoch  49/200 | LR 0.08591 | Train L 2.2962 A 41.40% | Val L 2.2441 A 42.58%
+2026-08-05 01:28:40 [INFO] src.model_cnn.train: Epoch  50/200 | LR 0.08536 | Train L 2.2913 A 41.48% | Val L 2.2475 A 42.74%
+2026-08-05 01:30:55 [INFO] src.model_cnn.train: Epoch  51/200 | LR 0.08480 | Train L 2.2942 A 41.24% | Val L 2.6076 A 37.18%
+2026-08-05 01:33:13 [INFO] src.model_cnn.train: Epoch  52/200 | LR 0.08423 | Train L 2.2929 A 41.45% | Val L 2.4046 A 38.16%
+2026-08-05 01:35:37 [INFO] src.model_cnn.train: Epoch  53/200 | LR 0.08365 | Train L 2.2832 A 41.64% | Val L 2.1818 A 44.24%
+2026-08-05 01:37:56 [INFO] src.model_cnn.train: Epoch  54/200 | LR 0.08307 | Train L 2.2890 A 41.55% | Val L 2.5757 A 36.02%
+2026-08-05 01:40:13 [INFO] src.model_cnn.train: Epoch  55/200 | LR 0.08247 | Train L 2.2720 A 41.74% | Val L 2.0804 A 46.58%
+2026-08-05 01:42:30 [INFO] src.model_cnn.train: Epoch  56/200 | LR 0.08187 | Train L 2.2711 A 41.89% | Val L 2.1061 A 45.34%
+2026-08-05 01:44:49 [INFO] src.model_cnn.train: Epoch  57/200 | LR 0.08126 | Train L 2.2751 A 41.58% | Val L 2.3492 A 41.44%
+2026-08-05 01:47:11 [INFO] src.model_cnn.train: Epoch  58/200 | LR 0.08065 | Train L 2.2660 A 42.04% | Val L 2.3257 A 40.32%
+2026-08-05 01:49:33 [INFO] src.model_cnn.train: Epoch  59/200 | LR 0.08002 | Train L 2.2673 A 41.87% | Val L 2.4297 A 39.20%
+2026-08-05 01:52:19 [INFO] src.model_cnn.train: Epoch  60/200 | LR 0.07939 | Train L 2.2627 A 42.09% | Val L 2.2485 A 44.10%
+2026-08-05 01:54:56 [INFO] src.model_cnn.train: Epoch  61/200 | LR 0.07875 | Train L 2.2556 A 42.22% | Val L 2.3996 A 40.66%
+2026-08-05 01:57:28 [INFO] src.model_cnn.train: Epoch  62/200 | LR 0.07810 | Train L 2.2525 A 42.16% | Val L 2.1554 A 44.36%
+2026-08-05 02:00:02 [INFO] src.model_cnn.train: Epoch  63/200 | LR 0.07745 | Train L 2.2536 A 42.23% | Val L 2.1474 A 43.92%
+2026-08-05 02:02:32 [INFO] src.model_cnn.train: Epoch  64/200 | LR 0.07679 | Train L 2.2482 A 42.17% | Val L 2.3903 A 39.64%
+2026-08-05 02:05:06 [INFO] src.model_cnn.train: Epoch  65/200 | LR 0.07612 | Train L 2.2418 A 42.58% | Val L 2.2807 A 41.32%
+2026-08-05 02:07:44 [INFO] src.model_cnn.train: Epoch  66/200 | LR 0.07545 | Train L 2.2484 A 42.41% | Val L 2.1611 A 44.84%
+2026-08-05 02:10:20 [INFO] src.model_cnn.train: Epoch  67/200 | LR 0.07477 | Train L 2.2394 A 42.65% | Val L 2.2660 A 43.08%
+2026-08-05 02:12:53 [INFO] src.model_cnn.train: Epoch  68/200 | LR 0.07409 | Train L 2.2393 A 42.69% | Val L 2.3839 A 40.52%
+2026-08-05 02:15:29 [INFO] src.model_cnn.train: Epoch  69/200 | LR 0.07340 | Train L 2.2349 A 42.69% | Val L 2.0554 A 45.90%
+2026-08-05 02:18:02 [INFO] src.model_cnn.train: Epoch  70/200 | LR 0.07270 | Train L 2.2340 A 42.73% | Val L 2.1750 A 43.36%
+2026-08-05 02:20:38 [INFO] src.model_cnn.train: Epoch  71/200 | LR 0.07200 | Train L 2.2260 A 42.87% | Val L 2.4508 A 37.80%
+2026-08-05 02:23:10 [INFO] src.model_cnn.train: Epoch  72/200 | LR 0.07129 | Train L 2.2250 A 42.87% | Val L 2.7032 A 35.90%
+2026-08-05 02:25:45 [INFO] src.model_cnn.train: Epoch  73/200 | LR 0.07058 | Train L 2.2216 A 43.14% | Val L 2.2032 A 43.26%
+2026-08-05 02:28:20 [INFO] src.model_cnn.train: Epoch  74/200 | LR 0.06986 | Train L 2.2217 A 42.95% | Val L 2.1210 A 44.42%
+2026-08-05 02:30:56 [INFO] src.model_cnn.train: Epoch  75/200 | LR 0.06913 | Train L 2.2109 A 43.10% | Val L 2.2175 A 43.10%
+2026-08-05 02:30:56 [INFO] src.model_cnn.train: No improvement for 20 epochs. Stopping early.
+2026-08-05 02:30:56 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/models/baseline_cnn_IMAGENET100_float32.pt
+2026-08-05 02:30:56 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 02:30:56 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-05 02:30:56 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 02:30:56 [INFO] src.utility.utils:          1 |    134.413 |    126.884 |      7.529
+2026-08-05 02:30:56 [INFO] src.utility.utils:          2 |    129.452 |    121.015 |      8.437
+2026-08-05 02:30:56 [INFO] src.utility.utils:          3 |    128.882 |    121.793 |      7.089
+2026-08-05 02:30:56 [INFO] src.utility.utils:          4 |    127.786 |    119.264 |      8.522
+2026-08-05 02:30:56 [INFO] src.utility.utils:          5 |    126.474 |    119.474 |        7.0
+2026-08-05 02:30:56 [INFO] src.utility.utils:          6 |    131.751 |    124.558 |      7.192
+2026-08-05 02:30:56 [INFO] src.utility.utils:          7 |    127.193 |    119.804 |      7.389
+2026-08-05 02:30:56 [INFO] src.utility.utils:          8 |    126.803 |    119.415 |      7.388
+2026-08-05 02:30:56 [INFO] src.utility.utils:          9 |    128.292 |    119.962 |      8.331
+2026-08-05 02:30:56 [INFO] src.utility.utils:         10 |    127.684 |    120.307 |      7.377
+2026-08-05 02:30:56 [INFO] src.utility.utils:         11 |    125.553 |    118.525 |      7.028
+2026-08-05 02:30:56 [INFO] src.utility.utils:         12 |    126.558 |    119.588 |      6.971
+2026-08-05 02:30:56 [INFO] src.utility.utils:         13 |    129.961 |     122.68 |      7.282
+2026-08-05 02:30:56 [INFO] src.utility.utils:         14 |    127.116 |    119.129 |      7.987
+2026-08-05 02:30:56 [INFO] src.utility.utils:         15 |    126.275 |    119.391 |      6.885
+2026-08-05 02:30:56 [INFO] src.utility.utils:         16 |    127.402 |    119.307 |      8.096
+2026-08-05 02:30:56 [INFO] src.utility.utils:         17 |    125.795 |    118.771 |      7.023
+2026-08-05 02:30:56 [INFO] src.utility.utils:         18 |    126.595 |    119.942 |      6.653
+2026-08-05 02:30:56 [INFO] src.utility.utils:         19 |    127.345 |    120.864 |      6.481
+2026-08-05 02:30:56 [INFO] src.utility.utils:         20 |    127.529 |    120.185 |      7.344
+2026-08-05 02:30:56 [INFO] src.utility.utils:         21 |    126.821 |    118.693 |      8.128
+2026-08-05 02:30:56 [INFO] src.utility.utils:         22 |    126.915 |    119.694 |      7.221
+2026-08-05 02:30:56 [INFO] src.utility.utils:         23 |     127.08 |    119.004 |      8.076
+2026-08-05 02:30:56 [INFO] src.utility.utils:         24 |    127.559 |    120.301 |      7.258
+2026-08-05 02:30:56 [INFO] src.utility.utils:         25 |    125.639 |     119.42 |      6.219
+2026-08-05 02:30:56 [INFO] src.utility.utils:         26 |    126.682 |    120.363 |      6.319
+2026-08-05 02:30:56 [INFO] src.utility.utils:         27 |    125.644 |    118.991 |      6.653
+2026-08-05 02:30:56 [INFO] src.utility.utils:         28 |    129.271 |    122.467 |      6.804
+2026-08-05 02:30:56 [INFO] src.utility.utils:         29 |    128.102 |    121.252 |       6.85
+2026-08-05 02:30:56 [INFO] src.utility.utils:         30 |    130.837 |    124.029 |      6.807
+2026-08-05 02:30:56 [INFO] src.utility.utils:         31 |    136.736 |    128.092 |      8.644
+2026-08-05 02:30:56 [INFO] src.utility.utils:         32 |    134.212 |    127.052 |       7.16
+2026-08-05 02:30:56 [INFO] src.utility.utils:         33 |    134.032 |    126.664 |      7.368
+2026-08-05 02:30:56 [INFO] src.utility.utils:         34 |    137.058 |    129.531 |      7.527
+2026-08-05 02:30:56 [INFO] src.utility.utils:         35 |     134.61 |    128.212 |      6.398
+2026-08-05 02:30:56 [INFO] src.utility.utils:         36 |    137.393 |    128.918 |      8.475
+2026-08-05 02:30:56 [INFO] src.utility.utils:         37 |    135.078 |    128.035 |      7.043
+2026-08-05 02:30:56 [INFO] src.utility.utils:         38 |    140.038 |    132.333 |      7.705
+2026-08-05 02:30:56 [INFO] src.utility.utils:         39 |    136.971 |    129.976 |      6.995
+2026-08-05 02:30:56 [INFO] src.utility.utils:         40 |    132.514 |    124.339 |      8.175
+2026-08-05 02:30:56 [INFO] src.utility.utils:         41 |     134.95 |    128.121 |      6.829
+2026-08-05 02:30:56 [INFO] src.utility.utils:         42 |     137.48 |    129.971 |      7.508
+2026-08-05 02:30:56 [INFO] src.utility.utils:         43 |    137.837 |    130.744 |      7.093
+2026-08-05 02:30:56 [INFO] src.utility.utils:         44 |     137.87 |    130.369 |      7.502
+2026-08-05 02:30:56 [INFO] src.utility.utils:         45 |    134.627 |     126.34 |      8.287
+2026-08-05 02:30:56 [INFO] src.utility.utils:         46 |    142.158 |     133.34 |      8.818
+2026-08-05 02:30:56 [INFO] src.utility.utils:         47 |    137.683 |     130.32 |      7.364
+2026-08-05 02:30:56 [INFO] src.utility.utils:         48 |    139.498 |    132.238 |       7.26
+2026-08-05 02:30:56 [INFO] src.utility.utils:         49 |    138.473 |    130.681 |      7.792
+2026-08-05 02:30:56 [INFO] src.utility.utils:         50 |    139.902 |    133.029 |      6.873
+2026-08-05 02:30:56 [INFO] src.utility.utils:         51 |    135.457 |    127.272 |      8.184
+2026-08-05 02:30:56 [INFO] src.utility.utils:         52 |    137.611 |     129.36 |      8.251
+2026-08-05 02:30:56 [INFO] src.utility.utils:         53 |    143.609 |    135.161 |      8.447
+2026-08-05 02:30:56 [INFO] src.utility.utils:         54 |    139.189 |    131.159 |      8.029
+2026-08-05 02:30:56 [INFO] src.utility.utils:         55 |    137.763 |    130.015 |      7.748
+2026-08-05 02:30:56 [INFO] src.utility.utils:         56 |    136.107 |    128.874 |      7.232
+2026-08-05 02:30:56 [INFO] src.utility.utils:         57 |    139.604 |    131.939 |      7.666
+2026-08-05 02:30:56 [INFO] src.utility.utils:         58 |    141.928 |    134.787 |      7.141
+2026-08-05 02:30:56 [INFO] src.utility.utils:         59 |    141.392 |    133.384 |      8.008
+2026-08-05 02:30:56 [INFO] src.utility.utils:         60 |    166.696 |    157.642 |      9.054
+2026-08-05 02:30:56 [INFO] src.utility.utils:         61 |    157.052 |    148.299 |      8.753
+2026-08-05 02:30:56 [INFO] src.utility.utils:         62 |    152.024 |    144.413 |      7.611
+2026-08-05 02:30:56 [INFO] src.utility.utils:         63 |    154.076 |    145.623 |      8.453
+2026-08-05 02:30:56 [INFO] src.utility.utils:         64 |    149.382 |    140.522 |       8.86
+2026-08-05 02:30:56 [INFO] src.utility.utils:         65 |    154.063 |    146.585 |      7.477
+2026-08-05 02:30:56 [INFO] src.utility.utils:         66 |    157.881 |    150.189 |      7.692
+2026-08-05 02:30:56 [INFO] src.utility.utils:         67 |    155.916 |    148.501 |      7.415
+2026-08-05 02:30:56 [INFO] src.utility.utils:         68 |    153.773 |    145.664 |       8.11
+2026-08-05 02:30:56 [INFO] src.utility.utils:         69 |    155.496 |    147.443 |      8.053
+2026-08-05 02:30:56 [INFO] src.utility.utils:         70 |    152.902 |    144.788 |      8.114
+2026-08-05 02:30:56 [INFO] src.utility.utils:         71 |    156.409 |    145.906 |     10.504
+2026-08-05 02:30:56 [INFO] src.utility.utils:         72 |    152.042 |    144.098 |      7.943
+2026-08-05 02:30:56 [INFO] src.utility.utils:         73 |    154.306 |    146.501 |      7.805
+2026-08-05 02:30:56 [INFO] src.utility.utils:         74 |    155.046 |    147.374 |      7.671
+2026-08-05 02:30:56 [INFO] src.utility.utils:         75 |    156.158 |    146.997 |      9.161
+2026-08-05 02:30:56 [INFO] src.utility.utils: 
+Total wall-clock time: 10308.4s  (171.81 min)
+2026-08-05 02:30:56 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/timing_cnn_IMAGENET100.csv
+2026-08-05 02:30:56 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/logs/training_curves_cnn_IMAGENET100.png
+2026-08-05 02:31:04 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-05 02:31:05 [ERROR] __main__: FAILED cnn/IMAGENET100: a leaf Variable that requires grad is being used in an in-place operation.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 205, in main
+    fp32_traces = compute_layerwise_hessian_trace_pyhessian(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/pyhessian.py", line 75, in compute_layerwise_hessian_trace_pyhessian
+    hessian_comp = hessian(model, criterion, data=(inputs, targets), cuda=use_cuda)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/pyhessian/hessian.py", line 74, in __init__
+    loss.backward(create_graph=True)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+2026-08-05 02:31:06 [INFO] __main__: 
+--- Run 2/6: resnet18_no_weights on IMAGENET100 ---
+2026-08-05 02:31:06 [INFO] src.model_cnn.train: Model: resnet18_no_weights | Dataset: IMAGENET100 | Size: 42.87 MB | Params: 11,227,812
+2026-08-05 02:33:45 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 3.8281 A 11.26% | Val L 3.6549 A 14.94%
+2026-08-05 02:36:25 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 3.0675 A 24.67% | Val L 3.0247 A 24.76%
+2026-08-05 02:38:58 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 2.6093 A 34.34% | Val L 2.5929 A 33.40%
+2026-08-05 02:41:28 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 2.3083 A 40.86% | Val L 2.3970 A 38.64%
+2026-08-05 02:44:00 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 2.1011 A 45.60% | Val L 1.9957 A 46.62%
+2026-08-05 02:46:35 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 1.9548 A 48.89% | Val L 2.0980 A 46.50%
+2026-08-05 02:49:13 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 1.8448 A 51.67% | Val L 1.8806 A 50.86%
+2026-08-05 02:51:52 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 1.7628 A 53.63% | Val L 1.8927 A 50.52%
+2026-08-05 02:54:25 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 1.7029 A 55.14% | Val L 1.8814 A 51.16%
+2026-08-05 02:56:54 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 1.6522 A 56.39% | Val L 1.7466 A 54.02%
+2026-08-05 02:59:27 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 1.6175 A 57.13% | Val L 1.9181 A 50.96%
+2026-08-05 03:02:04 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 1.5794 A 58.21% | Val L 1.7202 A 53.74%
+2026-08-05 03:04:42 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 1.5487 A 58.88% | Val L 1.7636 A 54.62%
+2026-08-05 03:07:19 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 1.5338 A 59.24% | Val L 1.5928 A 57.44%
+2026-08-05 03:09:57 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 1.5009 A 60.05% | Val L 1.9110 A 53.44%
+2026-08-05 03:12:37 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 1.4976 A 60.18% | Val L 1.6789 A 57.08%
+2026-08-05 03:15:07 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 1.4731 A 60.70% | Val L 1.6979 A 56.24%
+2026-08-05 03:17:43 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 1.4583 A 61.07% | Val L 2.0674 A 50.98%
+2026-08-05 03:20:18 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 1.4583 A 61.12% | Val L 1.5405 A 59.50%
+2026-08-05 03:22:54 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 1.4389 A 61.71% | Val L 1.4725 A 60.26%
+2026-08-05 03:25:35 [INFO] src.model_cnn.train: Epoch  21/200 | LR 0.09730 | Train L 1.4376 A 61.55% | Val L 1.6093 A 57.70%
+2026-08-05 03:28:11 [INFO] src.model_cnn.train: Epoch  22/200 | LR 0.09704 | Train L 1.4161 A 62.33% | Val L 1.4873 A 60.78%
+2026-08-05 03:30:51 [INFO] src.model_cnn.train: Epoch  23/200 | LR 0.09677 | Train L 1.4169 A 62.20% | Val L 1.6226 A 57.80%
+2026-08-05 03:33:26 [INFO] src.model_cnn.train: Epoch  24/200 | LR 0.09649 | Train L 1.4019 A 62.46% | Val L 1.7364 A 54.20%
+2026-08-05 03:35:54 [INFO] src.model_cnn.train: Epoch  25/200 | LR 0.09619 | Train L 1.4010 A 62.63% | Val L 1.9136 A 51.34%
+2026-08-05 03:38:28 [INFO] src.model_cnn.train: Epoch  26/200 | LR 0.09589 | Train L 1.3868 A 62.86% | Val L 1.4037 A 62.30%
+2026-08-05 03:40:58 [INFO] src.model_cnn.train: Epoch  27/200 | LR 0.09557 | Train L 1.3845 A 62.91% | Val L 1.7330 A 56.28%
+2026-08-05 03:43:32 [INFO] src.model_cnn.train: Epoch  28/200 | LR 0.09524 | Train L 1.3854 A 62.93% | Val L 1.7256 A 55.66%
+2026-08-05 03:46:07 [INFO] src.model_cnn.train: Epoch  29/200 | LR 0.09490 | Train L 1.3718 A 63.27% | Val L 1.4488 A 61.18%
+2026-08-05 03:48:42 [INFO] src.model_cnn.train: Epoch  30/200 | LR 0.09455 | Train L 1.3681 A 63.37% | Val L 1.4514 A 61.58%
+2026-08-05 03:51:13 [INFO] src.model_cnn.train: Epoch  31/200 | LR 0.09419 | Train L 1.3694 A 63.43% | Val L 1.5221 A 59.72%
+2026-08-05 03:53:40 [INFO] src.model_cnn.train: Epoch  32/200 | LR 0.09382 | Train L 1.3578 A 63.68% | Val L 1.4807 A 61.02%
+2026-08-05 03:56:13 [INFO] src.model_cnn.train: Epoch  33/200 | LR 0.09343 | Train L 1.3572 A 63.68% | Val L 1.4535 A 60.58%
+2026-08-05 03:58:44 [INFO] src.model_cnn.train: Epoch  34/200 | LR 0.09304 | Train L 1.3516 A 63.72% | Val L 1.4747 A 60.96%
+2026-08-05 04:01:25 [INFO] src.model_cnn.train: Epoch  35/200 | LR 0.09263 | Train L 1.3488 A 63.80% | Val L 1.5423 A 58.90%
+2026-08-05 04:04:06 [INFO] src.model_cnn.train: Epoch  36/200 | LR 0.09222 | Train L 1.3309 A 64.28% | Val L 1.5221 A 60.04%
+2026-08-05 04:06:55 [INFO] src.model_cnn.train: Epoch  37/200 | LR 0.09179 | Train L 1.3337 A 64.23% | Val L 1.4435 A 61.68%
+2026-08-05 04:09:42 [INFO] src.model_cnn.train: Epoch  38/200 | LR 0.09135 | Train L 1.3331 A 64.33% | Val L 1.5731 A 57.84%
+2026-08-05 04:12:36 [INFO] src.model_cnn.train: Epoch  39/200 | LR 0.09091 | Train L 1.3361 A 64.22% | Val L 1.4846 A 60.60%
+2026-08-05 04:15:34 [INFO] src.model_cnn.train: Epoch  40/200 | LR 0.09045 | Train L 1.3127 A 64.75% | Val L 1.3605 A 63.78%
+2026-08-05 04:18:30 [INFO] src.model_cnn.train: Epoch  41/200 | LR 0.08998 | Train L 1.3110 A 64.77% | Val L 1.4638 A 61.22%
+2026-08-05 04:21:21 [INFO] src.model_cnn.train: Epoch  42/200 | LR 0.08951 | Train L 1.3156 A 64.58% | Val L 1.4333 A 61.62%
+2026-08-05 04:24:18 [INFO] src.model_cnn.train: Epoch  43/200 | LR 0.08902 | Train L 1.3017 A 65.00% | Val L 1.4759 A 61.94%
+2026-08-05 04:27:09 [INFO] src.model_cnn.train: Epoch  44/200 | LR 0.08853 | Train L 1.3024 A 65.10% | Val L 1.3963 A 62.90%
+2026-08-05 04:30:01 [INFO] src.model_cnn.train: Epoch  45/200 | LR 0.08802 | Train L 1.3067 A 64.85% | Val L 1.6851 A 57.00%
+2026-08-05 04:32:51 [INFO] src.model_cnn.train: Epoch  46/200 | LR 0.08751 | Train L 1.2977 A 65.05% | Val L 1.4539 A 61.34%
+2026-08-05 04:35:43 [INFO] src.model_cnn.train: Epoch  47/200 | LR 0.08698 | Train L 1.2920 A 65.27% | Val L 1.4208 A 61.92%
+2026-08-05 04:38:41 [INFO] src.model_cnn.train: Epoch  48/200 | LR 0.08645 | Train L 1.2931 A 65.08% | Val L 1.3497 A 64.02%
+2026-08-05 04:41:37 [INFO] src.model_cnn.train: Epoch  49/200 | LR 0.08591 | Train L 1.2863 A 65.41% | Val L 1.4831 A 61.32%
+2026-08-05 04:44:29 [INFO] src.model_cnn.train: Epoch  50/200 | LR 0.08536 | Train L 1.2818 A 65.51% | Val L 1.5241 A 60.44%
+2026-08-05 04:47:05 [INFO] src.model_cnn.train: Epoch  51/200 | LR 0.08480 | Train L 1.2789 A 65.53% | Val L 1.3830 A 63.30%
+2026-08-05 04:49:47 [INFO] src.model_cnn.train: Epoch  52/200 | LR 0.08423 | Train L 1.2740 A 65.66% | Val L 1.4693 A 62.08%
+2026-08-05 04:52:30 [INFO] src.model_cnn.train: Epoch  53/200 | LR 0.08365 | Train L 1.2736 A 65.67% | Val L 1.3443 A 63.92%
+2026-08-05 04:55:11 [INFO] src.model_cnn.train: Epoch  54/200 | LR 0.08307 | Train L 1.2650 A 65.95% | Val L 1.3311 A 64.84%
+2026-08-05 04:57:52 [INFO] src.model_cnn.train: Epoch  55/200 | LR 0.08247 | Train L 1.2643 A 65.82% | Val L 1.7454 A 56.04%
+2026-08-05 05:00:30 [INFO] src.model_cnn.train: Epoch  56/200 | LR 0.08187 | Train L 1.2580 A 66.01% | Val L 1.2346 A 66.02%
+2026-08-05 05:03:10 [INFO] src.model_cnn.train: Epoch  57/200 | LR 0.08126 | Train L 1.2547 A 66.02% | Val L 1.3086 A 64.66%
+2026-08-05 05:05:51 [INFO] src.model_cnn.train: Epoch  58/200 | LR 0.08065 | Train L 1.2553 A 66.08% | Val L 1.2410 A 65.88%
+2026-08-05 05:08:32 [INFO] src.model_cnn.train: Epoch  59/200 | LR 0.08002 | Train L 1.2426 A 66.44% | Val L 1.2824 A 65.30%
+2026-08-05 05:11:16 [INFO] src.model_cnn.train: Epoch  60/200 | LR 0.07939 | Train L 1.2425 A 66.55% | Val L 1.3777 A 63.00%
+2026-08-05 05:13:59 [INFO] src.model_cnn.train: Epoch  61/200 | LR 0.07875 | Train L 1.2362 A 66.54% | Val L 1.5731 A 59.48%
+2026-08-05 05:16:39 [INFO] src.model_cnn.train: Epoch  62/200 | LR 0.07810 | Train L 1.2358 A 66.69% | Val L 1.3261 A 64.38%
+2026-08-05 05:19:24 [INFO] src.model_cnn.train: Epoch  63/200 | LR 0.07745 | Train L 1.2308 A 66.79% | Val L 1.4176 A 62.28%
+2026-08-05 05:22:06 [INFO] src.model_cnn.train: Epoch  64/200 | LR 0.07679 | Train L 1.2279 A 66.97% | Val L 1.4226 A 61.82%
+2026-08-05 05:24:45 [INFO] src.model_cnn.train: Epoch  65/200 | LR 0.07612 | Train L 1.2153 A 67.23% | Val L 1.5219 A 61.00%
+2026-08-05 05:27:24 [INFO] src.model_cnn.train: Epoch  66/200 | LR 0.07545 | Train L 1.2240 A 66.91% | Val L 1.3432 A 63.44%
+2026-08-05 05:30:12 [INFO] src.model_cnn.train: Epoch  67/200 | LR 0.07477 | Train L 1.2158 A 67.17% | Val L 1.4721 A 61.92%
+2026-08-05 05:32:51 [INFO] src.model_cnn.train: Epoch  68/200 | LR 0.07409 | Train L 1.2103 A 67.27% | Val L 1.2884 A 65.78%
+2026-08-05 05:35:29 [INFO] src.model_cnn.train: Epoch  69/200 | LR 0.07340 | Train L 1.2049 A 67.54% | Val L 1.3016 A 63.68%
+2026-08-05 05:38:13 [INFO] src.model_cnn.train: Epoch  70/200 | LR 0.07270 | Train L 1.1980 A 67.50% | Val L 1.2136 A 66.84%
+2026-08-05 05:40:56 [INFO] src.model_cnn.train: Epoch  71/200 | LR 0.07200 | Train L 1.1890 A 67.83% | Val L 1.2046 A 67.28%
+2026-08-05 05:43:30 [INFO] src.model_cnn.train: Epoch  72/200 | LR 0.07129 | Train L 1.1949 A 67.70% | Val L 1.3079 A 65.28%
+2026-08-05 05:46:06 [INFO] src.model_cnn.train: Epoch  73/200 | LR 0.07058 | Train L 1.1863 A 67.87% | Val L 1.3886 A 63.58%
+2026-08-05 05:48:48 [INFO] src.model_cnn.train: Epoch  74/200 | LR 0.06986 | Train L 1.1828 A 68.04% | Val L 1.4026 A 62.54%
+2026-08-05 05:51:23 [INFO] src.model_cnn.train: Epoch  75/200 | LR 0.06913 | Train L 1.1715 A 68.31% | Val L 1.2947 A 65.66%
+2026-08-05 05:54:04 [INFO] src.model_cnn.train: Epoch  76/200 | LR 0.06841 | Train L 1.1755 A 68.27% | Val L 1.2696 A 65.68%
+2026-08-05 05:56:44 [INFO] src.model_cnn.train: Epoch  77/200 | LR 0.06767 | Train L 1.1696 A 68.38% | Val L 1.3990 A 64.16%
+2026-08-05 05:59:21 [INFO] src.model_cnn.train: Epoch  78/200 | LR 0.06694 | Train L 1.1675 A 68.48% | Val L 1.2945 A 65.30%
+2026-08-05 06:02:06 [INFO] src.model_cnn.train: Epoch  79/200 | LR 0.06620 | Train L 1.1567 A 68.69% | Val L 1.4209 A 63.18%
+2026-08-05 06:04:43 [INFO] src.model_cnn.train: Epoch  80/200 | LR 0.06545 | Train L 1.1603 A 68.67% | Val L 1.3359 A 64.28%
+2026-08-05 06:07:22 [INFO] src.model_cnn.train: Epoch  81/200 | LR 0.06470 | Train L 1.1501 A 68.81% | Val L 1.3631 A 65.12%
+2026-08-05 06:10:04 [INFO] src.model_cnn.train: Epoch  82/200 | LR 0.06395 | Train L 1.1452 A 68.89% | Val L 1.2095 A 67.48%
+2026-08-05 06:12:48 [INFO] src.model_cnn.train: Epoch  83/200 | LR 0.06319 | Train L 1.1352 A 69.15% | Val L 1.2548 A 66.48%
+2026-08-05 06:15:30 [INFO] src.model_cnn.train: Epoch  84/200 | LR 0.06243 | Train L 1.1371 A 69.00% | Val L 1.2277 A 66.46%
+2026-08-05 06:18:18 [INFO] src.model_cnn.train: Epoch  85/200 | LR 0.06167 | Train L 1.1290 A 69.34% | Val L 1.2367 A 66.96%
+2026-08-05 06:21:03 [INFO] src.model_cnn.train: Epoch  86/200 | LR 0.06091 | Train L 1.1166 A 69.61% | Val L 1.1940 A 67.88%
+2026-08-05 06:23:45 [INFO] src.model_cnn.train: Epoch  87/200 | LR 0.06014 | Train L 1.1240 A 69.43% | Val L 1.1483 A 68.50%
+2026-08-05 06:26:26 [INFO] src.model_cnn.train: Epoch  88/200 | LR 0.05937 | Train L 1.1131 A 69.64% | Val L 1.2443 A 66.22%
+2026-08-05 06:29:06 [INFO] src.model_cnn.train: Epoch  89/200 | LR 0.05860 | Train L 1.1060 A 69.78% | Val L 1.2372 A 66.62%
+2026-08-05 06:31:47 [INFO] src.model_cnn.train: Epoch  90/200 | LR 0.05782 | Train L 1.1007 A 70.08% | Val L 1.1620 A 69.24%
+2026-08-05 06:34:31 [INFO] src.model_cnn.train: Epoch  91/200 | LR 0.05705 | Train L 1.0976 A 70.12% | Val L 1.3742 A 64.28%
+2026-08-05 06:37:15 [INFO] src.model_cnn.train: Epoch  92/200 | LR 0.05627 | Train L 1.0919 A 70.32% | Val L 1.1344 A 68.62%
+2026-08-05 06:39:59 [INFO] src.model_cnn.train: Epoch  93/200 | LR 0.05549 | Train L 1.0880 A 70.34% | Val L 1.4423 A 63.86%
+2026-08-05 06:42:40 [INFO] src.model_cnn.train: Epoch  94/200 | LR 0.05471 | Train L 1.0766 A 70.70% | Val L 1.1514 A 68.84%
+2026-08-05 06:45:20 [INFO] src.model_cnn.train: Epoch  95/200 | LR 0.05392 | Train L 1.0826 A 70.51% | Val L 1.3180 A 64.48%
+2026-08-05 06:48:02 [INFO] src.model_cnn.train: Epoch  96/200 | LR 0.05314 | Train L 1.0711 A 70.64% | Val L 1.1239 A 70.84%
+2026-08-05 06:50:48 [INFO] src.model_cnn.train: Epoch  97/200 | LR 0.05236 | Train L 1.0689 A 70.88% | Val L 1.1548 A 68.62%
+2026-08-05 06:53:39 [INFO] src.model_cnn.train: Epoch  98/200 | LR 0.05157 | Train L 1.0565 A 71.21% | Val L 1.1642 A 68.08%
+2026-08-05 06:56:23 [INFO] src.model_cnn.train: Epoch  99/200 | LR 0.05079 | Train L 1.0588 A 71.04% | Val L 1.1236 A 69.80%
+2026-08-05 06:59:08 [INFO] src.model_cnn.train: Epoch 100/200 | LR 0.05000 | Train L 1.0510 A 71.22% | Val L 1.1635 A 67.96%
+2026-08-05 07:01:49 [INFO] src.model_cnn.train: Epoch 101/200 | LR 0.04921 | Train L 1.0479 A 71.42% | Val L 1.0734 A 70.80%
+2026-08-05 07:04:35 [INFO] src.model_cnn.train: Epoch 102/200 | LR 0.04843 | Train L 1.0341 A 71.77% | Val L 1.0815 A 70.84%
+2026-08-05 07:07:19 [INFO] src.model_cnn.train: Epoch 103/200 | LR 0.04764 | Train L 1.0279 A 72.04% | Val L 1.0545 A 71.30%
+2026-08-05 07:10:00 [INFO] src.model_cnn.train: Epoch 104/200 | LR 0.04686 | Train L 1.0277 A 71.83% | Val L 1.0417 A 71.70%
+2026-08-05 07:12:47 [INFO] src.model_cnn.train: Epoch 105/200 | LR 0.04608 | Train L 1.0213 A 72.03% | Val L 1.0912 A 70.46%
+2026-08-05 07:15:34 [INFO] src.model_cnn.train: Epoch 106/200 | LR 0.04529 | Train L 1.0126 A 72.45% | Val L 1.1778 A 68.96%
+2026-08-05 07:18:16 [INFO] src.model_cnn.train: Epoch 107/200 | LR 0.04451 | Train L 1.0109 A 72.17% | Val L 1.1016 A 70.18%
+2026-08-05 07:21:03 [INFO] src.model_cnn.train: Epoch 108/200 | LR 0.04373 | Train L 0.9974 A 72.53% | Val L 1.0350 A 71.48%
+2026-08-05 07:23:48 [INFO] src.model_cnn.train: Epoch 109/200 | LR 0.04295 | Train L 0.9930 A 72.84% | Val L 1.0338 A 71.68%
+2026-08-05 07:26:32 [INFO] src.model_cnn.train: Epoch 110/200 | LR 0.04218 | Train L 0.9935 A 72.79% | Val L 1.0323 A 72.18%
+2026-08-05 07:29:12 [INFO] src.model_cnn.train: Epoch 111/200 | LR 0.04140 | Train L 0.9723 A 73.36% | Val L 1.0733 A 70.42%
+2026-08-05 07:31:54 [INFO] src.model_cnn.train: Epoch 112/200 | LR 0.04063 | Train L 0.9774 A 73.17% | Val L 1.0308 A 71.52%
+2026-08-05 07:34:33 [INFO] src.model_cnn.train: Epoch 113/200 | LR 0.03986 | Train L 0.9697 A 73.43% | Val L 1.1005 A 69.76%
+2026-08-05 07:37:17 [INFO] src.model_cnn.train: Epoch 114/200 | LR 0.03909 | Train L 0.9618 A 73.54% | Val L 1.1936 A 68.44%
+2026-08-05 07:39:55 [INFO] src.model_cnn.train: Epoch 115/200 | LR 0.03833 | Train L 0.9613 A 73.55% | Val L 1.0072 A 72.20%
+2026-08-05 07:42:40 [INFO] src.model_cnn.train: Epoch 116/200 | LR 0.03757 | Train L 0.9489 A 73.83% | Val L 1.0870 A 71.44%
+2026-08-05 07:45:20 [INFO] src.model_cnn.train: Epoch 117/200 | LR 0.03681 | Train L 0.9430 A 74.02% | Val L 0.9806 A 73.18%
+2026-08-05 07:48:00 [INFO] src.model_cnn.train: Epoch 118/200 | LR 0.03605 | Train L 0.9359 A 74.37% | Val L 1.0833 A 71.02%
+2026-08-05 07:50:46 [INFO] src.model_cnn.train: Epoch 119/200 | LR 0.03530 | Train L 0.9273 A 74.55% | Val L 1.0571 A 71.50%
+2026-08-05 07:53:28 [INFO] src.model_cnn.train: Epoch 120/200 | LR 0.03455 | Train L 0.9184 A 74.81% | Val L 1.1075 A 70.70%
+2026-08-05 07:56:12 [INFO] src.model_cnn.train: Epoch 121/200 | LR 0.03380 | Train L 0.9137 A 74.84% | Val L 0.9516 A 73.52%
+2026-08-05 07:58:58 [INFO] src.model_cnn.train: Epoch 122/200 | LR 0.03306 | Train L 0.9089 A 74.90% | Val L 1.0272 A 71.84%
+2026-08-05 08:01:38 [INFO] src.model_cnn.train: Epoch 123/200 | LR 0.03233 | Train L 0.9015 A 75.11% | Val L 0.9899 A 72.94%
+2026-08-05 08:04:23 [INFO] src.model_cnn.train: Epoch 124/200 | LR 0.03159 | Train L 0.8983 A 75.13% | Val L 0.9637 A 73.96%
+2026-08-05 08:07:07 [INFO] src.model_cnn.train: Epoch 125/200 | LR 0.03087 | Train L 0.8852 A 75.51% | Val L 1.0233 A 71.66%
+2026-08-05 08:09:47 [INFO] src.model_cnn.train: Epoch 126/200 | LR 0.03014 | Train L 0.8820 A 75.65% | Val L 0.9643 A 73.86%
+2026-08-05 08:12:37 [INFO] src.model_cnn.train: Epoch 127/200 | LR 0.02942 | Train L 0.8776 A 75.90% | Val L 0.9917 A 73.60%
+2026-08-05 08:15:20 [INFO] src.model_cnn.train: Epoch 128/200 | LR 0.02871 | Train L 0.8673 A 75.99% | Val L 0.9948 A 73.48%
+2026-08-05 08:18:04 [INFO] src.model_cnn.train: Epoch 129/200 | LR 0.02800 | Train L 0.8564 A 76.36% | Val L 0.9587 A 73.54%
+2026-08-05 08:20:43 [INFO] src.model_cnn.train: Epoch 130/200 | LR 0.02730 | Train L 0.8513 A 76.32% | Val L 0.9329 A 74.32%
+2026-08-05 08:23:29 [INFO] src.model_cnn.train: Epoch 131/200 | LR 0.02660 | Train L 0.8405 A 76.88% | Val L 0.8968 A 75.72%
+2026-08-05 08:26:16 [INFO] src.model_cnn.train: Epoch 132/200 | LR 0.02591 | Train L 0.8408 A 76.65% | Val L 0.9000 A 75.62%
+2026-08-05 08:29:01 [INFO] src.model_cnn.train: Epoch 133/200 | LR 0.02523 | Train L 0.8221 A 77.23% | Val L 0.9827 A 73.38%
+2026-08-05 08:31:45 [INFO] src.model_cnn.train: Epoch 134/200 | LR 0.02455 | Train L 0.8185 A 77.32% | Val L 0.9421 A 74.44%
+2026-08-05 08:34:29 [INFO] src.model_cnn.train: Epoch 135/200 | LR 0.02388 | Train L 0.8074 A 77.55% | Val L 0.9114 A 75.06%
+2026-08-05 08:37:16 [INFO] src.model_cnn.train: Epoch 136/200 | LR 0.02321 | Train L 0.8037 A 77.72% | Val L 0.8594 A 76.10%
+2026-08-05 08:40:04 [INFO] src.model_cnn.train: Epoch 137/200 | LR 0.02255 | Train L 0.7978 A 77.80% | Val L 0.9088 A 75.38%
+2026-08-05 08:42:45 [INFO] src.model_cnn.train: Epoch 138/200 | LR 0.02190 | Train L 0.7858 A 78.22% | Val L 0.9231 A 74.68%
+2026-08-05 08:45:28 [INFO] src.model_cnn.train: Epoch 139/200 | LR 0.02125 | Train L 0.7791 A 78.41% | Val L 0.8777 A 75.54%
+2026-08-05 08:48:13 [INFO] src.model_cnn.train: Epoch 140/200 | LR 0.02061 | Train L 0.7722 A 78.58% | Val L 0.9132 A 75.68%
+2026-08-05 08:50:47 [INFO] src.model_cnn.train: Epoch 141/200 | LR 0.01998 | Train L 0.7622 A 78.75% | Val L 0.8795 A 75.52%
+2026-08-05 08:53:32 [INFO] src.model_cnn.train: Epoch 142/200 | LR 0.01935 | Train L 0.7482 A 79.13% | Val L 0.8139 A 77.38%
+2026-08-05 08:56:19 [INFO] src.model_cnn.train: Epoch 143/200 | LR 0.01874 | Train L 0.7465 A 79.22% | Val L 0.8020 A 77.50%
+2026-08-05 08:59:11 [INFO] src.model_cnn.train: Epoch 144/200 | LR 0.01813 | Train L 0.7387 A 79.34% | Val L 0.8698 A 76.82%
+2026-08-05 09:02:00 [INFO] src.model_cnn.train: Epoch 145/200 | LR 0.01753 | Train L 0.7277 A 79.70% | Val L 0.8451 A 76.84%
+2026-08-05 09:04:48 [INFO] src.model_cnn.train: Epoch 146/200 | LR 0.01693 | Train L 0.7154 A 79.91% | Val L 0.8374 A 76.94%
+2026-08-05 09:07:35 [INFO] src.model_cnn.train: Epoch 147/200 | LR 0.01635 | Train L 0.7093 A 80.20% | Val L 0.8003 A 77.84%
+2026-08-05 09:10:14 [INFO] src.model_cnn.train: Epoch 148/200 | LR 0.01577 | Train L 0.7021 A 80.32% | Val L 0.8471 A 76.62%
+2026-08-05 09:13:06 [INFO] src.model_cnn.train: Epoch 149/200 | LR 0.01520 | Train L 0.6842 A 80.91% | Val L 0.8131 A 77.66%
+2026-08-05 09:15:57 [INFO] src.model_cnn.train: Epoch 150/200 | LR 0.01464 | Train L 0.6807 A 80.97% | Val L 0.7872 A 78.10%
+2026-08-05 09:18:43 [INFO] src.model_cnn.train: Epoch 151/200 | LR 0.01409 | Train L 0.6675 A 81.28% | Val L 0.7714 A 78.80%
+2026-08-05 09:21:32 [INFO] src.model_cnn.train: Epoch 152/200 | LR 0.01355 | Train L 0.6552 A 81.61% | Val L 0.8062 A 78.12%
+2026-08-05 09:24:19 [INFO] src.model_cnn.train: Epoch 153/200 | LR 0.01302 | Train L 0.6495 A 81.82% | Val L 0.7733 A 78.40%
+2026-08-05 09:27:08 [INFO] src.model_cnn.train: Epoch 154/200 | LR 0.01249 | Train L 0.6442 A 81.98% | Val L 0.7479 A 79.70%
+2026-08-05 09:29:56 [INFO] src.model_cnn.train: Epoch 155/200 | LR 0.01198 | Train L 0.6318 A 82.31% | Val L 0.7478 A 79.22%
+2026-08-05 09:32:42 [INFO] src.model_cnn.train: Epoch 156/200 | LR 0.01147 | Train L 0.6250 A 82.41% | Val L 0.7846 A 78.40%
+2026-08-05 09:35:31 [INFO] src.model_cnn.train: Epoch 157/200 | LR 0.01098 | Train L 0.6087 A 82.84% | Val L 0.8114 A 78.48%
+2026-08-05 09:38:08 [INFO] src.model_cnn.train: Epoch 158/200 | LR 0.01049 | Train L 0.5974 A 83.34% | Val L 0.7372 A 79.92%
+2026-08-05 09:40:51 [INFO] src.model_cnn.train: Epoch 159/200 | LR 0.01002 | Train L 0.5901 A 83.42% | Val L 0.7692 A 79.16%
+2026-08-05 09:43:37 [INFO] src.model_cnn.train: Epoch 160/200 | LR 0.00955 | Train L 0.5808 A 83.71% | Val L 0.7455 A 79.14%
+2026-08-05 09:46:24 [INFO] src.model_cnn.train: Epoch 161/200 | LR 0.00909 | Train L 0.5732 A 83.93% | Val L 0.7506 A 79.80%
+2026-08-05 09:49:10 [INFO] src.model_cnn.train: Epoch 162/200 | LR 0.00865 | Train L 0.5640 A 84.14% | Val L 0.7354 A 79.36%
+2026-08-05 09:51:53 [INFO] src.model_cnn.train: Epoch 163/200 | LR 0.00821 | Train L 0.5488 A 84.53% | Val L 0.7377 A 79.70%
+2026-08-05 09:54:39 [INFO] src.model_cnn.train: Epoch 164/200 | LR 0.00778 | Train L 0.5417 A 84.81% | Val L 0.7125 A 80.10%
+2026-08-05 09:54:39 [INFO] src.model_cnn.train: Target validation accuracy reached (80.10% >= 80.0%). Stopping early.
+2026-08-05 09:54:39 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/models/baseline_resnet18_no_weights_IMAGENET100_float32.pt
+2026-08-05 09:54:39 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 09:54:39 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-05 09:54:39 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 09:54:39 [INFO] src.utility.utils:          1 |    158.921 |    151.192 |      7.729
+2026-08-05 09:54:39 [INFO] src.utility.utils:          2 |    160.034 |    150.797 |      9.237
+2026-08-05 09:54:39 [INFO] src.utility.utils:          3 |    153.475 |    144.276 |      9.199
+2026-08-05 09:54:39 [INFO] src.utility.utils:          4 |    149.688 |    141.268 |       8.42
+2026-08-05 09:54:39 [INFO] src.utility.utils:          5 |    152.034 |    143.104 |      8.929
+2026-08-05 09:54:39 [INFO] src.utility.utils:          6 |    154.765 |    146.543 |      8.222
+2026-08-05 09:54:39 [INFO] src.utility.utils:          7 |    157.723 |    149.809 |      7.914
+2026-08-05 09:54:39 [INFO] src.utility.utils:          8 |     159.44 |    150.591 |      8.849
+2026-08-05 09:54:39 [INFO] src.utility.utils:          9 |    152.958 |    144.605 |      8.353
+2026-08-05 09:54:39 [INFO] src.utility.utils:         10 |    149.135 |    140.187 |      8.948
+2026-08-05 09:54:39 [INFO] src.utility.utils:         11 |    152.841 |    143.227 |      9.613
+2026-08-05 09:54:39 [INFO] src.utility.utils:         12 |    157.275 |    149.124 |       8.15
+2026-08-05 09:54:39 [INFO] src.utility.utils:         13 |    157.852 |    150.441 |      7.411
+2026-08-05 09:54:39 [INFO] src.utility.utils:         14 |    156.735 |    146.836 |      9.899
+2026-08-05 09:54:39 [INFO] src.utility.utils:         15 |    157.944 |    149.272 |      8.672
+2026-08-05 09:54:39 [INFO] src.utility.utils:         16 |    159.505 |    150.312 |      9.193
+2026-08-05 09:54:39 [INFO] src.utility.utils:         17 |    150.831 |     142.65 |       8.18
+2026-08-05 09:54:39 [INFO] src.utility.utils:         18 |    155.473 |    146.996 |      8.477
+2026-08-05 09:54:39 [INFO] src.utility.utils:         19 |    155.241 |    147.089 |      8.152
+2026-08-05 09:54:39 [INFO] src.utility.utils:         20 |    155.567 |    146.981 |      8.585
+2026-08-05 09:54:39 [INFO] src.utility.utils:         21 |    160.786 |    152.944 |      7.841
+2026-08-05 09:54:39 [INFO] src.utility.utils:         22 |    156.177 |    147.362 |      8.815
+2026-08-05 09:54:39 [INFO] src.utility.utils:         23 |    160.249 |    152.269 |       7.98
+2026-08-05 09:54:39 [INFO] src.utility.utils:         24 |    155.164 |    146.925 |       8.24
+2026-08-05 09:54:39 [INFO] src.utility.utils:         25 |    148.342 |    140.414 |      7.929
+2026-08-05 09:54:39 [INFO] src.utility.utils:         26 |    153.233 |    145.774 |      7.459
+2026-08-05 09:54:39 [INFO] src.utility.utils:         27 |    150.687 |    141.937 |       8.75
+2026-08-05 09:54:39 [INFO] src.utility.utils:         28 |    154.028 |    146.091 |      7.936
+2026-08-05 09:54:39 [INFO] src.utility.utils:         29 |    154.169 |    146.576 |      7.593
+2026-08-05 09:54:39 [INFO] src.utility.utils:         30 |    155.012 |    147.579 |      7.433
+2026-08-05 09:54:39 [INFO] src.utility.utils:         31 |    151.253 |    142.751 |      8.502
+2026-08-05 09:54:39 [INFO] src.utility.utils:         32 |     146.66 |    139.114 |      7.546
+2026-08-05 09:54:39 [INFO] src.utility.utils:         33 |    153.078 |    144.424 |      8.654
+2026-08-05 09:54:39 [INFO] src.utility.utils:         34 |    151.663 |    143.125 |      8.538
+2026-08-05 09:54:39 [INFO] src.utility.utils:         35 |    160.518 |     151.44 |      9.077
+2026-08-05 09:54:39 [INFO] src.utility.utils:         36 |    161.499 |    153.442 |      8.057
+2026-08-05 09:54:39 [INFO] src.utility.utils:         37 |    168.524 |    159.057 |      9.467
+2026-08-05 09:54:39 [INFO] src.utility.utils:         38 |     167.21 |    158.341 |      8.869
+2026-08-05 09:54:39 [INFO] src.utility.utils:         39 |    174.202 |    163.886 |     10.317
+2026-08-05 09:54:39 [INFO] src.utility.utils:         40 |    177.511 |    168.104 |      9.408
+2026-08-05 09:54:39 [INFO] src.utility.utils:         41 |    176.344 |    167.522 |      8.822
+2026-08-05 09:54:39 [INFO] src.utility.utils:         42 |    171.075 |    161.518 |      9.557
+2026-08-05 09:54:39 [INFO] src.utility.utils:         43 |    176.387 |    165.847 |      10.54
+2026-08-05 09:54:39 [INFO] src.utility.utils:         44 |    171.065 |     161.73 |      9.335
+2026-08-05 09:54:39 [INFO] src.utility.utils:         45 |    172.486 |    163.255 |      9.232
+2026-08-05 09:54:39 [INFO] src.utility.utils:         46 |    169.808 |    160.849 |      8.959
+2026-08-05 09:54:39 [INFO] src.utility.utils:         47 |    172.247 |     161.96 |     10.287
+2026-08-05 09:54:39 [INFO] src.utility.utils:         48 |    177.983 |    168.841 |      9.142
+2026-08-05 09:54:39 [INFO] src.utility.utils:         49 |    175.837 |    167.149 |      8.688
+2026-08-05 09:54:39 [INFO] src.utility.utils:         50 |    172.363 |    164.257 |      8.106
+2026-08-05 09:54:39 [INFO] src.utility.utils:         51 |    155.687 |    146.842 |      8.845
+2026-08-05 09:54:39 [INFO] src.utility.utils:         52 |    161.485 |    153.103 |      8.382
+2026-08-05 09:54:39 [INFO] src.utility.utils:         53 |    162.882 |     154.37 |      8.512
+2026-08-05 09:54:39 [INFO] src.utility.utils:         54 |    161.471 |    152.348 |      9.123
+2026-08-05 09:54:39 [INFO] src.utility.utils:         55 |    161.126 |    153.196 |       7.93
+2026-08-05 09:54:39 [INFO] src.utility.utils:         56 |    157.839 |    148.404 |      9.435
+2026-08-05 09:54:39 [INFO] src.utility.utils:         57 |    160.367 |     151.86 |      8.507
+2026-08-05 09:54:39 [INFO] src.utility.utils:         58 |    160.712 |    152.226 |      8.485
+2026-08-05 09:54:39 [INFO] src.utility.utils:         59 |    160.958 |    152.294 |      8.664
+2026-08-05 09:54:39 [INFO] src.utility.utils:         60 |    164.386 |     156.12 |      8.266
+2026-08-05 09:54:39 [INFO] src.utility.utils:         61 |    162.933 |    154.036 |      8.898
+2026-08-05 09:54:39 [INFO] src.utility.utils:         62 |    159.773 |     150.96 |      8.812
+2026-08-05 09:54:39 [INFO] src.utility.utils:         63 |    164.726 |    155.914 |      8.812
+2026-08-05 09:54:39 [INFO] src.utility.utils:         64 |    162.209 |     153.56 |      8.649
+2026-08-05 09:54:39 [INFO] src.utility.utils:         65 |    159.262 |    151.553 |      7.709
+2026-08-05 09:54:39 [INFO] src.utility.utils:         66 |    158.693 |    150.323 |      8.371
+2026-08-05 09:54:39 [INFO] src.utility.utils:         67 |    167.432 |    158.788 |      8.644
+2026-08-05 09:54:39 [INFO] src.utility.utils:         68 |    159.805 |    151.325 |       8.48
+2026-08-05 09:54:39 [INFO] src.utility.utils:         69 |    157.615 |    149.694 |      7.921
+2026-08-05 09:54:39 [INFO] src.utility.utils:         70 |    163.897 |    154.562 |      9.335
+2026-08-05 09:54:39 [INFO] src.utility.utils:         71 |    162.928 |    153.789 |      9.139
+2026-08-05 09:54:39 [INFO] src.utility.utils:         72 |    154.297 |     146.51 |      7.787
+2026-08-05 09:54:39 [INFO] src.utility.utils:         73 |    156.208 |    147.522 |      8.686
+2026-08-05 09:54:39 [INFO] src.utility.utils:         74 |    161.335 |    152.532 |      8.803
+2026-08-05 09:54:39 [INFO] src.utility.utils:         75 |    154.956 |    147.555 |      7.401
+2026-08-05 09:54:39 [INFO] src.utility.utils:         76 |     161.68 |    152.344 |      9.336
+2026-08-05 09:54:39 [INFO] src.utility.utils:         77 |    159.831 |    150.483 |      9.348
+2026-08-05 09:54:39 [INFO] src.utility.utils:         78 |    156.661 |    149.417 |      7.244
+2026-08-05 09:54:39 [INFO] src.utility.utils:         79 |    164.918 |    156.312 |      8.606
+2026-08-05 09:54:39 [INFO] src.utility.utils:         80 |    157.441 |    148.858 |      8.582
+2026-08-05 09:54:39 [INFO] src.utility.utils:         81 |    158.609 |    150.533 |      8.076
+2026-08-05 09:54:39 [INFO] src.utility.utils:         82 |    162.689 |    153.279 |      9.411
+2026-08-05 09:54:39 [INFO] src.utility.utils:         83 |    163.186 |    153.826 |      9.359
+2026-08-05 09:54:39 [INFO] src.utility.utils:         84 |     162.39 |    152.281 |     10.109
+2026-08-05 09:54:39 [INFO] src.utility.utils:         85 |    168.367 |    159.375 |      8.992
+2026-08-05 09:54:39 [INFO] src.utility.utils:         86 |    164.313 |    155.475 |      8.837
+2026-08-05 09:54:39 [INFO] src.utility.utils:         87 |     162.29 |    152.886 |      9.403
+2026-08-05 09:54:39 [INFO] src.utility.utils:         88 |    160.964 |    152.593 |      8.371
+2026-08-05 09:54:39 [INFO] src.utility.utils:         89 |    160.344 |    151.563 |      8.781
+2026-08-05 09:54:39 [INFO] src.utility.utils:         90 |    160.939 |     151.29 |      9.649
+2026-08-05 09:54:39 [INFO] src.utility.utils:         91 |    163.269 |    155.095 |      8.174
+2026-08-05 09:54:39 [INFO] src.utility.utils:         92 |    164.535 |    154.288 |     10.247
+2026-08-05 09:54:39 [INFO] src.utility.utils:         93 |     163.93 |    155.577 |      8.352
+2026-08-05 09:54:39 [INFO] src.utility.utils:         94 |    161.006 |    152.954 |      8.053
+2026-08-05 09:54:39 [INFO] src.utility.utils:         95 |    160.044 |    151.775 |       8.27
+2026-08-05 09:54:39 [INFO] src.utility.utils:         96 |    162.114 |    153.802 |      8.312
+2026-08-05 09:54:39 [INFO] src.utility.utils:         97 |    165.622 |    157.217 |      8.405
+2026-08-05 09:54:39 [INFO] src.utility.utils:         98 |    170.847 |    162.164 |      8.683
+2026-08-05 09:54:39 [INFO] src.utility.utils:         99 |    163.965 |    155.937 |      8.028
+2026-08-05 09:54:39 [INFO] src.utility.utils:        100 |    164.843 |    156.025 |      8.818
+2026-08-05 09:54:39 [INFO] src.utility.utils:        101 |    161.271 |    151.977 |      9.294
+2026-08-05 09:54:39 [INFO] src.utility.utils:        102 |    165.579 |    156.938 |       8.64
+2026-08-05 09:54:39 [INFO] src.utility.utils:        103 |    164.751 |    155.436 |      9.315
+2026-08-05 09:54:39 [INFO] src.utility.utils:        104 |    160.474 |    151.913 |      8.561
+2026-08-05 09:54:39 [INFO] src.utility.utils:        105 |    167.252 |    158.573 |      8.678
+2026-08-05 09:54:39 [INFO] src.utility.utils:        106 |    167.262 |    158.073 |      9.189
+2026-08-05 09:54:39 [INFO] src.utility.utils:        107 |    162.119 |    153.439 |       8.68
+2026-08-05 09:54:39 [INFO] src.utility.utils:        108 |    166.887 |    158.353 |      8.533
+2026-08-05 09:54:39 [INFO] src.utility.utils:        109 |    164.242 |    155.876 |      8.366
+2026-08-05 09:54:39 [INFO] src.utility.utils:        110 |    164.025 |    154.561 |      9.464
+2026-08-05 09:54:39 [INFO] src.utility.utils:        111 |    160.596 |    152.365 |      8.231
+2026-08-05 09:54:39 [INFO] src.utility.utils:        112 |    161.781 |    153.244 |      8.537
+2026-08-05 09:54:39 [INFO] src.utility.utils:        113 |    158.797 |    149.787 |       9.01
+2026-08-05 09:54:39 [INFO] src.utility.utils:        114 |    163.825 |    154.186 |      9.639
+2026-08-05 09:54:39 [INFO] src.utility.utils:        115 |    158.708 |    150.147 |      8.561
+2026-08-05 09:54:39 [INFO] src.utility.utils:        116 |    164.825 |    157.247 |      7.578
+2026-08-05 09:54:39 [INFO] src.utility.utils:        117 |     160.11 |    151.378 |      8.732
+2026-08-05 09:54:39 [INFO] src.utility.utils:        118 |    159.401 |    151.367 |      8.034
+2026-08-05 09:54:39 [INFO] src.utility.utils:        119 |    166.222 |    157.315 |      8.907
+2026-08-05 09:54:39 [INFO] src.utility.utils:        120 |      162.2 |    153.107 |      9.093
+2026-08-05 09:54:39 [INFO] src.utility.utils:        121 |     163.37 |    155.128 |      8.242
+2026-08-05 09:54:39 [INFO] src.utility.utils:        122 |    166.247 |    158.557 |       7.69
+2026-08-05 09:54:39 [INFO] src.utility.utils:        123 |    160.332 |    151.351 |      8.981
+2026-08-05 09:54:39 [INFO] src.utility.utils:        124 |    165.164 |    156.726 |      8.438
+2026-08-05 09:54:39 [INFO] src.utility.utils:        125 |    163.453 |    154.732 |      8.721
+2026-08-05 09:54:39 [INFO] src.utility.utils:        126 |     160.58 |    152.443 |      8.137
+2026-08-05 09:54:39 [INFO] src.utility.utils:        127 |    169.487 |    161.581 |      7.906
+2026-08-05 09:54:39 [INFO] src.utility.utils:        128 |    163.362 |    154.333 |      9.029
+2026-08-05 09:54:39 [INFO] src.utility.utils:        129 |    163.427 |     153.97 |      9.457
+2026-08-05 09:54:39 [INFO] src.utility.utils:        130 |    159.434 |    150.706 |      8.729
+2026-08-05 09:54:39 [INFO] src.utility.utils:        131 |    166.273 |    156.535 |      9.738
+2026-08-05 09:54:39 [INFO] src.utility.utils:        132 |    166.118 |    157.085 |      9.033
+2026-08-05 09:54:39 [INFO] src.utility.utils:        133 |    165.374 |    157.249 |      8.125
+2026-08-05 09:54:39 [INFO] src.utility.utils:        134 |    164.114 |    154.603 |      9.511
+2026-08-05 09:54:39 [INFO] src.utility.utils:        135 |    164.233 |    155.949 |      8.284
+2026-08-05 09:54:39 [INFO] src.utility.utils:        136 |    166.221 |    157.746 |      8.475
+2026-08-05 09:54:39 [INFO] src.utility.utils:        137 |    168.128 |    160.596 |      7.532
+2026-08-05 09:54:39 [INFO] src.utility.utils:        138 |     161.04 |    152.711 |      8.329
+2026-08-05 09:54:39 [INFO] src.utility.utils:        139 |    163.179 |     154.59 |       8.59
+2026-08-05 09:54:39 [INFO] src.utility.utils:        140 |    165.503 |    157.089 |      8.414
+2026-08-05 09:54:39 [INFO] src.utility.utils:        141 |    154.021 |    145.729 |      8.293
+2026-08-05 09:54:39 [INFO] src.utility.utils:        142 |    164.399 |    155.145 |      9.254
+2026-08-05 09:54:39 [INFO] src.utility.utils:        143 |    166.859 |    158.271 |      8.588
+2026-08-05 09:54:39 [INFO] src.utility.utils:        144 |    172.291 |     162.36 |      9.931
+2026-08-05 09:54:39 [INFO] src.utility.utils:        145 |    169.328 |    160.208 |      9.121
+2026-08-05 09:54:39 [INFO] src.utility.utils:        146 |    167.497 |    158.793 |      8.704
+2026-08-05 09:54:39 [INFO] src.utility.utils:        147 |    167.064 |    159.139 |      7.925
+2026-08-05 09:54:39 [INFO] src.utility.utils:        148 |     159.16 |    151.321 |      7.838
+2026-08-05 09:54:39 [INFO] src.utility.utils:        149 |    172.369 |     162.03 |     10.339
+2026-08-05 09:54:39 [INFO] src.utility.utils:        150 |    170.455 |     162.08 |      8.375
+2026-08-05 09:54:39 [INFO] src.utility.utils:        151 |    165.771 |    157.381 |       8.39
+2026-08-05 09:54:39 [INFO] src.utility.utils:        152 |     169.27 |    162.251 |      7.019
+2026-08-05 09:54:39 [INFO] src.utility.utils:        153 |    167.398 |    158.727 |      8.671
+2026-08-05 09:54:39 [INFO] src.utility.utils:        154 |      168.3 |    158.515 |      9.785
+2026-08-05 09:54:39 [INFO] src.utility.utils:        155 |     168.23 |    159.989 |      8.241
+2026-08-05 09:54:39 [INFO] src.utility.utils:        156 |     166.22 |    156.405 |      9.815
+2026-08-05 09:54:39 [INFO] src.utility.utils:        157 |    168.403 |    160.765 |      7.638
+2026-08-05 09:54:39 [INFO] src.utility.utils:        158 |    156.892 |    149.696 |      7.196
+2026-08-05 09:54:39 [INFO] src.utility.utils:        159 |    163.386 |    154.439 |      8.947
+2026-08-05 09:54:39 [INFO] src.utility.utils:        160 |    166.387 |    157.584 |      8.803
+2026-08-05 09:54:39 [INFO] src.utility.utils:        161 |    166.843 |    156.931 |      9.912
+2026-08-05 09:54:39 [INFO] src.utility.utils:        162 |    165.543 |    155.743 |      9.801
+2026-08-05 09:54:39 [INFO] src.utility.utils:        163 |     163.07 |    154.261 |      8.809
+2026-08-05 09:54:39 [INFO] src.utility.utils:        164 |     165.91 |    157.032 |      8.878
+2026-08-05 09:54:39 [INFO] src.utility.utils: 
+Total wall-clock time: 26611.2s  (443.52 min)
+2026-08-05 09:54:39 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/timing_resnet18_no_weights_IMAGENET100.csv
+2026-08-05 09:54:39 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/logs/training_curves_resnet18_no_weights_IMAGENET100.png
+2026-08-05 09:54:48 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-05 09:54:48 [ERROR] __main__: FAILED resnet18_no_weights/IMAGENET100: a leaf Variable that requires grad is being used in an in-place operation.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 205, in main
+    fp32_traces = compute_layerwise_hessian_trace_pyhessian(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/pyhessian.py", line 75, in compute_layerwise_hessian_trace_pyhessian
+    use_cuda = device.type == "cuda"
+                       ^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/pyhessian/hessian.py", line 74, in __init__
+    loss.backward(create_graph=True)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+2026-08-05 09:54:49 [INFO] __main__: 
+--- Run 3/6: resnet50_no_weights on IMAGENET100 ---
+2026-08-05 09:54:49 [INFO] src.model_cnn.train: Model: resnet50_no_weights | Dataset: IMAGENET100 | Size: 90.66 MB | Params: 23,712,932
+2026-08-05 09:57:40 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 4.6353 A 1.93% | Val L 4.3003 A 3.74%
+2026-08-05 10:00:30 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 4.0975 A 5.92% | Val L 3.9081 A 8.42%
+2026-08-05 10:03:18 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 3.6905 A 12.40% | Val L 3.5390 A 14.90%
+2026-08-05 10:06:11 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 3.2984 A 19.60% | Val L 3.0392 A 24.44%
+2026-08-05 10:08:59 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 2.9732 A 26.33% | Val L 2.8525 A 28.42%
+2026-08-05 10:11:47 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 2.7285 A 31.41% | Val L 2.9221 A 28.42%
+2026-08-05 10:14:37 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 2.5256 A 35.98% | Val L 2.6851 A 32.90%
+2026-08-05 10:17:32 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 2.3644 A 39.57% | Val L 2.9107 A 28.34%
+2026-08-05 10:20:22 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 2.2274 A 42.61% | Val L 3.0388 A 31.58%
+2026-08-05 10:23:10 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 2.1217 A 45.11% | Val L 2.0588 A 46.92%
+2026-08-05 10:26:03 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 2.0406 A 47.08% | Val L 2.0341 A 46.84%
+2026-08-05 10:28:54 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 1.9664 A 48.78% | Val L 2.5920 A 36.92%
+2026-08-05 10:31:49 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 1.8916 A 50.51% | Val L 1.8689 A 50.14%
+2026-08-05 10:34:46 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 1.8473 A 51.48% | Val L 2.3467 A 42.38%
+2026-08-05 10:37:38 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 1.7872 A 52.96% | Val L 1.7660 A 53.52%
+2026-08-05 10:40:30 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 1.7482 A 53.95% | Val L 1.8897 A 52.32%
+2026-08-05 10:43:20 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 1.7062 A 54.94% | Val L 2.0466 A 47.98%
+2026-08-05 10:46:11 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 1.6709 A 55.77% | Val L 1.8245 A 53.28%
+2026-08-05 10:49:00 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 1.6453 A 56.45% | Val L 2.1398 A 45.44%
+2026-08-05 10:51:56 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 1.6138 A 57.17% | Val L 1.7219 A 53.64%
+2026-08-05 10:54:44 [INFO] src.model_cnn.train: Epoch  21/200 | LR 0.09730 | Train L 1.5916 A 57.74% | Val L 1.7479 A 53.30%
+2026-08-05 10:57:40 [INFO] src.model_cnn.train: Epoch  22/200 | LR 0.09704 | Train L 1.5690 A 58.42% | Val L 2.1942 A 46.20%
+2026-08-05 11:00:34 [INFO] src.model_cnn.train: Epoch  23/200 | LR 0.09677 | Train L 1.5375 A 58.99% | Val L 1.7426 A 54.38%
+2026-08-05 11:03:30 [INFO] src.model_cnn.train: Epoch  24/200 | LR 0.09649 | Train L 1.5254 A 59.31% | Val L 1.8020 A 52.44%
+2026-08-05 11:06:20 [INFO] src.model_cnn.train: Epoch  25/200 | LR 0.09619 | Train L 1.5087 A 59.94% | Val L 1.6609 A 55.88%
+2026-08-05 11:09:11 [INFO] src.model_cnn.train: Epoch  26/200 | LR 0.09589 | Train L 1.4979 A 60.13% | Val L 1.5498 A 58.76%
+2026-08-05 11:12:07 [INFO] src.model_cnn.train: Epoch  27/200 | LR 0.09557 | Train L 1.4719 A 60.61% | Val L 1.7580 A 53.92%
+2026-08-05 11:15:01 [INFO] src.model_cnn.train: Epoch  28/200 | LR 0.09524 | Train L 1.4552 A 61.00% | Val L 1.5808 A 58.34%
+2026-08-05 11:17:51 [INFO] src.model_cnn.train: Epoch  29/200 | LR 0.09490 | Train L 1.4421 A 61.47% | Val L 1.7440 A 55.14%
+2026-08-05 11:20:41 [INFO] src.model_cnn.train: Epoch  30/200 | LR 0.09455 | Train L 1.4398 A 61.48% | Val L 1.7573 A 55.00%
+2026-08-05 11:23:40 [INFO] src.model_cnn.train: Epoch  31/200 | LR 0.09419 | Train L 1.4200 A 62.03% | Val L 1.7359 A 54.96%
+2026-08-05 11:26:33 [INFO] src.model_cnn.train: Epoch  32/200 | LR 0.09382 | Train L 1.4138 A 62.21% | Val L 1.5580 A 59.56%
+2026-08-05 11:29:27 [INFO] src.model_cnn.train: Epoch  33/200 | LR 0.09343 | Train L 1.4127 A 62.18% | Val L 1.7415 A 54.90%
+2026-08-05 11:32:17 [INFO] src.model_cnn.train: Epoch  34/200 | LR 0.09304 | Train L 1.3931 A 62.74% | Val L 1.5451 A 58.28%
+2026-08-05 11:35:06 [INFO] src.model_cnn.train: Epoch  35/200 | LR 0.09263 | Train L 1.3829 A 62.96% | Val L 1.7320 A 54.42%
+2026-08-05 11:37:59 [INFO] src.model_cnn.train: Epoch  36/200 | LR 0.09222 | Train L 1.3828 A 62.93% | Val L 1.5490 A 59.56%
+2026-08-05 11:40:47 [INFO] src.model_cnn.train: Epoch  37/200 | LR 0.09179 | Train L 1.3675 A 63.33% | Val L 1.5912 A 57.70%
+2026-08-05 11:43:42 [INFO] src.model_cnn.train: Epoch  38/200 | LR 0.09135 | Train L 1.3689 A 63.41% | Val L 1.4555 A 61.70%
+2026-08-05 11:46:35 [INFO] src.model_cnn.train: Epoch  39/200 | LR 0.09091 | Train L 1.3616 A 63.59% | Val L 1.7996 A 54.46%
+2026-08-05 11:49:29 [INFO] src.model_cnn.train: Epoch  40/200 | LR 0.09045 | Train L 1.3457 A 63.89% | Val L 1.4357 A 62.02%
+2026-08-05 11:52:22 [INFO] src.model_cnn.train: Epoch  41/200 | LR 0.08998 | Train L 1.3429 A 63.94% | Val L 1.5061 A 59.26%
+2026-08-05 11:55:15 [INFO] src.model_cnn.train: Epoch  42/200 | LR 0.08951 | Train L 1.3404 A 64.00% | Val L 1.3357 A 63.88%
+2026-08-05 11:58:08 [INFO] src.model_cnn.train: Epoch  43/200 | LR 0.08902 | Train L 1.3302 A 64.28% | Val L 1.4488 A 61.70%
+2026-08-05 12:01:03 [INFO] src.model_cnn.train: Epoch  44/200 | LR 0.08853 | Train L 1.3225 A 64.45% | Val L 1.6604 A 57.14%
+2026-08-05 12:03:59 [INFO] src.model_cnn.train: Epoch  45/200 | LR 0.08802 | Train L 1.3240 A 64.39% | Val L 1.3638 A 62.36%
+2026-08-05 12:06:55 [INFO] src.model_cnn.train: Epoch  46/200 | LR 0.08751 | Train L 1.3090 A 64.92% | Val L 1.5362 A 59.28%
+2026-08-05 12:09:51 [INFO] src.model_cnn.train: Epoch  47/200 | LR 0.08698 | Train L 1.3121 A 64.71% | Val L 1.4235 A 61.70%
+2026-08-05 12:12:47 [INFO] src.model_cnn.train: Epoch  48/200 | LR 0.08645 | Train L 1.3044 A 64.91% | Val L 1.5432 A 59.68%
+2026-08-05 12:15:37 [INFO] src.model_cnn.train: Epoch  49/200 | LR 0.08591 | Train L 1.2996 A 65.09% | Val L 1.5094 A 60.26%
+2026-08-05 12:18:32 [INFO] src.model_cnn.train: Epoch  50/200 | LR 0.08536 | Train L 1.2974 A 65.16% | Val L 1.3731 A 62.30%
+2026-08-05 12:21:21 [INFO] src.model_cnn.train: Epoch  51/200 | LR 0.08480 | Train L 1.2845 A 65.45% | Val L 1.6261 A 57.26%
+2026-08-05 12:24:10 [INFO] src.model_cnn.train: Epoch  52/200 | LR 0.08423 | Train L 1.2883 A 65.31% | Val L 1.4464 A 61.46%
+2026-08-05 12:27:17 [INFO] src.model_cnn.train: Epoch  53/200 | LR 0.08365 | Train L 1.2798 A 65.62% | Val L 1.2657 A 65.98%
+2026-08-05 12:30:18 [INFO] src.model_cnn.train: Epoch  54/200 | LR 0.08307 | Train L 1.2761 A 65.63% | Val L 1.2815 A 65.42%
+2026-08-05 12:33:21 [INFO] src.model_cnn.train: Epoch  55/200 | LR 0.08247 | Train L 1.2671 A 65.87% | Val L 1.4232 A 61.30%
+2026-08-05 12:36:24 [INFO] src.model_cnn.train: Epoch  56/200 | LR 0.08187 | Train L 1.2646 A 66.02% | Val L 1.4913 A 59.94%
+2026-08-05 12:39:26 [INFO] src.model_cnn.train: Epoch  57/200 | LR 0.08126 | Train L 1.2588 A 66.05% | Val L 1.3823 A 63.10%
+2026-08-05 12:42:26 [INFO] src.model_cnn.train: Epoch  58/200 | LR 0.08065 | Train L 1.2537 A 66.34% | Val L 1.5671 A 59.28%
+2026-08-05 12:45:34 [INFO] src.model_cnn.train: Epoch  59/200 | LR 0.08002 | Train L 1.2521 A 66.44% | Val L 1.4161 A 62.84%
+2026-08-05 12:48:41 [INFO] src.model_cnn.train: Epoch  60/200 | LR 0.07939 | Train L 1.2423 A 66.54% | Val L 1.6729 A 58.32%
+2026-08-05 12:51:52 [INFO] src.model_cnn.train: Epoch  61/200 | LR 0.07875 | Train L 1.2341 A 66.61% | Val L 1.6613 A 57.48%
+2026-08-05 12:55:01 [INFO] src.model_cnn.train: Epoch  62/200 | LR 0.07810 | Train L 1.2315 A 66.82% | Val L 1.3693 A 63.28%
+2026-08-05 12:58:02 [INFO] src.model_cnn.train: Epoch  63/200 | LR 0.07745 | Train L 1.2254 A 66.98% | Val L 1.4087 A 62.70%
+2026-08-05 13:01:05 [INFO] src.model_cnn.train: Epoch  64/200 | LR 0.07679 | Train L 1.2191 A 67.02% | Val L 1.3245 A 64.96%
+2026-08-05 13:04:13 [INFO] src.model_cnn.train: Epoch  65/200 | LR 0.07612 | Train L 1.2203 A 67.08% | Val L 1.7048 A 55.36%
+2026-08-05 13:07:23 [INFO] src.model_cnn.train: Epoch  66/200 | LR 0.07545 | Train L 1.2225 A 67.05% | Val L 1.4457 A 61.14%
+2026-08-05 13:10:37 [INFO] src.model_cnn.train: Epoch  67/200 | LR 0.07477 | Train L 1.2087 A 67.31% | Val L 1.3908 A 63.36%
+2026-08-05 13:13:47 [INFO] src.model_cnn.train: Epoch  68/200 | LR 0.07409 | Train L 1.2044 A 67.53% | Val L 1.3907 A 63.12%
+2026-08-05 13:16:38 [INFO] src.model_cnn.train: Epoch  69/200 | LR 0.07340 | Train L 1.2023 A 67.46% | Val L 1.3920 A 62.54%
+2026-08-05 13:19:34 [INFO] src.model_cnn.train: Epoch  70/200 | LR 0.07270 | Train L 1.1941 A 67.75% | Val L 1.2670 A 65.98%
+2026-08-05 13:22:36 [INFO] src.model_cnn.train: Epoch  71/200 | LR 0.07200 | Train L 1.1926 A 67.85% | Val L 1.3545 A 63.18%
+2026-08-05 13:25:33 [INFO] src.model_cnn.train: Epoch  72/200 | LR 0.07129 | Train L 1.1864 A 67.90% | Val L 1.4298 A 62.34%
+2026-08-05 13:28:35 [INFO] src.model_cnn.train: Epoch  73/200 | LR 0.07058 | Train L 1.1828 A 68.06% | Val L 1.2062 A 68.22%
+2026-08-05 13:31:35 [INFO] src.model_cnn.train: Epoch  74/200 | LR 0.06986 | Train L 1.1692 A 68.27% | Val L 1.3202 A 64.88%
+2026-08-05 13:34:28 [INFO] src.model_cnn.train: Epoch  75/200 | LR 0.06913 | Train L 1.1778 A 68.07% | Val L 1.3859 A 63.90%
+2026-08-05 13:37:33 [INFO] src.model_cnn.train: Epoch  76/200 | LR 0.06841 | Train L 1.1655 A 68.39% | Val L 1.2589 A 66.06%
+2026-08-05 13:40:34 [INFO] src.model_cnn.train: Epoch  77/200 | LR 0.06767 | Train L 1.1600 A 68.51% | Val L 1.4470 A 61.36%
+2026-08-05 13:43:38 [INFO] src.model_cnn.train: Epoch  78/200 | LR 0.06694 | Train L 1.1518 A 68.95% | Val L 1.4610 A 61.84%
+2026-08-05 13:46:41 [INFO] src.model_cnn.train: Epoch  79/200 | LR 0.06620 | Train L 1.1515 A 68.73% | Val L 1.2322 A 66.90%
+2026-08-05 13:49:40 [INFO] src.model_cnn.train: Epoch  80/200 | LR 0.06545 | Train L 1.1422 A 68.97% | Val L 1.2270 A 66.52%
+2026-08-05 13:52:39 [INFO] src.model_cnn.train: Epoch  81/200 | LR 0.06470 | Train L 1.1406 A 69.11% | Val L 1.2878 A 65.10%
+2026-08-05 13:55:36 [INFO] src.model_cnn.train: Epoch  82/200 | LR 0.06395 | Train L 1.1320 A 69.19% | Val L 1.2978 A 65.38%
+2026-08-05 13:58:43 [INFO] src.model_cnn.train: Epoch  83/200 | LR 0.06319 | Train L 1.1238 A 69.40% | Val L 1.3025 A 66.16%
+2026-08-05 14:01:49 [INFO] src.model_cnn.train: Epoch  84/200 | LR 0.06243 | Train L 1.1159 A 69.73% | Val L 1.3351 A 64.94%
+2026-08-05 14:04:51 [INFO] src.model_cnn.train: Epoch  85/200 | LR 0.06167 | Train L 1.1148 A 69.76% | Val L 1.1433 A 68.78%
+2026-08-05 14:07:50 [INFO] src.model_cnn.train: Epoch  86/200 | LR 0.06091 | Train L 1.1058 A 69.96% | Val L 1.2625 A 66.22%
+2026-08-05 14:10:54 [INFO] src.model_cnn.train: Epoch  87/200 | LR 0.06014 | Train L 1.1105 A 69.80% | Val L 1.4325 A 62.20%
+2026-08-05 14:13:28 [INFO] src.model_cnn.train: Epoch  88/200 | LR 0.05937 | Train L 1.1008 A 70.20% | Val L 1.3133 A 65.54%
+2026-08-05 14:16:04 [INFO] src.model_cnn.train: Epoch  89/200 | LR 0.05860 | Train L 1.0878 A 70.44% | Val L 1.2376 A 66.74%
+2026-08-05 14:18:36 [INFO] src.model_cnn.train: Epoch  90/200 | LR 0.05782 | Train L 1.0862 A 70.42% | Val L 1.5780 A 60.00%
+2026-08-05 14:21:09 [INFO] src.model_cnn.train: Epoch  91/200 | LR 0.05705 | Train L 1.0851 A 70.60% | Val L 1.1165 A 69.46%
+2026-08-05 14:23:39 [INFO] src.model_cnn.train: Epoch  92/200 | LR 0.05627 | Train L 1.0740 A 70.74% | Val L 1.2427 A 66.36%
+2026-08-05 14:26:13 [INFO] src.model_cnn.train: Epoch  93/200 | LR 0.05549 | Train L 1.0645 A 71.14% | Val L 1.2501 A 66.52%
+2026-08-05 14:28:46 [INFO] src.model_cnn.train: Epoch  94/200 | LR 0.05471 | Train L 1.0667 A 70.92% | Val L 1.1948 A 67.32%
+2026-08-05 14:31:19 [INFO] src.model_cnn.train: Epoch  95/200 | LR 0.05392 | Train L 1.0564 A 71.25% | Val L 1.0611 A 70.24%
+2026-08-05 14:33:53 [INFO] src.model_cnn.train: Epoch  96/200 | LR 0.05314 | Train L 1.0513 A 71.25% | Val L 1.2318 A 66.98%
+2026-08-05 14:36:24 [INFO] src.model_cnn.train: Epoch  97/200 | LR 0.05236 | Train L 1.0500 A 71.47% | Val L 1.0673 A 70.48%
+2026-08-05 14:38:58 [INFO] src.model_cnn.train: Epoch  98/200 | LR 0.05157 | Train L 1.0324 A 71.85% | Val L 1.2123 A 67.70%
+2026-08-05 14:41:33 [INFO] src.model_cnn.train: Epoch  99/200 | LR 0.05079 | Train L 1.0308 A 71.87% | Val L 1.2192 A 67.42%
+2026-08-05 14:44:06 [INFO] src.model_cnn.train: Epoch 100/200 | LR 0.05000 | Train L 1.0252 A 72.08% | Val L 1.5710 A 61.00%
+2026-08-05 14:46:38 [INFO] src.model_cnn.train: Epoch 101/200 | LR 0.04921 | Train L 1.0200 A 72.01% | Val L 1.2078 A 67.50%
+2026-08-05 14:49:12 [INFO] src.model_cnn.train: Epoch 102/200 | LR 0.04843 | Train L 1.0114 A 72.26% | Val L 1.0663 A 70.72%
+2026-08-05 14:51:45 [INFO] src.model_cnn.train: Epoch 103/200 | LR 0.04764 | Train L 1.0080 A 72.53% | Val L 1.2433 A 66.36%
+2026-08-05 14:54:15 [INFO] src.model_cnn.train: Epoch 104/200 | LR 0.04686 | Train L 1.0004 A 72.61% | Val L 1.1193 A 70.12%
+2026-08-05 14:56:47 [INFO] src.model_cnn.train: Epoch 105/200 | LR 0.04608 | Train L 0.9917 A 72.89% | Val L 1.0368 A 71.30%
+2026-08-05 14:59:21 [INFO] src.model_cnn.train: Epoch 106/200 | LR 0.04529 | Train L 0.9897 A 73.01% | Val L 1.0251 A 72.16%
+2026-08-05 15:01:53 [INFO] src.model_cnn.train: Epoch 107/200 | LR 0.04451 | Train L 0.9792 A 73.27% | Val L 1.0818 A 70.88%
+2026-08-05 15:04:29 [INFO] src.model_cnn.train: Epoch 108/200 | LR 0.04373 | Train L 0.9694 A 73.39% | Val L 1.0365 A 71.30%
+2026-08-05 15:07:05 [INFO] src.model_cnn.train: Epoch 109/200 | LR 0.04295 | Train L 0.9698 A 73.39% | Val L 1.0362 A 72.02%
+2026-08-05 15:09:38 [INFO] src.model_cnn.train: Epoch 110/200 | LR 0.04218 | Train L 0.9594 A 73.77% | Val L 1.1312 A 69.90%
+2026-08-05 15:12:12 [INFO] src.model_cnn.train: Epoch 111/200 | LR 0.04140 | Train L 0.9498 A 73.90% | Val L 1.0847 A 71.24%
+2026-08-05 15:14:45 [INFO] src.model_cnn.train: Epoch 112/200 | LR 0.04063 | Train L 0.9467 A 74.08% | Val L 1.0387 A 71.98%
+2026-08-05 15:17:19 [INFO] src.model_cnn.train: Epoch 113/200 | LR 0.03986 | Train L 0.9406 A 74.22% | Val L 1.0777 A 70.70%
+2026-08-05 15:19:53 [INFO] src.model_cnn.train: Epoch 114/200 | LR 0.03909 | Train L 0.9288 A 74.58% | Val L 1.0246 A 72.28%
+2026-08-05 15:22:27 [INFO] src.model_cnn.train: Epoch 115/200 | LR 0.03833 | Train L 0.9255 A 74.54% | Val L 0.9801 A 73.28%
+2026-08-05 15:25:01 [INFO] src.model_cnn.train: Epoch 116/200 | LR 0.03757 | Train L 0.9175 A 74.80% | Val L 1.1648 A 68.72%
+2026-08-05 15:27:39 [INFO] src.model_cnn.train: Epoch 117/200 | LR 0.03681 | Train L 0.9109 A 74.99% | Val L 0.9918 A 73.12%
+2026-08-05 15:30:10 [INFO] src.model_cnn.train: Epoch 118/200 | LR 0.03605 | Train L 0.9063 A 75.00% | Val L 1.0049 A 71.92%
+2026-08-05 15:32:42 [INFO] src.model_cnn.train: Epoch 119/200 | LR 0.03530 | Train L 0.9019 A 75.22% | Val L 0.9623 A 72.90%
+2026-08-05 15:35:12 [INFO] src.model_cnn.train: Epoch 120/200 | LR 0.03455 | Train L 0.8924 A 75.51% | Val L 0.9244 A 75.28%
+2026-08-05 15:37:48 [INFO] src.model_cnn.train: Epoch 121/200 | LR 0.03380 | Train L 0.8836 A 75.77% | Val L 0.9685 A 73.30%
+2026-08-05 15:40:25 [INFO] src.model_cnn.train: Epoch 122/200 | LR 0.03306 | Train L 0.8751 A 75.93% | Val L 0.9298 A 74.30%
+2026-08-05 15:43:00 [INFO] src.model_cnn.train: Epoch 123/200 | LR 0.03233 | Train L 0.8658 A 76.02% | Val L 1.0509 A 70.98%
+2026-08-05 15:45:38 [INFO] src.model_cnn.train: Epoch 124/200 | LR 0.03159 | Train L 0.8586 A 76.36% | Val L 0.9489 A 73.22%
+2026-08-05 15:48:17 [INFO] src.model_cnn.train: Epoch 125/200 | LR 0.03087 | Train L 0.8527 A 76.45% | Val L 0.9422 A 73.84%
+2026-08-05 15:50:57 [INFO] src.model_cnn.train: Epoch 126/200 | LR 0.03014 | Train L 0.8449 A 76.69% | Val L 0.9303 A 74.42%
+2026-08-05 15:53:36 [INFO] src.model_cnn.train: Epoch 127/200 | LR 0.02942 | Train L 0.8361 A 76.99% | Val L 0.9850 A 73.36%
+2026-08-05 15:56:19 [INFO] src.model_cnn.train: Epoch 128/200 | LR 0.02871 | Train L 0.8349 A 76.90% | Val L 1.0339 A 72.86%
+2026-08-05 15:58:53 [INFO] src.model_cnn.train: Epoch 129/200 | LR 0.02800 | Train L 0.8172 A 77.35% | Val L 0.9250 A 74.12%
+2026-08-05 16:01:28 [INFO] src.model_cnn.train: Epoch 130/200 | LR 0.02730 | Train L 0.8102 A 77.61% | Val L 0.8558 A 75.70%
+2026-08-05 16:03:52 [INFO] src.model_cnn.train: Epoch 131/200 | LR 0.02660 | Train L 0.8043 A 77.70% | Val L 0.9272 A 74.80%
+2026-08-05 16:06:16 [INFO] src.model_cnn.train: Epoch 132/200 | LR 0.02591 | Train L 0.7915 A 78.06% | Val L 0.8740 A 76.14%
+2026-08-05 16:08:40 [INFO] src.model_cnn.train: Epoch 133/200 | LR 0.02523 | Train L 0.7869 A 78.23% | Val L 0.8883 A 75.60%
+2026-08-05 16:11:03 [INFO] src.model_cnn.train: Epoch 134/200 | LR 0.02455 | Train L 0.7800 A 78.40% | Val L 0.8625 A 75.90%
+2026-08-05 16:13:26 [INFO] src.model_cnn.train: Epoch 135/200 | LR 0.02388 | Train L 0.7664 A 78.65% | Val L 0.9407 A 75.18%
+2026-08-05 16:15:50 [INFO] src.model_cnn.train: Epoch 136/200 | LR 0.02321 | Train L 0.7571 A 79.04% | Val L 0.8153 A 77.48%
+2026-08-05 16:18:13 [INFO] src.model_cnn.train: Epoch 137/200 | LR 0.02255 | Train L 0.7495 A 79.20% | Val L 1.0214 A 72.52%
+2026-08-05 16:20:36 [INFO] src.model_cnn.train: Epoch 138/200 | LR 0.02190 | Train L 0.7422 A 79.30% | Val L 0.8222 A 76.96%
+2026-08-05 16:23:00 [INFO] src.model_cnn.train: Epoch 139/200 | LR 0.02125 | Train L 0.7329 A 79.58% | Val L 0.8149 A 77.26%
+2026-08-05 16:25:24 [INFO] src.model_cnn.train: Epoch 140/200 | LR 0.02061 | Train L 0.7291 A 79.75% | Val L 0.9119 A 75.36%
+2026-08-05 16:27:47 [INFO] src.model_cnn.train: Epoch 141/200 | LR 0.01998 | Train L 0.7185 A 79.88% | Val L 0.8695 A 76.34%
+2026-08-05 16:30:11 [INFO] src.model_cnn.train: Epoch 142/200 | LR 0.01935 | Train L 0.7055 A 80.24% | Val L 0.7983 A 77.68%
+2026-08-05 16:32:35 [INFO] src.model_cnn.train: Epoch 143/200 | LR 0.01874 | Train L 0.6958 A 80.61% | Val L 0.7785 A 78.12%
+2026-08-05 16:34:57 [INFO] src.model_cnn.train: Epoch 144/200 | LR 0.01813 | Train L 0.6895 A 80.61% | Val L 0.8101 A 77.94%
+2026-08-05 16:37:21 [INFO] src.model_cnn.train: Epoch 145/200 | LR 0.01753 | Train L 0.6795 A 80.94% | Val L 0.7256 A 79.76%
+2026-08-05 16:39:45 [INFO] src.model_cnn.train: Epoch 146/200 | LR 0.01693 | Train L 0.6707 A 81.17% | Val L 0.7723 A 78.34%
+2026-08-05 16:42:07 [INFO] src.model_cnn.train: Epoch 147/200 | LR 0.01635 | Train L 0.6568 A 81.59% | Val L 0.7603 A 78.80%
+2026-08-05 16:44:29 [INFO] src.model_cnn.train: Epoch 148/200 | LR 0.01577 | Train L 0.6521 A 81.80% | Val L 0.7465 A 79.14%
+2026-08-05 16:46:52 [INFO] src.model_cnn.train: Epoch 149/200 | LR 0.01520 | Train L 0.6426 A 81.93% | Val L 0.7632 A 79.18%
+2026-08-05 16:49:13 [INFO] src.model_cnn.train: Epoch 150/200 | LR 0.01464 | Train L 0.6290 A 82.35% | Val L 0.7328 A 80.28%
+2026-08-05 16:49:13 [INFO] src.model_cnn.train: Target validation accuracy reached (80.28% >= 80.0%). Stopping early.
+2026-08-05 16:49:13 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/models/baseline_resnet50_no_weights_IMAGENET100_float32.pt
+2026-08-05 16:49:13 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 16:49:13 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-05 16:49:13 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 16:49:13 [INFO] src.utility.utils:          1 |    170.184 |    161.879 |      8.305
+2026-08-05 16:49:13 [INFO] src.utility.utils:          2 |    170.383 |    161.334 |      9.049
+2026-08-05 16:49:13 [INFO] src.utility.utils:          3 |    167.594 |    158.028 |      9.565
+2026-08-05 16:49:13 [INFO] src.utility.utils:          4 |    173.281 |    164.349 |      8.932
+2026-08-05 16:49:13 [INFO] src.utility.utils:          5 |     167.99 |    159.419 |       8.57
+2026-08-05 16:49:13 [INFO] src.utility.utils:          6 |    168.218 |    159.302 |      8.916
+2026-08-05 16:49:13 [INFO] src.utility.utils:          7 |    169.851 |    160.838 |      9.013
+2026-08-05 16:49:13 [INFO] src.utility.utils:          8 |    174.434 |    164.737 |      9.697
+2026-08-05 16:49:13 [INFO] src.utility.utils:          9 |    170.483 |    161.418 |      9.065
+2026-08-05 16:49:13 [INFO] src.utility.utils:         10 |     167.44 |    158.465 |      8.975
+2026-08-05 16:49:13 [INFO] src.utility.utils:         11 |    173.572 |     163.47 |     10.102
+2026-08-05 16:49:13 [INFO] src.utility.utils:         12 |    170.159 |    160.371 |      9.788
+2026-08-05 16:49:13 [INFO] src.utility.utils:         13 |    175.704 |    164.248 |     11.456
+2026-08-05 16:49:13 [INFO] src.utility.utils:         14 |    176.857 |    168.208 |      8.649
+2026-08-05 16:49:13 [INFO] src.utility.utils:         15 |     171.53 |    163.315 |      8.215
+2026-08-05 16:49:13 [INFO] src.utility.utils:         16 |    172.088 |    163.421 |      8.667
+2026-08-05 16:49:13 [INFO] src.utility.utils:         17 |    169.852 |    161.483 |      8.369
+2026-08-05 16:49:13 [INFO] src.utility.utils:         18 |    171.486 |    161.765 |      9.721
+2026-08-05 16:49:13 [INFO] src.utility.utils:         19 |    169.217 |    160.574 |      8.644
+2026-08-05 16:49:13 [INFO] src.utility.utils:         20 |    175.188 |    166.692 |      8.496
+2026-08-05 16:49:13 [INFO] src.utility.utils:         21 |     168.31 |    159.788 |      8.521
+2026-08-05 16:49:13 [INFO] src.utility.utils:         22 |    176.141 |    166.749 |      9.392
+2026-08-05 16:49:13 [INFO] src.utility.utils:         23 |    173.816 |    162.969 |     10.847
+2026-08-05 16:49:13 [INFO] src.utility.utils:         24 |    175.631 |    166.251 |       9.38
+2026-08-05 16:49:13 [INFO] src.utility.utils:         25 |      170.0 |    160.951 |      9.049
+2026-08-05 16:49:13 [INFO] src.utility.utils:         26 |    171.363 |    161.829 |      9.534
+2026-08-05 16:49:13 [INFO] src.utility.utils:         27 |    175.817 |     166.95 |      8.867
+2026-08-05 16:49:13 [INFO] src.utility.utils:         28 |    173.794 |     164.73 |      9.064
+2026-08-05 16:49:13 [INFO] src.utility.utils:         29 |    170.654 |    161.845 |      8.809
+2026-08-05 16:49:13 [INFO] src.utility.utils:         30 |    169.933 |    161.101 |      8.831
+2026-08-05 16:49:13 [INFO] src.utility.utils:         31 |     178.98 |    169.713 |      9.266
+2026-08-05 16:49:13 [INFO] src.utility.utils:         32 |     172.45 |    164.917 |      7.533
+2026-08-05 16:49:13 [INFO] src.utility.utils:         33 |    174.375 |    165.903 |      8.471
+2026-08-05 16:49:13 [INFO] src.utility.utils:         34 |    169.275 |    160.341 |      8.934
+2026-08-05 16:49:13 [INFO] src.utility.utils:         35 |    169.535 |     160.71 |      8.825
+2026-08-05 16:49:13 [INFO] src.utility.utils:         36 |    172.857 |    163.331 |      9.526
+2026-08-05 16:49:13 [INFO] src.utility.utils:         37 |     167.91 |    159.562 |      8.349
+2026-08-05 16:49:13 [INFO] src.utility.utils:         38 |    175.515 |     166.52 |      8.995
+2026-08-05 16:49:13 [INFO] src.utility.utils:         39 |    172.329 |    163.909 |       8.42
+2026-08-05 16:49:13 [INFO] src.utility.utils:         40 |     174.06 |    164.909 |      9.152
+2026-08-05 16:49:13 [INFO] src.utility.utils:         41 |    173.428 |    165.119 |      8.309
+2026-08-05 16:49:13 [INFO] src.utility.utils:         42 |    173.199 |    163.795 |      9.404
+2026-08-05 16:49:13 [INFO] src.utility.utils:         43 |    172.736 |    163.504 |      9.232
+2026-08-05 16:49:13 [INFO] src.utility.utils:         44 |    174.665 |    165.845 |      8.819
+2026-08-05 16:49:13 [INFO] src.utility.utils:         45 |    175.889 |    166.379 |       9.51
+2026-08-05 16:49:13 [INFO] src.utility.utils:         46 |    175.857 |    166.237 |       9.62
+2026-08-05 16:49:13 [INFO] src.utility.utils:         47 |    176.102 |    167.498 |      8.604
+2026-08-05 16:49:13 [INFO] src.utility.utils:         48 |    176.271 |     166.49 |      9.781
+2026-08-05 16:49:13 [INFO] src.utility.utils:         49 |    169.786 |    160.565 |      9.222
+2026-08-05 16:49:13 [INFO] src.utility.utils:         50 |     175.56 |    166.108 |      9.452
+2026-08-05 16:49:13 [INFO] src.utility.utils:         51 |    168.663 |    160.133 |       8.53
+2026-08-05 16:49:13 [INFO] src.utility.utils:         52 |     169.12 |     159.79 |       9.33
+2026-08-05 16:49:13 [INFO] src.utility.utils:         53 |    186.403 |    175.523 |      10.88
+2026-08-05 16:49:13 [INFO] src.utility.utils:         54 |    181.428 |    171.799 |       9.63
+2026-08-05 16:49:13 [INFO] src.utility.utils:         55 |    182.926 |    172.935 |      9.991
+2026-08-05 16:49:13 [INFO] src.utility.utils:         56 |     182.52 |     172.55 |       9.97
+2026-08-05 16:49:13 [INFO] src.utility.utils:         57 |     182.06 |    171.688 |     10.371
+2026-08-05 16:49:13 [INFO] src.utility.utils:         58 |    180.515 |    170.506 |      10.01
+2026-08-05 16:49:13 [INFO] src.utility.utils:         59 |    187.997 |    178.257 |       9.74
+2026-08-05 16:49:13 [INFO] src.utility.utils:         60 |    187.157 |    177.706 |      9.451
+2026-08-05 16:49:13 [INFO] src.utility.utils:         61 |    190.529 |    180.394 |     10.136
+2026-08-05 16:49:13 [INFO] src.utility.utils:         62 |    188.718 |    178.415 |     10.303
+2026-08-05 16:49:13 [INFO] src.utility.utils:         63 |    181.436 |    171.332 |     10.104
+2026-08-05 16:49:13 [INFO] src.utility.utils:         64 |     182.52 |    170.991 |     11.529
+2026-08-05 16:49:13 [INFO] src.utility.utils:         65 |    188.531 |    178.773 |      9.759
+2026-08-05 16:49:13 [INFO] src.utility.utils:         66 |    189.766 |    178.641 |     11.124
+2026-08-05 16:49:13 [INFO] src.utility.utils:         67 |    193.834 |    182.844 |      10.99
+2026-08-05 16:49:13 [INFO] src.utility.utils:         68 |    190.131 |    179.422 |     10.709
+2026-08-05 16:49:13 [INFO] src.utility.utils:         69 |    171.635 |    162.022 |      9.613
+2026-08-05 16:49:13 [INFO] src.utility.utils:         70 |    175.219 |    165.577 |      9.641
+2026-08-05 16:49:13 [INFO] src.utility.utils:         71 |    182.517 |    171.796 |     10.722
+2026-08-05 16:49:13 [INFO] src.utility.utils:         72 |    176.446 |    167.331 |      9.115
+2026-08-05 16:49:13 [INFO] src.utility.utils:         73 |    182.501 |    173.651 |       8.85
+2026-08-05 16:49:13 [INFO] src.utility.utils:         74 |    179.642 |    169.254 |     10.389
+2026-08-05 16:49:13 [INFO] src.utility.utils:         75 |    173.644 |    163.313 |     10.332
+2026-08-05 16:49:13 [INFO] src.utility.utils:         76 |    184.653 |    175.067 |      9.586
+2026-08-05 16:49:13 [INFO] src.utility.utils:         77 |    181.161 |    170.942 |     10.219
+2026-08-05 16:49:13 [INFO] src.utility.utils:         78 |    183.831 |     174.25 |       9.58
+2026-08-05 16:49:13 [INFO] src.utility.utils:         79 |    182.804 |    173.893 |      8.911
+2026-08-05 16:49:13 [INFO] src.utility.utils:         80 |    179.163 |    169.125 |     10.039
+2026-08-05 16:49:13 [INFO] src.utility.utils:         81 |    178.831 |     170.65 |      8.181
+2026-08-05 16:49:13 [INFO] src.utility.utils:         82 |    177.167 |    166.305 |     10.862
+2026-08-05 16:49:13 [INFO] src.utility.utils:         83 |    187.335 |    177.357 |      9.978
+2026-08-05 16:49:13 [INFO] src.utility.utils:         84 |    185.237 |    175.918 |      9.318
+2026-08-05 16:49:13 [INFO] src.utility.utils:         85 |    182.393 |    173.548 |      8.845
+2026-08-05 16:49:13 [INFO] src.utility.utils:         86 |    178.875 |    166.046 |     12.829
+2026-08-05 16:49:13 [INFO] src.utility.utils:         87 |    184.401 |    175.737 |      8.664
+2026-08-05 16:49:13 [INFO] src.utility.utils:         88 |    153.641 |    144.543 |      9.098
+2026-08-05 16:49:13 [INFO] src.utility.utils:         89 |    155.494 |    147.167 |      8.327
+2026-08-05 16:49:13 [INFO] src.utility.utils:         90 |    152.568 |    143.956 |      8.612
+2026-08-05 16:49:13 [INFO] src.utility.utils:         91 |    152.644 |    144.203 |      8.441
+2026-08-05 16:49:13 [INFO] src.utility.utils:         92 |    150.374 |    142.539 |      7.835
+2026-08-05 16:49:13 [INFO] src.utility.utils:         93 |    153.541 |    144.772 |      8.768
+2026-08-05 16:49:13 [INFO] src.utility.utils:         94 |    152.905 |    144.499 |      8.407
+2026-08-05 16:49:13 [INFO] src.utility.utils:         95 |    152.979 |    144.621 |      8.359
+2026-08-05 16:49:13 [INFO] src.utility.utils:         96 |    154.334 |    145.758 |      8.576
+2026-08-05 16:49:13 [INFO] src.utility.utils:         97 |    150.989 |    142.695 |      8.294
+2026-08-05 16:49:13 [INFO] src.utility.utils:         98 |    154.045 |    144.118 |      9.928
+2026-08-05 16:49:13 [INFO] src.utility.utils:         99 |    154.782 |    146.114 |      8.668
+2026-08-05 16:49:13 [INFO] src.utility.utils:        100 |    152.705 |    144.156 |      8.549
+2026-08-05 16:49:13 [INFO] src.utility.utils:        101 |    152.106 |    142.984 |      9.122
+2026-08-05 16:49:13 [INFO] src.utility.utils:        102 |    153.926 |    145.255 |       8.67
+2026-08-05 16:49:13 [INFO] src.utility.utils:        103 |    153.249 |    144.984 |      8.265
+2026-08-05 16:49:13 [INFO] src.utility.utils:        104 |    150.564 |    142.059 |      8.505
+2026-08-05 16:49:13 [INFO] src.utility.utils:        105 |    151.439 |    144.303 |      7.136
+2026-08-05 16:49:13 [INFO] src.utility.utils:        106 |     153.68 |     145.58 |        8.1
+2026-08-05 16:49:13 [INFO] src.utility.utils:        107 |     152.77 |    144.872 |      7.897
+2026-08-05 16:49:13 [INFO] src.utility.utils:        108 |    155.994 |     147.66 |      8.334
+2026-08-05 16:49:13 [INFO] src.utility.utils:        109 |    155.306 |    146.922 |      8.384
+2026-08-05 16:49:13 [INFO] src.utility.utils:        110 |    153.031 |    144.391 |      8.641
+2026-08-05 16:49:13 [INFO] src.utility.utils:        111 |    153.873 |    145.295 |      8.578
+2026-08-05 16:49:13 [INFO] src.utility.utils:        112 |    153.574 |     146.14 |      7.433
+2026-08-05 16:49:13 [INFO] src.utility.utils:        113 |    153.989 |    146.052 |      7.937
+2026-08-05 16:49:13 [INFO] src.utility.utils:        114 |    153.748 |    146.837 |      6.911
+2026-08-05 16:49:13 [INFO] src.utility.utils:        115 |    154.392 |    146.686 |      7.705
+2026-08-05 16:49:13 [INFO] src.utility.utils:        116 |    153.645 |    145.662 |      7.983
+2026-08-05 16:49:13 [INFO] src.utility.utils:        117 |    157.929 |    149.426 |      8.503
+2026-08-05 16:49:13 [INFO] src.utility.utils:        118 |    150.871 |    142.187 |      8.685
+2026-08-05 16:49:13 [INFO] src.utility.utils:        119 |    151.883 |    142.786 |      9.096
+2026-08-05 16:49:13 [INFO] src.utility.utils:        120 |    150.257 |    142.806 |      7.452
+2026-08-05 16:49:13 [INFO] src.utility.utils:        121 |    156.149 |    147.077 |      9.072
+2026-08-05 16:49:13 [INFO] src.utility.utils:        122 |    156.551 |    148.115 |      8.436
+2026-08-05 16:49:13 [INFO] src.utility.utils:        123 |    154.939 |    146.036 |      8.903
+2026-08-05 16:49:13 [INFO] src.utility.utils:        124 |    157.772 |    148.604 |      9.169
+2026-08-05 16:49:13 [INFO] src.utility.utils:        125 |    159.914 |    151.315 |      8.599
+2026-08-05 16:49:13 [INFO] src.utility.utils:        126 |    159.854 |    151.593 |       8.26
+2026-08-05 16:49:13 [INFO] src.utility.utils:        127 |    159.177 |    150.405 |      8.772
+2026-08-05 16:49:13 [INFO] src.utility.utils:        128 |    162.525 |    153.583 |      8.942
+2026-08-05 16:49:13 [INFO] src.utility.utils:        129 |    154.139 |    146.714 |      7.425
+2026-08-05 16:49:13 [INFO] src.utility.utils:        130 |    154.626 |    147.136 |       7.49
+2026-08-05 16:49:13 [INFO] src.utility.utils:        131 |    143.876 |    136.358 |      7.518
+2026-08-05 16:49:13 [INFO] src.utility.utils:        132 |    144.238 |    136.568 |       7.67
+2026-08-05 16:49:13 [INFO] src.utility.utils:        133 |    143.672 |    136.731 |      6.941
+2026-08-05 16:49:13 [INFO] src.utility.utils:        134 |    143.567 |    136.006 |       7.56
+2026-08-05 16:49:13 [INFO] src.utility.utils:        135 |    142.831 |      136.0 |      6.831
+2026-08-05 16:49:13 [INFO] src.utility.utils:        136 |    144.105 |    136.686 |      7.419
+2026-08-05 16:49:13 [INFO] src.utility.utils:        137 |    142.343 |    135.814 |      6.529
+2026-08-05 16:49:13 [INFO] src.utility.utils:        138 |    143.327 |    135.696 |       7.63
+2026-08-05 16:49:13 [INFO] src.utility.utils:        139 |    143.947 |    136.571 |      7.376
+2026-08-05 16:49:13 [INFO] src.utility.utils:        140 |    143.819 |    136.269 |       7.55
+2026-08-05 16:49:13 [INFO] src.utility.utils:        141 |    143.571 |    136.449 |      7.122
+2026-08-05 16:49:13 [INFO] src.utility.utils:        142 |    143.554 |    136.119 |      7.435
+2026-08-05 16:49:13 [INFO] src.utility.utils:        143 |    143.784 |    136.166 |      7.618
+2026-08-05 16:49:13 [INFO] src.utility.utils:        144 |    142.565 |    135.639 |      6.926
+2026-08-05 16:49:13 [INFO] src.utility.utils:        145 |    143.327 |    136.191 |      7.136
+2026-08-05 16:49:13 [INFO] src.utility.utils:        146 |    144.344 |     137.26 |      7.085
+2026-08-05 16:49:13 [INFO] src.utility.utils:        147 |    142.235 |    135.899 |      6.336
+2026-08-05 16:49:13 [INFO] src.utility.utils:        148 |    142.022 |    135.482 |       6.54
+2026-08-05 16:49:13 [INFO] src.utility.utils:        149 |    142.289 |    135.664 |      6.625
+2026-08-05 16:49:13 [INFO] src.utility.utils:        150 |    141.498 |    134.626 |      6.872
+2026-08-05 16:49:13 [INFO] src.utility.utils: 
+Total wall-clock time: 24861.2s  (414.35 min)
+2026-08-05 16:49:13 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/timing_resnet50_no_weights_IMAGENET100.csv
+2026-08-05 16:49:14 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/logs/training_curves_resnet50_no_weights_IMAGENET100.png
+2026-08-05 16:49:20 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-05 16:49:21 [ERROR] __main__: FAILED resnet50_no_weights/IMAGENET100: a leaf Variable that requires grad is being used in an in-place operation.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 205, in main
+    fp32_traces = compute_layerwise_hessian_trace_pyhessian(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/pyhessian.py", line 75, in compute_layerwise_hessian_trace_pyhessian
+    use_cuda = device.type == "cuda"
+                       ^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/pyhessian/hessian.py", line 74, in __init__
+    loss.backward(create_graph=True)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+2026-08-05 16:49:21 [INFO] __main__: 
+============================================================
+2026-08-05 16:49:21 [INFO] __main__: Loading dataset: CIFAR10
+2026-08-05 16:49:23 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-05 16:49:24 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-05 16:49:24 [INFO] __main__: 
+--- Run 4/6: cnn on CIFAR10 ---
+2026-08-05 16:49:24 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR10 | Size: 5.53 MB | Params: 1,449,226
+2026-08-05 16:49:28 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 1.5635 A 42.17% | Val L 1.2571 A 54.57%
+2026-08-05 16:49:31 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 1.1805 A 57.61% | Val L 1.0873 A 60.69%
+2026-08-05 16:49:34 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 1.0120 A 63.76% | Val L 0.9034 A 67.77%
+2026-08-05 16:49:38 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 0.8889 A 68.82% | Val L 1.0421 A 65.29%
+2026-08-05 16:49:41 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 0.8171 A 71.13% | Val L 0.7622 A 73.07%
+2026-08-05 16:49:45 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 0.7672 A 73.20% | Val L 0.8418 A 71.49%
+2026-08-05 16:49:48 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 0.7322 A 74.50% | Val L 0.7914 A 73.09%
+2026-08-05 16:49:52 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 0.7105 A 75.24% | Val L 0.9425 A 67.90%
+2026-08-05 16:49:55 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 0.6791 A 76.22% | Val L 0.6764 A 76.71%
+2026-08-05 16:49:58 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 0.6594 A 77.02% | Val L 0.7324 A 74.41%
+2026-08-05 16:50:02 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 0.6440 A 77.48% | Val L 0.6454 A 77.20%
+2026-08-05 16:50:05 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 0.6276 A 78.14% | Val L 0.7841 A 72.92%
+2026-08-05 16:50:09 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 0.6119 A 78.81% | Val L 0.6560 A 77.33%
+2026-08-05 16:50:12 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 0.6041 A 78.87% | Val L 0.7979 A 72.54%
+2026-08-05 16:50:16 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 0.5931 A 79.39% | Val L 1.0499 A 66.57%
+2026-08-05 16:50:19 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 0.5881 A 79.61% | Val L 0.6486 A 77.85%
+2026-08-05 16:50:23 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 0.5863 A 79.73% | Val L 0.6763 A 77.26%
+2026-08-05 16:50:26 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 0.5718 A 80.23% | Val L 0.6311 A 77.92%
+2026-08-05 16:50:30 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 0.5657 A 80.42% | Val L 0.6094 A 79.28%
+2026-08-05 16:50:33 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 0.5677 A 80.18% | Val L 0.7064 A 75.63%
+2026-08-05 16:50:37 [INFO] src.model_cnn.train: Epoch  21/200 | LR 0.09730 | Train L 0.5607 A 80.65% | Val L 0.8061 A 74.23%
+2026-08-05 16:50:40 [INFO] src.model_cnn.train: Epoch  22/200 | LR 0.09704 | Train L 0.5536 A 80.71% | Val L 0.6747 A 77.10%
+2026-08-05 16:50:44 [INFO] src.model_cnn.train: Epoch  23/200 | LR 0.09677 | Train L 0.5539 A 80.70% | Val L 0.6861 A 76.62%
+2026-08-05 16:50:47 [INFO] src.model_cnn.train: Epoch  24/200 | LR 0.09649 | Train L 0.5421 A 81.17% | Val L 0.6010 A 79.83%
+2026-08-05 16:50:50 [INFO] src.model_cnn.train: Epoch  25/200 | LR 0.09619 | Train L 0.5473 A 81.04% | Val L 0.6321 A 78.26%
+2026-08-05 16:50:54 [INFO] src.model_cnn.train: Epoch  26/200 | LR 0.09589 | Train L 0.5400 A 81.38% | Val L 0.7958 A 74.80%
+2026-08-05 16:50:57 [INFO] src.model_cnn.train: Epoch  27/200 | LR 0.09557 | Train L 0.5395 A 81.27% | Val L 0.6315 A 78.34%
+2026-08-05 16:51:01 [INFO] src.model_cnn.train: Epoch  28/200 | LR 0.09524 | Train L 0.5266 A 81.68% | Val L 0.6905 A 76.42%
+2026-08-05 16:51:04 [INFO] src.model_cnn.train: Epoch  29/200 | LR 0.09490 | Train L 0.5356 A 81.49% | Val L 0.5725 A 80.40%
+2026-08-05 16:51:04 [INFO] src.model_cnn.train: Target validation accuracy reached (80.40% >= 80.0%). Stopping early.
+2026-08-05 16:51:04 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/models/baseline_cnn_CIFAR10_float32.pt
+2026-08-05 16:51:04 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 16:51:04 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-05 16:51:04 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 16:51:04 [INFO] src.utility.utils:          1 |      3.606 |      2.712 |      0.894
+2026-08-05 16:51:04 [INFO] src.utility.utils:          2 |       3.35 |      2.511 |      0.839
+2026-08-05 16:51:04 [INFO] src.utility.utils:          3 |      3.272 |      2.439 |      0.833
+2026-08-05 16:51:04 [INFO] src.utility.utils:          4 |      3.509 |      2.674 |      0.836
+2026-08-05 16:51:04 [INFO] src.utility.utils:          5 |      3.395 |      2.553 |      0.842
+2026-08-05 16:51:04 [INFO] src.utility.utils:          6 |      3.435 |      2.631 |      0.804
+2026-08-05 16:51:04 [INFO] src.utility.utils:          7 |      3.338 |      2.508 |       0.83
+2026-08-05 16:51:04 [INFO] src.utility.utils:          8 |      3.373 |      2.564 |      0.809
+2026-08-05 16:51:04 [INFO] src.utility.utils:          9 |      3.367 |      2.567 |        0.8
+2026-08-05 16:51:04 [INFO] src.utility.utils:         10 |      3.489 |      2.688 |      0.802
+2026-08-05 16:51:04 [INFO] src.utility.utils:         11 |       3.43 |       2.63 |        0.8
+2026-08-05 16:51:04 [INFO] src.utility.utils:         12 |      3.476 |      2.673 |      0.802
+2026-08-05 16:51:04 [INFO] src.utility.utils:         13 |      3.415 |      2.544 |      0.871
+2026-08-05 16:51:04 [INFO] src.utility.utils:         14 |      3.493 |      2.616 |      0.877
+2026-08-05 16:51:04 [INFO] src.utility.utils:         15 |      3.546 |      2.745 |      0.801
+2026-08-05 16:51:04 [INFO] src.utility.utils:         16 |      3.384 |      2.564 |       0.82
+2026-08-05 16:51:04 [INFO] src.utility.utils:         17 |      3.364 |      2.559 |      0.806
+2026-08-05 16:51:04 [INFO] src.utility.utils:         18 |      3.565 |      2.707 |      0.858
+2026-08-05 16:51:04 [INFO] src.utility.utils:         19 |      3.475 |      2.656 |      0.819
+2026-08-05 16:51:04 [INFO] src.utility.utils:         20 |      3.499 |      2.608 |      0.891
+2026-08-05 16:51:04 [INFO] src.utility.utils:         21 |      3.446 |      2.641 |      0.805
+2026-08-05 16:51:04 [INFO] src.utility.utils:         22 |      3.525 |      2.717 |      0.809
+2026-08-05 16:51:04 [INFO] src.utility.utils:         23 |      3.528 |      2.684 |      0.844
+2026-08-05 16:51:04 [INFO] src.utility.utils:         24 |       3.49 |      2.697 |      0.792
+2026-08-05 16:51:04 [INFO] src.utility.utils:         25 |      3.359 |      2.545 |      0.814
+2026-08-05 16:51:04 [INFO] src.utility.utils:         26 |      3.294 |      2.473 |      0.821
+2026-08-05 16:51:04 [INFO] src.utility.utils:         27 |      3.533 |      2.661 |      0.871
+2026-08-05 16:51:04 [INFO] src.utility.utils:         28 |      3.392 |        2.6 |      0.791
+2026-08-05 16:51:04 [INFO] src.utility.utils:         29 |      3.594 |      2.777 |      0.817
+2026-08-05 16:51:04 [INFO] src.utility.utils: 
+Total wall-clock time: 99.9s  (1.67 min)
+2026-08-05 16:51:04 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/timing_cnn_CIFAR10.csv
+2026-08-05 16:51:05 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/logs/training_curves_cnn_CIFAR10.png
+2026-08-05 16:51:05 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-05 16:51:06 [ERROR] __main__: FAILED cnn/CIFAR10: a leaf Variable that requires grad is being used in an in-place operation.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 205, in main
+    fp32_traces = compute_layerwise_hessian_trace_pyhessian(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/pyhessian.py", line 75, in compute_layerwise_hessian_trace_pyhessian
+    use_cuda = device.type == "cuda"
+                       ^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/pyhessian/hessian.py", line 74, in __init__
+    loss.backward(create_graph=True)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+2026-08-05 16:51:07 [INFO] __main__: 
+--- Run 5/6: resnet18_no_weights on CIFAR10 ---
+2026-08-05 16:51:07 [INFO] src.model_cnn.train: Model: resnet18_no_weights | Dataset: CIFAR10 | Size: 42.66 MB | Params: 11,173,962
+2026-08-05 16:51:13 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 2.2939 A 21.54% | Val L 1.7426 A 35.02%
+2026-08-05 16:51:20 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 1.6008 A 40.06% | Val L 1.4778 A 45.68%
+2026-08-05 16:51:26 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 1.3494 A 50.71% | Val L 1.3288 A 51.54%
+2026-08-05 16:51:33 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 1.1442 A 58.74% | Val L 1.3669 A 52.67%
+2026-08-05 16:51:40 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 0.9708 A 65.29% | Val L 0.8886 A 68.71%
+2026-08-05 16:51:46 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 0.8253 A 70.74% | Val L 0.8519 A 69.76%
+2026-08-05 16:51:53 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 0.7115 A 75.10% | Val L 0.7585 A 73.44%
+2026-08-05 16:51:59 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 0.6300 A 78.03% | Val L 0.8517 A 71.18%
+2026-08-05 16:52:06 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 0.5539 A 80.65% | Val L 0.6043 A 79.43%
+2026-08-05 16:52:12 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 0.5094 A 82.29% | Val L 0.5685 A 80.85%
+2026-08-05 16:52:19 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 0.4671 A 84.02% | Val L 0.6199 A 78.93%
+2026-08-05 16:52:26 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 0.4390 A 84.84% | Val L 0.6164 A 79.02%
+2026-08-05 16:52:32 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 0.4129 A 85.79% | Val L 0.5688 A 81.20%
+2026-08-05 16:52:39 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 0.3959 A 86.48% | Val L 0.4722 A 83.67%
+2026-08-05 16:52:45 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 0.3747 A 87.13% | Val L 0.5318 A 82.12%
+2026-08-05 16:52:52 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 0.3553 A 87.66% | Val L 0.5336 A 82.65%
+2026-08-05 16:52:59 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 0.3519 A 87.91% | Val L 0.5669 A 81.27%
+2026-08-05 16:53:05 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 0.3328 A 88.58% | Val L 0.5286 A 82.95%
+2026-08-05 16:53:12 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 0.3301 A 88.53% | Val L 0.6700 A 78.27%
+2026-08-05 16:53:18 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 0.3082 A 89.38% | Val L 0.6221 A 81.31%
+2026-08-05 16:53:18 [INFO] src.model_cnn.train: Target validation accuracy reached (81.31% >= 80.0%). Stopping early.
+2026-08-05 16:53:18 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/models/baseline_resnet18_no_weights_CIFAR10_float32.pt
+2026-08-05 16:53:18 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 16:53:18 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-05 16:53:18 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 16:53:18 [INFO] src.utility.utils:          1 |      6.603 |      5.723 |       0.88
+2026-08-05 16:53:18 [INFO] src.utility.utils:          2 |      6.528 |      5.656 |      0.872
+2026-08-05 16:53:18 [INFO] src.utility.utils:          3 |      6.609 |      5.754 |      0.856
+2026-08-05 16:53:18 [INFO] src.utility.utils:          4 |      6.588 |      5.717 |      0.871
+2026-08-05 16:53:18 [INFO] src.utility.utils:          5 |      6.534 |      5.654 |       0.88
+2026-08-05 16:53:18 [INFO] src.utility.utils:          6 |       6.51 |      5.639 |      0.871
+2026-08-05 16:53:18 [INFO] src.utility.utils:          7 |      6.538 |      5.674 |      0.864
+2026-08-05 16:53:18 [INFO] src.utility.utils:          8 |      6.581 |      5.728 |      0.853
+2026-08-05 16:53:18 [INFO] src.utility.utils:          9 |      6.535 |      5.658 |      0.877
+2026-08-05 16:53:18 [INFO] src.utility.utils:         10 |       6.56 |      5.687 |      0.872
+2026-08-05 16:53:18 [INFO] src.utility.utils:         11 |      6.568 |      5.715 |      0.853
+2026-08-05 16:53:18 [INFO] src.utility.utils:         12 |      6.573 |      5.688 |      0.885
+2026-08-05 16:53:18 [INFO] src.utility.utils:         13 |      6.554 |      5.701 |      0.853
+2026-08-05 16:53:18 [INFO] src.utility.utils:         14 |      6.585 |      5.681 |      0.904
+2026-08-05 16:53:18 [INFO] src.utility.utils:         15 |      6.516 |      5.642 |      0.874
+2026-08-05 16:53:18 [INFO] src.utility.utils:         16 |       6.64 |      5.748 |      0.892
+2026-08-05 16:53:18 [INFO] src.utility.utils:         17 |      6.577 |      5.706 |      0.871
+2026-08-05 16:53:18 [INFO] src.utility.utils:         18 |      6.541 |      5.674 |      0.867
+2026-08-05 16:53:18 [INFO] src.utility.utils:         19 |      6.615 |      5.718 |      0.896
+2026-08-05 16:53:18 [INFO] src.utility.utils:         20 |      6.575 |      5.697 |      0.877
+2026-08-05 16:53:18 [INFO] src.utility.utils: 
+Total wall-clock time: 131.3s  (2.19 min)
+2026-08-05 16:53:18 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/timing_resnet18_no_weights_CIFAR10.csv
+2026-08-05 16:53:19 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/logs/training_curves_resnet18_no_weights_CIFAR10.png
+2026-08-05 16:53:20 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-05 16:53:20 [ERROR] __main__: FAILED resnet18_no_weights/CIFAR10: a leaf Variable that requires grad is being used in an in-place operation.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 205, in main
+    fp32_traces = compute_layerwise_hessian_trace_pyhessian(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/pyhessian.py", line 75, in compute_layerwise_hessian_trace_pyhessian
+    use_cuda = device.type == "cuda"
+                       ^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/pyhessian/hessian.py", line 74, in __init__
+    loss.backward(create_graph=True)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+2026-08-05 16:53:21 [INFO] __main__: 
+--- Run 6/6: resnet50_no_weights on CIFAR10 ---
+2026-08-05 16:53:21 [INFO] src.model_cnn.train: Model: resnet50_no_weights | Dataset: CIFAR10 | Size: 89.93 MB | Params: 23,520,842
+2026-08-05 16:53:40 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 3.7033 A 9.98% | Val L 2.3037 A 10.02%
+2026-08-05 16:53:59 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 2.3019 A 10.47% | Val L 2.2981 A 10.32%
+2026-08-05 16:54:18 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 2.1572 A 17.83% | Val L 2.0738 A 19.21%
+2026-08-05 16:54:37 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 2.0095 A 21.71% | Val L 1.9119 A 26.56%
+2026-08-05 16:54:56 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 1.8409 A 28.84% | Val L 1.9517 A 33.14%
+2026-08-05 16:55:16 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 1.7187 A 34.70% | Val L 1.6625 A 36.29%
+2026-08-05 16:55:35 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 1.6088 A 39.45% | Val L 1.5478 A 41.51%
+2026-08-05 16:55:54 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 1.5236 A 43.30% | Val L 1.5366 A 43.03%
+2026-08-05 16:56:13 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 1.4339 A 46.86% | Val L 1.5072 A 46.78%
+2026-08-05 16:56:32 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 1.3375 A 51.11% | Val L 1.3717 A 50.25%
+2026-08-05 16:56:51 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 1.2171 A 55.83% | Val L 1.1955 A 57.05%
+2026-08-05 16:57:10 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 1.0931 A 60.62% | Val L 1.1295 A 60.29%
+2026-08-05 16:57:30 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 0.9748 A 65.24% | Val L 1.0021 A 64.15%
+2026-08-05 16:57:49 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 0.8977 A 68.11% | Val L 0.8829 A 68.92%
+2026-08-05 16:58:08 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 0.8195 A 71.05% | Val L 0.9011 A 68.24%
+2026-08-05 16:58:27 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 0.7670 A 72.86% | Val L 0.8460 A 71.02%
+2026-08-05 16:58:46 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 0.7187 A 74.84% | Val L 0.8488 A 70.91%
+2026-08-05 16:59:05 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 0.6740 A 76.25% | Val L 0.7482 A 73.15%
+2026-08-05 16:59:25 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 0.6381 A 77.43% | Val L 0.9253 A 69.49%
+2026-08-05 16:59:44 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 0.5944 A 79.25% | Val L 0.6133 A 78.83%
+2026-08-05 17:00:03 [INFO] src.model_cnn.train: Epoch  21/200 | LR 0.09730 | Train L 0.5643 A 80.27% | Val L 0.6455 A 78.28%
+2026-08-05 17:00:22 [INFO] src.model_cnn.train: Epoch  22/200 | LR 0.09704 | Train L 0.5277 A 81.75% | Val L 0.6521 A 77.47%
+2026-08-05 17:00:41 [INFO] src.model_cnn.train: Epoch  23/200 | LR 0.09677 | Train L 0.5000 A 82.63% | Val L 0.8913 A 72.29%
+2026-08-05 17:01:00 [INFO] src.model_cnn.train: Epoch  24/200 | LR 0.09649 | Train L 0.4765 A 83.43% | Val L 0.6327 A 78.66%
+2026-08-05 17:01:19 [INFO] src.model_cnn.train: Epoch  25/200 | LR 0.09619 | Train L 0.4663 A 83.90% | Val L 0.5872 A 80.20%
+2026-08-05 17:01:19 [INFO] src.model_cnn.train: Target validation accuracy reached (80.20% >= 80.0%). Stopping early.
+2026-08-05 17:01:20 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/models/baseline_resnet50_no_weights_CIFAR10_float32.pt
+2026-08-05 17:01:20 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 17:01:20 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-05 17:01:20 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-05 17:01:20 [INFO] src.utility.utils:          1 |     19.149 |     17.534 |      1.616
+2026-08-05 17:01:20 [INFO] src.utility.utils:          2 |     18.996 |     17.389 |      1.607
+2026-08-05 17:01:20 [INFO] src.utility.utils:          3 |     19.129 |     17.501 |      1.628
+2026-08-05 17:01:20 [INFO] src.utility.utils:          4 |     19.036 |     17.393 |      1.643
+2026-08-05 17:01:20 [INFO] src.utility.utils:          5 |     19.138 |     17.507 |      1.631
+2026-08-05 17:01:20 [INFO] src.utility.utils:          6 |     19.116 |     17.447 |       1.67
+2026-08-05 17:01:20 [INFO] src.utility.utils:          7 |      19.04 |       17.4 |      1.641
+2026-08-05 17:01:20 [INFO] src.utility.utils:          8 |     19.072 |     17.437 |      1.634
+2026-08-05 17:01:20 [INFO] src.utility.utils:          9 |     19.079 |     17.432 |      1.647
+2026-08-05 17:01:20 [INFO] src.utility.utils:         10 |      19.05 |     17.423 |      1.626
+2026-08-05 17:01:20 [INFO] src.utility.utils:         11 |     19.121 |     17.448 |      1.673
+2026-08-05 17:01:20 [INFO] src.utility.utils:         12 |     19.048 |     17.418 |       1.63
+2026-08-05 17:01:20 [INFO] src.utility.utils:         13 |     19.137 |     17.504 |      1.634
+2026-08-05 17:01:20 [INFO] src.utility.utils:         14 |     19.073 |      17.43 |      1.643
+2026-08-05 17:01:20 [INFO] src.utility.utils:         15 |     19.096 |     17.457 |      1.639
+2026-08-05 17:01:20 [INFO] src.utility.utils:         16 |      19.11 |      17.46 |      1.651
+2026-08-05 17:01:20 [INFO] src.utility.utils:         17 |      19.07 |     17.437 |      1.633
+2026-08-05 17:01:20 [INFO] src.utility.utils:         18 |     19.107 |     17.456 |      1.651
+2026-08-05 17:01:20 [INFO] src.utility.utils:         19 |     19.119 |     17.477 |      1.642
+2026-08-05 17:01:20 [INFO] src.utility.utils:         20 |      19.13 |     17.501 |      1.629
+2026-08-05 17:01:20 [INFO] src.utility.utils:         21 |     19.078 |     17.426 |      1.651
+2026-08-05 17:01:20 [INFO] src.utility.utils:         22 |     19.095 |      17.44 |      1.655
+2026-08-05 17:01:20 [INFO] src.utility.utils:         23 |     19.092 |      17.45 |      1.642
+2026-08-05 17:01:20 [INFO] src.utility.utils:         24 |      19.06 |     17.423 |      1.637
+2026-08-05 17:01:20 [INFO] src.utility.utils:         25 |     19.054 |     17.414 |       1.64
+2026-08-05 17:01:20 [INFO] src.utility.utils: 
+Total wall-clock time: 477.2s  (7.95 min)
+2026-08-05 17:01:20 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/timing_resnet50_no_weights_CIFAR10.csv
+2026-08-05 17:01:20 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/logs/training_curves_resnet50_no_weights_CIFAR10.png
+2026-08-05 17:01:22 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-05 17:01:22 [ERROR] __main__: FAILED resnet50_no_weights/CIFAR10: a leaf Variable that requires grad is being used in an in-place operation.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 205, in main
+    fp32_traces = compute_layerwise_hessian_trace_pyhessian(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/pyhessian.py", line 75, in compute_layerwise_hessian_trace_pyhessian
+    use_cuda = device.type == "cuda"
+                       ^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/pyhessian/hessian.py", line 74, in __init__
+    loss.backward(create_graph=True)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+2026-08-05 17:01:23 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/pipeline_summary.csv
+2026-08-05 17:01:23 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/ptq_summary.csv
+2026-08-05 17:01:23 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260804_233855_27764/csv/qat_summary.csv
+2026-08-05 17:01:23 [INFO] __main__: Classification saved -> classification_metrics.csv
+2026-08-05 17:01:23 [INFO] __main__: 
+=== PIPELINE SUMMARY ===
+2026-08-05 17:01:23 [INFO] __main__: Model                    Dataset           Best Train Acc Best Val Acc Time (min) Status
+2026-08-05 17:01:23 [INFO] __main__: ----------------------------------------------------------------------------------------
+2026-08-05 17:01:23 [INFO] __main__: cnn                      IMAGENET100             ERROR      ERROR    172.0 failed
+2026-08-05 17:01:23 [INFO] __main__: resnet18_no_weights      IMAGENET100             ERROR      ERROR    443.7 failed
+2026-08-05 17:01:23 [INFO] __main__: resnet50_no_weights      IMAGENET100             ERROR      ERROR    414.5 failed
+2026-08-05 17:01:23 [INFO] __main__: cnn                      CIFAR10                 ERROR      ERROR      1.7 failed
+2026-08-05 17:01:23 [INFO] __main__: resnet18_no_weights      CIFAR10                 ERROR      ERROR      2.2 failed
+2026-08-05 17:01:23 [INFO] __main__: resnet50_no_weights      CIFAR10                 ERROR      ERROR      8.0 failed
+2026-08-05 17:01:23 [INFO] __main__: === Pipeline complete ===

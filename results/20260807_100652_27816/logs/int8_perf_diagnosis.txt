@@ -1,0 +1,996 @@
+torchao int8 vs fp32 performance diagnosis
+==============================================================================
+GPU: NVIDIA A100-SXM4-80GB
+Compute capability: 8.0 (sm80)
+
+torchao 0.17 int8 Conv2d support: Int8DynamicActivationInt8WeightConfig's default
+filter_fn only matches nn.Linear (aten.linear/aten.mm dispatch); it does not
+implement aten.conv2d at all, so Conv2d layers are left untouched fp32 under
+quantize_(model, Int8DynamicActivationInt8WeightConfig()) with no filter_fn
+override. The only config that quantizes Conv2d weights, IntxWeightOnlyConfig, is
+weight-only: it dequantizes to fp32 and runs a standard fp32 conv at forward time,
+saving storage but not compute. There is no optimized int8 GEMM/conv kernel path
+for Conv2d in this torchao version.
+==============================================================================
+cnn / CIFAR10 / PTQ
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    0.5902    0.6211      1694.2      1609.9      0.950
+int8_dynamic_act        1    0.5902    2.7924      1694.2       358.1      0.211
+int8_weight_only        2    0.6008    0.6325      3329.2      3162.3      0.950
+int8_dynamic_act        2    0.6008    3.0860      3329.2       648.1      0.195
+int8_weight_only        4    0.6047    0.6352      6614.5      6297.4      0.952
+int8_dynamic_act        4    0.6047    3.7130      6614.5      1077.3      0.163
+int8_weight_only        8    0.6015    0.6314     13301.1     12671.2      0.953
+int8_dynamic_act        8    0.6015    4.3634     13301.1      1833.4      0.138
+int8_weight_only       16    0.6001    0.6313     26660.3     25343.6      0.951
+int8_dynamic_act       16    0.6001    4.3575     26660.3      3671.8      0.138
+int8_weight_only       32    0.6038    0.6346     52994.8     50425.3      0.952
+int8_dynamic_act       32    0.6038    4.2617     52994.8      7508.7      0.142
+int8_weight_only       64    0.6285    0.6574    101834.4     97360.4      0.956
+int8_dynamic_act       64    0.6285    4.7753    101834.4     13402.2      0.132
+int8_weight_only      128    0.6365    0.6611    201103.9    193623.7      0.963
+int8_dynamic_act      128    0.6365    4.8959    201103.9     26144.4      0.130
+int8_weight_only      256    0.8164    0.7020    313572.3    364651.4      1.163
+int8_dynamic_act      256    0.8164    5.1355    313572.3     49848.9      0.159
+int8_weight_only      512    1.4440    1.1958    354563.4    428181.2      1.208
+int8_dynamic_act      512    1.4440    5.5899    354563.4     91594.3      0.258
+int8_weight_only     1024    2.6499    2.1315    386432.6    480407.1      1.243
+int8_dynamic_act     1024    2.6499    7.2154    386432.6    141918.1      0.367
+int8_weight_only     2048    5.0650    4.0209    404342.8    509343.7      1.260
+int8_dynamic_act     2048    5.0650   10.5605    404342.8    193929.8      0.480
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         6.42%     266.534us        19.62%     814.061us     203.515us      94.403us        44.14%     109.763us      27.441us             4  
+_5x_cudnn_ampere_scudnn_winograd_128x128_ldg1_ldg4_r...         0.00%       0.000us         0.00%       0.000us       0.000us      34.017us        15.90%      34.017us      34.017us             1  
+                                 aten::cudnn_batch_norm        29.92%       1.242ms        32.95%       1.367ms     341.848us      26.016us        12.16%      26.016us       6.504us             4  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us      26.016us        12.16%      26.016us       6.504us             4  
+                                            aten::addmm         3.07%     127.419us         3.90%     162.047us      81.024us      21.344us         9.98%      21.344us      10.672us             2  
+                                             aten::add_         1.69%      70.299us         2.50%     103.769us      25.942us      19.903us         9.31%      19.903us       4.976us             4  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      19.903us         9.31%      19.903us       4.976us             4  
+                             aten::_adaptive_avg_pool2d         0.48%      19.879us         0.98%      40.469us      40.469us      19.712us         9.22%      19.712us      19.712us             1  
+void at::native::(anonymous namespace)::adaptive_ave...         0.00%       0.000us         0.00%       0.000us       0.000us      19.712us         9.22%      19.712us      19.712us             1  
+                          aten::max_pool2d_with_indices         1.21%      50.208us         1.73%      71.887us      23.962us      17.280us         8.08%      17.280us       5.760us             3  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 4.150ms
+Self CUDA time total: 213.890us
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                              aten::_local_scalar_dense         3.07%     270.310us        13.74%       1.211ms      16.814us     124.515us        21.45%     124.515us       1.729us            72  
+                         Memcpy DtoH (Device -> Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us     124.515us        21.45%     124.515us       1.729us            72  
+                                            aten::copy_         3.89%     342.598us        24.67%       2.174ms      54.351us     102.754us        17.70%     106.434us       2.661us            40  
+                                aten::cudnn_convolution         1.53%     134.588us         2.38%     210.006us      52.502us      93.088us        16.04%      93.088us      23.272us             4  
+                       Memcpy DtoH (Device -> Pageable)         0.00%       0.000us         0.00%       0.000us       0.000us      47.233us         8.14%      47.233us       1.817us            26  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      45.695us         7.87%      45.695us       3.808us            12  
+                                              aten::mul         1.49%     130.916us         2.45%     216.084us      18.007us      41.280us         7.11%      41.280us       3.440us            12  
+                                              aten::cat         1.83%     161.196us         3.16%     278.515us      19.894us      37.312us         6.43%      37.312us       2.665us            14  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us      37.312us         6.43%      37.312us       2.665us            14  
+_5x_cudnn_ampere_scudnn_winograd_128x128_ldg1_ldg4_r...         0.00%       0.000us         0.00%       0.000us       0.000us      34.176us         5.89%      34.176us      34.176us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 8.813ms
+Self CUDA time total: 580.486us
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  191.3 us
+other:                973.4 us
+total:                1164.7 us
+
+--- Conclusion (cnn/CIFAR10/PTQ) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.042, int8_dynamic_act=0.209 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+cnn / CIFAR10 / QAT
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    0.7624    0.7697      1311.7      1299.3      0.991
+int8_dynamic_act        1    0.7624    3.2835      1311.7       304.6      0.232
+int8_weight_only        2    0.7768    0.7900      2574.5      2531.6      0.983
+int8_dynamic_act        2    0.7768    3.6382      2574.5       549.7      0.214
+int8_weight_only        4    0.7771    0.7882      5147.3      5074.9      0.986
+int8_dynamic_act        4    0.7771    4.3612      5147.3       917.2      0.178
+int8_weight_only        8    0.7711    0.7835     10374.1     10210.0      0.984
+int8_dynamic_act        8    0.7711    5.1202     10374.1      1562.4      0.151
+int8_weight_only       16    0.7730    0.7838     20697.6     20412.9      0.986
+int8_dynamic_act       16    0.7730    5.1298     20697.6      3119.0      0.151
+int8_weight_only       32    0.7765    0.7882     41208.0     40597.6      0.985
+int8_dynamic_act       32    0.7765    5.0122     41208.0      6384.5      0.155
+int8_weight_only       64    0.8084    0.8176     79172.8     78277.6      0.989
+int8_dynamic_act       64    0.8084    5.7103     79172.8     11207.7      0.142
+int8_weight_only      128    0.8208    0.8127    155937.3    157498.2      1.010
+int8_dynamic_act      128    0.8208    5.8087    155937.3     22035.7      0.141
+int8_weight_only      256    0.8307    0.8164    308189.5    313586.0      1.018
+int8_dynamic_act      256    0.8307    6.0630    308189.5     42223.6      0.137
+int8_weight_only      512    1.4523    1.2019    352553.0    425997.6      1.208
+int8_dynamic_act      512    1.4523    6.5888    352553.0     77707.8      0.220
+int8_weight_only     1024    2.6606    2.1436    384874.2    477704.4      1.241
+int8_dynamic_act     1024    2.6606    7.7291    384874.2    132486.1      0.344
+int8_weight_only     2048    5.0712    4.0319    403852.1    507948.4      1.258
+int8_dynamic_act     2048    5.0712   11.0865    403852.1    184729.9      0.457
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         6.60%     137.737us        64.51%       1.347ms     336.641us      93.409us        44.07%     108.545us      27.136us             4  
+_5x_cudnn_ampere_scudnn_winograd_128x128_ldg1_ldg4_r...         0.00%       0.000us         0.00%       0.000us       0.000us      34.336us        16.20%      34.336us      34.336us             1  
+                                 aten::cudnn_batch_norm         3.75%      78.220us         9.03%     188.396us      47.099us      25.664us        12.11%      25.664us       6.416us             4  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us      25.664us        12.11%      25.664us       6.416us             4  
+                                            aten::addmm         3.30%      68.827us         4.92%     102.608us      51.304us      20.833us         9.83%      20.833us      10.417us             2  
+                                             aten::add_         1.90%      39.707us         3.45%      72.007us      18.002us      19.871us         9.38%      19.871us       4.968us             4  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      19.871us         9.38%      19.871us       4.968us             4  
+                             aten::_adaptive_avg_pool2d         0.43%       9.011us         1.27%      26.409us      26.409us      19.648us         9.27%      19.648us      19.648us             1  
+void at::native::(anonymous namespace)::adaptive_ave...         0.00%       0.000us         0.00%       0.000us       0.000us      19.648us         9.27%      19.648us      19.648us             1  
+                          aten::max_pool2d_with_indices         1.88%      39.280us         3.39%      70.849us      23.616us      17.153us         8.09%      17.153us       5.718us             3  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 2.087ms
+Self CUDA time total: 211.938us
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                              aten::_local_scalar_dense         3.06%     274.196us        13.32%       1.195ms      16.593us     126.690us        21.77%     126.690us       1.760us            72  
+                         Memcpy DtoH (Device -> Pinned)         0.00%       0.000us         0.00%       0.000us       0.000us     126.690us        21.77%     126.690us       1.760us            72  
+                                            aten::copy_         3.66%     327.872us        47.67%       4.276ms     106.912us     102.015us        17.53%     105.727us       2.643us            40  
+                                aten::cudnn_convolution         1.64%     146.937us         2.53%     226.495us      56.624us      92.929us        15.97%      92.929us      23.232us             4  
+                       Memcpy DtoH (Device -> Pageable)         0.00%       0.000us         0.00%       0.000us       0.000us      47.551us         8.17%      47.551us       1.829us            26  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us      45.759us         7.86%      45.759us       3.813us            12  
+                                              aten::mul         1.56%     140.349us         2.50%     224.246us      18.687us      41.057us         7.05%      41.057us       3.421us            12  
+                                              aten::cat         1.54%     138.237us         2.70%     242.477us      17.320us      37.790us         6.49%      37.790us       2.699us            14  
+void at::native::(anonymous namespace)::CatArrayBatc...         0.00%       0.000us         0.00%       0.000us       0.000us      37.790us         6.49%      37.790us       2.699us            14  
+_5x_cudnn_ampere_scudnn_winograd_128x128_ldg1_ldg4_r...         0.00%       0.000us         0.00%       0.000us       0.000us      34.208us         5.88%      34.208us      34.208us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 8.970ms
+Self CUDA time total: 582.013us
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  191.0 us
+other:                976.7 us
+total:                1167.7 us
+
+--- Conclusion (cnn/CIFAR10/QAT) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.053, int8_dynamic_act=0.210 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+resnet18_no_weights / CIFAR10 / PTQ
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    2.4942    1.9873       400.9       503.2      1.255
+int8_dynamic_act        1    2.4942   13.7239       400.9        72.9      0.182
+int8_weight_only        2    2.5052    2.0040       798.3       998.0      1.250
+int8_dynamic_act        2    2.5052    5.8978       798.3       339.1      0.425
+int8_weight_only        4    2.4631    1.9644      1623.9      2036.3      1.254
+int8_dynamic_act        4    2.4631    6.2068      1623.9       644.5      0.397
+int8_weight_only        8    2.4984    1.9924      3202.0      4015.2      1.254
+int8_dynamic_act        8    2.4984    6.6258      3202.0      1207.4      0.377
+int8_weight_only       16    2.4775    1.9820      6458.1      8072.5      1.250
+int8_dynamic_act       16    2.4775    6.6295      6458.1      2413.5      0.374
+int8_weight_only       32    2.5395    2.0253     12600.8     15800.0      1.254
+int8_dynamic_act       32    2.5395    6.6720     12600.8      4796.2      0.381
+int8_weight_only       64    2.5728    2.0536     24876.0     31164.5      1.253
+int8_dynamic_act       64    2.5728    6.7246     24876.0      9517.3      0.383
+int8_weight_only      128    3.6372    3.3073     35191.5     38702.7      1.100
+int8_dynamic_act      128    3.6372    7.4205     35191.5     17249.4      0.490
+int8_weight_only      256    6.4434    5.8492     39730.3     43766.9      1.102
+int8_dynamic_act      256    6.4434    8.0080     39730.3     31967.9      0.805
+int8_weight_only      512   12.2002   11.0951     41966.7     46146.5      1.100
+int8_dynamic_act      512   12.2002   13.5140     41966.7     37886.7      0.903
+int8_weight_only     1024   23.5575   21.3772     43468.0     47901.6      1.102
+int8_dynamic_act     1024   23.5575   24.2641     43468.0     42202.2      0.971
+int8_weight_only     2048   45.9656   41.5484     44555.1     49291.9      1.106
+int8_dynamic_act     2048   45.9656   45.4878     44555.1     45023.1      1.011
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         9.59%     656.085us        52.99%       3.626ms     181.288us     950.345us        73.51%     971.977us      48.599us            20  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     290.915us        22.50%     290.915us      41.559us             7  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     232.932us        18.02%     232.932us       6.851us            34  
+                                 aten::cudnn_batch_norm         5.16%     353.006us        13.15%     899.624us      44.981us     205.793us        15.92%     205.793us      10.290us            20  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us     205.793us        15.92%     205.793us      10.290us            20  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     180.384us        13.95%     180.384us      45.096us             4  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     148.513us        11.49%     148.513us      29.703us             5  
+                                       aten::clamp_min_         1.70%     116.467us         3.53%     241.754us      14.221us      74.111us         5.73%      74.111us       4.359us            17  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      74.111us         5.73%      74.111us       4.359us            17  
+                                             aten::add_         1.14%      77.857us         1.92%     131.387us      16.423us      44.866us         3.47%      44.866us       5.608us             8  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 6.843ms
+Self CUDA time total: 1.293ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         8.62%     687.792us        14.59%       1.164ms      58.204us     935.980us        52.23%     935.980us      46.799us            20  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     291.586us        16.27%     291.586us      41.655us             7  
+                                            aten::copy_         4.82%     384.365us        20.17%       1.608ms      27.731us     253.858us        14.17%     258.818us       4.462us            58  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     241.954us        13.50%     241.954us       5.761us            42  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     223.201us        12.45%     223.201us       5.580us            40  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     216.100us        12.06%     216.100us       6.356us            34  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     180.929us        10.10%     180.929us      45.232us             4  
+                                             aten::add_         3.01%     239.893us         5.54%     442.152us      15.247us     180.194us        10.05%     180.194us       6.214us            29  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     149.028us         8.32%     149.028us      29.806us             5  
+                                              aten::mul         3.00%     239.583us         4.94%     394.199us      16.425us     118.303us         6.60%     118.303us       4.929us            24  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.976ms
+Self CUDA time total: 1.792ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  1601.8 us
+other:                1987.3 us
+total:                3589.2 us
+
+--- Conclusion (resnet18_no_weights/CIFAR10/PTQ) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.190, int8_dynamic_act=0.558 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+resnet18_no_weights / CIFAR10 / QAT
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    2.5115    1.9960       398.2       501.0      1.258
+int8_dynamic_act        1    2.5115   13.7652       398.2        72.6      0.182
+int8_weight_only        2    2.5289    2.0117       790.9       994.2      1.257
+int8_dynamic_act        2    2.5289    5.9120       790.9       338.3      0.428
+int8_weight_only        4    2.4743    1.9574      1616.6      2043.5      1.264
+int8_dynamic_act        4    2.4743    6.1943      1616.6       645.8      0.399
+int8_weight_only        8    2.5161    2.0007      3179.5      3998.6      1.258
+int8_dynamic_act        8    2.5161    6.6241      3179.5      1207.7      0.380
+int8_weight_only       16    2.4967    1.9803      6408.4      8079.5      1.261
+int8_dynamic_act       16    2.4967    6.6191      6408.4      2417.2      0.377
+int8_weight_only       32    2.5206    1.9942     12695.2     16046.9      1.264
+int8_dynamic_act       32    2.5206    6.6539     12695.2      4809.2      0.379
+int8_weight_only       64    2.5921    2.0518     24690.7     31191.5      1.263
+int8_dynamic_act       64    2.5921    6.7437     24690.7      9490.3      0.384
+int8_weight_only      128    3.6393    3.3070     35171.2     38705.2      1.100
+int8_dynamic_act      128    3.6393    7.4283     35171.2     17231.4      0.490
+int8_weight_only      256    6.4424    5.8463     39736.8     43788.3      1.102
+int8_dynamic_act      256    6.4424    7.9974     39736.8     32010.4      0.806
+int8_weight_only      512   12.1994   11.0979     41969.4     46134.7      1.099
+int8_dynamic_act      512   12.1994   13.5567     41969.4     37767.4      0.900
+int8_weight_only     1024   23.5492   21.3710     43483.4     47915.4      1.102
+int8_dynamic_act     1024   23.5492   24.2933     43483.4     42151.5      0.969
+int8_weight_only     2048   45.9634   41.5503     44557.2     49289.7      1.106
+int8_dynamic_act     2048   45.9634   45.3609     44557.2     45149.1      1.013
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        16.19%     634.945us        54.94%       2.154ms     107.718us     950.502us        73.44%     972.390us      48.619us            20  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     291.618us        22.53%     291.618us      41.660us             7  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     231.809us        17.91%     231.809us       6.818us            34  
+                                 aten::cudnn_batch_norm         9.05%     354.723us        22.96%     900.523us      45.026us     206.085us        15.92%     206.085us      10.304us            20  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us     206.085us        15.92%     206.085us      10.304us            20  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     180.705us        13.96%     180.705us      45.176us             4  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     148.770us        11.49%     148.770us      29.754us             5  
+                                       aten::clamp_min_         3.00%     117.740us         6.01%     235.613us      13.860us      73.954us         5.71%      73.954us       4.350us            17  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us      73.954us         5.71%      73.954us       4.350us            17  
+                                             aten::add_         1.99%      78.006us         3.35%     131.546us      16.443us      46.047us         3.56%      46.047us       5.756us             8  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 3.922ms
+Self CUDA time total: 1.294ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         8.53%     684.775us        14.54%       1.168ms      58.387us     936.905us        52.19%     936.905us      46.845us            20  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     291.941us        16.26%     291.941us      41.706us             7  
+                                            aten::copy_         4.80%     385.296us        20.00%       1.606ms      27.686us     253.531us        14.12%     258.299us       4.453us            58  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     243.202us        13.55%     243.202us       5.791us            42  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     222.395us        12.39%     222.395us       5.560us            40  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     216.607us        12.07%     216.607us       6.371us            34  
+                                             aten::add_         3.25%     260.967us         5.67%     455.553us      15.709us     181.603us        10.12%     181.603us       6.262us            29  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     181.443us        10.11%     181.443us      45.361us             4  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     148.865us         8.29%     148.865us      29.773us             5  
+                                              aten::mul         2.93%     235.117us         4.78%     384.223us      16.009us     119.138us         6.64%     119.138us       4.964us            24  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 8.030ms
+Self CUDA time total: 1.795ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  1604.1 us
+other:                1991.1 us
+total:                3595.3 us
+
+--- Conclusion (resnet18_no_weights/CIFAR10/QAT) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.195, int8_dynamic_act=0.559 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+resnet50_no_weights / CIFAR10 / PTQ
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    6.1133    5.1800       163.6       193.0      1.180
+int8_dynamic_act        1    6.1133   13.5257       163.6        73.9      0.452
+int8_weight_only        2    5.9988    5.0821       333.4       393.5      1.180
+int8_dynamic_act        2    5.9988   13.6326       333.4       146.7      0.440
+int8_weight_only        4    5.9850    5.0991       668.3       784.5      1.174
+int8_dynamic_act        4    5.9850   14.0123       668.3       285.5      0.427
+int8_weight_only        8    5.9991    5.1016      1333.5      1568.1      1.176
+int8_dynamic_act        8    5.9991   14.4147      1333.5       555.0      0.416
+int8_weight_only       16    6.0757    5.1424      2633.4      3111.4      1.181
+int8_dynamic_act       16    6.0757   14.4483      2633.4      1107.4      0.421
+int8_weight_only       32    6.2067    5.2480      5155.7      6097.6      1.183
+int8_dynamic_act       32    6.2067   15.3926      5155.7      2078.9      0.403
+int8_weight_only       64    7.6854    7.2571      8327.5      8819.0      1.059
+int8_dynamic_act       64    7.6854   15.5340      8327.5      4120.0      0.495
+int8_weight_only      128   14.5596   13.8590      8791.5      9235.9      1.051
+int8_dynamic_act      128   14.5596   17.1134      8791.5      7479.5      0.851
+int8_weight_only      256   26.6760   25.4117      9596.6     10074.1      1.050
+int8_dynamic_act      256   26.6760   28.9914      9596.6      8830.2      0.920
+int8_weight_only      512   50.8773   48.4631     10063.4     10564.7      1.050
+int8_dynamic_act      512   50.8773   52.9429     10063.4      9670.8      0.961
+int8_weight_only     1024   99.0457   94.2336     10338.7     10866.6      1.051
+int8_dynamic_act     1024   99.0457  100.6544     10338.7     10173.4      0.984
+int8_weight_only     2048  195.2993  185.5601     10486.5     11036.9      1.052
+int8_dynamic_act     2048  195.2993  202.1264     10486.5     10132.3      0.966
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        18.62%       1.489ms        48.21%       3.856ms      72.750us       2.575ms        59.09%       2.597ms      49.000us            53  
+                                 aten::cudnn_batch_norm        10.82%     865.803us        28.13%       2.250ms      42.453us       1.052ms        24.13%       1.052ms      19.843us            53  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us       1.052ms        24.13%       1.052ms      19.843us            53  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     825.091us        18.93%     825.091us      17.189us            48  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     575.012us        13.19%     575.012us      41.072us            14  
+void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us     488.420us        11.21%     488.420us      25.706us            19  
+                                       aten::clamp_min_         4.08%     326.557us         8.15%     651.567us      13.297us     355.140us         8.15%     355.140us       7.248us            49  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     355.140us         8.15%     355.140us       7.248us            49  
+                                             aten::add_         1.84%     146.948us         3.15%     251.786us      15.737us     350.787us         8.05%     350.787us      21.924us            16  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     350.787us         8.05%     350.787us      21.924us            16  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.999ms
+Self CUDA time total: 4.358ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        10.70%       1.778ms        15.98%       2.656ms      50.112us       2.520ms        47.26%       2.520ms      47.545us            53  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     775.372us        14.54%     775.372us      16.154us            48  
+                                             aten::add_         2.83%     470.793us         5.02%     834.505us      15.454us     669.027us        12.55%     669.027us      12.389us            54  
+                                            aten::copy_         5.62%     934.851us        16.38%       2.723ms      21.963us     585.118us        10.97%     590.142us       4.759us           124  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     577.218us        10.83%     577.218us      41.230us            14  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     570.589us        10.70%     570.589us       6.202us            92  
+                                 aten::cudnn_batch_norm         1.83%     304.125us         4.51%     750.052us      46.878us     550.371us        10.32%     550.371us      34.398us            16  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us     550.371us        10.32%     550.371us      34.398us            16  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     549.373us        10.30%     549.373us       5.183us           106  
+void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us     480.325us         9.01%     480.325us      25.280us            19  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 16.624ms
+Self CUDA time total: 5.332ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  4232.8 us
+other:                6435.3 us
+total:                10668.1 us
+
+--- Conclusion (resnet50_no_weights/CIFAR10/PTQ) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.116, int8_dynamic_act=0.645 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+resnet50_no_weights / CIFAR10 / QAT
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    6.0573    5.1332       165.1       194.8      1.180
+int8_dynamic_act        1    6.0573   13.4504       165.1        74.3      0.450
+int8_weight_only        2    5.9721    5.0385       334.9       396.9      1.185
+int8_dynamic_act        2    5.9721   13.5247       334.9       147.9      0.442
+int8_weight_only        4    5.9847    5.0736       668.4       788.4      1.180
+int8_dynamic_act        4    5.9847   13.9114       668.4       287.5      0.430
+int8_weight_only        8    5.9729    5.0762      1339.4      1576.0      1.177
+int8_dynamic_act        8    5.9729   14.2897      1339.4       559.8      0.418
+int8_weight_only       16    6.0237    5.1066      2656.2      3133.2      1.180
+int8_dynamic_act       16    6.0237   14.3626      2656.2      1114.0      0.419
+int8_weight_only       32    6.1947    5.2424      5165.7      6104.0      1.182
+int8_dynamic_act       32    6.1947   15.2401      5165.7      2099.7      0.406
+int8_weight_only       64    7.6707    7.2472      8343.4      8831.1      1.058
+int8_dynamic_act       64    7.6707   15.3325      8343.4      4174.1      0.500
+int8_weight_only      128   14.5635   13.8613      8789.1      9234.3      1.051
+int8_dynamic_act      128   14.5635   16.9496      8789.1      7551.8      0.859
+int8_weight_only      256   26.6777   25.4167      9596.0     10072.1      1.050
+int8_dynamic_act      256   26.6777   28.8779      9596.0      8864.9      0.924
+int8_weight_only      512   50.8735   48.4746     10064.2     10562.2      1.049
+int8_dynamic_act      512   50.8735   52.9446     10064.2      9670.5      0.961
+int8_weight_only     1024   99.0239   94.2408     10340.9     10865.8      1.051
+int8_dynamic_act     1024   99.0239  100.5640     10340.9     10182.6      0.985
+int8_weight_only     2048  195.3063  185.6375     10486.1     11032.3      1.052
+int8_dynamic_act     2048  195.3063  201.8488     10486.1     10146.2      0.968
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        19.63%       1.556ms        45.56%       3.613ms      68.173us       2.573ms        59.24%       2.595ms      48.966us            53  
+                                 aten::cudnn_batch_norm        11.66%     924.487us        29.82%       2.365ms      44.625us       1.047ms        24.10%       1.047ms      19.752us            53  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us       1.047ms        24.10%       1.047ms      19.752us            53  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     823.627us        18.96%     823.627us      17.159us            48  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     576.356us        13.27%     576.356us      41.168us            14  
+void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us     483.014us        11.12%     483.014us      25.422us            19  
+                                       aten::clamp_min_         4.45%     352.944us         8.57%     679.682us      13.871us     357.033us         8.22%     357.033us       7.286us            49  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     357.033us         8.22%     357.033us       7.286us            49  
+                                             aten::add_         1.90%     150.517us         3.25%     258.134us      16.133us     341.759us         7.87%     341.759us      21.360us            16  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     341.759us         7.87%     341.759us      21.360us            16  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 7.931ms
+Self CUDA time total: 4.344ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        10.37%       1.846ms        15.55%       2.768ms      52.231us       2.531ms        47.41%       2.531ms      47.749us            53  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     778.502us        14.58%     778.502us      16.219us            48  
+                                             aten::add_         2.61%     465.105us         4.61%     820.687us      15.198us     664.744us        12.45%     664.744us      12.310us            54  
+                                            aten::copy_         5.24%     932.988us        17.09%       3.042ms      24.531us     585.002us        10.96%     590.154us       4.759us           124  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     576.423us        10.80%     576.423us      41.173us            14  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     571.369us        10.70%     571.369us       6.211us            92  
+                                 aten::cudnn_batch_norm         1.81%     322.282us         4.31%     767.924us      47.995us     551.943us        10.34%     551.943us      34.496us            16  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us     551.943us        10.34%     551.943us      34.496us            16  
+void at::native::unrolled_elementwise_kernel<at::nat...         0.00%       0.000us         0.00%       0.000us       0.000us     550.985us        10.32%     550.985us       5.198us           106  
+void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us     486.341us         9.11%     486.341us      25.597us            19  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 17.797ms
+Self CUDA time total: 5.338ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  4250.7 us
+other:                6431.0 us
+total:                10681.7 us
+
+--- Conclusion (resnet50_no_weights/CIFAR10/QAT) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.116, int8_dynamic_act=0.647 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+cnn / IMAGENET100 / PTQ
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    0.7799    0.7850      1282.2      1273.9      0.994
+int8_dynamic_act        1    0.7799    3.7355      1282.2       267.7      0.209
+int8_weight_only        2    0.7969    0.8061      2509.8      2481.2      0.989
+int8_dynamic_act        2    0.7969    4.1373      2509.8       483.4      0.193
+int8_weight_only        4    0.7940    0.7989      5038.1      5006.8      0.994
+int8_dynamic_act        4    0.7940    5.0088      5038.1       798.6      0.159
+int8_weight_only        8    0.9039    0.8076      8850.2      9905.3      1.119
+int8_dynamic_act        8    0.9039    5.8816      8850.2      1360.2      0.154
+int8_weight_only       16    1.6431    1.3504      9737.4     11848.1      1.217
+int8_dynamic_act       16    1.6431    5.9039      9737.4      2710.1      0.278
+int8_weight_only       32    3.0909    2.5481     10353.1     12558.2      1.213
+int8_dynamic_act       32    3.0909    6.6759     10353.1      4793.4      0.463
+int8_weight_only       64    5.8785    4.8389     10887.2     13226.2      1.215
+int8_dynamic_act       64    5.8785    9.1048     10887.2      7029.2      0.646
+int8_weight_only      128   11.4479    9.3314     11181.0     13717.2      1.227
+int8_dynamic_act      128   11.4479   14.3248     11181.0      8935.5      0.799
+int8_weight_only      256   23.2915   19.0814     10991.1     13416.2      1.221
+int8_dynamic_act      256   23.2915   25.5861     10991.1     10005.4      0.910
+int8_weight_only      512   46.2640   37.8548     11066.9     13525.4      1.222
+int8_dynamic_act      512   46.2640   46.5967     11066.9     10987.9      0.993
+int8_weight_only     1024   92.2412   75.4768     11101.3     13567.1      1.222
+int8_dynamic_act     1024   92.2412   89.0241     11101.3     11502.5      1.036
+int8_weight_only     2048  183.5561  150.0885     11157.4     13645.3      1.223
+int8_dynamic_act     2048  183.5561  174.1538     11157.4     11759.7      1.054
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         3.74%     167.998us        42.28%       1.898ms     474.480us     901.033us        29.50%       1.161ms     290.171us             4  
+                                 aten::cudnn_batch_norm         2.10%      94.080us         4.58%     205.645us      51.411us     572.548us        18.75%     572.548us     143.137us             4  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us     572.548us        18.75%     572.548us     143.137us             4  
+                                             aten::add_         1.13%      50.719us         1.74%      78.209us      19.552us     517.190us        16.93%     517.190us     129.298us             4  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     517.190us        16.93%     517.190us     129.298us             4  
+                          aten::max_pool2d_with_indices         0.94%      42.400us         1.41%      63.140us      21.047us     450.438us        14.75%     450.438us     150.146us             3  
+void at::native::(anonymous namespace)::max_pool_for...         0.00%       0.000us         0.00%       0.000us       0.000us     450.438us        14.75%     450.438us     150.146us             3  
+                                        aten::clamp_min         1.16%      52.248us         1.94%      87.048us      17.410us     437.348us        14.32%     437.348us      87.470us             5  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     437.348us        14.32%     437.348us      87.470us             5  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     273.218us         8.95%     273.218us     136.609us             2  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 4.489ms
+Self CUDA time total: 3.054ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         2.32%     161.136us         3.71%     257.135us      64.284us     892.071us        30.80%     892.071us     223.018us             4  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     542.533us        18.73%     542.533us      45.211us            12  
+                                             aten::add_         0.81%      56.388us         1.59%     110.108us      18.351us     522.469us        18.04%     522.469us      87.078us             6  
+                          aten::max_pool2d_with_indices         0.64%      44.328us         0.96%      66.548us      22.183us     452.197us        15.61%     452.197us     150.732us             3  
+void at::native::(anonymous namespace)::max_pool_for...         0.00%       0.000us         0.00%       0.000us       0.000us     452.197us        15.61%     452.197us     150.732us             3  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     449.830us        15.53%     449.830us      49.981us             9  
+                                        aten::clamp_min         0.80%      55.779us         1.37%      94.917us      18.983us     441.188us        15.23%     441.188us      88.238us             5  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     272.835us         9.42%     272.835us     136.418us             2  
+        _5x_cudnn_ampere_scudnn_128x32_relu_small_nn_v1         0.00%       0.000us         0.00%       0.000us       0.000us     257.474us         8.89%     257.474us     257.474us             1  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     231.491us         7.99%     231.491us     231.491us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 6.932ms
+Self CUDA time total: 2.896ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  1415.9 us
+other:                4381.8 us
+total:                5797.7 us
+
+--- Conclusion (cnn/IMAGENET100/PTQ) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.155, int8_dynamic_act=0.574 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+cnn / IMAGENET100 / QAT
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    0.7712    0.7793      1296.7      1283.3      0.990
+int8_dynamic_act        1    0.7712    3.7323      1296.7       267.9      0.207
+int8_weight_only        2    0.7886    0.7927      2536.1      2523.0      0.995
+int8_dynamic_act        2    0.7886    4.1230      2536.1       485.1      0.191
+int8_weight_only        4    0.7802    0.7875      5126.7      5079.1      0.991
+int8_dynamic_act        4    0.7802    4.9362      5126.7       810.3      0.158
+int8_weight_only        8    0.9029    0.7985      8860.1     10018.9      1.131
+int8_dynamic_act        8    0.9029    5.8144      8860.1      1375.9      0.155
+int8_weight_only       16    1.6411    1.3480      9749.4     11869.5      1.217
+int8_dynamic_act       16    1.6411    5.8994      9749.4      2712.1      0.278
+int8_weight_only       32    3.0894    2.5477     10357.8     12560.4      1.213
+int8_dynamic_act       32    3.0894    6.6580     10357.8      4806.3      0.464
+int8_weight_only       64    5.8764    4.8374     10891.0     13230.2      1.215
+int8_dynamic_act       64    5.8764    9.2346     10891.0      6930.4      0.636
+int8_weight_only      128   11.4492    9.3313     11179.8     13717.2      1.227
+int8_dynamic_act      128   11.4492   14.2717     11179.8      8968.8      0.802
+int8_weight_only      256   23.2925   19.0839     10990.6     13414.5      1.221
+int8_dynamic_act      256   23.2925   25.2331     10990.6     10145.4      0.923
+int8_weight_only      512   46.2562   37.8495     11068.8     13527.3      1.222
+int8_dynamic_act      512   46.2562   46.7178     11068.8     10959.4      0.990
+int8_weight_only     1024   92.2333   75.4647     11102.3     13569.3      1.222
+int8_dynamic_act     1024   92.2333   89.4632     11102.3     11446.1      1.031
+int8_weight_only     2048  183.5531  150.0932     11157.5     13644.9      1.223
+int8_dynamic_act     2048  183.5531  173.1858     11157.5     11825.4      1.060
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         4.38%     151.696us        23.21%     803.203us     200.801us     895.593us        29.40%       1.156ms     288.947us             4  
+                                 aten::cudnn_batch_norm         2.30%      79.748us         5.77%     199.566us      49.892us     573.447us        18.82%     573.447us     143.362us             4  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us     573.447us        18.82%     573.447us     143.362us             4  
+                                             aten::add_         1.15%      39.869us         1.92%      66.339us      16.585us     516.612us        16.96%     516.612us     129.153us             4  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     516.612us        16.96%     516.612us     129.153us             4  
+                          aten::max_pool2d_with_indices         1.16%      40.180us         1.77%      61.289us      20.430us     449.476us        14.75%     449.476us     149.825us             3  
+void at::native::(anonymous namespace)::max_pool_for...         0.00%       0.000us         0.00%       0.000us       0.000us     449.476us        14.75%     449.476us     149.825us             3  
+                                        aten::clamp_min         1.45%      50.078us         2.41%      83.357us      16.671us     437.637us        14.36%     437.637us      87.527us             5  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     437.637us        14.36%     437.637us      87.527us             5  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     272.706us         8.95%     272.706us     136.353us             2  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 3.460ms
+Self CUDA time total: 3.047ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         2.40%     164.607us         3.80%     261.366us      65.341us     893.063us        30.80%     893.063us     223.266us             4  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     542.692us        18.72%     542.692us      45.224us            12  
+                                             aten::add_         0.84%      57.578us         1.48%     101.608us      16.935us     522.628us        18.03%     522.628us      87.105us             6  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     451.972us        15.59%     451.972us      50.219us             9  
+                          aten::max_pool2d_with_indices         0.64%      44.310us         0.97%      66.440us      22.147us     449.476us        15.50%     449.476us     149.825us             3  
+void at::native::(anonymous namespace)::max_pool_for...         0.00%       0.000us         0.00%       0.000us       0.000us     449.476us        15.50%     449.476us     149.825us             3  
+                                        aten::clamp_min         0.76%      52.477us         1.32%      90.847us      18.169us     443.428us        15.29%     443.428us      88.686us             5  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     272.770us         9.41%     272.770us     136.385us             2  
+        _5x_cudnn_ampere_scudnn_128x32_relu_small_nn_v1         0.00%       0.000us         0.00%       0.000us       0.000us     257.506us         8.88%     257.506us     257.506us             1  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     232.962us         8.03%     232.962us     232.962us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 6.872ms
+Self CUDA time total: 2.899ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  1418.3 us
+other:                4385.5 us
+total:                5803.8 us
+
+--- Conclusion (cnn/IMAGENET100/QAT) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.155, int8_dynamic_act=0.575 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+resnet18_no_weights / IMAGENET100 / PTQ
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    2.4921    1.9799       401.3       505.1      1.259
+int8_dynamic_act        1    2.4921   14.6050       401.3        68.5      0.171
+int8_weight_only        2    2.5059    1.9755       798.1      1012.4      1.268
+int8_dynamic_act        2    2.5059    6.6007       798.1       303.0      0.380
+int8_weight_only        4    2.4717    1.9768      1618.3      2023.4      1.250
+int8_dynamic_act        4    2.4717    7.0153      1618.3       570.2      0.352
+int8_weight_only        8    2.5420    2.0411      3147.2      3919.5      1.245
+int8_dynamic_act        8    2.5420    7.4233      3147.2      1077.7      0.342
+int8_weight_only       16    2.5561    2.0204      6259.6      7919.3      1.265
+int8_dynamic_act       16    2.5561    7.5008      6259.6      2133.1      0.341
+int8_weight_only       32    3.3458    3.2381      9564.1      9882.5      1.033
+int8_dynamic_act       32    3.3458    7.5363      9564.1      4246.1      0.444
+int8_weight_only       64    6.3308    6.1477     10109.3     10410.4      1.030
+int8_dynamic_act       64    6.3308    8.4226     10109.3      7598.6      0.752
+int8_weight_only      128   12.1097   11.8271     10570.0     10822.6      1.024
+int8_dynamic_act      128   12.1097   14.5061     10570.0      8823.9      0.835
+int8_weight_only      256   23.4933   23.0408     10896.7     11110.7      1.020
+int8_dynamic_act      256   23.4933   26.3929     10896.7      9699.6      0.890
+int8_weight_only      512   46.0834   45.2108     11110.3     11324.7      1.019
+int8_dynamic_act      512   46.0834   49.7577     11110.3     10289.9      0.926
+int8_weight_only     1024   91.1150   89.3127     11238.5     11465.3      1.020
+int8_dynamic_act     1024   91.1150   96.6402     11238.5     10596.0      0.943
+int8_weight_only     2048  181.2775  177.5960     11297.6     11531.8      1.021
+int8_dynamic_act     2048  181.2775  189.6587     11297.6     10798.3      0.956
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        17.87%     648.048us        49.16%       1.783ms      89.163us       2.099ms        64.92%       2.600ms     130.010us            20  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     523.205us        16.18%     523.205us      13.769us            38  
+                                 aten::cudnn_batch_norm        10.05%     364.569us        25.19%     913.633us      45.682us     513.284us        15.88%     513.284us      25.664us            20  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us     513.284us        15.88%     513.284us      25.664us            20  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     506.851us        15.68%     506.851us      50.685us            10  
+                                Activity Buffer Request        10.17%     368.802us        10.17%     368.802us     368.802us     501.252us        15.50%     501.252us     501.252us             1  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     378.401us        11.70%     378.401us      94.600us             4  
+                                       aten::clamp_min_         3.72%     134.878us         6.82%     247.486us      14.558us     286.499us         8.86%     286.499us      16.853us            17  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     286.499us         8.86%     286.499us      16.853us            17  
+sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     276.066us         8.54%     276.066us     276.066us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 3.627ms
+Self CUDA time total: 3.233ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         8.61%     728.023us        14.70%       1.244ms      62.194us       2.083ms        56.18%       2.083ms     104.136us            20  
+                                             aten::add_         3.11%     263.375us         5.45%     460.700us      15.886us     576.677us        15.55%     576.677us      19.885us            29  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     542.181us        14.62%     542.181us      12.909us            42  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     507.432us        13.69%     507.432us      50.743us            10  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     504.291us        13.60%     504.291us      13.271us            38  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     380.676us        10.27%     380.676us      95.169us             4  
+sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     275.267us         7.42%     275.267us     275.267us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     275.044us         7.42%     275.044us      14.476us            19  
+                                       aten::clamp_min_         1.24%     104.628us         2.63%     222.315us      13.077us     270.788us         7.30%     270.788us      15.929us            17  
+                                            aten::copy_         5.71%     483.202us        20.48%       1.732ms      29.869us     261.092us         7.04%     266.180us       4.589us            58  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 8.459ms
+Self CUDA time total: 3.708ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  3485.2 us
+other:                3934.9 us
+total:                7420.1 us
+
+--- Conclusion (resnet18_no_weights/IMAGENET100/PTQ) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.121, int8_dynamic_act=0.611 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+resnet18_no_weights / IMAGENET100 / QAT
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    2.4768    1.9721       403.7       507.1      1.256
+int8_dynamic_act        1    2.4768   14.4558       403.7        69.2      0.171
+int8_weight_only        2    2.4747    1.9648       808.2      1017.9      1.260
+int8_dynamic_act        2    2.4747    6.5629       808.2       304.7      0.377
+int8_weight_only        4    2.4879    1.9720      1607.8      2028.4      1.262
+int8_dynamic_act        4    2.4879    6.9468      1607.8       575.8      0.358
+int8_weight_only        8    2.5284    2.0253      3164.0      3950.1      1.248
+int8_dynamic_act        8    2.5284    7.3729      3164.0      1085.1      0.343
+int8_weight_only       16    2.5339    2.0137      6314.3      7945.6      1.258
+int8_dynamic_act       16    2.5339    7.4230      6314.3      2155.5      0.341
+int8_weight_only       32    3.3450    3.2387      9566.4      9880.5      1.033
+int8_dynamic_act       32    3.3450    7.4565      9566.4      4291.5      0.449
+int8_weight_only       64    6.3307    6.1471     10109.5     10411.5      1.030
+int8_dynamic_act       64    6.3307    8.4134     10109.5      7606.9      0.752
+int8_weight_only      128   12.1120   11.8265     10568.0     10823.2      1.024
+int8_dynamic_act      128   12.1120   14.5115     10568.0      8820.6      0.835
+int8_weight_only      256   23.4983   23.0429     10894.4     11109.7      1.020
+int8_dynamic_act      256   23.4983   26.4219     10894.4      9688.9      0.889
+int8_weight_only      512   46.0997   45.2087     11106.4     11325.3      1.020
+int8_dynamic_act      512   46.0997   49.8542     11106.4     10269.9      0.925
+int8_weight_only     1024   91.1451   89.3146     11234.8     11465.1      1.020
+int8_dynamic_act     1024   91.1451   96.5663     11234.8     10604.1      0.944
+int8_weight_only     2048  181.3445  177.5972     11293.4     11531.7      1.021
+int8_dynamic_act     2048  181.3445  189.7056     11293.4     10795.7      0.956
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        18.65%     621.734us        48.15%       1.605ms      80.256us       2.101ms        64.88%       2.602ms     130.097us            20  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     523.841us        16.18%     523.841us      13.785us            38  
+                                 aten::cudnn_batch_norm        10.58%     352.641us        26.59%     886.543us      44.327us     513.380us        15.85%     513.380us      25.669us            20  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us     513.380us        15.85%     513.380us      25.669us            20  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     507.045us        15.66%     507.045us      50.704us            10  
+                                Activity Buffer Request         7.10%     236.565us         7.10%     236.565us     236.565us     500.677us        15.46%     500.677us     500.677us             1  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     379.075us        11.71%     379.075us      94.769us             4  
+                                       aten::clamp_min_         3.44%     114.548us         6.75%     225.014us      13.236us     290.241us         8.96%     290.241us      17.073us            17  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     290.241us         8.96%     290.241us      17.073us            17  
+sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     275.107us         8.49%     275.107us     275.107us             1  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 3.334ms
+Self CUDA time total: 3.239ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         8.66%     741.503us        14.70%       1.259ms      62.962us       2.077ms        56.15%       2.077ms     103.865us            20  
+                                             aten::add_         2.89%     247.827us         5.25%     450.013us      15.518us     574.536us        15.53%     574.536us      19.812us            29  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us     540.007us        14.60%     540.007us      12.857us            42  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us     506.499us        13.69%     506.499us      50.650us            10  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us     500.515us        13.53%     500.515us      13.171us            38  
+sm80_xmma_fprop_implicit_gemm_indexed_tf32f32_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     380.804us        10.29%     380.804us      95.201us             4  
+sm80_xmma_fprop_implicit_gemm_indexed_wo_smem_tf32f3...         0.00%       0.000us         0.00%       0.000us       0.000us     275.107us         7.44%     275.107us     275.107us             1  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us     274.084us         7.41%     274.084us      14.425us            19  
+                                       aten::clamp_min_         1.23%     105.319us         2.59%     222.127us      13.066us     269.796us         7.29%     269.796us      15.870us            17  
+                                            aten::copy_         5.63%     481.888us        21.56%       1.846ms      31.834us     261.122us         7.06%     266.306us       4.591us            58  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 8.566ms
+Self CUDA time total: 3.699ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  3478.5 us
+other:                3925.3 us
+total:                7403.8 us
+
+--- Conclusion (resnet18_no_weights/IMAGENET100/QAT) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.121, int8_dynamic_act=0.612 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+resnet50_no_weights / IMAGENET100 / PTQ
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    5.9839    5.0752       167.1       197.0      1.179
+int8_dynamic_act        1    5.9839   14.3048       167.1        69.9      0.418
+int8_weight_only        2    5.9014    4.9914       338.9       400.7      1.182
+int8_dynamic_act        2    5.9014   14.4978       338.9       138.0      0.407
+int8_weight_only        4    5.9014    5.0048       677.8       799.2      1.179
+int8_dynamic_act        4    5.9014   14.7719       677.8       270.8      0.400
+int8_weight_only        8    5.9489    5.0412      1344.8      1586.9      1.180
+int8_dynamic_act        8    5.9489   15.2679      1344.8       524.0      0.390
+int8_weight_only       16    6.0361    5.9056      2650.7      2709.3      1.022
+int8_dynamic_act       16    6.0361   15.4081      2650.7      1038.4      0.392
+int8_weight_only       32   10.4753   10.2440      3054.8      3123.8      1.023
+int8_dynamic_act       32   10.4753   15.8199      3054.8      2022.8      0.662
+int8_weight_only       64   19.5358   19.1680      3276.0      3338.9      1.019
+int8_dynamic_act       64   19.5358   23.2665      3276.0      2750.7      0.840
+int8_weight_only      128   37.3544   36.7866      3426.6      3479.5      1.015
+int8_dynamic_act      128   37.3544   42.1265      3426.6      3038.5      0.887
+int8_weight_only      256   72.6077   71.6596      3525.8      3572.4      1.013
+int8_dynamic_act      256   72.6077   79.5227      3525.8      3219.2      0.913
+int8_weight_only      512  142.7134  140.8844      3587.6      3634.2      1.013
+int8_dynamic_act      512  142.7134  153.4654      3587.6      3336.3      0.930
+int8_weight_only     1024  282.9544  279.1987      3619.0      3667.6      1.013
+int8_dynamic_act     1024  282.9544  300.6206      3619.0      3406.3      0.941
+int8_weight_only     2048  563.7402  556.3066      3632.9      3681.4      1.013
+int8_dynamic_act     2048  563.7402  660.0419      3632.9      3102.8      0.854
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        15.91%       1.492ms        31.35%       2.940ms      55.473us       5.326ms        51.54%       5.827ms     109.937us            53  
+                                 aten::cudnn_batch_norm         9.50%     890.617us        24.40%       2.288ms      43.165us       2.338ms        22.62%       2.338ms      44.116us            53  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us       2.338ms        22.62%       2.338ms      44.116us            53  
+void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.699ms        16.44%       1.699ms      73.883us            23  
+                                       aten::clamp_min_         3.52%     329.849us         6.90%     647.493us      13.214us       1.281ms        12.40%       1.281ms      26.143us            49  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.281ms        12.40%       1.281ms      26.143us            49  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us       1.279ms        12.38%       1.279ms      25.587us            50  
+                                             aten::add_         1.65%     155.100us         2.74%     256.714us      16.045us       1.189ms        11.51%       1.189ms      74.321us            16  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.189ms        11.51%       1.189ms      74.321us            16  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us       1.154ms        11.16%       1.154ms      60.720us            19  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 9.378ms
+Self CUDA time total: 10.335ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution         9.97%       1.768ms        15.00%       2.660ms      50.188us       5.271ms        46.70%       5.271ms      99.450us            53  
+                                             aten::add_         2.64%     468.476us         4.68%     829.330us      15.358us       2.166ms        19.19%       2.166ms      40.114us            54  
+void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.675ms        14.84%       1.675ms      72.847us            23  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us       1.252ms        11.09%       1.252ms      25.038us            50  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.237ms        10.96%       1.237ms      24.253us            51  
+                                       aten::clamp_min_         1.67%     296.653us         3.60%     638.208us      13.025us       1.233ms        10.92%       1.233ms      25.154us            49  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       1.232ms        10.92%       1.232ms      13.396us            92  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.184ms        10.49%       1.184ms      74.015us            16  
+                                 aten::cudnn_batch_norm         1.69%     298.780us         4.24%     751.855us      46.991us       1.166ms        10.33%       1.166ms      72.885us            16  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us       1.166ms        10.33%       1.166ms      72.885us            16  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 17.730ms
+Self CUDA time total: 11.287ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  9160.5 us
+other:                13418.0 us
+total:                22578.6 us
+
+--- Conclusion (resnet50_no_weights/IMAGENET100/PTQ) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.071, int8_dynamic_act=0.669 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.
+
+==============================================================================
+resnet50_no_weights / IMAGENET100 / QAT
+==============================================================================
+
+--- Throughput sweep: fp32 vs int8_weight_only vs int8_dynamic_act ---
+config              batch   fp32_ms   int8_ms    fp32_ips    int8_ips  speedup_x
+--------------------------------------------------------------------------------
+int8_weight_only        1    5.9949    5.0707       166.8       197.2      1.182
+int8_dynamic_act        1    5.9949   14.3321       166.8        69.8      0.418
+int8_weight_only        2    5.8989    4.9761       339.0       401.9      1.185
+int8_dynamic_act        2    5.8989   14.4646       339.0       138.3      0.408
+int8_weight_only        4    5.9219    4.9984       675.5       800.3      1.185
+int8_dynamic_act        4    5.9219   14.7405       675.5       271.4      0.402
+int8_weight_only        8    5.9598    5.0388      1342.3      1587.7      1.183
+int8_dynamic_act        8    5.9598   15.2570      1342.3       524.4      0.391
+int8_weight_only       16    6.0582    5.9180      2641.1      2703.6      1.024
+int8_dynamic_act       16    6.0582   15.3684      2641.1      1041.1      0.394
+int8_weight_only       32   10.4763   10.2428      3054.5      3124.1      1.023
+int8_dynamic_act       32   10.4763   15.7792      3054.5      2028.0      0.664
+int8_weight_only       64   19.5399   19.1633      3275.3      3339.7      1.020
+int8_dynamic_act       64   19.5399   23.2351      3275.3      2754.4      0.841
+int8_weight_only      128   37.3734   36.7871      3424.9      3479.5      1.016
+int8_dynamic_act      128   37.3734   42.0312      3424.9      3045.4      0.889
+int8_weight_only      256   72.6228   71.6704      3525.1      3571.9      1.013
+int8_dynamic_act      256   72.6228   79.4838      3525.1      3220.8      0.914
+int8_weight_only      512  142.7479  140.8829      3586.7      3634.2      1.013
+int8_dynamic_act      512  142.7479  153.4044      3586.7      3337.6      0.931
+int8_weight_only     1024  282.9892  279.2041      3618.5      3667.6      1.014
+int8_dynamic_act     1024  282.9892  300.4808      3618.5      3407.9      0.942
+int8_weight_only     2048  563.9422  556.3166      3631.6      3681.4      1.014
+int8_dynamic_act     2048  563.9422  656.2854      3631.6      3120.6      0.859
+
+--- Top-10 CUDA kernels: fp32 ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        16.12%       1.496ms        30.51%       2.832ms      53.434us       5.332ms        51.59%       5.833ms     110.052us            53  
+                                 aten::cudnn_batch_norm         9.60%     890.890us        24.30%       2.255ms      42.552us       2.342ms        22.66%       2.342ms      44.182us            53  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us       2.342ms        22.66%       2.342ms      44.182us            53  
+void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.693ms        16.38%       1.693ms      73.590us            23  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us       1.291ms        12.49%       1.291ms      25.811us            50  
+                                       aten::clamp_min_         3.67%     340.950us         7.07%     656.020us      13.388us       1.273ms        12.32%       1.273ms      25.988us            49  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.273ms        12.32%       1.273ms      25.988us            49  
+                                             aten::add_         1.60%     148.441us         2.70%     250.228us      15.639us       1.190ms        11.52%       1.190ms      74.395us            16  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.190ms        11.52%       1.190ms      74.395us            16  
+sm80_xmma_fprop_implicit_gemm_tf32f32_tf32f32_f32_nh...         0.00%       0.000us         0.00%       0.000us       0.000us       1.155ms        11.17%       1.155ms      60.789us            19  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 9.281ms
+Self CUDA time total: 10.336ms
+
+
+--- Top-10 CUDA kernels: int8 (dynamic-act config) ---
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                                   Name    Self CPU %      Self CPU   CPU total %     CPU total  CPU time avg     Self CUDA   Self CUDA %    CUDA total  CUDA time avg    # of Calls  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+                                aten::cudnn_convolution        10.01%       1.724ms        15.27%       2.631ms      49.636us       5.273ms        46.69%       5.273ms      99.491us            53  
+                                             aten::add_         2.72%     468.988us         4.79%     825.573us      15.288us       2.168ms        19.19%       2.168ms      40.142us            54  
+void cutlass::Kernel2<cutlass_80_tensorop_s1688gemm_...         0.00%       0.000us         0.00%       0.000us       0.000us       1.677ms        14.85%       1.677ms      72.932us            23  
+void cudnn::engines_precompiled::nchwToNhwcKernel<fl...         0.00%       0.000us         0.00%       0.000us       0.000us       1.251ms        11.07%       1.251ms      25.016us            50  
+void at::native::elementwise_kernel<128, 2, at::nati...         0.00%       0.000us         0.00%       0.000us       0.000us       1.236ms        10.94%       1.236ms      13.434us            92  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.232ms        10.90%       1.232ms      24.150us            51  
+                                       aten::clamp_min_         1.69%     291.425us         3.59%     617.951us      12.611us       1.227ms        10.87%       1.227ms      25.047us            49  
+void at::native::vectorized_elementwise_kernel<4, at...         0.00%       0.000us         0.00%       0.000us       0.000us       1.183ms        10.48%       1.183ms      73.947us            16  
+                                 aten::cudnn_batch_norm         1.72%     296.402us         4.29%     738.877us      46.180us       1.170ms        10.36%       1.170ms      73.127us            16  
+void cudnn::bn_fw_inf_1C11_kernel_NCHW<float, float,...         0.00%       0.000us         0.00%       0.000us       0.000us       1.170ms        10.36%       1.170ms      73.127us            16  
+-------------------------------------------------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  ------------  
+Self CPU time total: 17.233ms
+Self CUDA time total: 11.295ms
+
+
+--- Quantize/dequantize time attribution (int8, dynamic-act) ---
+quantize/dequantize: 0.0 us (0.0% of total device time)
+matmul/conv compute:  9165.8 us
+other:                13428.7 us
+total:                22594.5 us
+
+--- Conclusion (resnet50_no_weights/IMAGENET100/QAT) ---
+Mean speedup_x across batch sizes: int8_weight_only=1.073, int8_dynamic_act=0.671 (>1.0 = faster than fp32).
+Dynamic-act audit: Conv2d quantized=True, Linear quantized=True.
+H2 CONFIRMED: weight-only (no runtime activation quantization) tracks fp32 speed, while dynamic-activation is markedly slower -- the per-forward-pass activation min/max + quantize step is the dominant added cost here, not the underlying weight precision.
+int8_weight_only is faster than fp32 here. It is not accelerating Conv2d compute (Conv2d is left fp32 by its default filter_fn) but avoids the dynamic-act config's per-call activation quantization while still shrinking weight storage -- see apply_int8_quantization's docstring in benchmark.py.

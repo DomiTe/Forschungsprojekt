@@ -1,0 +1,7 @@
+model,dataset,pot_baked_acc,weight_only_int8_acc,full_int8_acc
+cnn,IMAGENET100,ERROR,ERROR,ERROR
+resnet18_no_weights,IMAGENET100,ERROR,ERROR,ERROR
+resnet50_no_weights,IMAGENET100,ERROR,ERROR,ERROR
+cnn,CIFAR10,ERROR,ERROR,ERROR
+resnet18_no_weights,CIFAR10,ERROR,ERROR,ERROR
+resnet50_no_weights,CIFAR10,ERROR,ERROR,ERROR

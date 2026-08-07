@@ -1,0 +1,13 @@
+model,dataset,stage,fp32_size_mb,int8_size_mb,size_reduction_x,fp32_intercept_ms,int8_intercept_ms,fp32_slope_ms,int8_slope_ms,fp32_r2,int8_r2,compute_speedup_x,decomposition_reliable,conv_quantized
+cnn,CIFAR10,PTQ,5.54,1.42,3.91,0.6080,3.7117,0.0003,0.0128,0.7507,0.5056,0.02,False,True
+cnn,CIFAR10,QAT,5.54,1.42,3.91,0.6129,3.7031,0.0002,0.0128,0.6806,0.5091,0.02,False,True
+resnet18_no_weights,CIFAR10,PTQ,42.70,10.87,3.93,1.7930,6.6704,0.0123,-0.0069,0.8570,0.0167,-1.78,False,True
+resnet18_no_weights,CIFAR10,QAT,42.70,10.87,3.93,1.8023,6.6922,0.0122,-0.0078,0.8545,0.0211,-1.56,False,True
+resnet50_no_weights,CIFAR10,PTQ,90.03,23.02,3.91,3.9664,11.5662,0.0754,0.0391,0.9398,0.9706,1.93,True,True
+resnet50_no_weights,CIFAR10,QAT,90.03,23.02,3.91,3.9466,11.4856,0.0756,0.0386,0.9406,0.9483,1.96,True,True
+cnn,IMAGENET100,PTQ,5.89,1.51,3.91,0.3467,3.7458,0.0864,0.0789,0.9992,0.9891,1.10,True,True
+cnn,IMAGENET100,QAT,5.89,1.51,3.91,0.3483,3.6794,0.0864,0.0786,0.9991,0.9886,1.10,True,True
+resnet18_no_weights,IMAGENET100,PTQ,42.91,10.93,3.92,1.3726,6.7130,0.0811,0.0481,0.9831,0.3849,1.69,False,True
+resnet18_no_weights,IMAGENET100,QAT,42.91,10.93,3.92,1.3873,6.7465,0.0809,0.0476,0.9827,0.3784,1.70,False,True
+resnet50_no_weights,IMAGENET100,PTQ,90.76,23.22,3.91,3.1541,10.4314,0.2619,0.2295,0.9931,0.9538,1.14,True,True
+resnet50_no_weights,IMAGENET100,QAT,90.76,23.22,3.91,3.1786,10.4010,0.2618,0.2302,0.9927,0.9549,1.14,True,True

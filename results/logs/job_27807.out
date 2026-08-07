@@ -1,0 +1,60 @@
+2026-08-06 15:56:37 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-06 15:56:37 [INFO] __main__: === Deploy-Int8-Only: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-06 15:56:37 [INFO] __main__: 
+============================================================
+2026-08-06 15:56:37 [INFO] __main__: [Deploy-Int8] Loading dataset: CIFAR10
+2026-08-06 15:56:39 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-06 15:56:39 [INFO] __main__: 
+--- Deploy-Int8 PTQ cnn on CIFAR10 ---
+2026-08-06 15:56:42 [INFO] __main__: [Deploy-Int8] PTQ cnn/CIFAR10 | PoT baked: 73.12% | Weight-only int8: 73.13% | Full int8: 73.14%
+2026-08-06 15:56:42 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_PTQ_cnn_CIFAR10.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_PTQ_cnn_CIFAR10.pt
+2026-08-06 15:56:43 [INFO] __main__: 
+--- Deploy-Int8 QAT cnn on CIFAR10 ---
+2026-08-06 15:56:45 [INFO] __main__: [Deploy-Int8] QAT cnn/CIFAR10 | PoT baked: 84.68% | Weight-only int8: 84.68% | Full int8: 84.64%
+2026-08-06 15:56:45 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_QAT_cnn_CIFAR10.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_QAT_cnn_CIFAR10.pt
+2026-08-06 15:56:46 [INFO] __main__: 
+--- Deploy-Int8 PTQ resnet18_no_weights on CIFAR10 ---
+2026-08-06 15:56:50 [INFO] __main__: [Deploy-Int8] PTQ resnet18_no_weights/CIFAR10 | PoT baked: 82.21% | Weight-only int8: 82.20% | Full int8: 82.18%
+2026-08-06 15:56:50 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_PTQ_resnet18_no_weights_CIFAR10.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_PTQ_resnet18_no_weights_CIFAR10.pt
+2026-08-06 15:56:52 [INFO] __main__: 
+--- Deploy-Int8 QAT resnet18_no_weights on CIFAR10 ---
+2026-08-06 15:56:55 [INFO] __main__: [Deploy-Int8] QAT resnet18_no_weights/CIFAR10 | PoT baked: 88.46% | Weight-only int8: 88.47% | Full int8: 88.49%
+2026-08-06 15:56:55 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_QAT_resnet18_no_weights_CIFAR10.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_QAT_resnet18_no_weights_CIFAR10.pt
+2026-08-06 15:56:57 [INFO] __main__: 
+--- Deploy-Int8 PTQ resnet50_no_weights on CIFAR10 ---
+2026-08-06 15:57:03 [INFO] __main__: [Deploy-Int8] PTQ resnet50_no_weights/CIFAR10 | PoT baked: 73.03% | Weight-only int8: 73.06% | Full int8: 72.93%
+2026-08-06 15:57:03 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_PTQ_resnet50_no_weights_CIFAR10.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_PTQ_resnet50_no_weights_CIFAR10.pt
+2026-08-06 15:57:06 [INFO] __main__: 
+--- Deploy-Int8 QAT resnet50_no_weights on CIFAR10 ---
+2026-08-06 15:57:12 [INFO] __main__: [Deploy-Int8] QAT resnet50_no_weights/CIFAR10 | PoT baked: 86.48% | Weight-only int8: 86.48% | Full int8: 86.49%
+2026-08-06 15:57:12 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_QAT_resnet50_no_weights_CIFAR10.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_QAT_resnet50_no_weights_CIFAR10.pt
+2026-08-06 15:57:15 [INFO] __main__: 
+============================================================
+2026-08-06 15:57:15 [INFO] __main__: [Deploy-Int8] Loading dataset: IMAGENET100
+2026-08-06 15:57:15 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-06 15:57:15 [INFO] __main__: 
+--- Deploy-Int8 PTQ cnn on IMAGENET100 ---
+2026-08-06 15:57:36 [INFO] __main__: [Deploy-Int8] PTQ cnn/IMAGENET100 | PoT baked: 29.10% | Weight-only int8: 29.24% | Full int8: 29.24%
+2026-08-06 15:57:36 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_PTQ_cnn_IMAGENET100.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_PTQ_cnn_IMAGENET100.pt
+2026-08-06 15:57:43 [INFO] __main__: 
+--- Deploy-Int8 QAT cnn on IMAGENET100 ---
+2026-08-06 15:58:04 [INFO] __main__: [Deploy-Int8] QAT cnn/IMAGENET100 | PoT baked: 54.80% | Weight-only int8: 54.78% | Full int8: 54.70%
+2026-08-06 15:58:04 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_QAT_cnn_IMAGENET100.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_QAT_cnn_IMAGENET100.pt
+2026-08-06 15:58:11 [INFO] __main__: 
+--- Deploy-Int8 PTQ resnet18_no_weights on IMAGENET100 ---
+2026-08-06 15:58:32 [INFO] __main__: [Deploy-Int8] PTQ resnet18_no_weights/IMAGENET100 | PoT baked: 69.20% | Weight-only int8: 69.28% | Full int8: 69.34%
+2026-08-06 15:58:32 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_PTQ_resnet18_no_weights_IMAGENET100.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_PTQ_resnet18_no_weights_IMAGENET100.pt
+2026-08-06 15:58:39 [INFO] __main__: 
+--- Deploy-Int8 QAT resnet18_no_weights on IMAGENET100 ---
+2026-08-06 15:59:01 [INFO] __main__: [Deploy-Int8] QAT resnet18_no_weights/IMAGENET100 | PoT baked: 82.64% | Weight-only int8: 82.62% | Full int8: 82.60%
+2026-08-06 15:59:01 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_QAT_resnet18_no_weights_IMAGENET100.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_QAT_resnet18_no_weights_IMAGENET100.pt
+2026-08-06 15:59:08 [INFO] __main__: 
+--- Deploy-Int8 PTQ resnet50_no_weights on IMAGENET100 ---
+2026-08-06 15:59:30 [INFO] __main__: [Deploy-Int8] PTQ resnet50_no_weights/IMAGENET100 | PoT baked: 54.98% | Weight-only int8: 54.92% | Full int8: 54.92%
+2026-08-06 15:59:31 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_PTQ_resnet50_no_weights_IMAGENET100.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_PTQ_resnet50_no_weights_IMAGENET100.pt
+2026-08-06 15:59:39 [INFO] __main__: 
+--- Deploy-Int8 QAT resnet50_no_weights on IMAGENET100 ---
+2026-08-06 16:00:01 [INFO] __main__: [Deploy-Int8] QAT resnet50_no_weights/IMAGENET100 | PoT baked: 83.78% | Weight-only int8: 83.74% | Full int8: 83.72%
+2026-08-06 16:00:02 [INFO] __main__: Saved deployed int8 models -> /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_weightonly_QAT_resnet50_no_weights_IMAGENET100.pt, /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/deployed_models/deployed_full_QAT_resnet50_no_weights_IMAGENET100.pt
+2026-08-06 16:00:10 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260806_155626_27807/csv/deployment_int8.csv
+2026-08-06 16:00:10 [INFO] __main__: === Deploy-Int8-Only complete ===

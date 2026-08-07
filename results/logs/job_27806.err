@@ -1,0 +1,9 @@
+W0806 15:40:36.957000 3477687 .conda/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchao/quantization/quant_api.py:936: UserWarning: Config Deprecation: version 1 of Int8WeightOnlyConfig is deprecated and will no longer be supported in a future release, please use version 2, see https://github.com/pytorch/ao/issues/2752 for more details
+  warnings.warn(
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchao/dtypes/utils.py:89: UserWarning: Deprecation: PlainLayout is deprecated and will be removed in a future release of torchao, see https://github.com/pytorch/ao/issues/2752 for more details
+  warnings.warn(
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchao/dtypes/uintx/plain_layout.py:82: UserWarning: Deprecation: PlainAQTTensorImpl is deprecated and will be removed in a future release of torchao, see https://github.com/pytorch/ao/issues/2752 for more details
+  warnings.warn(
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torchao/dtypes/affine_quantized_tensor.py:116: UserWarning: Deprecation: AffineQuantizedTensor is deprecated and will be removed in a future release of torchao, see https://github.com/pytorch/ao/issues/2752 for more details
+  warnings.warn(

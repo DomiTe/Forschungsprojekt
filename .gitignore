@@ -1,0 +1,14 @@
+.venv/
+notebooks/data
+uv.lock
+data/
+.python-version
+__pycache__
+.vscode
+.conda/
+__pycache__/
+results/*/models/
+results/*/quantized_models/
+results/*/deployed_models/
+results/*/backup_quantized_models/
+results/*/backup_deployed_models/

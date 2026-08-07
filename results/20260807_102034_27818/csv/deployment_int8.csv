@@ -1,0 +1,13 @@
+model,dataset,stage,pot_baked_acc,weight_only_int8_acc,full_int8_acc
+cnn,CIFAR10,PTQ,73.12,73.13,73.13
+cnn,CIFAR10,QAT,84.68,84.68,84.68
+resnet18_no_weights,CIFAR10,PTQ,82.21,82.20,82.22
+resnet18_no_weights,CIFAR10,QAT,88.46,88.47,88.47
+resnet50_no_weights,CIFAR10,PTQ,73.03,73.06,72.72
+resnet50_no_weights,CIFAR10,QAT,86.48,86.48,86.39
+cnn,IMAGENET100,PTQ,29.10,29.24,29.16
+cnn,IMAGENET100,QAT,54.80,54.78,54.68
+resnet18_no_weights,IMAGENET100,PTQ,69.20,69.28,69.36
+resnet18_no_weights,IMAGENET100,QAT,82.64,82.62,82.58
+resnet50_no_weights,IMAGENET100,PTQ,54.98,54.92,55.26
+resnet50_no_weights,IMAGENET100,QAT,83.78,83.74,83.86

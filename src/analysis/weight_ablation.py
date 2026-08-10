@@ -16,12 +16,16 @@ first, then quantizes one layer's weights at a time.
 Three parts, per model x dataset x stage (CIFAR10; resnet18_no_weights and
 resnet50_no_weights required, cnn included as a bonus; PTQ, QAT):
 
-  Part 0 (gate): compute FP32 and weights-only-all-layers accuracy up front.
-    Cross-checked against KNOWN_ANCHORS (independently confirmed values from
-    prior runs) when available for that combo; combos with no known anchor
-    still compute and log these numbers as a sanity print, just without a
-    hard pass/fail gate. A failed gate skips Parts 1-2 for that combo --
-    they would otherwise be measuring a broken pipeline.
+  Part 0 (gate): compute FP32 reference accuracy, weights-only accuracy via
+    the act_fake_quant->Identity swap, and weights-only accuracy via
+    bake_pot_into_standard_layers (a structurally independent construction
+    that also drops activation quantization). Both weights-only constructions
+    quantize the same weights with activations untouched, so they must agree
+    to within PATH_EQUIVALENCE_TOLERANCE_PTS -- this is a *self-consistent*
+    hard gate (no remembered constant required) that catches a broken
+    Identity-swap before it silently corrupts the isolation sweep. A
+    secondary, non-fatal soft check compares against independently-known
+    accuracies (currently only resnet50/CIFAR10/PTQ) purely as a sanity note.
   Part 1: reconstruct the model fresh per layer, isolate that one layer's
     weight quantization (everything else FP32, all activations FP32),
     evaluate on the full validation set. Optionally also runs the
@@ -35,9 +39,17 @@ resnet50_no_weights required, cnn included as a bonus; PTQ, QAT):
 
 Analysis only -- no torchao, no INT8 conversion, no deployment/benchmark
 path. Reuses (does not duplicate) the checkpoint loader, evaluation function,
-and Identity-swap helpers already established in
-src/analysis/diagnose_activations.py, and the Hessian trace CSV loader in
-src/analysis/layer_ablation.py.
+bake_pot_into_standard_layers, and Identity-swap helpers already established
+in src/analysis/diagnose_activations.py and src/main.py, and the Hessian
+trace CSV loader in src/analysis/layer_ablation.py.
+
+Checkpoint filenames in this project are not perfectly uniform (stray
+spaces/dots/typos have appeared), so every checkpoint path here is resolved
+by normalized-token matching (see _resolve_checkpoint_robust) rather than an
+exact f-string, and the resolved absolute path is logged before loading. A
+"missing checkpoint" skip is only ever issued for genuine absence -- a
+near-miss (file present under a differently-formatted name) or an ambiguous
+match (multiple candidates) raises loudly instead of silently skipping.
 
 Runs as a single local process (`python -m src.main --weight-ablation ...`),
 CPU or CUDA -- prefers CUDA when available, since this sweep reconstructs
@@ -46,7 +58,7 @@ evaluations x 2 stages).
 """
 
 import os
-import csv
+import re
 import logging
 
 import torch
@@ -55,16 +67,9 @@ from torch.utils.data import DataLoader
 from scipy.stats import spearmanr
 
 from src.quantization.quantizer import QuantizedConv2d, QuantizedLinear
-from src.quantization.deploy_fbgemm import (
-    MODELS,
-    DATASETS,
-    STAGES,
-    _resolve_checkpoint_dir,
-    _checkpoint_path,
-)
+from src.quantization.deploy_fbgemm import MODELS, DATASETS, STAGES, _resolve_checkpoint_dir
 from src.analysis.diagnose_activations import (
     _resolve_fp32_models_dir,
-    _fp32_checkpoint_path,
     _load_quant_model,
     _load_fp32_reference,
     _disable_activation_quant,
@@ -83,18 +88,22 @@ logger = logging.getLogger(__name__)
 
 SEED = 42
 
-# Known-good anchors from prior independently-confirmed runs, used as a
-# regression gate in Part 0: if a freshly-computed anchor for a covered
-# combo drifts more than ANCHOR_TOLERANCE_PTS from these, the checkpoint
-# reload / Identity-swap pipeline broke and Parts 1-2 for that combo are
-# skipped rather than silently measuring a broken setup. Combos not listed
-# have no known-good anchor yet -- Part 0 still computes and logs
-# fp32_acc/weights_only_acc for them (e.g. for the resnet18/CIFAR10/PTQ
-# structural validation run), just without a hard pass/fail check.
-KNOWN_ANCHORS = {
+# Hard gate (Part 0): the act_fake_quant->Identity construction and the
+# bake_pot_into_standard_layers construction both apply the same weight
+# quantizer to the same weights with activations untouched, so they must
+# land within a fraction of a point of each other (a few samples' worth of
+# noise at most). This is self-consistent per model x stage -- it needs no
+# remembered "expected" accuracy table.
+PATH_EQUIVALENCE_TOLERANCE_PTS = 0.1
+
+# Soft sanity note only (Part 0): independently-known accuracies from prior
+# runs, logged as a WARNING (not a hard failure) if the freshly-computed
+# numbers drift far from them. Combos not listed here have no known
+# reference yet and are simply not checked.
+SOFT_KNOWN_ANCHORS = {
     ("resnet50_no_weights", "CIFAR10", "PTQ"): {"fp32_acc": 80.56, "weights_only_acc": 75.46},
 }
-ANCHOR_TOLERANCE_PTS = 1.0
+SOFT_ANCHOR_TOLERANCE_PTS = 1.0
 
 ABLATION_FIELDNAMES = [
     "model", "dataset", "stage", "layer", "hessian_trace", "fp32_acc", "isolated_acc",
@@ -108,6 +117,97 @@ CORRELATION_FIELDNAMES = [
 
 class WeightAblationError(RuntimeError):
     pass
+
+
+class WeightAblationCheckpointError(RuntimeError):
+    """
+    Raised when checkpoint resolution finds either an ambiguous match (more
+    than one candidate) or a near-miss (a file that matches all but one
+    required token, suggesting it IS the intended checkpoint under a
+    differently-formatted name). Deliberately a distinct type from
+    FileNotFoundError -- callers must not treat this as a legitimate
+    "checkpoint genuinely doesn't exist" skip.
+    """
+    pass
+
+
+# ---------------------------------------------------------------------------
+# Robust checkpoint path resolution
+# ---------------------------------------------------------------------------
+
+def _normalize_token(s: str) -> str:
+    # Case-insensitive, treats spaces/dots/underscores/hyphens as equivalent
+    # (stripped entirely) so "PTQ", "ptq", " ptq", "ptq." etc. all normalize
+    # the same, and "resnet50_no_weights" / "resnet50.no.weights" /
+    # "ResNet50 No Weights" all normalize to "resnet50noweights".
+    return re.sub(r"[\s._-]+", "", s.lower())
+
+
+def _resolve_checkpoint_robust(directory: str, tokens: dict[str, str]) -> str:
+    """
+    Finds the single .pt file in `directory` whose normalized filename
+    contains every value in `tokens` as a substring, and returns its
+    absolute path (logged). Distinguishes three failure modes:
+
+    - genuinely absent: no file matches even len(tokens)-1 tokens -> raises
+      FileNotFoundError (the only case a caller should treat as a legitimate
+      graceful skip).
+    - near-miss: no file matches all tokens, but some file matches all but
+      one -> raises WeightAblationCheckpointError (the file is very likely
+      present under a differently-formatted name; do not silently skip).
+      Only attempted when there are >= 3 required tokens -- with only 2
+      tokens (e.g. model+dataset for the FP32 baseline, no stage token),
+      a 1-token partial match is too weak a signal to distinguish "this is
+      the intended file with a typo" from "this is simply a different
+      model's/dataset's file that happens to share one token" (every
+      CIFAR10 baseline shares the dataset token, for instance).
+    - ambiguous: more than one file matches all tokens -> raises
+      WeightAblationCheckpointError (refuses to guess).
+    """
+    token_desc = ", ".join(f"{k}={v}" for k, v in tokens.items())
+
+    if not os.path.isdir(directory):
+        raise FileNotFoundError(f"checkpoint directory does not exist: {directory} (looking for {token_desc})")
+
+    norm_tokens = {key: _normalize_token(val) for key, val in tokens.items()}
+    all_files = sorted(f for f in os.listdir(directory) if f.endswith(".pt"))
+
+    full_matches = [
+        fname for fname in all_files
+        if all(tok in _normalize_token(fname[:-len(".pt")]) for tok in norm_tokens.values())
+    ]
+
+    if len(full_matches) == 1:
+        resolved = os.path.abspath(os.path.join(directory, full_matches[0]))
+        logger.info(f"[WeightAblation] Resolved checkpoint ({token_desc}) -> {resolved}")
+        return resolved
+
+    if len(full_matches) > 1:
+        resolved_list = [os.path.abspath(os.path.join(directory, f)) for f in full_matches]
+        raise WeightAblationCheckpointError(
+            f"ambiguous checkpoint match for {token_desc} in {directory}: {len(full_matches)} "
+            f"files match all tokens: {resolved_list} -- refusing to guess which is correct."
+        )
+
+    if len(norm_tokens) >= 3:
+        near_misses = [
+            fname for fname in all_files
+            if sum(1 for tok in norm_tokens.values() if tok in _normalize_token(fname[:-len(".pt")]))
+            == len(norm_tokens) - 1
+        ]
+        if near_misses:
+            raise WeightAblationCheckpointError(
+                f"no exact token match for {token_desc} in {directory}, but found "
+                f"{len(near_misses)} near-miss candidate(s) matching all but one token: "
+                f"{near_misses} -- this is NOT a genuine 'missing checkpoint', the file is "
+                f"likely present under a differently-formatted name. Refusing to silently "
+                f"skip; fix the normalization or the filename."
+            )
+
+    raise FileNotFoundError(
+        f"genuinely no checkpoint found for {token_desc} in {directory} "
+        f"({len(all_files)} .pt files present: {all_files})"
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -130,8 +230,8 @@ def _build_eval_loader(dataset_name: str) -> tuple[DataLoader, int]:
 # has an active (non-Identity) weight_fake_quant, every other quantized
 # layer's weight_fake_quant is Identity, and every act_fake_quant is
 # Identity. One generic check covers the isolation case (one active layer),
-# the leave-one-out case (all but one active), and Part 0's
-# weights-only-all-layers case (all active).
+# the leave-one-out case (all but one active), Part 0's weights-only-via-
+# Identity case (all active), and Part 0's both-Identity case (none active).
 # ---------------------------------------------------------------------------
 
 def _verify_weight_mask(model: nn.Module, expected_active_layers: set[str], label: str) -> None:
@@ -155,37 +255,140 @@ def _verify_weight_mask(model: nn.Module, expected_active_layers: set[str], labe
 
 
 # ---------------------------------------------------------------------------
-# Part 0: anchors + regression gate
+# Part 0: anchors + self-consistent path-equivalence gate
 # ---------------------------------------------------------------------------
 
-def _check_anchor_gate(
-    model_name: str, dataset_name: str, stage: str, fp32_acc: float, weights_only_acc: float,
-) -> tuple[bool, str | None]:
+def _soft_anchor_check(model_name: str, dataset_name: str, stage: str, fp32_acc: float, weights_only_acc: float) -> None:
     label = f"{stage} {model_name}/{dataset_name}"
-    anchor = KNOWN_ANCHORS.get((model_name, dataset_name, stage))
+    anchor = SOFT_KNOWN_ANCHORS.get((model_name, dataset_name, stage))
     if anchor is None:
-        logger.info(
-            f"[WeightAblation] {label}: no known-good anchor for this combo -- proceeding "
-            f"without a hard regression check (fp32_acc={fp32_acc:.2f}%, "
-            f"weights_only_acc={weights_only_acc:.2f}%)"
-        )
-        return True, None
+        return
 
     fp32_diff = abs(fp32_acc - anchor["fp32_acc"])
     weights_diff = abs(weights_only_acc - anchor["weights_only_acc"])
-    passed = fp32_diff <= ANCHOR_TOLERANCE_PTS and weights_diff <= ANCHOR_TOLERANCE_PTS
-    logger.info(
-        f"[WeightAblation] {label}: anchor check -- fp32 {fp32_acc:.2f}% vs "
-        f"{anchor['fp32_acc']:.2f}% (diff {fp32_diff:.2f}pt), weights_only {weights_only_acc:.2f}% "
-        f"vs {anchor['weights_only_acc']:.2f}% (diff {weights_diff:.2f}pt), "
-        f"tolerance={ANCHOR_TOLERANCE_PTS}pt -- {'PASS' if passed else 'FAIL'}"
-    )
-    if not passed:
-        return False, (
-            f"anchor mismatch: fp32 diff={fp32_diff:.2f}pt, weights_only diff={weights_diff:.2f}pt "
-            f"(tolerance={ANCHOR_TOLERANCE_PTS}pt)"
+    if fp32_diff > SOFT_ANCHOR_TOLERANCE_PTS or weights_diff > SOFT_ANCHOR_TOLERANCE_PTS:
+        logger.warning(
+            f"[WeightAblation] {label}: SOFT anchor check drifted -- fp32 {fp32_acc:.2f}% vs "
+            f"known {anchor['fp32_acc']:.2f}% (diff {fp32_diff:.2f}pt), weights_only "
+            f"{weights_only_acc:.2f}% vs known {anchor['weights_only_acc']:.2f}% "
+            f"(diff {weights_diff:.2f}pt) -- WARNING only, not a hard gate failure (see the "
+            f"path-equivalence gate for the hard check)."
         )
-    return True, None
+    else:
+        logger.info(
+            f"[WeightAblation] {label}: soft anchor check OK -- fp32 {fp32_acc:.2f}% "
+            f"(known {anchor['fp32_acc']:.2f}%), weights_only {weights_only_acc:.2f}% "
+            f"(known {anchor['weights_only_acc']:.2f}%)"
+        )
+
+
+def _run_part0(
+    model_name: str, dataset_name: str, stage: str,
+    quant_ckpt_path: str, fp32_ckpt_path: str,
+    num_classes: int, channels: int, image_size: int,
+    eval_loader: DataLoader, device: torch.device,
+) -> tuple[bool, float, float, list[str], str | None]:
+    """
+    Returns (gate_passed, fp32_acc, weights_only_acc, all_layer_names, fail_note).
+    weights_only_acc is the act_fake_quant->Identity construction's accuracy
+    -- the one Part 1's leave-one-out baseline and damage figures are
+    defined against.
+    """
+    from src.main import evaluate, bake_pot_into_standard_layers
+
+    label = f"{stage} {model_name}/{dataset_name}"
+
+    # 1. FP32 reference.
+    fp32_model = _load_fp32_reference(model_name, fp32_ckpt_path, num_classes, channels, image_size).to(device)
+    fp32_acc = evaluate(fp32_model, eval_loader, device)
+    del fp32_model
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+
+    # 2. Weights-only via act_fake_quant -> Identity (the construction Part 1 depends on).
+    model_identity, _, _ = _load_quant_model(model_name, quant_ckpt_path, num_classes, channels, image_size)
+    model_identity = model_identity.to(device)
+    all_layer_names = [
+        name for name, module in model_identity.named_modules()
+        if isinstance(module, (QuantizedConv2d, QuantizedLinear))
+    ]
+    _disable_activation_quant(model_identity)
+    _verify_weight_mask(model_identity, set(all_layer_names), f"{label} weights-only(identity)")
+    acc_identity = evaluate(model_identity, eval_loader, device)
+    del model_identity
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+
+    # 3. Weights-only via baking (structurally independent trusted reference).
+    model_to_bake, _, _ = _load_quant_model(model_name, quant_ckpt_path, num_classes, channels, image_size)
+    model_to_bake = model_to_bake.to(device)
+    baked_model = bake_pot_into_standard_layers(model_to_bake).to(device)
+    acc_baked = evaluate(baked_model, eval_loader, device)
+    del model_to_bake, baked_model
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+
+    logger.info(
+        f"[WeightAblation] {label}: fp32_acc={fp32_acc:.2f}% "
+        f"weights_only(act->Identity)={acc_identity:.2f}% weights_only(baked)={acc_baked:.2f}% "
+        f"({len(all_layer_names)} layers)"
+    )
+
+    # Hard gate: the two weights-only constructions must agree -- they apply
+    # the identical weight quantizer to identical weights with activations
+    # untouched, so any divergence beyond a few samples means the Identity
+    # swap the isolation sweep depends on is not equivalent to baking.
+    path_diff = abs(acc_identity - acc_baked)
+    gate_passed = path_diff < PATH_EQUIVALENCE_TOLERANCE_PTS
+    logger.info(
+        f"[WeightAblation] {label}: path-equivalence gate -- "
+        f"|{acc_identity:.2f}% - {acc_baked:.2f}%| = {path_diff:.3f}pt "
+        f"(tolerance < {PATH_EQUIVALENCE_TOLERANCE_PTS}pt) -- {'PASS' if gate_passed else 'FAIL'}"
+    )
+
+    _soft_anchor_check(model_name, dataset_name, stage, fp32_acc, acc_identity)
+
+    # Optional end-to-end check: both quantizers -> Identity should reproduce
+    # the FP32 reference for PTQ (weights untouched by PTQ training, fusion
+    # is exact in eval). For QAT this instead reflects the QAT-trained
+    # weights' own clean-forward accuracy -- QAT continued training beyond
+    # the frozen FP32 baseline checkpoint, so it is NOT expected to match
+    # fp32_acc; logged purely as an informational note, never gated.
+    model_both, _, _ = _load_quant_model(model_name, quant_ckpt_path, num_classes, channels, image_size)
+    model_both = model_both.to(device)
+    _disable_activation_quant(model_both)
+    _disable_weight_quant(model_both)
+    _verify_weight_mask(model_both, set(), f"{label} both-identity")
+    acc_both_identity = evaluate(model_both, eval_loader, device)
+    del model_both
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+
+    if stage == "PTQ":
+        both_identity_diff = abs(acc_both_identity - fp32_acc)
+        logger.info(
+            f"[WeightAblation] {label}: optional end-to-end check (PTQ) -- both-Identity "
+            f"acc {acc_both_identity:.2f}% vs FP32 reference {fp32_acc:.2f}% "
+            f"(diff {both_identity_diff:.2f}pt) -- informational only, not gated"
+        )
+    else:
+        logger.info(
+            f"[WeightAblation] {label}: optional end-to-end check (QAT) -- both-Identity "
+            f"acc {acc_both_identity:.2f}% (informational: reflects the QAT-trained weights' "
+            f"own clean-forward accuracy, NOT expected to match the frozen FP32 baseline "
+            f"{fp32_acc:.2f}% since QAT continued training beyond that checkpoint)"
+        )
+
+    if not gate_passed:
+        note = (
+            f"path-equivalence gate failed: |act->Identity {acc_identity:.2f}% - "
+            f"baked {acc_baked:.2f}%| = {path_diff:.3f}pt >= {PATH_EQUIVALENCE_TOLERANCE_PTS}pt "
+            f"-- the act->Identity swap is not equivalent to baking, the isolation sweep would "
+            f"be unsound"
+        )
+        return False, fp32_acc, acc_identity, all_layer_names, note
+
+    return True, fp32_acc, acc_identity, all_layer_names, None
 
 
 # ---------------------------------------------------------------------------
@@ -338,8 +541,6 @@ def run_weight_ablation(
     load_run_id: str | None,
     run_leave_one_out: bool = True,
 ) -> None:
-    from src.main import evaluate
-
     torch.manual_seed(SEED)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
@@ -371,40 +572,30 @@ def run_weight_ablation(
                 logger.info(f"[WeightAblation] === {label} ===")
 
                 try:
-                    quant_ckpt_path = _checkpoint_path(resolved_checkpoint_dir, stage, model_name, dataset_name)
-                    fp32_ckpt_path = _fp32_checkpoint_path(fp32_models_dir, model_name, dataset_name)
+                    quant_ckpt_path = _resolve_checkpoint_robust(
+                        resolved_checkpoint_dir,
+                        {"stage": stage, "model": model_name, "dataset": dataset_name},
+                    )
+                    fp32_ckpt_path = _resolve_checkpoint_robust(
+                        fp32_models_dir,
+                        {"model": model_name, "dataset": dataset_name},
+                    )
                 except FileNotFoundError as exc:
-                    logger.warning(f"[WeightAblation] {label}: missing checkpoint ({exc}) -- skipping")
+                    logger.warning(f"[WeightAblation] {label}: checkpoint genuinely missing ({exc}) -- skipping")
+                    continue
+                except WeightAblationCheckpointError as exc:
+                    logger.error(
+                        f"[WeightAblation] {label}: checkpoint resolution AMBIGUOUS or NEAR-MISS, "
+                        f"NOT a legitimate missing-checkpoint skip ({exc}) -- skipping this combo, "
+                        f"but this needs human attention."
+                    )
                     continue
 
-                # ---- Part 0: anchors ----
-                fp32_model = _load_fp32_reference(
-                    model_name, fp32_ckpt_path, num_classes, channels, image_size,
-                ).to(device)
-                fp32_acc = evaluate(fp32_model, eval_loader, device)
-                del fp32_model
-                if device.type == "cuda":
-                    torch.cuda.empty_cache()
-
-                wo_model, _, _ = _load_quant_model(model_name, quant_ckpt_path, num_classes, channels, image_size)
-                wo_model = wo_model.to(device)
-                all_layer_names = [
-                    name for name, module in wo_model.named_modules()
-                    if isinstance(module, (QuantizedConv2d, QuantizedLinear))
-                ]
-                _disable_activation_quant(wo_model)
-                _verify_weight_mask(wo_model, set(all_layer_names), f"{label} weights-only-all")
-                weights_only_all_acc = evaluate(wo_model, eval_loader, device)
-                del wo_model
-                if device.type == "cuda":
-                    torch.cuda.empty_cache()
-
-                logger.info(
-                    f"[WeightAblation] {label}: fp32_acc={fp32_acc:.2f}% "
-                    f"weights_only_all_acc={weights_only_all_acc:.2f}% ({len(all_layer_names)} layers)"
+                # ---- Part 0: anchors + path-equivalence gate ----
+                gate_passed, fp32_acc, weights_only_all_acc, all_layer_names, note = _run_part0(
+                    model_name, dataset_name, stage, quant_ckpt_path, fp32_ckpt_path,
+                    num_classes, channels, image_size, eval_loader, device,
                 )
-
-                gate_passed, note = _check_anchor_gate(model_name, dataset_name, stage, fp32_acc, weights_only_all_acc)
                 if not gate_passed:
                     logger.error(f"[WeightAblation] {label}: GATE FAILED -- {note}. Skipping Parts 1-2.")
                     continue

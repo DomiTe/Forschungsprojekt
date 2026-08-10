@@ -72,6 +72,54 @@ def parse_args():
              "Default: full validation set."
     )
     parser.add_argument(
+        "--ablate-layer-quantization",
+        action="store_true",
+        help="Measure the accuracy impact of excluding individual layers from fbgemm INT8 "
+             "quantization (leaving them in FP32), to test whether high-Hessian-trace layers "
+             "cause the resnet50/CIFAR10/PTQ accuracy collapse. Writes "
+             "results/<RUN_ID>/csv/layer_ablation.csv. Reuses --checkpoint-dir, --load-run-id "
+             "and --eval-subset. Intended for a local workstation run (python -m src.main ...), "
+             "no SLURM/torchrun required."
+    )
+    parser.add_argument(
+        "--ablate-top-k",
+        type=int,
+        default=3,
+        help="For --ablate-layer-quantization: number of highest-Hessian-trace layers to "
+             "exclude from quantization (one at a time), plus the same number of "
+             "lowest-nonzero-trace layers as a control (default: 3). Ignored when "
+             "--ablate-layers is set."
+    )
+    parser.add_argument(
+        "--ablate-layers",
+        type=str,
+        default=None,
+        help="For --ablate-layer-quantization: comma-separated explicit layer names to "
+             "exclude from quantization one at a time (e.g. 'conv1' or 'conv1,layer4.0.conv1'), "
+             "instead of trace-guided top-k/low-k selection."
+    )
+    parser.add_argument(
+        "--diagnose-activation-quant",
+        action="store_true",
+        help="Isolate how much accuracy damage comes from activation quantization versus weight "
+             "quantization (resnet50/CIFAR10 PTQ: 80.56%% FP32 -> 11.73%% full-quantized, but "
+             "75.46%% with only weight quantization -- most of the loss is activations, not "
+             "weights), and identify which layers' activation ranges are pathological. Writes "
+             "results/<RUN_ID>/csv/activation_{load_check,decomposition,ranges,ablation}.csv. "
+             "Reuses --checkpoint-dir, --load-run-id and --eval-subset. Intended for a local "
+             "workstation run (python -m src.main ...), no SLURM/torchrun required."
+    )
+    parser.add_argument(
+        "--weight-ablation",
+        action="store_true",
+        help="Measure each layer's weight-quantization damage in isolation (all activation "
+             "quantization disabled first, then one layer's weights quantized at a time) and "
+             "correlate it against that layer's precomputed weight-Hessian trace. Writes "
+             "results/<RUN_ID>/csv/weight_ablation{,_correlation}.csv. Analysis only -- no "
+             "torchao/INT8/deployment path. Reuses --checkpoint-dir and --load-run-id. Prefers "
+             "CUDA; runs as a single local process, no SLURM/torchrun required."
+    )
+    parser.add_argument(
         "--diagnose-acc-mismatch",
         action="store_true",
         help="Isolate why the same checkpoint evaluates to a different top-1 accuracy locally "

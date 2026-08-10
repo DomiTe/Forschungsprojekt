@@ -1,0 +1,4 @@
+model,dataset,stage,selection,num_disabled,newly_disabled_layer,disabled_layers,outlier_factor,baseline_acc,ablated_acc,recovery_pts
+resnet50_no_weights,CIFAR10,PTQ,cumulative_top_outlier,1,layer4.2.conv3,layer4.2.conv3,inf,11.8,11.79,-0.010000000000001563
+resnet50_no_weights,CIFAR10,PTQ,cumulative_top_outlier,2,layer4.0.conv3,layer4.2.conv3;layer4.0.conv3,3100.000248269715,11.8,11.59,-0.21000000000000085
+resnet50_no_weights,CIFAR10,PTQ,cumulative_top_outlier,3,layer3.5.conv3,layer4.2.conv3;layer4.0.conv3;layer3.5.conv3,874.4999394440056,11.8,11.67,-0.13000000000000078

@@ -405,7 +405,7 @@ def _get_imagenet100_loaders(image_size: int, batch_size: int | None = None):
         )
     train = datasets.ImageFolder(train_dir, transform=tf_train)
     val   = datasets.ImageFolder(val_dir,   transform=tf_val)
-    kw = {"num_workers": 0, "pin_memory": PIN_MEMORY, "persistent_workers": False} if PIN_MEMORY else {"num_workers": 0}
+    kw = {"num_workers": 8, "pin_memory": PIN_MEMORY, "persistent_workers": False} if PIN_MEMORY else {"num_workers": 4}
     num_classes = len(train.classes)
     logger.info(f"ImageNet100: {len(train)} train / {len(val)} val across {num_classes} classes")
     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),

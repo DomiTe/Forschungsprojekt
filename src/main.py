@@ -79,8 +79,8 @@ MODELS = [
 ]
 
 DATASETS = [
-    "CIFAR10",
-    # "IMAGENET100",
+    # "CIFAR10",
+    "IMAGENET100",
     
 ]
 

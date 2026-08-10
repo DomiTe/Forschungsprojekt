@@ -99,6 +99,17 @@ def parse_args():
              "instead of trace-guided top-k/low-k selection."
     )
     parser.add_argument(
+        "--diagnose-activation-quant",
+        action="store_true",
+        help="Isolate how much accuracy damage comes from activation quantization versus weight "
+             "quantization (resnet50/CIFAR10 PTQ: 80.56%% FP32 -> 11.73%% full-quantized, but "
+             "75.46%% with only weight quantization -- most of the loss is activations, not "
+             "weights), and identify which layers' activation ranges are pathological. Writes "
+             "results/<RUN_ID>/csv/activation_{load_check,decomposition,ranges,ablation}.csv. "
+             "Reuses --checkpoint-dir, --load-run-id and --eval-subset. Intended for a local "
+             "workstation run (python -m src.main ...), no SLURM/torchrun required."
+    )
+    parser.add_argument(
         "--diagnose-acc-mismatch",
         action="store_true",
         help="Isolate why the same checkpoint evaluates to a different top-1 accuracy locally "

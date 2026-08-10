@@ -188,6 +188,28 @@ def main() -> None:
         return
 
     # -------------------------------------------------------------------
+    # Diagnose-Activation-Quant mode: isolate how much accuracy damage comes
+    # from activation quantization versus weight quantization, and identify
+    # which layers' activation ranges are pathological. All logic lives in
+    # src/analysis/diagnose_activations.py, which reuses (does not duplicate)
+    # the checkpoint reconstruction primitives from
+    # src/quantization/quantizer.py and src/quantization/deploy_fbgemm.py.
+    # Skips FP32/PTQ/QAT training and all Hessian/eigenvalue/SQNR analysis.
+    # Runs as a single local process (no torchrun/distributed init needed).
+    # -------------------------------------------------------------------
+    if args.diagnose_activation_quant:
+        if local_rank == 0:
+            logger.info("=== Diagnose-Activation-Quant: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.diagnose_activations import run_diagnose_activation_quant
+        run_diagnose_activation_quant(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            eval_subset=args.eval_subset,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
     # Diagnose-Acc-Mismatch mode: isolate why the same checkpoint scores
     # differently locally than on the cluster. Fingerprints the checkpoints,
     # the class-to-index mapping and the transform pipeline, then evaluates

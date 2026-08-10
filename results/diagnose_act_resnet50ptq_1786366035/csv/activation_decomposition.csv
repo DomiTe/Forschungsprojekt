@@ -1,0 +1,2 @@
+model,dataset,stage,fp32_acc,weights_only_acc,activations_only_acc,full_acc,weight_loss_pts,activation_loss_pts,total_loss_pts,dominant_source
+resnet50_no_weights,CIFAR10,PTQ,80.56,75.46,10.05,11.8,5.1000000000000085,70.51,68.76,activation

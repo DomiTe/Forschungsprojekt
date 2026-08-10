@@ -30,4 +30,4 @@ export RUN_ID=$(date +%Y%m%d_%H%M%S)_$SLURM_JOB_ID
 #known good multi GPU torchrun --nproc_per_node=1 --standalone Forschungsprojekt/src/main.py name=multi_GPU_2_cramming  arch=bert-base train=bert-base data=sanity-check-2
 cd /scratch/dominic/Forschungsprojekt
 # --deploy-int8-only --load-run-id 20260624_100106_23827
-CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=1 --standalone -m src.main --diagnose-activation-quant --load-run-id 20260810_104157_31209
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=1 --standalone -m src.main --random-init-control --load-run-id 20260810_104157_31209

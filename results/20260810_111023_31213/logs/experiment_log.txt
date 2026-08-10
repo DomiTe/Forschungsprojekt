@@ -684,3 +684,60 @@ Total wall-clock time: 17539.3s  (292.32 min)
 2026-08-10 19:42:31 [INFO] __main__: Compiling PTQ model for throughput benchmarking...
 2026-08-10 19:46:28 [INFO] __main__: [PTQ]  Val Acc: 70.48% | Latency: 12.78ms
 2026-08-10 19:46:28 [INFO] __main__: Starting Quantization-Aware Training (QAT)...
+2026-08-10 20:22:37 [INFO] __main__: Computing Hessian Trace for QAT...
+2026-08-10 20:22:42 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=4421.8264 (45 iters)
+2026-08-10 20:22:44 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv1.weight: trace=893.9589 (22 iters)
+2026-08-10 20:22:46 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv2.weight: trace=120.5218 (45 iters)
+2026-08-10 20:22:47 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv1.weight: trace=488.1529 (29 iters)
+2026-08-10 20:22:49 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv2.weight: trace=53.4838 (36 iters)
+2026-08-10 20:22:49 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv1.weight: trace=2691.8686 (28 iters)
+2026-08-10 20:22:50 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv2.weight: trace=126.7719 (25 iters)
+2026-08-10 20:22:51 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.downsample.0.weight: trace=294.2693 (49 iters)
+2026-08-10 20:22:51 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv1.weight: trace=365.7927 (22 iters)
+2026-08-10 20:22:52 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv2.weight: trace=56.8740 (15 iters)
+2026-08-10 20:22:52 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv1.weight: trace=673.5410 (21 iters)
+2026-08-10 20:22:53 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv2.weight: trace=217.6146 (32 iters)
+2026-08-10 20:22:53 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.downsample.0.weight: trace=52.0565 (15 iters)
+2026-08-10 20:22:53 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv1.weight: trace=344.8201 (7 iters)
+2026-08-10 20:22:53 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv2.weight: trace=62.2779 (11 iters)
+2026-08-10 20:22:53 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv1.weight: trace=720.3487 (35 iters)
+2026-08-10 20:22:54 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv2.weight: trace=115.3817 (27 iters)
+2026-08-10 20:22:54 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.downsample.0.weight: trace=55.6152 (18 iters)
+2026-08-10 20:22:54 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv1.weight: trace=337.5914 (23 iters)
+2026-08-10 20:22:54 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv2.weight: trace=0.8187 (10 iters)
+2026-08-10 20:22:54 [INFO] src.analysis.pyhessian: [PyHessian] fc.weight: trace=40.0974 (13 iters)
+2026-08-10 20:22:56 [INFO] src.analysis.top_eigenvalue: [PyHessian] conv1.weight: lambda_max=543.2936
+2026-08-10 20:22:57 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer1.0.conv1.weight: lambda_max=70.0871
+2026-08-10 20:22:57 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer1.0.conv2.weight: lambda_max=7.0550
+2026-08-10 20:22:58 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer1.1.conv1.weight: lambda_max=31.5909
+2026-08-10 20:22:58 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer1.1.conv2.weight: lambda_max=3.4636
+2026-08-10 20:22:59 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer2.0.conv1.weight: lambda_max=144.7645
+2026-08-10 20:22:59 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer2.0.conv2.weight: lambda_max=5.8901
+2026-08-10 20:22:59 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer2.0.downsample.0.weight: lambda_max=13.3143
+2026-08-10 20:23:00 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer2.1.conv1.weight: lambda_max=21.8498
+2026-08-10 20:23:00 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer2.1.conv2.weight: lambda_max=2.4844
+2026-08-10 20:23:00 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer3.0.conv1.weight: lambda_max=29.5248
+2026-08-10 20:23:01 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer3.0.conv2.weight: lambda_max=10.4010
+2026-08-10 20:23:01 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer3.0.downsample.0.weight: lambda_max=2.4662
+2026-08-10 20:23:01 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer3.1.conv1.weight: lambda_max=19.7423
+2026-08-10 20:23:01 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer3.1.conv2.weight: lambda_max=2.8823
+2026-08-10 20:23:01 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer4.0.conv1.weight: lambda_max=31.1468
+2026-08-10 20:23:01 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer4.0.conv2.weight: lambda_max=4.9102
+2026-08-10 20:23:02 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer4.0.downsample.0.weight: lambda_max=2.3730
+2026-08-10 20:23:02 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer4.1.conv1.weight: lambda_max=14.4491
+2026-08-10 20:23:02 [INFO] src.analysis.top_eigenvalue: [PyHessian] layer4.1.conv2.weight: lambda_max=0.0271
+2026-08-10 20:23:02 [INFO] src.analysis.top_eigenvalue: [PyHessian] fc.weight: lambda_max=1.5271
+2026-08-10 20:23:06 [INFO] __main__: [QAT]  Val Acc: 82.74% | Latency: 12.87ms
+2026-08-10 20:23:07 [INFO] __main__: 
+--- Run 3/3: resnet50_no_weights on IMAGENET100 ---
+2026-08-10 20:23:07 [INFO] src.model_cnn.train: Model: resnet50_no_weights | Dataset: IMAGENET100 | Size: 90.66 MB | Params: 23,712,932
+2026-08-10 20:26:11 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 4.7455 A 1.87% | Val L 4.3761 A 3.36%
+2026-08-10 20:29:09 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 4.2126 A 5.27% | Val L 4.0174 A 7.58%
+2026-08-10 20:32:08 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 3.8350 A 10.20% | Val L 3.5994 A 14.54%
+2026-08-10 20:35:06 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 3.4832 A 16.51% | Val L 3.2300 A 21.30%
+2026-08-10 20:38:04 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 3.1781 A 22.35% | Val L 3.0678 A 25.54%
+2026-08-10 20:41:02 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 2.8999 A 28.14% | Val L 3.0595 A 25.24%
+2026-08-10 20:44:01 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 2.6907 A 32.49% | Val L 2.7317 A 31.74%
+2026-08-10 20:46:59 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 2.5280 A 35.92% | Val L 2.4765 A 37.46%
+2026-08-10 20:49:58 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 2.3648 A 39.48% | Val L 2.4193 A 37.32%
+2026-08-10 20:52:56 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 2.2345 A 42.73% | Val L 2.3198 A 40.06%

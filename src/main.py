@@ -233,6 +233,30 @@ def main() -> None:
         return
 
     # -------------------------------------------------------------------
+    # Random-Init-Control mode: compute the layer-wise weight-Hessian trace
+    # on an untrained (random-init) model and compare its per-layer profile
+    # against the trained-FP32 profile (recomputed in this same run with an
+    # identical estimator config), to separate architectural curvature from
+    # learned curvature. All logic lives in
+    # src/analysis/random_init_control.py, which reuses (does not
+    # duplicate) compute_layerwise_hessian_trace_pyhessian and the FP32
+    # checkpoint resolution helpers from src/analysis/diagnose_activations.py.
+    # Analysis only -- no quantization/PTQ/QAT/deployment. Skips FP32/PTQ/QAT
+    # training and all Hessian/eigenvalue/SQNR analysis. Runs as a single
+    # local process (no torchrun/distributed init needed), prefers CUDA.
+    # -------------------------------------------------------------------
+    if args.random_init_control:
+        if local_rank == 0:
+            logger.info("=== Random-Init-Control: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.random_init_control import run_random_init_control
+        run_random_init_control(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
     # Diagnose-Acc-Mismatch mode: isolate why the same checkpoint scores
     # differently locally than on the cluster. Fingerprints the checkpoints,
     # the class-to-index mapping and the transform pipeline, then evaluates

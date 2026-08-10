@@ -120,6 +120,19 @@ def parse_args():
              "CUDA; runs as a single local process, no SLURM/torchrun required."
     )
     parser.add_argument(
+        "--random-init-control",
+        action="store_true",
+        help="Compute the layer-wise weight-Hessian trace on an untrained (random-init) model "
+             "and compare its per-layer profile against the trained-FP32 profile (recomputed in "
+             "this run with an identical estimator config), to separate architectural curvature "
+             "(already present at init) from learned curvature. CIFAR10; cnn, "
+             "resnet18_no_weights, resnet50_no_weights (resnet50 first). Writes "
+             "results/<RUN_ID>/csv/random_init_{traces,comparison,summary}.csv. Analysis only -- "
+             "no quantization/PTQ/QAT/deployment. Reuses --checkpoint-dir (for the trained-FP32 "
+             "baseline checkpoint) and --load-run-id. Prefers CUDA; runs as a single local "
+             "process, no SLURM/torchrun required."
+    )
+    parser.add_argument(
         "--diagnose-acc-mismatch",
         action="store_true",
         help="Isolate why the same checkpoint evaluates to a different top-1 accuracy locally "

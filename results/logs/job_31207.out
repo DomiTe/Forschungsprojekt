@@ -1,0 +1,53 @@
+2026-08-10 10:38:16 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-10 10:38:16 [INFO] __main__: 
+============================================================
+2026-08-10 10:38:16 [INFO] __main__: Loading dataset: CIFAR10
+2026-08-10 10:38:18 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-10 10:38:19 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-10 10:38:19 [INFO] __main__: 
+--- Run 1/6: cnn on CIFAR10 ---
+2026-08-10 10:38:19 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR10 | Size: 5.53 MB | Params: 1,449,226
+2026-08-10 10:38:22 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 1.5349 A 43.01% | Val L 1.3877 A 51.80%
+2026-08-10 10:38:25 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 1.1617 A 58.34% | Val L 1.0902 A 62.34%
+2026-08-10 10:38:28 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 0.9884 A 64.79% | Val L 0.9983 A 63.81%
+2026-08-10 10:38:31 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 0.8908 A 68.68% | Val L 0.8952 A 68.33%
+2026-08-10 10:38:34 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 0.8178 A 71.13% | Val L 1.0352 A 64.72%
+2026-08-10 10:38:37 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 0.7640 A 73.06% | Val L 0.8326 A 72.08%
+2026-08-10 10:38:40 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 0.7339 A 74.56% | Val L 0.9118 A 69.56%
+2026-08-10 10:38:43 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 0.7004 A 75.75% | Val L 0.7364 A 74.91%
+2026-08-10 10:38:46 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 0.6837 A 76.07% | Val L 0.9200 A 69.61%
+2026-08-10 10:38:49 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 0.6652 A 76.74% | Val L 0.9129 A 69.69%
+2026-08-10 10:38:52 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 0.6489 A 77.46% | Val L 0.6592 A 77.43%
+2026-08-10 10:38:55 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 0.6340 A 77.79% | Val L 0.8047 A 73.74%
+2026-08-10 10:38:58 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 0.6203 A 78.45% | Val L 0.7916 A 73.32%
+2026-08-10 10:39:01 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 0.6173 A 78.67% | Val L 0.6195 A 78.63%
+2026-08-10 10:39:04 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 0.6095 A 78.99% | Val L 0.6349 A 77.87%
+2026-08-10 10:39:06 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 0.5912 A 79.59% | Val L 0.7081 A 75.73%
+2026-08-10 10:39:09 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 0.5898 A 79.60% | Val L 0.6598 A 77.40%
+2026-08-10 10:39:12 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 0.5795 A 79.90% | Val L 0.6842 A 76.57%
+2026-08-10 10:39:15 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 0.5776 A 80.02% | Val L 0.6650 A 77.51%
+2026-08-10 10:39:18 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 0.5715 A 80.22% | Val L 0.6887 A 76.57%
+2026-08-10 10:39:21 [INFO] src.model_cnn.train: Epoch  21/200 | LR 0.09730 | Train L 0.5662 A 80.31% | Val L 0.6324 A 78.47%
+2026-08-10 10:39:24 [INFO] src.model_cnn.train: Epoch  22/200 | LR 0.09704 | Train L 0.5622 A 80.54% | Val L 0.7322 A 75.31%
+2026-08-10 10:39:27 [INFO] src.model_cnn.train: Epoch  23/200 | LR 0.09677 | Train L 0.5579 A 80.78% | Val L 0.6336 A 78.68%
+2026-08-10 10:39:30 [INFO] src.model_cnn.train: Epoch  24/200 | LR 0.09649 | Train L 0.5568 A 80.80% | Val L 0.7553 A 75.08%
+2026-08-10 10:39:33 [INFO] src.model_cnn.train: Epoch  25/200 | LR 0.09619 | Train L 0.5565 A 80.87% | Val L 0.6789 A 77.20%
+2026-08-10 10:39:36 [INFO] src.model_cnn.train: Epoch  26/200 | LR 0.09589 | Train L 0.5425 A 81.23% | Val L 0.6854 A 78.12%
+2026-08-10 10:39:39 [INFO] src.model_cnn.train: Epoch  27/200 | LR 0.09557 | Train L 0.5382 A 81.47% | Val L 0.7444 A 75.23%
+2026-08-10 10:39:42 [INFO] src.model_cnn.train: Epoch  28/200 | LR 0.09524 | Train L 0.5473 A 81.02% | Val L 0.6459 A 78.21%
+2026-08-10 10:39:45 [INFO] src.model_cnn.train: Epoch  29/200 | LR 0.09490 | Train L 0.5290 A 81.65% | Val L 0.7597 A 74.27%
+2026-08-10 10:39:48 [INFO] src.model_cnn.train: Epoch  30/200 | LR 0.09455 | Train L 0.5315 A 81.78% | Val L 0.7927 A 76.01%
+2026-08-10 10:39:51 [INFO] src.model_cnn.train: Epoch  31/200 | LR 0.09419 | Train L 0.5308 A 81.77% | Val L 0.6246 A 78.81%
+2026-08-10 10:39:54 [INFO] src.model_cnn.train: Epoch  32/200 | LR 0.09382 | Train L 0.5259 A 81.95% | Val L 0.6892 A 77.12%
+2026-08-10 10:39:57 [INFO] src.model_cnn.train: Epoch  33/200 | LR 0.09343 | Train L 0.5226 A 81.87% | Val L 0.6118 A 78.79%
+2026-08-10 10:40:00 [INFO] src.model_cnn.train: Epoch  34/200 | LR 0.09304 | Train L 0.5225 A 82.04% | Val L 0.6518 A 78.22%
+2026-08-10 10:40:03 [INFO] src.model_cnn.train: Epoch  35/200 | LR 0.09263 | Train L 0.5075 A 82.34% | Val L 0.6045 A 79.42%
+2026-08-10 10:40:06 [INFO] src.model_cnn.train: Epoch  36/200 | LR 0.09222 | Train L 0.5181 A 82.22% | Val L 0.6316 A 78.71%
+2026-08-10 10:40:09 [INFO] src.model_cnn.train: Epoch  37/200 | LR 0.09179 | Train L 0.5093 A 82.47% | Val L 0.6447 A 77.95%
+2026-08-10 10:40:12 [INFO] src.model_cnn.train: Epoch  38/200 | LR 0.09135 | Train L 0.5126 A 82.15% | Val L 0.6513 A 78.37%
+2026-08-10 10:40:15 [INFO] src.model_cnn.train: Epoch  39/200 | LR 0.09091 | Train L 0.5133 A 82.23% | Val L 0.6332 A 78.43%
+2026-08-10 10:40:18 [INFO] src.model_cnn.train: Epoch  40/200 | LR 0.09045 | Train L 0.5136 A 82.45% | Val L 0.6242 A 78.54%
+2026-08-10 10:40:21 [INFO] src.model_cnn.train: Epoch  41/200 | LR 0.08998 | Train L 0.5055 A 82.54% | Val L 0.6100 A 79.01%
+2026-08-10 10:40:24 [INFO] src.model_cnn.train: Epoch  42/200 | LR 0.08951 | Train L 0.4981 A 82.85% | Val L 0.6328 A 78.42%
+2026-08-10 10:40:27 [INFO] src.model_cnn.train: Epoch  43/200 | LR 0.08902 | Train L 0.4988 A 82.79% | Val L 0.6444 A 78.45%
+2026-08-10 10:40:30 [INFO] src.model_cnn.train: Epoch  44/200 | LR 0.08853 | Train L 0.4991 A 82.91% | Val L 0.8672 A 72.16%

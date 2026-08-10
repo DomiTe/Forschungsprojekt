@@ -1,0 +1,352 @@
+2026-08-07 18:17:12 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-07 18:17:12 [INFO] __main__: 
+============================================================
+2026-08-07 18:17:12 [INFO] __main__: Loading dataset: IMAGENET100
+2026-08-07 18:17:12 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-07 18:17:12 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-07 18:17:12 [INFO] __main__: 
+--- Run 1/6: cnn on IMAGENET100 ---
+2026-08-07 18:17:12 [INFO] src.model_cnn.train: Model: cnn | Dataset: IMAGENET100 | Size: 5.88 MB | Params: 1,541,476
+2026-08-07 18:40:29 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.1451 A 6.54% | Val L 3.8629 A 10.64% | Train 1361.8s  Val 35.2s
+2026-08-07 19:02:23 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.8235 A 11.38% | Val L 3.6516 A 13.32% | Train 1279.8s  Val 33.5s
+2026-08-07 19:23:52 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.5237 A 16.44% | Val L 3.3660 A 19.42% | Train 1254.0s  Val 35.0s
+2026-08-07 19:23:52 [INFO] src.model_cnn.train: Best validation accuracy: 19.42%
+2026-08-07 19:23:52 [INFO] src.model_cnn.train: Model saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/models/baseline_cnn_IMAGENET100_float32.pt
+2026-08-07 19:23:52 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 19:23:52 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-07 19:23:52 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 19:23:52 [INFO] src.utility.utils:          1 |   1396.976 |   1361.784 |     35.192
+2026-08-07 19:23:52 [INFO] src.utility.utils:          2 |   1313.312 |   1279.787 |     33.525
+2026-08-07 19:23:52 [INFO] src.utility.utils:          3 |   1288.992 |   1254.001 |     34.992
+2026-08-07 19:23:52 [INFO] src.utility.utils: 
+Total wall-clock time: 3999.3s  (66.65 min)
+2026-08-07 19:23:52 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/timing_cnn_IMAGENET100.csv
+2026-08-07 19:23:52 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/logs/training_curves_cnn_IMAGENET100.png
+2026-08-07 19:24:28 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-07 19:24:42 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=32.9901 (23 iters)
+2026-08-07 19:25:00 [INFO] src.analysis.pyhessian: [PyHessian] conv2.weight: trace=183.7152 (42 iters)
+2026-08-07 19:25:09 [INFO] src.analysis.pyhessian: [PyHessian] conv3.weight: trace=74.1089 (27 iters)
+2026-08-07 19:25:15 [INFO] src.analysis.pyhessian: [PyHessian] conv4.weight: trace=27.2714 (25 iters)
+2026-08-07 19:25:16 [INFO] src.analysis.pyhessian: [PyHessian] fc1.weight: trace=32.6494 (2 iters)
+2026-08-07 19:25:16 [INFO] src.analysis.pyhessian: [PyHessian] fc2.weight: trace=53.1885 (3 iters)
+2026-08-07 19:28:15 [INFO] __main__: [FP32] Best Val Acc: 19.42% | Latency: 1.85ms
+2026-08-07 19:28:15 [INFO] __main__: Starting PTQ Calibration...
+2026-08-07 19:28:25 [ERROR] __main__: FAILED cnn/IMAGENET100: _evaluate() takes 3 positional arguments but 4 were given
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 343, in main
+    ptq_loss, ptq_acc = _evaluate(ptq_model, val_loader, torch.nn.CrossEntropyLoss(), device)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _evaluate() takes 3 positional arguments but 4 were given
+2026-08-07 19:28:26 [INFO] __main__: 
+--- Run 2/6: resnet18_no_weights on IMAGENET100 ---
+2026-08-07 19:28:26 [INFO] src.model_cnn.train: Model: resnet18_no_weights | Dataset: IMAGENET100 | Size: 42.87 MB | Params: 11,227,812
+2026-08-07 19:44:23 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 3.9327 A 9.53% | Val L 3.3794 A 18.06% | Train 926.8s  Val 30.6s
+2026-08-07 20:00:19 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 3.1231 A 23.59% | Val L 2.7823 A 30.60% | Train 924.9s  Val 30.6s
+2026-08-07 20:16:06 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 2.4815 A 37.21% | Val L 2.2750 A 41.58% | Train 916.4s  Val 30.5s
+2026-08-07 20:16:06 [INFO] src.model_cnn.train: Best validation accuracy: 41.58%
+2026-08-07 20:16:06 [INFO] src.model_cnn.train: Model saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/models/baseline_resnet18_no_weights_IMAGENET100_float32.pt
+2026-08-07 20:16:06 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 20:16:06 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-07 20:16:06 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 20:16:06 [INFO] src.utility.utils:          1 |    957.373 |     926.81 |     30.562
+2026-08-07 20:16:06 [INFO] src.utility.utils:          2 |    955.495 |    924.936 |     30.559
+2026-08-07 20:16:06 [INFO] src.utility.utils:          3 |    946.926 |    916.436 |      30.49
+2026-08-07 20:16:06 [INFO] src.utility.utils: 
+Total wall-clock time: 2859.8s  (47.66 min)
+2026-08-07 20:16:06 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/timing_resnet18_no_weights_IMAGENET100.csv
+2026-08-07 20:16:06 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/logs/training_curves_resnet18_no_weights_IMAGENET100.png
+2026-08-07 20:16:37 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-07 20:16:40 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=96.6322 (36 iters)
+2026-08-07 20:16:41 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv1.weight: trace=30.3161 (15 iters)
+2026-08-07 20:16:43 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv2.weight: trace=15.9963 (29 iters)
+2026-08-07 20:16:44 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv1.weight: trace=18.1383 (45 iters)
+2026-08-07 20:16:46 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv2.weight: trace=8.9426 (40 iters)
+2026-08-07 20:16:47 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv1.weight: trace=44.1528 (40 iters)
+2026-08-07 20:16:47 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv2.weight: trace=22.6993 (47 iters)
+2026-08-07 20:16:48 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.downsample.0.weight: trace=65.7398 (50 iters)
+2026-08-07 20:16:49 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv1.weight: trace=28.3846 (17 iters)
+2026-08-07 20:16:49 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv2.weight: trace=37.9386 (27 iters)
+2026-08-07 20:16:49 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv1.weight: trace=77.5161 (9 iters)
+2026-08-07 20:16:50 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv2.weight: trace=72.7580 (32 iters)
+2026-08-07 20:16:50 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.downsample.0.weight: trace=46.2052 (13 iters)
+2026-08-07 20:16:50 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv1.weight: trace=63.9457 (31 iters)
+2026-08-07 20:16:50 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv2.weight: trace=54.6830 (51 iters)
+2026-08-07 20:16:51 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv1.weight: trace=85.7427 (14 iters)
+2026-08-07 20:16:51 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv2.weight: trace=85.0055 (30 iters)
+2026-08-07 20:16:51 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.downsample.0.weight: trace=46.0399 (42 iters)
+2026-08-07 20:16:51 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv1.weight: trace=105.8021 (18 iters)
+2026-08-07 20:16:51 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv2.weight: trace=59.9250 (6 iters)
+2026-08-07 20:16:51 [INFO] src.analysis.pyhessian: [PyHessian] fc.weight: trace=37.3340 (29 iters)
+2026-08-07 20:22:14 [INFO] __main__: [FP32] Best Val Acc: 41.58% | Latency: 1.91ms
+2026-08-07 20:22:14 [INFO] __main__: Starting PTQ Calibration...
+2026-08-07 20:22:23 [ERROR] __main__: FAILED resnet18_no_weights/IMAGENET100: _evaluate() takes 3 positional arguments but 4 were given
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 343, in main
+    ptq_loss, ptq_acc = _evaluate(ptq_model, val_loader, torch.nn.CrossEntropyLoss(), device)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _evaluate() takes 3 positional arguments but 4 were given
+2026-08-07 20:22:24 [INFO] __main__: 
+--- Run 3/6: resnet50_no_weights on IMAGENET100 ---
+2026-08-07 20:22:24 [INFO] src.model_cnn.train: Model: resnet50_no_weights | Dataset: IMAGENET100 | Size: 90.66 MB | Params: 23,712,932
+2026-08-07 20:39:39 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 4.5247 A 2.11% | Val L 4.2426 A 4.00% | Train 1003.9s  Val 31.0s
+2026-08-07 20:56:48 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 4.0027 A 7.65% | Val L 3.6511 A 13.88% | Train 998.3s  Val 30.8s
+2026-08-07 21:13:53 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 3.4342 A 17.47% | Val L 3.2655 A 20.74% | Train 994.1s  Val 31.3s
+2026-08-07 21:13:53 [INFO] src.model_cnn.train: Best validation accuracy: 20.74%
+2026-08-07 21:13:54 [INFO] src.model_cnn.train: Model saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/models/baseline_resnet50_no_weights_IMAGENET100_float32.pt
+2026-08-07 21:13:54 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 21:13:54 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-07 21:13:54 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 21:13:54 [INFO] src.utility.utils:          1 |   1034.888 |   1003.933 |     30.955
+2026-08-07 21:13:54 [INFO] src.utility.utils:          2 |   1029.115 |    998.268 |     30.847
+2026-08-07 21:13:54 [INFO] src.utility.utils:          3 |   1025.452 |    994.135 |     31.318
+2026-08-07 21:13:54 [INFO] src.utility.utils: 
+Total wall-clock time: 3089.5s  (51.49 min)
+2026-08-07 21:13:54 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/timing_resnet50_no_weights_IMAGENET100.csv
+2026-08-07 21:13:54 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/logs/training_curves_resnet50_no_weights_IMAGENET100.png
+2026-08-07 21:14:26 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-07 21:14:29 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=39.8245 (11 iters)
+2026-08-07 21:14:32 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv1.weight: trace=14.1380 (13 iters)
+2026-08-07 21:14:38 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv2.weight: trace=11.2180 (33 iters)
+2026-08-07 21:14:43 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv3.weight: trace=6.0592 (27 iters)
+2026-08-07 21:14:51 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.downsample.0.weight: trace=47.5660 (45 iters)
+2026-08-07 21:14:57 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv1.weight: trace=3.2810 (32 iters)
+2026-08-07 21:15:02 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv2.weight: trace=1.3481 (36 iters)
+2026-08-07 21:15:08 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv3.weight: trace=2.3628 (42 iters)
+2026-08-07 21:15:12 [INFO] src.analysis.pyhessian: [PyHessian] layer1.2.conv1.weight: trace=0.7531 (25 iters)
+2026-08-07 21:15:14 [INFO] src.analysis.pyhessian: [PyHessian] layer1.2.conv2.weight: trace=0.5297 (13 iters)
+2026-08-07 21:15:19 [INFO] src.analysis.pyhessian: [PyHessian] layer1.2.conv3.weight: trace=0.8279 (51 iters)
+2026-08-07 21:15:25 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv1.weight: trace=2.6015 (63 iters)
+2026-08-07 21:15:28 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv2.weight: trace=1.2084 (22 iters)
+2026-08-07 21:15:30 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv3.weight: trace=2.7680 (21 iters)
+2026-08-07 21:15:32 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.downsample.0.weight: trace=26.8991 (22 iters)
+2026-08-07 21:15:34 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv1.weight: trace=1.3873 (30 iters)
+2026-08-07 21:15:38 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv2.weight: trace=1.8772 (44 iters)
+2026-08-07 21:15:40 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv3.weight: trace=2.9732 (27 iters)
+2026-08-07 21:15:43 [INFO] src.analysis.pyhessian: [PyHessian] layer2.2.conv1.weight: trace=1.5317 (37 iters)
+2026-08-07 21:15:45 [INFO] src.analysis.pyhessian: [PyHessian] layer2.2.conv2.weight: trace=1.9993 (29 iters)
+2026-08-07 21:15:49 [INFO] src.analysis.pyhessian: [PyHessian] layer2.2.conv3.weight: trace=2.4333 (61 iters)
+2026-08-07 21:15:50 [INFO] src.analysis.pyhessian: [PyHessian] layer2.3.conv1.weight: trace=2.6743 (13 iters)
+2026-08-07 21:15:51 [INFO] src.analysis.pyhessian: [PyHessian] layer2.3.conv2.weight: trace=1.3627 (14 iters)
+2026-08-07 21:15:53 [INFO] src.analysis.pyhessian: [PyHessian] layer2.3.conv3.weight: trace=3.0894 (35 iters)
+2026-08-07 21:15:56 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv1.weight: trace=2.9705 (65 iters)
+2026-08-07 21:15:58 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv2.weight: trace=3.3812 (30 iters)
+2026-08-07 21:15:59 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv3.weight: trace=2.3379 (28 iters)
+2026-08-07 21:16:00 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.downsample.0.weight: trace=36.5571 (19 iters)
+2026-08-07 21:16:02 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv1.weight: trace=3.0686 (45 iters)
+2026-08-07 21:16:04 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv2.weight: trace=11.4588 (50 iters)
+2026-08-07 21:16:06 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv3.weight: trace=6.7205 (46 iters)
+2026-08-07 21:16:07 [INFO] src.analysis.pyhessian: [PyHessian] layer3.2.conv1.weight: trace=2.7542 (8 iters)
+2026-08-07 21:16:07 [INFO] src.analysis.pyhessian: [PyHessian] layer3.2.conv2.weight: trace=8.7112 (16 iters)
+2026-08-07 21:16:08 [INFO] src.analysis.pyhessian: [PyHessian] layer3.2.conv3.weight: trace=6.0229 (28 iters)
+2026-08-07 21:16:10 [INFO] src.analysis.pyhessian: [PyHessian] layer3.3.conv1.weight: trace=6.5303 (29 iters)
+2026-08-07 21:16:10 [INFO] src.analysis.pyhessian: [PyHessian] layer3.3.conv2.weight: trace=5.8033 (12 iters)
+2026-08-07 21:16:11 [INFO] src.analysis.pyhessian: [PyHessian] layer3.3.conv3.weight: trace=5.2568 (21 iters)
+2026-08-07 21:16:12 [INFO] src.analysis.pyhessian: [PyHessian] layer3.4.conv1.weight: trace=7.3095 (40 iters)
+2026-08-07 21:16:13 [INFO] src.analysis.pyhessian: [PyHessian] layer3.4.conv2.weight: trace=18.7704 (13 iters)
+2026-08-07 21:16:13 [INFO] src.analysis.pyhessian: [PyHessian] layer3.4.conv3.weight: trace=8.7317 (13 iters)
+2026-08-07 21:16:14 [INFO] src.analysis.pyhessian: [PyHessian] layer3.5.conv1.weight: trace=7.1558 (26 iters)
+2026-08-07 21:16:15 [INFO] src.analysis.pyhessian: [PyHessian] layer3.5.conv2.weight: trace=9.7376 (29 iters)
+2026-08-07 21:16:15 [INFO] src.analysis.pyhessian: [PyHessian] layer3.5.conv3.weight: trace=5.5208 (16 iters)
+2026-08-07 21:16:15 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv1.weight: trace=29.5105 (14 iters)
+2026-08-07 21:16:16 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv2.weight: trace=22.2172 (18 iters)
+2026-08-07 21:16:16 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv3.weight: trace=20.8290 (22 iters)
+2026-08-07 21:16:17 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.downsample.0.weight: trace=64.8802 (15 iters)
+2026-08-07 21:16:17 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv1.weight: trace=24.2293 (33 iters)
+2026-08-07 21:16:18 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv2.weight: trace=59.8720 (32 iters)
+2026-08-07 21:16:18 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv3.weight: trace=29.1984 (18 iters)
+2026-08-07 21:16:18 [INFO] src.analysis.pyhessian: [PyHessian] layer4.2.conv1.weight: trace=13.7323 (23 iters)
+2026-08-07 21:16:18 [INFO] src.analysis.pyhessian: [PyHessian] layer4.2.conv2.weight: trace=14.4796 (16 iters)
+2026-08-07 21:16:19 [INFO] src.analysis.pyhessian: [PyHessian] layer4.2.conv3.weight: trace=10.1421 (26 iters)
+2026-08-07 21:16:19 [INFO] src.analysis.pyhessian: [PyHessian] fc.weight: trace=39.5488 (6 iters)
+2026-08-07 21:33:39 [INFO] __main__: [FP32] Best Val Acc: 20.74% | Latency: 4.60ms
+2026-08-07 21:33:39 [INFO] __main__: Starting PTQ Calibration...
+2026-08-07 21:33:49 [ERROR] __main__: FAILED resnet50_no_weights/IMAGENET100: _evaluate() takes 3 positional arguments but 4 were given
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 343, in main
+    ptq_loss, ptq_acc = _evaluate(ptq_model, val_loader, torch.nn.CrossEntropyLoss(), device)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _evaluate() takes 3 positional arguments but 4 were given
+2026-08-07 21:33:49 [INFO] __main__: 
+============================================================
+2026-08-07 21:33:49 [INFO] __main__: Loading dataset: CIFAR10
+2026-08-07 21:33:51 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-07 21:33:52 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-07 21:33:52 [INFO] __main__: 
+--- Run 4/6: cnn on CIFAR10 ---
+2026-08-07 21:33:52 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR10 | Size: 5.53 MB | Params: 1,449,226
+2026-08-07 21:33:58 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 1.7409 A 35.15% | Val L 1.4748 A 44.79% | Train 4.7s  Val 0.6s
+2026-08-07 21:34:03 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.3669 A 50.11% | Val L 1.5085 A 49.22% | Train 4.7s  Val 0.6s
+2026-08-07 21:34:08 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.0992 A 60.33% | Val L 1.0225 A 64.09% | Train 4.7s  Val 0.6s
+2026-08-07 21:34:08 [INFO] src.model_cnn.train: Best validation accuracy: 64.09%
+2026-08-07 21:34:08 [INFO] src.model_cnn.train: Model saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/models/baseline_cnn_CIFAR10_float32.pt
+2026-08-07 21:34:08 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 21:34:08 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-07 21:34:08 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 21:34:08 [INFO] src.utility.utils:          1 |      5.296 |      4.678 |      0.618
+2026-08-07 21:34:08 [INFO] src.utility.utils:          2 |      5.314 |      4.742 |      0.572
+2026-08-07 21:34:08 [INFO] src.utility.utils:          3 |      5.262 |       4.66 |      0.602
+2026-08-07 21:34:08 [INFO] src.utility.utils: 
+Total wall-clock time: 15.9s  (0.26 min)
+2026-08-07 21:34:08 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/timing_cnn_CIFAR10.csv
+2026-08-07 21:34:09 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/logs/training_curves_cnn_CIFAR10.png
+2026-08-07 21:34:09 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-07 21:34:10 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=27.9505 (46 iters)
+2026-08-07 21:34:10 [INFO] src.analysis.pyhessian: [PyHessian] conv2.weight: trace=173.9136 (32 iters)
+2026-08-07 21:34:11 [INFO] src.analysis.pyhessian: [PyHessian] conv3.weight: trace=74.0100 (5 iters)
+2026-08-07 21:34:11 [INFO] src.analysis.pyhessian: [PyHessian] conv4.weight: trace=26.2411 (9 iters)
+2026-08-07 21:34:11 [INFO] src.analysis.pyhessian: [PyHessian] fc1.weight: trace=11.3959 (32 iters)
+2026-08-07 21:34:11 [INFO] src.analysis.pyhessian: [PyHessian] fc2.weight: trace=6.9166 (21 iters)
+2026-08-07 21:34:52 [INFO] __main__: [FP32] Best Val Acc: 64.09% | Latency: 0.57ms
+2026-08-07 21:34:52 [INFO] __main__: Starting PTQ Calibration...
+2026-08-07 21:34:53 [ERROR] __main__: FAILED cnn/CIFAR10: _evaluate() takes 3 positional arguments but 4 were given
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 343, in main
+    ptq_loss, ptq_acc = _evaluate(ptq_model, val_loader, torch.nn.CrossEntropyLoss(), device)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _evaluate() takes 3 positional arguments but 4 were given
+2026-08-07 21:34:53 [INFO] __main__: 
+--- Run 5/6: resnet18_no_weights on CIFAR10 ---
+2026-08-07 21:34:53 [INFO] src.model_cnn.train: Model: resnet18_no_weights | Dataset: CIFAR10 | Size: 42.66 MB | Params: 11,173,962
+2026-08-07 21:35:02 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 1.9287 A 29.57% | Val L 1.7607 A 40.71% | Train 8.2s  Val 0.7s
+2026-08-07 21:35:11 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.3024 A 52.39% | Val L 1.2070 A 56.67% | Train 8.1s  Val 0.7s
+2026-08-07 21:35:20 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 0.9144 A 67.24% | Val L 0.9164 A 68.55% | Train 8.0s  Val 0.7s
+2026-08-07 21:35:20 [INFO] src.model_cnn.train: Best validation accuracy: 68.55%
+2026-08-07 21:35:20 [INFO] src.model_cnn.train: Model saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/models/baseline_resnet18_no_weights_CIFAR10_float32.pt
+2026-08-07 21:35:20 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 21:35:20 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-07 21:35:20 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 21:35:20 [INFO] src.utility.utils:          1 |      8.838 |      8.186 |      0.652
+2026-08-07 21:35:20 [INFO] src.utility.utils:          2 |      8.743 |      8.093 |       0.65
+2026-08-07 21:35:20 [INFO] src.utility.utils:          3 |      8.702 |      8.046 |      0.656
+2026-08-07 21:35:20 [INFO] src.utility.utils: 
+Total wall-clock time: 26.3s  (0.44 min)
+2026-08-07 21:35:20 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/timing_resnet18_no_weights_CIFAR10.csv
+2026-08-07 21:35:20 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/logs/training_curves_resnet18_no_weights_CIFAR10.png
+2026-08-07 21:35:21 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-07 21:35:22 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=18.0996 (12 iters)
+2026-08-07 21:35:22 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv1.weight: trace=81.1480 (30 iters)
+2026-08-07 21:35:23 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv2.weight: trace=55.0969 (57 iters)
+2026-08-07 21:35:24 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv1.weight: trace=66.6584 (37 iters)
+2026-08-07 21:35:24 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv2.weight: trace=47.6095 (43 iters)
+2026-08-07 21:35:24 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv1.weight: trace=80.3042 (11 iters)
+2026-08-07 21:35:24 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv2.weight: trace=66.2257 (3 iters)
+2026-08-07 21:35:24 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.downsample.0.weight: trace=48.7405 (29 iters)
+2026-08-07 21:35:25 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv1.weight: trace=48.3199 (29 iters)
+2026-08-07 21:35:25 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv2.weight: trace=39.0099 (49 iters)
+2026-08-07 21:35:25 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv1.weight: trace=46.7400 (32 iters)
+2026-08-07 21:35:25 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv2.weight: trace=33.3805 (23 iters)
+2026-08-07 21:35:25 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.downsample.0.weight: trace=19.8170 (30 iters)
+2026-08-07 21:35:25 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv1.weight: trace=20.3196 (12 iters)
+2026-08-07 21:35:26 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv2.weight: trace=20.3423 (9 iters)
+2026-08-07 21:35:26 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv1.weight: trace=19.2415 (5 iters)
+2026-08-07 21:35:26 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv2.weight: trace=19.2159 (11 iters)
+2026-08-07 21:35:26 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.downsample.0.weight: trace=14.5749 (30 iters)
+2026-08-07 21:35:26 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv1.weight: trace=10.1865 (33 iters)
+2026-08-07 21:35:26 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv2.weight: trace=9.5321 (50 iters)
+2026-08-07 21:35:26 [INFO] src.analysis.pyhessian: [PyHessian] fc.weight: trace=7.5731 (32 iters)
+2026-08-07 21:38:13 [INFO] __main__: [FP32] Best Val Acc: 68.55% | Latency: 2.02ms
+2026-08-07 21:38:13 [INFO] __main__: Starting PTQ Calibration...
+2026-08-07 21:38:14 [ERROR] __main__: FAILED resnet18_no_weights/CIFAR10: _evaluate() takes 3 positional arguments but 4 were given
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 343, in main
+    ptq_loss, ptq_acc = _evaluate(ptq_model, val_loader, torch.nn.CrossEntropyLoss(), device)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _evaluate() takes 3 positional arguments but 4 were given
+2026-08-07 21:38:14 [INFO] __main__: 
+--- Run 6/6: resnet50_no_weights on CIFAR10 ---
+2026-08-07 21:38:15 [INFO] src.model_cnn.train: Model: resnet50_no_weights | Dataset: CIFAR10 | Size: 89.93 MB | Params: 23,520,842
+2026-08-07 21:38:35 [INFO] src.model_cnn.train: Epoch   1/3 | LR 0.07500 | Train L 2.5433 A 18.64% | Val L 2.0486 A 21.93% | Train 19.4s  Val 1.4s
+2026-08-07 21:38:56 [INFO] src.model_cnn.train: Epoch   2/3 | LR 0.02500 | Train L 1.8145 A 31.28% | Val L 1.6757 A 37.47% | Train 19.3s  Val 1.4s
+2026-08-07 21:39:17 [INFO] src.model_cnn.train: Epoch   3/3 | LR 0.00000 | Train L 1.5395 A 43.32% | Val L 1.5055 A 45.36% | Train 19.5s  Val 1.4s
+2026-08-07 21:39:17 [INFO] src.model_cnn.train: Best validation accuracy: 45.36%
+2026-08-07 21:39:18 [INFO] src.model_cnn.train: Model saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/models/baseline_resnet50_no_weights_CIFAR10_float32.pt
+2026-08-07 21:39:18 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 21:39:18 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-07 21:39:18 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-07 21:39:18 [INFO] src.utility.utils:          1 |     20.796 |     19.357 |      1.439
+2026-08-07 21:39:18 [INFO] src.utility.utils:          2 |      20.77 |     19.331 |      1.439
+2026-08-07 21:39:18 [INFO] src.utility.utils:          3 |     20.886 |     19.453 |      1.433
+2026-08-07 21:39:18 [INFO] src.utility.utils: 
+Total wall-clock time: 62.5s  (1.04 min)
+2026-08-07 21:39:18 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/timing_resnet50_no_weights_CIFAR10.csv
+2026-08-07 21:39:18 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/logs/training_curves_resnet50_no_weights_CIFAR10.png
+2026-08-07 21:39:20 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-07 21:39:25 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=13.1331 (65 iters)
+2026-08-07 21:39:28 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv1.weight: trace=21.6411 (54 iters)
+2026-08-07 21:39:30 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv2.weight: trace=16.6479 (36 iters)
+2026-08-07 21:39:31 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.conv3.weight: trace=15.0008 (13 iters)
+2026-08-07 21:39:33 [INFO] src.analysis.pyhessian: [PyHessian] layer1.0.downsample.0.weight: trace=20.3316 (32 iters)
+2026-08-07 21:39:35 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv1.weight: trace=3.2753 (36 iters)
+2026-08-07 21:39:36 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv2.weight: trace=3.5308 (21 iters)
+2026-08-07 21:39:38 [INFO] src.analysis.pyhessian: [PyHessian] layer1.1.conv3.weight: trace=5.5135 (32 iters)
+2026-08-07 21:39:38 [INFO] src.analysis.pyhessian: [PyHessian] layer1.2.conv1.weight: trace=8.0063 (10 iters)
+2026-08-07 21:39:40 [INFO] src.analysis.pyhessian: [PyHessian] layer1.2.conv2.weight: trace=3.6521 (30 iters)
+2026-08-07 21:39:42 [INFO] src.analysis.pyhessian: [PyHessian] layer1.2.conv3.weight: trace=3.5024 (39 iters)
+2026-08-07 21:39:43 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv1.weight: trace=21.8871 (45 iters)
+2026-08-07 21:39:44 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv2.weight: trace=17.7855 (20 iters)
+2026-08-07 21:39:45 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.conv3.weight: trace=8.8486 (32 iters)
+2026-08-07 21:39:46 [INFO] src.analysis.pyhessian: [PyHessian] layer2.0.downsample.0.weight: trace=18.8711 (8 iters)
+2026-08-07 21:39:48 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv1.weight: trace=0.8939 (71 iters)
+2026-08-07 21:39:49 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv2.weight: trace=1.2702 (20 iters)
+2026-08-07 21:39:50 [INFO] src.analysis.pyhessian: [PyHessian] layer2.1.conv3.weight: trace=2.5551 (38 iters)
+2026-08-07 21:39:51 [INFO] src.analysis.pyhessian: [PyHessian] layer2.2.conv1.weight: trace=11.1087 (25 iters)
+2026-08-07 21:39:53 [INFO] src.analysis.pyhessian: [PyHessian] layer2.2.conv2.weight: trace=13.7957 (75 iters)
+2026-08-07 21:39:53 [INFO] src.analysis.pyhessian: [PyHessian] layer2.2.conv3.weight: trace=7.0307 (10 iters)
+2026-08-07 21:39:54 [INFO] src.analysis.pyhessian: [PyHessian] layer2.3.conv1.weight: trace=2.8780 (38 iters)
+2026-08-07 21:39:55 [INFO] src.analysis.pyhessian: [PyHessian] layer2.3.conv2.weight: trace=3.3651 (39 iters)
+2026-08-07 21:39:56 [INFO] src.analysis.pyhessian: [PyHessian] layer2.3.conv3.weight: trace=4.5758 (25 iters)
+2026-08-07 21:39:56 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv1.weight: trace=8.7260 (6 iters)
+2026-08-07 21:39:56 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv2.weight: trace=7.0937 (22 iters)
+2026-08-07 21:39:57 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.conv3.weight: trace=5.7160 (39 iters)
+2026-08-07 21:39:57 [INFO] src.analysis.pyhessian: [PyHessian] layer3.0.downsample.0.weight: trace=21.0501 (21 iters)
+2026-08-07 21:39:58 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv1.weight: trace=0.1670 (16 iters)
+2026-08-07 21:39:58 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv2.weight: trace=0.4573 (28 iters)
+2026-08-07 21:39:58 [INFO] src.analysis.pyhessian: [PyHessian] layer3.1.conv3.weight: trace=2.5228 (5 iters)
+2026-08-07 21:39:59 [INFO] src.analysis.pyhessian: [PyHessian] layer3.2.conv1.weight: trace=1.3472 (17 iters)
+2026-08-07 21:39:59 [INFO] src.analysis.pyhessian: [PyHessian] layer3.2.conv2.weight: trace=1.9505 (35 iters)
+2026-08-07 21:40:00 [INFO] src.analysis.pyhessian: [PyHessian] layer3.2.conv3.weight: trace=3.6058 (40 iters)
+2026-08-07 21:40:00 [INFO] src.analysis.pyhessian: [PyHessian] layer3.3.conv1.weight: trace=2.3090 (34 iters)
+2026-08-07 21:40:01 [INFO] src.analysis.pyhessian: [PyHessian] layer3.3.conv2.weight: trace=3.6280 (37 iters)
+2026-08-07 21:40:02 [INFO] src.analysis.pyhessian: [PyHessian] layer3.3.conv3.weight: trace=3.8170 (47 iters)
+2026-08-07 21:40:02 [INFO] src.analysis.pyhessian: [PyHessian] layer3.4.conv1.weight: trace=6.4149 (34 iters)
+2026-08-07 21:40:02 [INFO] src.analysis.pyhessian: [PyHessian] layer3.4.conv2.weight: trace=7.6615 (7 iters)
+2026-08-07 21:40:02 [INFO] src.analysis.pyhessian: [PyHessian] layer3.4.conv3.weight: trace=2.9154 (15 iters)
+2026-08-07 21:40:03 [INFO] src.analysis.pyhessian: [PyHessian] layer3.5.conv1.weight: trace=4.7120 (23 iters)
+2026-08-07 21:40:03 [INFO] src.analysis.pyhessian: [PyHessian] layer3.5.conv2.weight: trace=10.8499 (51 iters)
+2026-08-07 21:40:03 [INFO] src.analysis.pyhessian: [PyHessian] layer3.5.conv3.weight: trace=3.6190 (20 iters)
+2026-08-07 21:40:04 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv1.weight: trace=1.7639 (17 iters)
+2026-08-07 21:40:04 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv2.weight: trace=1.8499 (23 iters)
+2026-08-07 21:40:04 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.conv3.weight: trace=3.6901 (35 iters)
+2026-08-07 21:40:04 [INFO] src.analysis.pyhessian: [PyHessian] layer4.0.downsample.0.weight: trace=19.6603 (10 iters)
+2026-08-07 21:40:04 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv1.weight: trace=27.4554 (39 iters)
+2026-08-07 21:40:05 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv2.weight: trace=38.9234 (15 iters)
+2026-08-07 21:40:05 [INFO] src.analysis.pyhessian: [PyHessian] layer4.1.conv3.weight: trace=17.4532 (6 iters)
+2026-08-07 21:40:05 [INFO] src.analysis.pyhessian: [PyHessian] layer4.2.conv1.weight: trace=1.7808 (34 iters)
+2026-08-07 21:40:05 [INFO] src.analysis.pyhessian: [PyHessian] layer4.2.conv2.weight: trace=2.1507 (15 iters)
+2026-08-07 21:40:05 [INFO] src.analysis.pyhessian: [PyHessian] layer4.2.conv3.weight: trace=1.7466 (35 iters)
+2026-08-07 21:40:05 [INFO] src.analysis.pyhessian: [PyHessian] fc.weight: trace=7.4279 (12 iters)
+2026-08-07 21:49:15 [INFO] __main__: [FP32] Best Val Acc: 45.36% | Latency: 4.69ms
+2026-08-07 21:49:15 [INFO] __main__: Starting PTQ Calibration...
+2026-08-07 21:49:17 [ERROR] __main__: FAILED resnet50_no_weights/CIFAR10: _evaluate() takes 3 positional arguments but 4 were given
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 343, in main
+    ptq_loss, ptq_acc = _evaluate(ptq_model, val_loader, torch.nn.CrossEntropyLoss(), device)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: _evaluate() takes 3 positional arguments but 4 were given
+2026-08-07 21:49:17 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/pipeline_summary.csv
+2026-08-07 21:49:17 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/ptq_summary.csv
+2026-08-07 21:49:17 [INFO] __main__: Summary saved → /scratch/dominic/Forschungsprojekt/results/20260807_181701_27824/csv/qat_summary.csv
+2026-08-07 21:49:17 [INFO] __main__: Hessian Traces saved -> layerwise_hessian_traces.csv
+2026-08-07 21:49:17 [INFO] __main__: Top Eigenvalues saved -> layerwise_top_eigenvalues.csv
+2026-08-07 21:49:17 [INFO] __main__: Classification saved -> classification_metrics.csv
+2026-08-07 21:49:17 [INFO] __main__: 
+=== PIPELINE SUMMARY ===
+2026-08-07 21:49:17 [INFO] __main__: Model                    Dataset           Best Train Acc Best Val Acc Time (min) Status
+2026-08-07 21:49:17 [INFO] __main__: ----------------------------------------------------------------------------------------
+2026-08-07 21:49:17 [INFO] __main__: cnn                      IMAGENET100             ERROR      ERROR     71.2 failed
+2026-08-07 21:49:17 [INFO] __main__: resnet18_no_weights      IMAGENET100             ERROR      ERROR     54.0 failed
+2026-08-07 21:49:17 [INFO] __main__: resnet50_no_weights      IMAGENET100             ERROR      ERROR     71.4 failed
+2026-08-07 21:49:17 [INFO] __main__: cnn                      CIFAR10                 ERROR      ERROR      1.0 failed
+2026-08-07 21:49:17 [INFO] __main__: resnet18_no_weights      CIFAR10                 ERROR      ERROR      3.4 failed
+2026-08-07 21:49:17 [INFO] __main__: resnet50_no_weights      CIFAR10                 ERROR      ERROR     11.0 failed
+2026-08-07 21:49:17 [INFO] __main__: === Pipeline complete ===

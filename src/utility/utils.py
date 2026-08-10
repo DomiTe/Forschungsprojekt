@@ -25,7 +25,7 @@ from torch.utils.data import DataLoader, random_split
 from src.utility.config import (
     PIN_MEMORY,
     DATA_DIR,
-    IMAGENET_DIR,
+    # IMAGENET_DIR,
     IMAGENET100_DIR,
     LOG_DIR,
     CSV_DIR,
@@ -46,7 +46,7 @@ _NORM = {
     "CIFAR10":       {"mean": (0.4914, 0.4822, 0.4465),    "std": (0.2023, 0.1994, 0.2010)},
     "CIFAR100":      {"mean": (0.5071, 0.4867, 0.4408),    "std": (0.2675, 0.2565, 0.2761)},
     "POKEMON":       {"mean": (0.5,    0.5,    0.5),       "std": (0.5,    0.5,    0.5)},
-    "IMAGENET":      {"mean": (0.485,  0.456,  0.406),     "std": (0.229,  0.224,  0.225)},
+    # "IMAGENET":      {"mean": (0.485,  0.456,  0.406),     "std": (0.229,  0.224,  0.225)},
     "IMAGENET100":   {"mean": (0.485,  0.456,  0.406),     "std": (0.229,  0.224,  0.225)},
 }
 
@@ -79,7 +79,7 @@ def get_data_loaders(dataset_name: str = DATASET_NAME, batch_size: int | None = 
         "CIFAR10":       _get_cifar10_loaders,
         "CIFAR100":      _get_cifar100_loaders,
         "POKEMON":       _get_pokemon_loaders,
-        "IMAGENET":      _get_imagenet_loaders,
+        # "IMAGENET":      _get_imagenet_loaders,
         "IMAGENET100":   _get_imagenet100_loaders,
     }
     return dispatch[dataset_name](image_size, batch_size)
@@ -336,44 +336,44 @@ def _get_pokemon_loaders(image_size: int, batch_size: int | None = None):
             num_classes)
 
 
-def _get_imagenet_loaders(image_size: int, batch_size: int | None = None):
-    """
-    Expects ImageNet data laid out as:
-        data/imagenet/train/<class_dir>/*.JPEG
-        data/imagenet/val/<class_dir>/*.JPEG
+# def _get_imagenet_loaders(image_size: int, batch_size: int | None = None):
+#     """
+#     Expects ImageNet data laid out as:
+#         data/imagenet/train/<class_dir>/*.JPEG
+#         data/imagenet/val/<class_dir>/*.JPEG
 
-    The standard ImageNet validation folder structure is produced by
-    the official torchvision download script or ILSVRC devkit.
-    """
-    n = _norm("IMAGENET")
-    tf_train = transforms.Compose([
-        transforms.RandomResizedCrop(image_size),
-        transforms.RandomHorizontalFlip(),
-        transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
-        transforms.ToTensor(),
-        transforms.Normalize(n["mean"], n["std"]),
-    ])
-    tf_val = transforms.Compose([
-        transforms.Resize(256),
-        transforms.CenterCrop(image_size),
-        transforms.ToTensor(),
-        transforms.Normalize(n["mean"], n["std"]),
-    ])
-    train_dir = os.path.join(IMAGENET_DIR, "train")
-    val_dir   = os.path.join(IMAGENET_DIR, "val")
-    if not os.path.isdir(train_dir) or not os.path.isdir(val_dir):
-        raise FileNotFoundError(
-            f"ImageNet not found at {IMAGENET_DIR}.\n"
-            "Expected sub-directories: train/ and val/\n"
-            "Download from https://image-net.org/request  or use a torrent/academic mirror."
-        )
-    train = datasets.ImageFolder(train_dir, transform=tf_train)
-    val   = datasets.ImageFolder(val_dir,   transform=tf_val)
-    kw = {"num_workers": 0, "pin_memory": PIN_MEMORY, "persistent_workers": False} if PIN_MEMORY else {"num_workers": 0}
-    logger.info(f"ImageNet: {len(train)} train / {len(val)} val")
-    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
-            DataLoader(val,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
-            1000)
+#     The standard ImageNet validation folder structure is produced by
+#     the official torchvision download script or ILSVRC devkit.
+#     """
+#     n = _norm("IMAGENET")
+#     tf_train = transforms.Compose([
+#         transforms.RandomResizedCrop(image_size),
+#         transforms.RandomHorizontalFlip(),
+#         transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
+#         transforms.ToTensor(),
+#         transforms.Normalize(n["mean"], n["std"]),
+#     ])
+#     tf_val = transforms.Compose([
+#         transforms.Resize(256),
+#         transforms.CenterCrop(image_size),
+#         transforms.ToTensor(),
+#         transforms.Normalize(n["mean"], n["std"]),
+#     ])
+#     train_dir = os.path.join(IMAGENET_DIR, "train")
+#     val_dir   = os.path.join(IMAGENET_DIR, "val")
+#     if not os.path.isdir(train_dir) or not os.path.isdir(val_dir):
+#         raise FileNotFoundError(
+#             f"ImageNet not found at {IMAGENET_DIR}.\n"
+#             "Expected sub-directories: train/ and val/\n"
+#             "Download from https://image-net.org/request  or use a torrent/academic mirror."
+#         )
+#     train = datasets.ImageFolder(train_dir, transform=tf_train)
+#     val   = datasets.ImageFolder(val_dir,   transform=tf_val)
+#     kw = {"num_workers": 0, "pin_memory": PIN_MEMORY, "persistent_workers": False} if PIN_MEMORY else {"num_workers": 0}
+#     logger.info(f"ImageNet: {len(train)} train / {len(val)} val")
+#     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
+#             DataLoader(val,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
+#             1000)
 
 
 def _get_imagenet100_loaders(image_size: int, batch_size: int | None = None):

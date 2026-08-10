@@ -74,18 +74,13 @@ logger = logging.getLogger(__name__)
 
 MODELS = [
     "cnn",
-    # "resnet18_scratch",
     "resnet18_no_weights",
     "resnet50_no_weights",
 ]
 
 DATASETS = [
-    "IMAGENET100",
-    # "MNIST",
-    # "FASHION_MNIST",
     "CIFAR10",
-    # "CIFAR100",
-    # "POKEMON",
+    # "IMAGENET100",
     
 ]
 
@@ -270,6 +265,8 @@ def main() -> None:
                 device = next(fp32_model.parameters()).device
                 best_val_acc = max(history["val_acc"])
                 
+                unwrapped_fp32 = fp32_model.module if hasattr(fp32_model, "module") else fp32_model
+                
                 if local_rank == 0:
                     fp32_class_metrics = compute_classification_metrics(
                         fp32_model, val_loader, device, num_classes=specs["num_classes"]
@@ -292,11 +289,12 @@ def main() -> None:
                 if local_rank == 0:
                     logger.info("Computing Hessian Trace for FP32...")
                     torch.cuda.empty_cache()
-                    fp32_traces = compute_layerwise_hessian_trace_pyhessian(
-                        fp32_model, hessian_loader, torch.nn.CrossEntropyLoss(), device
-                    )
+                    with torch.autograd.set_detect_anomaly(True):
+                        fp32_traces = compute_layerwise_hessian_trace_pyhessian(
+                            unwrapped_fp32, hessian_loader, torch.nn.CrossEntropyLoss(), device
+                        )
                     fp32_eigenvalues = compute_top_eigenvalue(
-                        fp32_model, hessian_loader, torch.nn.CrossEntropyLoss(), device
+                        unwrapped_fp32, hessian_loader, torch.nn.CrossEntropyLoss(), device
                     )
                     
                     for layer, trace_val in fp32_traces.items():
@@ -322,7 +320,7 @@ def main() -> None:
                 if local_rank == 0:
                     logger.info("Starting PTQ Calibration...")
                 
-                unwrapped_fp32 = fp32_model.module if hasattr(fp32_model, "module") else fp32_model
+                
                 
                 # Deepcopy to preserve the FP32 weights for QAT later
                 ptq_model = copy.deepcopy(unwrapped_fp32)

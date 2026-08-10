@@ -1,0 +1,58 @@
+W0808 19:24:14.595000 3680082 .conda/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+[rank0]:[W808 19:26:01.012863471 CUDAEvent.h:57] Warning: CUDA warning: an illegal memory access was encountered (function ~CUDAEvent)
+[rank0]:[W808 19:26:01.013161445 CUDAEvent.h:57] Warning: CUDA warning: an illegal memory access was encountered (function ~CUDAEvent)
+[rank0]:[W808 19:26:01.013169705 CUDAEvent.h:57] Warning: CUDA warning: an illegal memory access was encountered (function ~CUDAEvent)
+[rank0]:[W808 19:26:01.013176465 CUDAEvent.h:57] Warning: CUDA warning: an illegal memory access was encountered (function ~CUDAEvent)
+[rank0]:[W808 19:26:01.013183424 CUDAEvent.h:57] Warning: CUDA warning: an illegal memory access was encountered (function ~CUDAEvent)
+[rank0]:[W808 19:26:01.013194484 CUDAGuardImpl.h:126] Warning: CUDA warning: an illegal memory access was encountered (function destroyEvent)
+[rank0]:[W808 19:26:01.013214204 CUDAGuardImpl.h:126] Warning: CUDA warning: an illegal memory access was encountered (function destroyEvent)
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "<frozen runpy>", line 198, in _run_module_as_main
+[rank0]:   File "<frozen runpy>", line 88, in _run_code
+[rank0]:   File "/scratch/dominic/Forschungsprojekt/src/main.py", line 1242, in <module>
+[rank0]:     main()
+[rank0]:   File "/scratch/dominic/Forschungsprojekt/src/main.py", line 575, in main
+[rank0]:     torch.cuda.empty_cache()
+[rank0]:   File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/cuda/memory.py", line 227, in empty_cache
+[rank0]:     torch._C._cuda_emptyCache()
+[rank0]: torch.AcceleratorError: CUDA error: an illegal memory access was encountered
+[rank0]: Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+[rank0]: CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+[rank0]: For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+[rank0]: Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+[rank0]:[W808 19:26:02.932809050 ProcessGroupNCCL.cpp:1647] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+[rank0]:[W808 19:26:02.935032294 CUDAEvent.h:57] Warning: CUDA warning: an illegal memory access was encountered (function ~CUDAEvent)
+E0808 19:26:03.858000 3680041 site-packages/torch/distributed/elastic/multiprocessing/api.py:988] failed (exitcode: 1) local_rank: 0 (pid: 3680082) of binary: /scratch/dominic/Forschungsprojekt/.conda/bin/python3.1
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/.conda/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/run.py", line 1016, in main
+    run(args)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/run.py", line 1007, in run
+    elastic_launch(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 191, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 371, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+src.main FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-08-08_19:26:03
+  host      : kiwinode01.localdomain
+  rank      : 0 (local_rank: 0)
+  exitcode  : 1 (pid: 3680082) 
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

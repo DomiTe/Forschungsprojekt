@@ -25,6 +25,8 @@ class CNN(nn.Module):
         self.conv4 = nn.Conv2d(128, 256, kernel_size=KERNEL_SIZE, stride=STRIDE, padding=1, bias=True)
         self.bn4 = nn.BatchNorm2d(256)
         self.relu4 = nn.ReLU()
+        
+        self.pool = nn.MaxPool2d(kernel_size=2, stride=2)
 
         self.dropout = nn.Dropout(0.5)
         self.global_pool = nn.AdaptiveAvgPool2d((2, 2))
@@ -40,10 +42,11 @@ class CNN(nn.Module):
     def forward(self, x):
 
         x = self.quant(x)
-        x = self.relu1(self.bn1(self.conv1(x)))
         
-        x = self.relu2(self.bn2(self.conv2(x)))
-        x = self.relu3(self.bn3(self.conv3(x)))
+        x = self.pool(self.relu1(self.bn1(self.conv1(x))))
+        x = self.pool(self.relu2(self.bn2(self.conv2(x))))
+        x = self.pool(self.relu3(self.bn3(self.conv3(x))))
+        
         x = self.relu4(self.bn4(self.conv4(x)))
         
         x = self.global_pool(x)

@@ -1,0 +1,190 @@
+2026-08-08 19:45:24 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-08 19:45:24 [INFO] __main__: 
+============================================================
+2026-08-08 19:45:24 [INFO] __main__: Loading dataset: CIFAR10
+2026-08-08 19:45:26 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-08 19:45:27 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-08 19:45:27 [INFO] __main__: 
+--- Run 1/6: cnn on CIFAR10 ---
+2026-08-08 19:45:27 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR10 | Size: 5.53 MB | Params: 1,449,226
+2026-08-08 19:45:31 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 1.5526 A 42.38% | Val L 1.3718 A 50.22%
+2026-08-08 19:45:35 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 1.1891 A 57.20% | Val L 1.3010 A 54.98%
+2026-08-08 19:45:39 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 1.0143 A 63.77% | Val L 0.8795 A 68.57%
+2026-08-08 19:45:42 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 0.9017 A 68.03% | Val L 0.9833 A 65.86%
+2026-08-08 19:45:46 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 0.8296 A 70.95% | Val L 0.9276 A 68.90%
+2026-08-08 19:45:50 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 0.7837 A 72.40% | Val L 0.7185 A 75.23%
+2026-08-08 19:45:54 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 0.7445 A 73.87% | Val L 0.7197 A 74.27%
+2026-08-08 19:45:57 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 0.7035 A 75.35% | Val L 0.7194 A 74.91%
+2026-08-08 19:46:01 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 0.6848 A 76.16% | Val L 0.9584 A 69.40%
+2026-08-08 19:46:05 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 0.6706 A 76.51% | Val L 0.6599 A 77.14%
+2026-08-08 19:46:08 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 0.6492 A 77.51% | Val L 0.7726 A 74.09%
+2026-08-08 19:46:12 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 0.6420 A 77.76% | Val L 0.8082 A 72.50%
+2026-08-08 19:46:16 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 0.6227 A 78.32% | Val L 0.8249 A 72.21%
+2026-08-08 19:46:19 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 0.6171 A 78.54% | Val L 0.7137 A 75.81%
+2026-08-08 19:46:23 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 0.6078 A 79.05% | Val L 0.7231 A 75.47%
+2026-08-08 19:46:27 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 0.5919 A 79.50% | Val L 0.7240 A 75.25%
+2026-08-08 19:46:31 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 0.5926 A 79.47% | Val L 0.6932 A 75.78%
+2026-08-08 19:46:34 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 0.5824 A 79.79% | Val L 0.5857 A 79.83%
+2026-08-08 19:46:38 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 0.5852 A 79.89% | Val L 0.6775 A 76.83%
+2026-08-08 19:46:42 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 0.5781 A 80.19% | Val L 0.7026 A 76.42%
+2026-08-08 19:46:45 [INFO] src.model_cnn.train: Epoch  21/200 | LR 0.09730 | Train L 0.5653 A 80.46% | Val L 0.6701 A 77.05%
+2026-08-08 19:46:49 [INFO] src.model_cnn.train: Epoch  22/200 | LR 0.09704 | Train L 0.5536 A 80.81% | Val L 0.8181 A 72.73%
+2026-08-08 19:46:53 [INFO] src.model_cnn.train: Epoch  23/200 | LR 0.09677 | Train L 0.5573 A 80.72% | Val L 0.6782 A 77.45%
+2026-08-08 19:46:56 [INFO] src.model_cnn.train: Epoch  24/200 | LR 0.09649 | Train L 0.5572 A 80.64% | Val L 0.7960 A 73.66%
+2026-08-08 19:47:00 [INFO] src.model_cnn.train: Epoch  25/200 | LR 0.09619 | Train L 0.5485 A 81.17% | Val L 0.6396 A 78.14%
+2026-08-08 19:47:04 [INFO] src.model_cnn.train: Epoch  26/200 | LR 0.09589 | Train L 0.5471 A 81.01% | Val L 0.7021 A 76.69%
+2026-08-08 19:47:08 [INFO] src.model_cnn.train: Epoch  27/200 | LR 0.09557 | Train L 0.5430 A 81.17% | Val L 0.6576 A 77.32%
+2026-08-08 19:47:12 [INFO] src.model_cnn.train: Epoch  28/200 | LR 0.09524 | Train L 0.5412 A 81.41% | Val L 0.6480 A 77.57%
+2026-08-08 19:47:15 [INFO] src.model_cnn.train: Epoch  29/200 | LR 0.09490 | Train L 0.5346 A 81.46% | Val L 0.7729 A 74.29%
+2026-08-08 19:47:19 [INFO] src.model_cnn.train: Epoch  30/200 | LR 0.09455 | Train L 0.5336 A 81.68% | Val L 0.7116 A 76.01%
+2026-08-08 19:47:23 [INFO] src.model_cnn.train: Epoch  31/200 | LR 0.09419 | Train L 0.5322 A 81.78% | Val L 0.5958 A 79.48%
+2026-08-08 19:47:26 [INFO] src.model_cnn.train: Epoch  32/200 | LR 0.09382 | Train L 0.5312 A 81.67% | Val L 0.6554 A 77.65%
+2026-08-08 19:47:30 [INFO] src.model_cnn.train: Epoch  33/200 | LR 0.09343 | Train L 0.5268 A 81.86% | Val L 0.8048 A 74.46%
+2026-08-08 19:47:34 [INFO] src.model_cnn.train: Epoch  34/200 | LR 0.09304 | Train L 0.5256 A 81.96% | Val L 0.6351 A 78.26%
+2026-08-08 19:47:38 [INFO] src.model_cnn.train: Epoch  35/200 | LR 0.09263 | Train L 0.5209 A 82.05% | Val L 0.5980 A 79.70%
+2026-08-08 19:47:41 [INFO] src.model_cnn.train: Epoch  36/200 | LR 0.09222 | Train L 0.5143 A 82.27% | Val L 0.6375 A 78.66%
+2026-08-08 19:47:45 [INFO] src.model_cnn.train: Epoch  37/200 | LR 0.09179 | Train L 0.5145 A 82.26% | Val L 0.8369 A 73.13%
+2026-08-08 19:47:49 [INFO] src.model_cnn.train: Epoch  38/200 | LR 0.09135 | Train L 0.5179 A 82.12% | Val L 0.6260 A 78.50%
+2026-08-08 19:47:49 [INFO] src.model_cnn.train: No improvement for 20 epochs. Stopping early.
+2026-08-08 19:47:49 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260808_194513_27827/models/baseline_cnn_CIFAR10_float32.pt
+2026-08-08 19:47:49 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-08 19:47:49 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-08 19:47:49 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-08 19:47:49 [INFO] src.utility.utils:          1 |      4.123 |      3.341 |      0.781
+2026-08-08 19:47:49 [INFO] src.utility.utils:          2 |      3.687 |      2.906 |      0.781
+2026-08-08 19:47:49 [INFO] src.utility.utils:          3 |      3.687 |      2.906 |      0.781
+2026-08-08 19:47:49 [INFO] src.utility.utils:          4 |      3.768 |      2.963 |      0.805
+2026-08-08 19:47:49 [INFO] src.utility.utils:          5 |      3.659 |      2.895 |      0.764
+2026-08-08 19:47:49 [INFO] src.utility.utils:          6 |      3.734 |      2.974 |       0.76
+2026-08-08 19:47:49 [INFO] src.utility.utils:          7 |      3.734 |      2.923 |       0.81
+2026-08-08 19:47:49 [INFO] src.utility.utils:          8 |      3.716 |      2.944 |      0.772
+2026-08-08 19:47:49 [INFO] src.utility.utils:          9 |      3.752 |      2.956 |      0.796
+2026-08-08 19:47:49 [INFO] src.utility.utils:         10 |      3.764 |      3.002 |      0.761
+2026-08-08 19:47:49 [INFO] src.utility.utils:         11 |      3.709 |       2.94 |       0.77
+2026-08-08 19:47:49 [INFO] src.utility.utils:         12 |      3.694 |      2.941 |      0.752
+2026-08-08 19:47:49 [INFO] src.utility.utils:         13 |      3.721 |      2.923 |      0.799
+2026-08-08 19:47:49 [INFO] src.utility.utils:         14 |      3.539 |      2.778 |      0.761
+2026-08-08 19:47:49 [INFO] src.utility.utils:         15 |      3.762 |      2.956 |      0.806
+2026-08-08 19:47:49 [INFO] src.utility.utils:         16 |       3.69 |      2.883 |      0.807
+2026-08-08 19:47:49 [INFO] src.utility.utils:         17 |      3.667 |        2.9 |      0.767
+2026-08-08 19:47:49 [INFO] src.utility.utils:         18 |      3.717 |      2.944 |      0.773
+2026-08-08 19:47:49 [INFO] src.utility.utils:         19 |      3.619 |       2.86 |      0.759
+2026-08-08 19:47:49 [INFO] src.utility.utils:         20 |      3.781 |      2.983 |      0.798
+2026-08-08 19:47:49 [INFO] src.utility.utils:         21 |      3.742 |      2.973 |       0.77
+2026-08-08 19:47:49 [INFO] src.utility.utils:         22 |      3.696 |      2.905 |      0.791
+2026-08-08 19:47:49 [INFO] src.utility.utils:         23 |      3.679 |      2.892 |      0.786
+2026-08-08 19:47:49 [INFO] src.utility.utils:         24 |      3.679 |      2.914 |      0.764
+2026-08-08 19:47:49 [INFO] src.utility.utils:         25 |      3.762 |      2.935 |      0.827
+2026-08-08 19:47:49 [INFO] src.utility.utils:         26 |      3.813 |      3.008 |      0.805
+2026-08-08 19:47:49 [INFO] src.utility.utils:         27 |      3.738 |      2.945 |      0.794
+2026-08-08 19:47:49 [INFO] src.utility.utils:         28 |      3.768 |      2.955 |      0.814
+2026-08-08 19:47:49 [INFO] src.utility.utils:         29 |      3.732 |      2.965 |      0.766
+2026-08-08 19:47:49 [INFO] src.utility.utils:         30 |      3.684 |      2.908 |      0.776
+2026-08-08 19:47:49 [INFO] src.utility.utils:         31 |      3.713 |      2.917 |      0.797
+2026-08-08 19:47:49 [INFO] src.utility.utils:         32 |      3.658 |      2.891 |      0.767
+2026-08-08 19:47:49 [INFO] src.utility.utils:         33 |      3.751 |      2.935 |      0.816
+2026-08-08 19:47:49 [INFO] src.utility.utils:         34 |      3.697 |      2.923 |      0.774
+2026-08-08 19:47:49 [INFO] src.utility.utils:         35 |       3.78 |      2.982 |      0.798
+2026-08-08 19:47:49 [INFO] src.utility.utils:         36 |      3.644 |      2.866 |      0.778
+2026-08-08 19:47:49 [INFO] src.utility.utils:         37 |      3.662 |      2.878 |      0.784
+2026-08-08 19:47:49 [INFO] src.utility.utils:         38 |      3.772 |      2.968 |      0.804
+2026-08-08 19:47:49 [INFO] src.utility.utils: 
+Total wall-clock time: 141.5s  (2.36 min)
+2026-08-08 19:47:49 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260808_194513_27827/csv/timing_cnn_CIFAR10.csv
+2026-08-08 19:47:49 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260808_194513_27827/logs/training_curves_cnn_CIFAR10.png
+2026-08-08 19:47:50 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-08 19:47:51 [ERROR] __main__: FAILED cnn/CIFAR10: a leaf Variable that requires grad is being used in an in-place operation.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 295, in main
+    fp32_traces = compute_layerwise_hessian_trace_pyhessian(
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/pyhessian.py", line 75, in compute_layerwise_hessian_trace_pyhessian
+    hessian_comp = hessian(model, criterion, data=(inputs, targets), cuda=use_cuda)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/pyhessian/hessian.py", line 74, in __init__
+    loss.backward(create_graph=True)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+2026-08-08 19:47:51 [INFO] __main__: 
+--- Run 2/6: resnet18_no_weights on CIFAR10 ---
+2026-08-08 19:47:51 [INFO] src.model_cnn.train: Model: resnet18_no_weights | Dataset: CIFAR10 | Size: 42.66 MB | Params: 11,173,962
+2026-08-08 19:48:00 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 1.9712 A 31.06% | Val L 1.5990 A 40.65%
+2026-08-08 19:48:10 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 1.3408 A 51.07% | Val L 1.3764 A 52.50%
+2026-08-08 19:48:19 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 1.0463 A 62.39% | Val L 1.0479 A 62.65%
+2026-08-08 19:48:28 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 0.8412 A 70.22% | Val L 0.9938 A 66.78%
+2026-08-08 19:48:38 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 0.7027 A 75.45% | Val L 0.7602 A 73.40%
+2026-08-08 19:48:47 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 0.6180 A 78.53% | Val L 0.6828 A 76.57%
+2026-08-08 19:48:56 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 0.5394 A 81.30% | Val L 0.8109 A 73.30%
+2026-08-08 19:49:06 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 0.4892 A 83.12% | Val L 0.7515 A 75.80%
+2026-08-08 19:49:15 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 0.4493 A 84.55% | Val L 0.7410 A 76.82%
+2026-08-08 19:49:24 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 0.4173 A 85.68% | Val L 0.6595 A 78.04%
+2026-08-08 19:49:33 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 0.3908 A 86.55% | Val L 0.6012 A 79.65%
+2026-08-08 19:49:43 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 0.3669 A 87.38% | Val L 0.4772 A 84.26%
+2026-08-08 19:49:52 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 0.3554 A 87.74% | Val L 0.5942 A 80.62%
+2026-08-08 19:50:01 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 0.3396 A 88.33% | Val L 0.5681 A 82.03%
+2026-08-08 19:50:11 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 0.3241 A 88.71% | Val L 0.4148 A 86.02%
+2026-08-08 19:50:20 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 0.3173 A 89.09% | Val L 0.5793 A 80.51%
+2026-08-08 19:50:30 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 0.3091 A 89.38% | Val L 0.4658 A 84.77%
+2026-08-08 19:50:39 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 0.3010 A 89.75% | Val L 0.5245 A 82.71%
+2026-08-08 19:50:48 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 0.2902 A 90.04% | Val L 0.6131 A 81.35%
+2026-08-08 19:50:57 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 0.2859 A 90.10% | Val L 0.5518 A 82.35%
+2026-08-08 19:50:57 [INFO] src.model_cnn.train: Target validation accuracy reached (82.35% >= 80.0%). Stopping early.
+2026-08-08 19:50:57 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260808_194513_27827/models/baseline_resnet18_no_weights_CIFAR10_float32.pt
+2026-08-08 19:50:57 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-08 19:50:57 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-08 19:50:57 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-08 19:50:57 [INFO] src.utility.utils:          1 |      9.276 |      8.322 |      0.953
+2026-08-08 19:50:57 [INFO] src.utility.utils:          2 |      9.213 |      8.264 |       0.95
+2026-08-08 19:50:57 [INFO] src.utility.utils:          3 |      9.488 |      8.541 |      0.947
+2026-08-08 19:50:57 [INFO] src.utility.utils:          4 |      9.238 |      8.295 |      0.943
+2026-08-08 19:50:57 [INFO] src.utility.utils:          5 |      9.511 |      8.547 |      0.964
+2026-08-08 19:50:57 [INFO] src.utility.utils:          6 |      9.254 |      8.301 |      0.953
+2026-08-08 19:50:57 [INFO] src.utility.utils:          7 |      9.205 |      8.235 |      0.969
+2026-08-08 19:50:57 [INFO] src.utility.utils:          8 |      9.134 |      8.188 |      0.947
+2026-08-08 19:50:57 [INFO] src.utility.utils:          9 |      9.126 |      8.154 |      0.972
+2026-08-08 19:50:57 [INFO] src.utility.utils:         10 |      9.244 |      8.296 |      0.948
+2026-08-08 19:50:57 [INFO] src.utility.utils:         11 |      9.324 |      8.379 |      0.944
+2026-08-08 19:50:57 [INFO] src.utility.utils:         12 |      9.421 |       8.46 |      0.961
+2026-08-08 19:50:57 [INFO] src.utility.utils:         13 |      9.409 |      8.448 |      0.961
+2026-08-08 19:50:57 [INFO] src.utility.utils:         14 |      9.212 |      8.265 |      0.947
+2026-08-08 19:50:57 [INFO] src.utility.utils:         15 |      9.363 |       8.39 |      0.973
+2026-08-08 19:50:57 [INFO] src.utility.utils:         16 |      9.309 |      8.353 |      0.956
+2026-08-08 19:50:57 [INFO] src.utility.utils:         17 |       9.39 |      8.431 |      0.958
+2026-08-08 19:50:57 [INFO] src.utility.utils:         18 |      9.298 |      8.344 |      0.954
+2026-08-08 19:50:57 [INFO] src.utility.utils:         19 |      9.229 |      8.273 |      0.956
+2026-08-08 19:50:57 [INFO] src.utility.utils:         20 |       9.26 |      8.294 |      0.966
+2026-08-08 19:50:57 [INFO] src.utility.utils: 
+Total wall-clock time: 185.9s  (3.10 min)
+2026-08-08 19:50:57 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260808_194513_27827/csv/timing_resnet18_no_weights_CIFAR10.csv
+2026-08-08 19:50:58 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260808_194513_27827/logs/training_curves_resnet18_no_weights_CIFAR10.png
+2026-08-08 19:50:59 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-08 19:51:00 [ERROR] __main__: FAILED resnet18_no_weights/CIFAR10: a leaf Variable that requires grad is being used in an in-place operation.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 295, in main
+    with torch.autograd.set_detect_anomaly(True):
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/pyhessian.py", line 75, in compute_layerwise_hessian_trace_pyhessian
+    use_cuda = device.type == "cuda"
+                       ^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/pyhessian/hessian.py", line 74, in __init__
+    loss.backward(create_graph=True)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: a leaf Variable that requires grad is being used in an in-place operation.
+2026-08-08 19:51:00 [INFO] __main__: 
+--- Run 3/6: resnet50_no_weights on CIFAR10 ---
+2026-08-08 19:51:00 [INFO] src.model_cnn.train: Model: resnet50_no_weights | Dataset: CIFAR10 | Size: 89.93 MB | Params: 23,520,842
+2026-08-08 19:51:25 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 3.3721 A 11.69% | Val L 2.1152 A 20.22%
+2026-08-08 19:51:51 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 2.0088 A 22.87% | Val L 1.8905 A 29.09%
+2026-08-08 19:52:16 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 1.8260 A 31.13% | Val L 2.1685 A 25.29%

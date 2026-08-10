@@ -1,0 +1,2 @@
+W0810 10:38:16.356000 4125533 .conda/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+slurmstepd-kiwinode01: error: *** JOB 31207 ON kiwinode01 CANCELLED AT 2026-08-10T10:40:31 ***

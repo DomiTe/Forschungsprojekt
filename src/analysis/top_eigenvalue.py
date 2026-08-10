@@ -1,8 +1,15 @@
-import torch
-import torch.nn as nn
 import logging
 
+import torch
+import torch.nn as nn
+from pyhessian import hessian
+
+# Shared with the trace module; both need the same batch-prep and
+# layer-selection logic, so import rather than duplicate.
+from src.analysis.pyhessian import _single_batch, _target_layers
+
 logger = logging.getLogger(__name__)
+
 
 def compute_top_eigenvalue(
     model: nn.Module,
@@ -10,57 +17,60 @@ def compute_top_eigenvalue(
     criterion: nn.Module,
     device: torch.device,
     num_batches: int = 5,
-    num_iterations: int = 20,  # power iteration steps
-) -> dict:
+    max_iter: int = 100,
+    tol: float = 1e-3,
+) -> dict[str, float]:
+    """
+    Per-layer top Hessian eigenvalue via PyHessian's power-iteration engine.
+
+    Mirrors compute_layerwise_hessian_trace_pyhessian: one PyHessian object
+    per target layer, with the engine's param/grad lists restricted to that
+    layer's weight so power iteration runs block-diagonally (lambda_max of
+    H_ii). Must receive an unwrapped (non-DDP) model, since PyHessian calls
+    loss.backward(create_graph=True) and DDP's all_reduce grad hooks break it.
+
+    Reference: PyHessian eigenvalues() API
+    https://github.com/amirgholami/PyHessian/blob/master/pyhessian/hessian.py
+    """
     model.eval()
-    model.zero_grad(set_to_none=True)
-    torch.cuda.empty_cache()
+    batch = _single_batch(dataloader, num_batches, device)
+    if batch is None:
+        logger.warning("Empty dataloader; cannot compute top eigenvalue.")
+        return {}
 
-    target_params = {
-        name: param for name, param in model.named_parameters()
-        if param.requires_grad and "weight" in name and param.dim() >= 2
-    }
+    inputs, targets = batch
+    target_layers = _target_layers(model)
+    if not target_layers:
+        logger.warning("No conv/linear weight parameters found.")
+        return {}
 
-    eigenvalues = {name: 0.0 for name in target_params}
+    eigenvalues: dict[str, float] = {}
+    use_cuda = device.type == "cuda"
 
-    for name, param in target_params.items():
-        # random unit vector to start power iteration
-        v = torch.randn_like(param)
-        v = v / v.norm()
+    for name, param in target_layers.items():
+        # Fresh engine per layer; __init__ runs one create_graph backward and
+        # populates params/gradsH from all requires_grad params.
+        hessian_comp = hessian(model, criterion, data=(inputs, targets), cuda=use_cuda)
 
+        # Restrict the engine to this layer's weight by identity match, so
+        # power iteration estimates lambda_max of the block H_ii only.
+        try:
+            idx = next(i for i, p in enumerate(hessian_comp.params) if p is param)
+        except StopIteration:
+            logger.warning(f"Layer '{name}' not found in engine params; skipping.")
+            continue
 
-        for _ in range(num_iterations):
-            v_dot_Hv = 0.0
-            hv_accumulated = torch.zeros_like(param)
+        hessian_comp.params = [hessian_comp.params[idx]]
+        hessian_comp.gradsH = [hessian_comp.gradsH[idx]]
 
-            for batch_idx, (inputs, targets) in enumerate(dataloader):
-                if batch_idx >= num_batches:
-                    break
+        # eigenvalues() returns (values, vectors); top_n=1 gives the largest.
+        top_values, _ = hessian_comp.eigenvalues(maxIter=max_iter, tol=tol, top_n=1)
+        eigenvalues[name] = float(top_values[-1])
+        logger.info(f"[PyHessian] {name}: lambda_max={eigenvalues[name]:.4f}")
 
-                inputs, targets = inputs.to(device), targets.to(device)
-                outputs = model(inputs)
-                loss = criterion(outputs, targets)
-
-                grad = torch.autograd.grad(
-                    loss, param, create_graph=True, retain_graph=True
-                )[0]
-
-                v_dot_g = torch.sum(grad * v)
-                hv = torch.autograd.grad(
-                    v_dot_g, param, retain_graph=False
-                )[0]
-                hv_accumulated += hv
-                v_dot_Hv += torch.sum(v * hv).item()
-
-                del grad, hv, outputs, loss
-                model.zero_grad(set_to_none=True)
-                torch.cuda.empty_cache()
-
-            # normalize to get new eigenvector estimate
-            v = hv_accumulated / (hv_accumulated.norm() + 1e-8)
-            # v = v * (1.0 / (abs(v_dot_Hv) + 1e-8))
-            # v = v / v.norm()
-
-        eigenvalues[name] = v_dot_Hv / num_batches
+        model.zero_grad(set_to_none=True)
+        del hessian_comp
+        if use_cuda:
+            torch.cuda.empty_cache()
 
     return eigenvalues

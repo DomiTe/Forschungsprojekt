@@ -1,0 +1,7 @@
+model,dataset,best_train_acc,best_val_acc,ptq_val_acc,qat_val_acc,fp32_fps,ptq_fps,qat_fps,wall_time_min,status
+cnn,IMAGENET100,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,71.2,failed
+resnet18_no_weights,IMAGENET100,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,54.0,failed
+resnet50_no_weights,IMAGENET100,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,71.4,failed
+cnn,CIFAR10,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,1.0,failed
+resnet18_no_weights,CIFAR10,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,3.4,failed
+resnet50_no_weights,CIFAR10,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,ERROR,11.0,failed

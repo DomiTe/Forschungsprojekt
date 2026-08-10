@@ -19,12 +19,12 @@ else:
 DATASET_NAME = "CIFAR10"
 
 DATASET_SPECS = {
-    "MNIST":        {"image_size": 28,  "channels": 1, "num_classes": 10},
-    "FASHION_MNIST":{"image_size": 28,  "channels": 1, "num_classes": 10},
+    # "MNIST":        {"image_size": 28,  "channels": 1, "num_classes": 10},
+    # "FASHION_MNIST":{"image_size": 28,  "channels": 1, "num_classes": 10},
     "CIFAR10":      {"image_size": 32,  "channels": 3, "num_classes": 10},
-    "CIFAR100":     {"image_size": 32,  "channels": 3, "num_classes": 100},
-    "POKEMON":      {"image_size": 64,  "channels": 3, "num_classes": 150},
-    "IMAGENET":     {"image_size": 224, "channels": 3, "num_classes": 1000},
+    # "CIFAR100":     {"image_size": 32,  "channels": 3, "num_classes": 100},
+    # "POKEMON":      {"image_size": 64,  "channels": 3, "num_classes": 150},
+    # "IMAGENET":     {"image_size": 224, "channels": 3, "num_classes": 1000},
     "IMAGENET100":  {"image_size": 224, "channels": 3, "num_classes": 100},
 }
 
@@ -39,25 +39,23 @@ NUM_CLASSES = DATASET_SPECS[DATASET_NAME]["num_classes"]
 # ---------------------------------------------------------------------------
 # Training hyperparameters
 # ---------------------------------------------------------------------------
-BATCH_SIZE      = 64
-TEST_BATCH_SIZE = 256
-
-# Hessian-vector products (pyhessian) run a double-backward per iteration,
-# which is far more memory-hungry than a normal forward/backward pass, so
-# the Hessian trace/eigenvalue loaders use a much smaller batch than training.
-HESSIAN_BATCH_SIZE = 16
+BATCH_SIZE      = 256
+TEST_BATCH_SIZE = 512
 
 LEARNING_RATE   = 0.1        # SGD + cosine schedule works better for ResNets
 WEIGHT_DECAY    = 5e-4
 MOMENTUM        = 0.9
-EPOCHS          = 3
+EPOCHS          = 200
 
 # Use cosine annealing LR schedule (True) or fixed LR (False)
 USE_COSINE_LR   = True
 
+PATIENCE = 20
+MIN_DELTA = 0.1
+
 # QAT fine-tuning (src/quantization/train_qat.py) -- matches that module's
 # own function defaults (epochs=10, lr=1e-4).
-QAT_EPOCH = 10
+QAT_EPOCH = 20
 QAT_LR    = 1e-4
 
 # ---------------------------------------------------------------------------
@@ -67,6 +65,14 @@ KERNEL_SIZE = 3
 STRIDE      = 1
 
 # ---------------------------------------------------------------------------
+# Hessian hyperparameters
+# ---------------------------------------------------------------------------
+# Hessian-vector products (pyhessian) run a double-backward per iteration,
+# which is far more memory-hungry than a normal forward/backward pass, so
+# the Hessian trace/eigenvalue loaders use a much smaller batch than training.
+HESSIAN_BATCH_SIZE = 16
+
+# ---------------------------------------------------------------------------
 # Model selection
 # Options: "cnn" | "resnet18_scratch" | "resnet18_pretrained" | "resnet50_pretrained" |
 #          "resnet18_no_weights" | "resnet50_no_weights"
@@ -74,11 +80,9 @@ STRIDE      = 1
 MODEL_NAME = "resnet18_scratch"
 
 # ---------------------------------------------------------------------------
-# Quantization experiments (unchanged from your original project)
+# Quantization experiments
 # ---------------------------------------------------------------------------
 EXPERIMENT_CONFIGS = [
-    {"method": "symmetric", "bits": 8, "name": "Sym_INT8"},
-    {"method": "affine",    "bits": 8, "name": "Aff_INT8"},
     {"method": "power2",    "bits": 8, "name": "Po2_INT8"},
 ]
 
@@ -89,7 +93,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 
 RESULTS_DIR         = os.path.join(BASE_DIR, "results")
 DATA_DIR            = os.path.join(BASE_DIR, "data")
-IMAGENET_DIR        = os.path.join(DATA_DIR, "imagenet")      # expects train/ val/ sub-dirs
+# IMAGENET_DIR        = os.path.join(DATA_DIR, "imagenet")      # expects train/ val/ sub-dirs
 IMAGENET100_DIR      = os.path.join(DATA_DIR, "imagenet100")  # expects train/ val/ sub-dirs, 100-class subset
 
 # Cluster runs export RUN_ID (timestamp + SLURM_JOB_ID) from the sbatch script

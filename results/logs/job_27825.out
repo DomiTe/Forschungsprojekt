@@ -1,0 +1,33 @@
+2026-08-08 19:24:14 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-08 19:24:14 [INFO] __main__: 
+============================================================
+2026-08-08 19:24:14 [INFO] __main__: Loading dataset: IMAGENET100
+2026-08-08 19:24:15 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-08 19:24:15 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-08 19:24:15 [INFO] __main__: 
+--- Run 1/6: cnn on IMAGENET100 ---
+2026-08-08 19:24:15 [INFO] src.model_cnn.train: Model: cnn | Dataset: IMAGENET100 | Size: 5.88 MB | Params: 1,541,476
+2026-08-08 19:26:01 [ERROR] __main__: FAILED cnn/IMAGENET100: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 264, in main
+    fp32_model, history, _ = train_model(
+                             ^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/model_cnn/train.py", line 158, in train_model
+    loss.backward()
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/_tensor.py", line 631, in backward
+    torch.autograd.backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/__init__.py", line 379, in backward
+    _engine_run_backward(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/autograd/graph.py", line 882, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: an illegal memory access was encountered
+Search for `cudaErrorIllegalAddress' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

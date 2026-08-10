@@ -1,0 +1,9 @@
+2026-08-10 10:41:30 [INFO] __main__: === Pipeline start: 3 models - 1 datasets = 3 runs ===
+2026-08-10 10:41:30 [INFO] __main__: 
+============================================================
+2026-08-10 10:41:30 [INFO] __main__: Loading dataset: IMAGENET100
+2026-08-10 10:41:30 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-10 10:41:30 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-10 10:41:30 [INFO] __main__: 
+--- Run 1/3: cnn on IMAGENET100 ---
+2026-08-10 10:41:30 [INFO] src.model_cnn.train: Model: cnn | Dataset: IMAGENET100 | Size: 5.88 MB | Params: 1,541,476

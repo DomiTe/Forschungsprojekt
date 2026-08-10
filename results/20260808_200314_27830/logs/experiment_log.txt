@@ -1,0 +1,83 @@
+2026-08-08 20:03:25 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-08 20:03:25 [INFO] __main__: 
+============================================================
+2026-08-08 20:03:25 [INFO] __main__: Loading dataset: CIFAR10
+2026-08-08 20:03:27 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-08 20:03:28 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-08 20:03:28 [INFO] __main__: 
+--- Run 1/6: cnn on CIFAR10 ---
+2026-08-08 20:03:28 [INFO] src.model_cnn.train: Model: cnn | Dataset: CIFAR10 | Size: 5.53 MB | Params: 1,449,226
+2026-08-08 20:03:32 [INFO] src.model_cnn.train: Epoch   1/200 | LR 0.09999 | Train L 1.5464 A 42.58% | Val L 1.3726 A 51.98%
+2026-08-08 20:03:36 [INFO] src.model_cnn.train: Epoch   2/200 | LR 0.09998 | Train L 1.1890 A 57.01% | Val L 1.0441 A 62.53%
+2026-08-08 20:03:40 [INFO] src.model_cnn.train: Epoch   3/200 | LR 0.09994 | Train L 1.0139 A 63.73% | Val L 0.9235 A 66.61%
+2026-08-08 20:03:44 [INFO] src.model_cnn.train: Epoch   4/200 | LR 0.09990 | Train L 0.9046 A 68.00% | Val L 0.9480 A 66.78%
+2026-08-08 20:03:48 [INFO] src.model_cnn.train: Epoch   5/200 | LR 0.09985 | Train L 0.8334 A 70.58% | Val L 0.8883 A 69.78%
+2026-08-08 20:03:51 [INFO] src.model_cnn.train: Epoch   6/200 | LR 0.09978 | Train L 0.7806 A 72.61% | Val L 0.7844 A 73.23%
+2026-08-08 20:03:55 [INFO] src.model_cnn.train: Epoch   7/200 | LR 0.09970 | Train L 0.7318 A 74.45% | Val L 0.7714 A 73.11%
+2026-08-08 20:03:59 [INFO] src.model_cnn.train: Epoch   8/200 | LR 0.09961 | Train L 0.7018 A 75.64% | Val L 0.8372 A 70.80%
+2026-08-08 20:04:03 [INFO] src.model_cnn.train: Epoch   9/200 | LR 0.09950 | Train L 0.6862 A 76.08% | Val L 0.7306 A 75.27%
+2026-08-08 20:04:07 [INFO] src.model_cnn.train: Epoch  10/200 | LR 0.09938 | Train L 0.6626 A 76.74% | Val L 0.8538 A 71.27%
+2026-08-08 20:04:10 [INFO] src.model_cnn.train: Epoch  11/200 | LR 0.09926 | Train L 0.6429 A 77.70% | Val L 0.7861 A 72.76%
+2026-08-08 20:04:14 [INFO] src.model_cnn.train: Epoch  12/200 | LR 0.09911 | Train L 0.6381 A 77.76% | Val L 0.9553 A 67.82%
+2026-08-08 20:04:18 [INFO] src.model_cnn.train: Epoch  13/200 | LR 0.09896 | Train L 0.6230 A 78.43% | Val L 0.8100 A 74.12%
+2026-08-08 20:04:21 [INFO] src.model_cnn.train: Epoch  14/200 | LR 0.09880 | Train L 0.6061 A 79.02% | Val L 0.6949 A 76.35%
+2026-08-08 20:04:25 [INFO] src.model_cnn.train: Epoch  15/200 | LR 0.09862 | Train L 0.6062 A 79.16% | Val L 0.6767 A 77.67%
+2026-08-08 20:04:29 [INFO] src.model_cnn.train: Epoch  16/200 | LR 0.09843 | Train L 0.5950 A 79.33% | Val L 0.7998 A 72.71%
+2026-08-08 20:04:33 [INFO] src.model_cnn.train: Epoch  17/200 | LR 0.09823 | Train L 0.5920 A 79.40% | Val L 0.7802 A 73.71%
+2026-08-08 20:04:36 [INFO] src.model_cnn.train: Epoch  18/200 | LR 0.09801 | Train L 0.5741 A 80.14% | Val L 0.6708 A 77.49%
+2026-08-08 20:04:40 [INFO] src.model_cnn.train: Epoch  19/200 | LR 0.09779 | Train L 0.5769 A 79.95% | Val L 0.6594 A 77.44%
+2026-08-08 20:04:44 [INFO] src.model_cnn.train: Epoch  20/200 | LR 0.09755 | Train L 0.5635 A 80.39% | Val L 0.7344 A 75.51%
+2026-08-08 20:04:48 [INFO] src.model_cnn.train: Epoch  21/200 | LR 0.09730 | Train L 0.5668 A 80.39% | Val L 0.6432 A 77.51%
+2026-08-08 20:04:51 [INFO] src.model_cnn.train: Epoch  22/200 | LR 0.09704 | Train L 0.5546 A 80.78% | Val L 0.6355 A 78.53%
+2026-08-08 20:04:55 [INFO] src.model_cnn.train: Epoch  23/200 | LR 0.09677 | Train L 0.5454 A 81.11% | Val L 0.6167 A 78.76%
+2026-08-08 20:04:59 [INFO] src.model_cnn.train: Epoch  24/200 | LR 0.09649 | Train L 0.5458 A 81.16% | Val L 0.5731 A 80.12%
+2026-08-08 20:04:59 [INFO] src.model_cnn.train: Target validation accuracy reached (80.12% >= 80.0%). Stopping early.
+2026-08-08 20:04:59 [INFO] src.model_cnn.train: Model saved -> /scratch/dominic/Forschungsprojekt/results/20260808_200314_27830/models/baseline_cnn_CIFAR10_float32.pt
+2026-08-08 20:04:59 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-08 20:04:59 [INFO] src.utility.utils:      epoch |    total_s |    train_s |      val_s
+2026-08-08 20:04:59 [INFO] src.utility.utils: -------------------------------------------------
+2026-08-08 20:04:59 [INFO] src.utility.utils:          1 |       4.19 |      3.402 |      0.789
+2026-08-08 20:04:59 [INFO] src.utility.utils:          2 |      3.723 |      2.965 |      0.757
+2026-08-08 20:04:59 [INFO] src.utility.utils:          3 |       3.81 |      3.007 |      0.804
+2026-08-08 20:04:59 [INFO] src.utility.utils:          4 |      3.838 |      3.022 |      0.817
+2026-08-08 20:04:59 [INFO] src.utility.utils:          5 |      3.788 |      3.017 |      0.771
+2026-08-08 20:04:59 [INFO] src.utility.utils:          6 |      3.728 |      2.934 |      0.794
+2026-08-08 20:04:59 [INFO] src.utility.utils:          7 |      3.786 |      2.976 |      0.809
+2026-08-08 20:04:59 [INFO] src.utility.utils:          8 |      3.841 |      3.068 |      0.773
+2026-08-08 20:04:59 [INFO] src.utility.utils:          9 |       3.78 |      2.971 |      0.809
+2026-08-08 20:04:59 [INFO] src.utility.utils:         10 |       3.72 |      2.912 |      0.808
+2026-08-08 20:04:59 [INFO] src.utility.utils:         11 |      3.676 |      2.892 |      0.785
+2026-08-08 20:04:59 [INFO] src.utility.utils:         12 |      3.811 |        3.0 |      0.811
+2026-08-08 20:04:59 [INFO] src.utility.utils:         13 |      3.724 |      2.957 |      0.768
+2026-08-08 20:04:59 [INFO] src.utility.utils:         14 |      3.736 |      2.926 |       0.81
+2026-08-08 20:04:59 [INFO] src.utility.utils:         15 |      3.667 |      2.842 |      0.825
+2026-08-08 20:04:59 [INFO] src.utility.utils:         16 |      3.733 |      2.947 |      0.786
+2026-08-08 20:04:59 [INFO] src.utility.utils:         17 |       3.77 |      2.979 |      0.791
+2026-08-08 20:04:59 [INFO] src.utility.utils:         18 |      3.828 |      2.995 |      0.832
+2026-08-08 20:04:59 [INFO] src.utility.utils:         19 |       3.78 |      2.996 |      0.784
+2026-08-08 20:04:59 [INFO] src.utility.utils:         20 |      3.754 |      2.969 |      0.785
+2026-08-08 20:04:59 [INFO] src.utility.utils:         21 |       3.67 |       2.87 |        0.8
+2026-08-08 20:04:59 [INFO] src.utility.utils:         22 |      3.672 |      2.895 |      0.776
+2026-08-08 20:04:59 [INFO] src.utility.utils:         23 |      3.748 |      2.943 |      0.805
+2026-08-08 20:04:59 [INFO] src.utility.utils:         24 |      3.748 |      2.969 |      0.779
+2026-08-08 20:04:59 [INFO] src.utility.utils: 
+Total wall-clock time: 90.5s  (1.51 min)
+2026-08-08 20:04:59 [INFO] src.utility.utils: Timing data saved → /scratch/dominic/Forschungsprojekt/results/20260808_200314_27830/csv/timing_cnn_CIFAR10.csv
+2026-08-08 20:04:59 [INFO] src.utility.utils: Training curves saved → /scratch/dominic/Forschungsprojekt/results/20260808_200314_27830/logs/training_curves_cnn_CIFAR10.png
+2026-08-08 20:05:00 [INFO] __main__: Computing Hessian Trace for FP32...
+2026-08-08 20:05:01 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=65.1313 (15 iters)
+2026-08-08 20:05:01 [INFO] src.analysis.pyhessian: [PyHessian] conv2.weight: trace=93.7754 (39 iters)
+2026-08-08 20:05:01 [INFO] src.analysis.pyhessian: [PyHessian] conv3.weight: trace=143.6456 (26 iters)
+2026-08-08 20:05:02 [INFO] src.analysis.pyhessian: [PyHessian] conv4.weight: trace=47.5163 (24 iters)
+2026-08-08 20:05:02 [INFO] src.analysis.pyhessian: [PyHessian] fc1.weight: trace=10.0182 (19 iters)
+2026-08-08 20:05:02 [INFO] src.analysis.pyhessian: [PyHessian] fc2.weight: trace=4.2429 (9 iters)
+2026-08-08 20:06:12 [INFO] __main__: [FP32] Best Val Acc: 80.12% | Latency: 0.96ms
+2026-08-08 20:06:12 [INFO] __main__: Starting PTQ Calibration...
+2026-08-08 20:06:15 [INFO] __main__: Saved uncompiled PTQ state_dict -> /scratch/dominic/Forschungsprojekt/results/20260808_200314_27830/quantized_models/ptq_po2_cnn_CIFAR10.pt
+2026-08-08 20:06:15 [INFO] __main__: Computing Hessian Trace for PTQ...
+2026-08-08 20:06:16 [INFO] src.analysis.pyhessian: [PyHessian] conv1.weight: trace=324.3706 (23 iters)
+2026-08-08 20:06:16 [INFO] src.analysis.pyhessian: [PyHessian] conv2.weight: trace=748.8978 (9 iters)
+2026-08-08 20:06:16 [INFO] src.analysis.pyhessian: [PyHessian] conv3.weight: trace=383.4891 (40 iters)
+2026-08-08 20:06:16 [INFO] src.analysis.pyhessian: [PyHessian] conv4.weight: trace=26.6133 (22 iters)
+2026-08-08 20:06:16 [INFO] src.analysis.pyhessian: [PyHessian] fc1.weight: trace=11.9683 (21 iters)
+2026-08-08 20:06:16 [INFO] src.analysis.pyhessian: [PyHessian] fc2.weight: trace=4.8066 (36 iters)

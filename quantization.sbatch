@@ -5,7 +5,7 @@
 #SBATCH --error=Forschungsprojekt/results/logs/job_%j.err
 #SBATCH --gres=gpu:1
 #SBATCH --nodes=1
-#SBATCH --time=01-00:00:00
+#SBATCH --time=04-00:00:00
 #SBATCH --cpus-per-gpu=32
 #SBATCH --mem-per-gpu=32G
 #SBATCH --qos=normal
@@ -30,4 +30,4 @@ export RUN_ID=$(date +%Y%m%d_%H%M%S)_$SLURM_JOB_ID
 #known good multi GPU torchrun --nproc_per_node=1 --standalone Forschungsprojekt/src/main.py name=multi_GPU_2_cramming  arch=bert-base train=bert-base data=sanity-check-2
 cd /scratch/dominic/Forschungsprojekt
 # --deploy-int8-only --load-run-id 20260624_100106_23827
-torchrun --nproc_per_node=1 --standalone -m src.main --diagnose-acc-mismatch --checkpoint-dir results/backup_models/20260807_102034_27818/quantized_models
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=1 --standalone -m src.main --skip-training --load-run-id 20260808_201802_27832

@@ -7,6 +7,11 @@ from pyhessian import hessian
 
 logger = logging.getLogger(__name__)
 
+def _disable_inplace_ops(model: nn.Module) -> None:
+    # create_graph=True double-backward rejects in-place ops on grad leaves
+    for module in model.modules():
+        if getattr(module, "inplace", False):
+            module.inplace = False
 
 def _target_layers(model: nn.Module) -> dict[str, nn.Parameter]:
     # Restrict to 2D/4D weight tensors (Conv2d, Linear); skip biases and BN.
@@ -16,12 +21,7 @@ def _target_layers(model: nn.Module) -> dict[str, nn.Parameter]:
         if param.requires_grad and "weight" in name and param.dim() >= 2
     }
 
-def _disable_inplace_relu(model: nn.Module) -> None:
-    # inplace ReLU breaks create_graph=True double-backward; make them out-of-place
-    for module in model.modules():
-        if isinstance(module, nn.ReLU):
-            module.inplace = False
-            
+
 def _single_batch(dataloader, num_batches: int, device: torch.device):
     # PyHessian's single-batch path reuses one gradient graph, which is the
     # cheapest correct mode. We concatenate a few batches into one so the
@@ -59,7 +59,7 @@ def compute_layerwise_hessian_trace_pyhessian(
     Reference: Yao et al., "PyHessian" (2020); Dong et al., "HAWQ-V2" (NeurIPS 2020).
     """
     model.eval()
-    _disable_inplace_relu(model)
+    _disable_inplace_ops(model)
     batch = _single_batch(dataloader, num_batches, device)
     if batch is None:
         logger.warning("Empty dataloader; cannot compute Hessian trace.")

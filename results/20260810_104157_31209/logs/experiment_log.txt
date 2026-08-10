@@ -729,3 +729,261 @@ Total wall-clock time: 535.1s  (8.92 min)
 2026-08-10 11:26:28 [INFO] __main__: resnet18_no_weights      CIFAR10                 90.00      84.69     12.1     ok
 2026-08-10 11:26:28 [INFO] __main__: resnet50_no_weights      CIFAR10                 82.71      80.56     27.1     ok
 2026-08-10 11:26:28 [INFO] __main__: === Pipeline complete ===
+2026-08-10 12:13:59 [INFO] __main__: === Pipeline start: 3 models - 1 datasets = 3 runs ===
+2026-08-10 12:13:59 [INFO] __main__: === Validate-PoT-Int8: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-10 12:13:59 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ cnn on CIFAR10 ---
+2026-08-10 12:13:59 [INFO] src.quantization.deploy: [BuildInt8] PTQ cnn/CIFAR10: confirmed quantized -- Conv2d 'conv1' weight type = IntxUnpackedToInt8Tensor; Linear 'fc1' weight type = Int8Tensor
+2026-08-10 12:13:59 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ cnn/CIFAR10 conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.02638 [validated]
+2026-08-10 12:13:59 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ cnn/CIFAR10 conv2 (Conv2d): rel_error=0.0034 max_abs_error=0.01864 [validated]
+2026-08-10 12:13:59 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ cnn/CIFAR10 conv3 (Conv2d): rel_error=0.0038 max_abs_error=0.0312 [validated]
+2026-08-10 12:13:59 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ cnn/CIFAR10 conv4 (Conv2d): rel_error=0.0039 max_abs_error=0.04511 [validated]
+2026-08-10 12:13:59 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ cnn/CIFAR10 fc1 (Linear): rel_error=0.0085 max_abs_error=0.02944 [validated]
+2026-08-10 12:13:59 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ cnn/CIFAR10 fc2 (Linear): rel_error=0.0091 max_abs_error=0.07064 [validated]
+2026-08-10 12:13:59 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ cnn/CIFAR10 summary: 6/6 (100.0%) layers validated | worst layer: fc2 (rel_error=0.0091, status=validated)
+2026-08-10 12:14:00 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT cnn on CIFAR10 ---
+2026-08-10 12:14:00 [INFO] src.quantization.deploy: [BuildInt8] QAT cnn/CIFAR10: confirmed quantized -- Conv2d 'conv1' weight type = IntxUnpackedToInt8Tensor; Linear 'fc1' weight type = Int8Tensor
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT cnn/CIFAR10 conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.02667 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT cnn/CIFAR10 conv2 (Conv2d): rel_error=0.0034 max_abs_error=0.01812 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT cnn/CIFAR10 conv3 (Conv2d): rel_error=0.0038 max_abs_error=0.03165 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT cnn/CIFAR10 conv4 (Conv2d): rel_error=0.0039 max_abs_error=0.04523 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT cnn/CIFAR10 fc1 (Linear): rel_error=0.0086 max_abs_error=0.02935 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT cnn/CIFAR10 fc2 (Linear): rel_error=0.0090 max_abs_error=0.07059 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT cnn/CIFAR10 summary: 6/6 (100.0%) layers validated | worst layer: fc2 (rel_error=0.0090, status=validated)
+2026-08-10 12:14:00 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ resnet18_no_weights on CIFAR10 ---
+2026-08-10 12:14:00 [INFO] src.quantization.deploy: [BuildInt8] PTQ resnet18_no_weights/CIFAR10: confirmed quantized -- Conv2d 'conv1' weight type = IntxUnpackedToInt8Tensor; Linear 'fc' weight type = Int8Tensor
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 conv1 (Conv2d): rel_error=0.0032 max_abs_error=0.01688 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer1.0.conv1 (Conv2d): rel_error=0.0030 max_abs_error=0.01839 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer1.0.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.02368 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer1.1.conv1 (Conv2d): rel_error=0.0032 max_abs_error=0.01063 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer1.1.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.02621 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer2.0.conv1 (Conv2d): rel_error=0.0030 max_abs_error=0.007119 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer2.0.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.02701 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer2.0.downsample.0 (Conv2d): rel_error=0.0038 max_abs_error=0.03513 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer2.1.conv1 (Conv2d): rel_error=0.0037 max_abs_error=0.01151 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer2.1.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.03342 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer3.0.conv1 (Conv2d): rel_error=0.0036 max_abs_error=0.007892 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer3.0.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.02537 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer3.0.downsample.0 (Conv2d): rel_error=0.0038 max_abs_error=0.01193 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer3.1.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.01625 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer3.1.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.0284 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer4.0.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.00811 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer4.0.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.02219 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer4.0.downsample.0 (Conv2d): rel_error=0.0038 max_abs_error=0.01412 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer4.1.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.009412 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 layer4.1.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01962 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 fc (Linear): rel_error=0.0076 max_abs_error=0.06727 [validated]
+2026-08-10 12:14:00 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet18_no_weights/CIFAR10 summary: 21/21 (100.0%) layers validated | worst layer: fc (rel_error=0.0076, status=validated)
+2026-08-10 12:14:00 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT resnet18_no_weights on CIFAR10 ---
+2026-08-10 12:14:01 [INFO] src.quantization.deploy: [BuildInt8] QAT resnet18_no_weights/CIFAR10: confirmed quantized -- Conv2d 'conv1' weight type = IntxUnpackedToInt8Tensor; Linear 'fc' weight type = Int8Tensor
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 conv1 (Conv2d): rel_error=0.0033 max_abs_error=0.01735 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer1.0.conv1 (Conv2d): rel_error=0.0030 max_abs_error=0.01852 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer1.0.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.02372 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer1.1.conv1 (Conv2d): rel_error=0.0032 max_abs_error=0.01029 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer1.1.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.02615 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer2.0.conv1 (Conv2d): rel_error=0.0030 max_abs_error=0.007226 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer2.0.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.02704 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer2.0.downsample.0 (Conv2d): rel_error=0.0039 max_abs_error=0.03634 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer2.1.conv1 (Conv2d): rel_error=0.0037 max_abs_error=0.01166 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer2.1.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.0333 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer3.0.conv1 (Conv2d): rel_error=0.0036 max_abs_error=0.007469 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer3.0.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.02575 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer3.0.downsample.0 (Conv2d): rel_error=0.0038 max_abs_error=0.01193 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer3.1.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.01594 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer3.1.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.02888 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer4.0.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.00839 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer4.0.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.02211 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer4.0.downsample.0 (Conv2d): rel_error=0.0038 max_abs_error=0.01398 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer4.1.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.009404 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 layer4.1.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01955 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 fc (Linear): rel_error=0.0075 max_abs_error=0.06185 [validated]
+2026-08-10 12:14:01 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet18_no_weights/CIFAR10 summary: 21/21 (100.0%) layers validated | worst layer: fc (rel_error=0.0075, status=validated)
+2026-08-10 12:14:01 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ resnet50_no_weights on CIFAR10 ---
+2026-08-10 12:14:01 [INFO] src.quantization.deploy: [BuildInt8] PTQ resnet50_no_weights/CIFAR10: confirmed quantized -- Conv2d 'conv1' weight type = IntxUnpackedToInt8Tensor; Linear 'fc' weight type = Int8Tensor
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 conv1 (Conv2d): rel_error=0.0025 max_abs_error=0.01378 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.0.conv1 (Conv2d): rel_error=0.0033 max_abs_error=0.02437 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.0.conv2 (Conv2d): rel_error=0.0032 max_abs_error=0.02326 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.0.conv3 (Conv2d): rel_error=0.0040 max_abs_error=0.03386 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.0.downsample.0 (Conv2d): rel_error=0.0035 max_abs_error=0.02873 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.1.conv1 (Conv2d): rel_error=0.0034 max_abs_error=0.0224 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.1.conv2 (Conv2d): rel_error=0.0034 max_abs_error=0.02641 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.1.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.05494 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.2.conv1 (Conv2d): rel_error=0.0034 max_abs_error=0.01683 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.2.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.01723 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer1.2.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.03027 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.0.conv1 (Conv2d): rel_error=0.0033 max_abs_error=0.01087 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.0.conv2 (Conv2d): rel_error=0.0036 max_abs_error=0.01115 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.0.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.0313 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.0.downsample.0 (Conv2d): rel_error=0.0032 max_abs_error=0.01558 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.1.conv1 (Conv2d): rel_error=0.0034 max_abs_error=0.01132 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.1.conv2 (Conv2d): rel_error=0.0034 max_abs_error=0.01325 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.1.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.03065 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.2.conv1 (Conv2d): rel_error=0.0032 max_abs_error=0.009995 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.2.conv2 (Conv2d): rel_error=0.0036 max_abs_error=0.01597 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.2.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.01596 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.3.conv1 (Conv2d): rel_error=0.0033 max_abs_error=0.008798 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.3.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.02055 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer2.3.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.006249 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.0.conv1 (Conv2d): rel_error=0.0034 max_abs_error=0.01358 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.0.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.01355 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.0.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.009437 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.0.downsample.0 (Conv2d): rel_error=0.0035 max_abs_error=0.01121 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.1.conv1 (Conv2d): rel_error=0.0037 max_abs_error=0.007933 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.1.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01906 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.1.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.006124 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.2.conv1 (Conv2d): rel_error=0.0037 max_abs_error=0.008105 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.2.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01804 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.2.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.009389 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.3.conv1 (Conv2d): rel_error=0.0037 max_abs_error=0.009006 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.3.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01512 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.3.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.005661 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.4.conv1 (Conv2d): rel_error=0.0035 max_abs_error=0.008024 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.4.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.02092 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.4.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.004725 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.5.conv1 (Conv2d): rel_error=0.0035 max_abs_error=0.007337 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.5.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.01674 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer3.5.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.003849 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.0.conv1 (Conv2d): rel_error=0.0035 max_abs_error=0.007754 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.0.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01036 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.0.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.005953 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.0.downsample.0 (Conv2d): rel_error=0.0031 max_abs_error=0.007022 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.1.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.01167 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.1.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01319 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.1.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.01778 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.2.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.01136 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.2.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01107 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 layer4.2.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.01043 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 fc (Linear): rel_error=0.0227 max_abs_error=0.2902 [validated]
+2026-08-10 12:14:02 [INFO] src.analysis.validate_pot: [ValidatePoT] PTQ resnet50_no_weights/CIFAR10 summary: 54/54 (100.0%) layers validated | worst layer: fc (rel_error=0.0227, status=validated)
+2026-08-10 12:14:02 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT resnet50_no_weights on CIFAR10 ---
+2026-08-10 12:14:03 [INFO] src.quantization.deploy: [BuildInt8] QAT resnet50_no_weights/CIFAR10: confirmed quantized -- Conv2d 'conv1' weight type = IntxUnpackedToInt8Tensor; Linear 'fc' weight type = Int8Tensor
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 conv1 (Conv2d): rel_error=0.0025 max_abs_error=0.01246 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.0.conv1 (Conv2d): rel_error=0.0033 max_abs_error=0.02437 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.0.conv2 (Conv2d): rel_error=0.0032 max_abs_error=0.02335 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.0.conv3 (Conv2d): rel_error=0.0040 max_abs_error=0.03386 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.0.downsample.0 (Conv2d): rel_error=0.0035 max_abs_error=0.02864 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.1.conv1 (Conv2d): rel_error=0.0034 max_abs_error=0.02221 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.1.conv2 (Conv2d): rel_error=0.0034 max_abs_error=0.02639 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.1.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.05494 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.2.conv1 (Conv2d): rel_error=0.0034 max_abs_error=0.01686 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.2.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.01733 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer1.2.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.03027 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.0.conv1 (Conv2d): rel_error=0.0033 max_abs_error=0.01087 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.0.conv2 (Conv2d): rel_error=0.0036 max_abs_error=0.01053 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.0.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.0313 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.0.downsample.0 (Conv2d): rel_error=0.0032 max_abs_error=0.0155 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.1.conv1 (Conv2d): rel_error=0.0034 max_abs_error=0.01147 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.1.conv2 (Conv2d): rel_error=0.0034 max_abs_error=0.01335 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.1.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.03065 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.2.conv1 (Conv2d): rel_error=0.0032 max_abs_error=0.009894 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.2.conv2 (Conv2d): rel_error=0.0036 max_abs_error=0.01599 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.2.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.01596 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.3.conv1 (Conv2d): rel_error=0.0033 max_abs_error=0.008558 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.3.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.02057 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer2.3.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.006249 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.0.conv1 (Conv2d): rel_error=0.0034 max_abs_error=0.01309 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.0.conv2 (Conv2d): rel_error=0.0037 max_abs_error=0.01354 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.0.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.009354 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.0.downsample.0 (Conv2d): rel_error=0.0035 max_abs_error=0.01115 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.1.conv1 (Conv2d): rel_error=0.0037 max_abs_error=0.00787 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.1.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01922 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.1.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.006142 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.2.conv1 (Conv2d): rel_error=0.0037 max_abs_error=0.0084 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.2.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01764 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.2.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.009373 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.3.conv1 (Conv2d): rel_error=0.0037 max_abs_error=0.009107 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.3.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01495 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.3.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.005719 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.4.conv1 (Conv2d): rel_error=0.0035 max_abs_error=0.008041 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.4.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.02105 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.4.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.004641 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.5.conv1 (Conv2d): rel_error=0.0035 max_abs_error=0.007511 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.5.conv2 (Conv2d): rel_error=0.0039 max_abs_error=0.01669 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer3.5.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.003846 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.0.conv1 (Conv2d): rel_error=0.0035 max_abs_error=0.00745 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.0.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01044 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.0.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.006053 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.0.downsample.0 (Conv2d): rel_error=0.0031 max_abs_error=0.007093 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.1.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.01173 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.1.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01325 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.1.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.01786 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.2.conv1 (Conv2d): rel_error=0.0038 max_abs_error=0.01137 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.2.conv2 (Conv2d): rel_error=0.0038 max_abs_error=0.01139 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 layer4.2.conv3 (Conv2d): rel_error=0.0039 max_abs_error=0.01039 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 fc (Linear): rel_error=0.0229 max_abs_error=0.2492 [validated]
+2026-08-10 12:14:03 [INFO] src.analysis.validate_pot: [ValidatePoT] QAT resnet50_no_weights/CIFAR10 summary: 54/54 (100.0%) layers validated | worst layer: fc (rel_error=0.0229, status=validated)
+2026-08-10 12:14:03 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ cnn on IMAGENET100 ---
+2026-08-10 12:14:03 [ERROR] __main__: FAILED PTQ cnn/IMAGENET100: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/ptq_po2_cnn_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/ptq_po2_cnn_IMAGENET100.pt
+2026-08-10 12:14:03 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT cnn on IMAGENET100 ---
+2026-08-10 12:14:03 [ERROR] __main__: FAILED QAT cnn/IMAGENET100: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/qat_po2_cnn_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/qat_po2_cnn_IMAGENET100.pt
+2026-08-10 12:14:03 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ resnet18_no_weights on IMAGENET100 ---
+2026-08-10 12:14:03 [ERROR] __main__: FAILED PTQ resnet18_no_weights/IMAGENET100: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/ptq_po2_resnet18_no_weights_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/ptq_po2_resnet18_no_weights_IMAGENET100.pt
+2026-08-10 12:14:03 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT resnet18_no_weights on IMAGENET100 ---
+2026-08-10 12:14:03 [ERROR] __main__: FAILED QAT resnet18_no_weights/IMAGENET100: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/qat_po2_resnet18_no_weights_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/qat_po2_resnet18_no_weights_IMAGENET100.pt
+2026-08-10 12:14:03 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ resnet50_no_weights on IMAGENET100 ---
+2026-08-10 12:14:03 [ERROR] __main__: FAILED PTQ resnet50_no_weights/IMAGENET100: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/ptq_po2_resnet50_no_weights_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/ptq_po2_resnet50_no_weights_IMAGENET100.pt
+2026-08-10 12:14:03 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT resnet50_no_weights on IMAGENET100 ---
+2026-08-10 12:14:03 [ERROR] __main__: FAILED QAT resnet50_no_weights/IMAGENET100: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/qat_po2_resnet50_no_weights_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/qat_po2_resnet50_no_weights_IMAGENET100.pt
+2026-08-10 12:14:03 [INFO] __main__: Summary saved → /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/csv/pot_validation.csv
+2026-08-10 12:14:03 [INFO] __main__: === Validate-PoT-Int8 complete ===
+2026-08-10 12:17:07 [INFO] __main__: === Pipeline start: 3 models - 1 datasets = 3 runs ===
+2026-08-10 12:17:07 [INFO] __main__: === Deploy-CPU-fbgemm: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-10 12:17:07 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] backend=fbgemm num_threads=16
+2026-08-10 12:17:07 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models
+2026-08-10 12:17:07 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CPU info written -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/logs/cpu_info.txt
+2026-08-10 12:17:07 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Loading dataset: IMAGENET100
+2026-08-10 12:17:07 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-10 12:17:07 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] --- PTQ cnn/IMAGENET100 ---

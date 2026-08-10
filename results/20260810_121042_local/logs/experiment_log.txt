@@ -1,0 +1,124 @@
+2026-08-10 12:10:43 [INFO] __main__: === Pipeline start: 3 models - 1 datasets = 3 runs ===
+2026-08-10 12:10:43 [INFO] __main__: === Validate-PoT-Int8: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ cnn on CIFAR10 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED PTQ cnn/CIFAR10: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_cnn_CIFAR10.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_cnn_CIFAR10.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT cnn on CIFAR10 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED QAT cnn/CIFAR10: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_cnn_CIFAR10.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_cnn_CIFAR10.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ resnet18_no_weights on CIFAR10 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED PTQ resnet18_no_weights/CIFAR10: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_resnet18_no_weights_CIFAR10.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_resnet18_no_weights_CIFAR10.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT resnet18_no_weights on CIFAR10 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED QAT resnet18_no_weights/CIFAR10: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_resnet18_no_weights_CIFAR10.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_resnet18_no_weights_CIFAR10.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ resnet50_no_weights on CIFAR10 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED PTQ resnet50_no_weights/CIFAR10: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_resnet50_no_weights_CIFAR10.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_resnet50_no_weights_CIFAR10.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT resnet50_no_weights on CIFAR10 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED QAT resnet50_no_weights/CIFAR10: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_resnet50_no_weights_CIFAR10.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_resnet50_no_weights_CIFAR10.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ cnn on IMAGENET100 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED PTQ cnn/IMAGENET100: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_cnn_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_cnn_IMAGENET100.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT cnn on IMAGENET100 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED QAT cnn/IMAGENET100: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_cnn_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_cnn_IMAGENET100.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ resnet18_no_weights on IMAGENET100 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED PTQ resnet18_no_weights/IMAGENET100: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_resnet18_no_weights_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_resnet18_no_weights_IMAGENET100.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT resnet18_no_weights on IMAGENET100 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED QAT resnet18_no_weights/IMAGENET100: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_resnet18_no_weights_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_resnet18_no_weights_IMAGENET100.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 PTQ resnet50_no_weights on IMAGENET100 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED PTQ resnet50_no_weights/IMAGENET100: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_resnet50_no_weights_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved PTQ model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/ptq_po2_resnet50_no_weights_IMAGENET100.pt
+2026-08-10 12:10:43 [INFO] __main__: 
+--- Validate-PoT-Int8 QAT resnet50_no_weights on IMAGENET100 ---
+2026-08-10 12:10:43 [ERROR] __main__: FAILED QAT resnet50_no_weights/IMAGENET100: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_resnet50_no_weights_IMAGENET100.pt
+Traceback (most recent call last):
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/main.py", line 1011, in _run_validate_pot_int8
+    baked_model, int8_model, _ = deploy.build_int8_model(
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/src/quantization/deploy.py", line 97, in build_int8_model
+    raise FileNotFoundError(f"No saved {stage} model at {checkpoint_path}")
+FileNotFoundError: No saved QAT model at /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/quantized_models/qat_po2_resnet50_no_weights_IMAGENET100.pt
+2026-08-10 12:10:43 [INFO] __main__: Summary saved → /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_121042_local/csv/pot_validation.csv
+2026-08-10 12:10:43 [INFO] __main__: === Validate-PoT-Int8 complete ===

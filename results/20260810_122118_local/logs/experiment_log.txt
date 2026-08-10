@@ -1,0 +1,60 @@
+2026-08-10 12:21:19 [INFO] __main__: === Pipeline start: 3 models - 1 datasets = 3 runs ===
+2026-08-10 12:21:19 [INFO] __main__: === Deploy-CPU-fbgemm: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-10 12:21:19 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] backend=fbgemm num_threads=16
+2026-08-10 12:21:19 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models
+2026-08-10 12:21:19 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CPU info written -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/logs/cpu_info.txt
+2026-08-10 12:21:19 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Loading dataset: CIFAR10
+2026-08-10 12:21:20 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-10 12:21:20 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] --- PTQ cnn/CIFAR10 ---
+2026-08-10 12:21:20 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ cnn/CIFAR10: qconfig = QConfig(activation=functools.partial(<class 'torch.ao.quantization.observer.HistogramObserver'>, reduce_range=True){}, weight=functools.partial(<class 'torch.ao.quantization.observer.PerChannelMinMaxObserver'>, dtype=torch.qint8, qscheme=torch.per_channel_symmetric){})
+2026-08-10 12:21:21 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ cnn/CIFAR10: calibrated on 20 batches
+2026-08-10 12:21:21 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ cnn/CIFAR10: confirmed quantized -- Conv2d 'conv1' -> Conv2d, Linear 'fc1' -> Linear
+2026-08-10 12:21:23 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ cnn/CIFAR10: fp32_acc=66.22% int8_acc=65.80% delta=-0.42%
+2026-08-10 12:21:23 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ cnn/CIFAR10: fp32_size=5.53MB int8_size=1.42MB reduction=3.89x
+2026-08-10 12:21:25 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_summary.csv
+2026-08-10 12:21:25 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_sweep.csv
+2026-08-10 12:21:25 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] --- QAT cnn/CIFAR10 ---
+2026-08-10 12:21:25 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT cnn/CIFAR10: qconfig = QConfig(activation=functools.partial(<class 'torch.ao.quantization.observer.HistogramObserver'>, reduce_range=True){}, weight=functools.partial(<class 'torch.ao.quantization.observer.PerChannelMinMaxObserver'>, dtype=torch.qint8, qscheme=torch.per_channel_symmetric){})
+2026-08-10 12:21:26 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT cnn/CIFAR10: calibrated on 20 batches
+2026-08-10 12:21:26 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT cnn/CIFAR10: confirmed quantized -- Conv2d 'conv1' -> Conv2d, Linear 'fc1' -> Linear
+2026-08-10 12:21:28 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT cnn/CIFAR10: fp32_acc=85.30% int8_acc=85.08% delta=-0.22%
+2026-08-10 12:21:28 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT cnn/CIFAR10: fp32_size=5.53MB int8_size=1.42MB reduction=3.89x
+2026-08-10 12:21:30 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_summary.csv
+2026-08-10 12:21:30 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_sweep.csv
+2026-08-10 12:21:30 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] --- PTQ resnet18_no_weights/CIFAR10 ---
+2026-08-10 12:21:30 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet18_no_weights/CIFAR10: qconfig = QConfig(activation=functools.partial(<class 'torch.ao.quantization.observer.HistogramObserver'>, reduce_range=True){}, weight=functools.partial(<class 'torch.ao.quantization.observer.PerChannelMinMaxObserver'>, dtype=torch.qint8, qscheme=torch.per_channel_symmetric){})
+2026-08-10 12:21:41 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet18_no_weights/CIFAR10: calibrated on 20 batches
+2026-08-10 12:21:41 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet18_no_weights/CIFAR10: confirmed quantized -- Conv2d 'module.conv1' -> Conv2d, Linear 'module.fc' -> Linear
+2026-08-10 12:21:59 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet18_no_weights/CIFAR10: fp32_acc=82.43% int8_acc=81.84% delta=-0.59%
+2026-08-10 12:21:59 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet18_no_weights/CIFAR10: fp32_size=42.62MB int8_size=10.78MB reduction=3.95x
+2026-08-10 12:22:44 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_summary.csv
+2026-08-10 12:22:44 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_sweep.csv
+2026-08-10 12:22:44 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] --- QAT resnet18_no_weights/CIFAR10 ---
+2026-08-10 12:22:44 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet18_no_weights/CIFAR10: qconfig = QConfig(activation=functools.partial(<class 'torch.ao.quantization.observer.HistogramObserver'>, reduce_range=True){}, weight=functools.partial(<class 'torch.ao.quantization.observer.PerChannelMinMaxObserver'>, dtype=torch.qint8, qscheme=torch.per_channel_symmetric){})
+2026-08-10 12:22:55 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet18_no_weights/CIFAR10: calibrated on 20 batches
+2026-08-10 12:22:55 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet18_no_weights/CIFAR10: confirmed quantized -- Conv2d 'module.conv1' -> Conv2d, Linear 'module.fc' -> Linear
+2026-08-10 12:23:14 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet18_no_weights/CIFAR10: fp32_acc=90.54% int8_acc=90.59% delta=+0.05%
+2026-08-10 12:23:14 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet18_no_weights/CIFAR10: fp32_size=42.62MB int8_size=10.78MB reduction=3.95x
+2026-08-10 12:24:00 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_summary.csv
+2026-08-10 12:24:00 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_sweep.csv
+2026-08-10 12:24:00 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] --- PTQ resnet50_no_weights/CIFAR10 ---
+2026-08-10 12:24:00 [WARNING] src.quantization.deploy_fbgemm: [DeployFbgemm] resnet50_no_weights: folded leftover conv3/bn3 BatchNorm into conv3 for eager quantization compatibility -- conv3's deployed weight is no longer an exact power of two in this model (see _fuse_leftover_conv_bn docstring).
+2026-08-10 12:24:00 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet50_no_weights/CIFAR10: qconfig = QConfig(activation=functools.partial(<class 'torch.ao.quantization.observer.HistogramObserver'>, reduce_range=True){}, weight=functools.partial(<class 'torch.ao.quantization.observer.PerChannelMinMaxObserver'>, dtype=torch.qint8, qscheme=torch.per_channel_symmetric){})
+2026-08-10 12:24:48 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet50_no_weights/CIFAR10: calibrated on 20 batches
+2026-08-10 12:24:49 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet50_no_weights/CIFAR10: confirmed quantized -- Conv2d 'module.conv1' -> Conv2d, Linear 'module.fc' -> Linear
+2026-08-10 12:26:05 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet50_no_weights/CIFAR10: fp32_acc=75.46% int8_acc=25.08% delta=-50.38%
+2026-08-10 12:26:05 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] PTQ resnet50_no_weights/CIFAR10: fp32_size=89.85MB int8_size=23.00MB reduction=3.91x
+2026-08-10 12:29:21 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_summary.csv
+2026-08-10 12:29:21 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_sweep.csv
+2026-08-10 12:29:21 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] --- QAT resnet50_no_weights/CIFAR10 ---
+2026-08-10 12:29:21 [WARNING] src.quantization.deploy_fbgemm: [DeployFbgemm] resnet50_no_weights: folded leftover conv3/bn3 BatchNorm into conv3 for eager quantization compatibility -- conv3's deployed weight is no longer an exact power of two in this model (see _fuse_leftover_conv_bn docstring).
+2026-08-10 12:29:21 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet50_no_weights/CIFAR10: qconfig = QConfig(activation=functools.partial(<class 'torch.ao.quantization.observer.HistogramObserver'>, reduce_range=True){}, weight=functools.partial(<class 'torch.ao.quantization.observer.PerChannelMinMaxObserver'>, dtype=torch.qint8, qscheme=torch.per_channel_symmetric){})
+2026-08-10 12:30:09 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet50_no_weights/CIFAR10: calibrated on 20 batches
+2026-08-10 12:30:09 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet50_no_weights/CIFAR10: confirmed quantized -- Conv2d 'module.conv1' -> Conv2d, Linear 'module.fc' -> Linear
+2026-08-10 12:31:25 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet50_no_weights/CIFAR10: fp32_acc=84.44% int8_acc=83.99% delta=-0.45%
+2026-08-10 12:31:25 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] QAT resnet50_no_weights/CIFAR10: fp32_size=89.85MB int8_size=23.00MB reduction=3.91x
+2026-08-10 12:34:53 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_summary.csv
+2026-08-10 12:34:53 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] CSV saved -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_122118_local/csv/fbgemm_sweep.csv
+2026-08-10 12:34:53 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Loading dataset: IMAGENET100
+2026-08-10 12:34:53 [INFO] src.utility.utils: ImageNet100: 130000 train / 5000 val across 100 classes
+2026-08-10 12:34:53 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] --- PTQ cnn/IMAGENET100 ---

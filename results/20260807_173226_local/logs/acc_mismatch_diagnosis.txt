@@ -1,7 +1,7 @@
 ACCURACY-MISMATCH DIAGNOSIS
 ==============================================================================
-generated:  2026-08-07 17:14:32
-run id:     20260807_171430_local
+generated:  2026-08-07 17:32:27
+run id:     20260807_173226_local
 scope:      cnn / IMAGENET100 / PTQ
 device:     cpu (cuda available: False)
 host:       dom-cachyos
@@ -310,8 +310,8 @@ H1 (label mapping): 0 supporting observation(s)
 H2 (transform pipeline): 0 supporting observation(s)
   - none; this mode found no evidence for it
 
-H3 (different checkpoint): 0 supporting observation(s)
-  - none; this mode found no evidence for it
+H3 (different checkpoint): 1 supporting observation(s)
+  - reached by elimination -- H1 and H2 are both excluded above, and this machine alone cannot see whether the cluster held different weights; check 1's hashes are the only way to confirm it
 
 Per-class pattern: uneven (best class 74.00%, 52 classes at 0%).
 Prediction spread: 65 distinct classes ever predicted, 53.9% of predictions in the top-5 classes.

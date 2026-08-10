@@ -47,10 +47,10 @@ from src.analysis.benchmark import model_size_bytes, benchmark_latency
 logger = logging.getLogger(__name__)
 
 MODELS = ["cnn", "resnet18_no_weights", "resnet50_no_weights"]
-DATASETS = ["IMAGENET100"] # "CIFAR10", 
+DATASETS = ["CIFAR10"] # "CIFAR10", "IMAGENET100"
 STAGES = ["PTQ", "QAT"]
 
-NUM_CALIBRATION_BATCHES = 20
+NUM_CALIBRATION_BATCHES = 50
 LATENCY_WARMUP = 20
 LATENCY_ITERS = 100
 SWEEP_BATCH_SIZES = (1, 8, 32, 64, 128)

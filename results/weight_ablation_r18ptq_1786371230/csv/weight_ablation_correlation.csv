@@ -1,0 +1,2 @@
+model,dataset,stage,n_layers_matched,spearman_rho,spearman_p,top5_overlap,note
+resnet18_no_weights,CIFAR10,PTQ,21,0.4284789058452342,0.05262814819290867,3/5,

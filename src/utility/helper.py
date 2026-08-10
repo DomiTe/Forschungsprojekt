@@ -110,6 +110,16 @@ def parse_args():
              "workstation run (python -m src.main ...), no SLURM/torchrun required."
     )
     parser.add_argument(
+        "--weight-ablation",
+        action="store_true",
+        help="Measure each layer's weight-quantization damage in isolation (all activation "
+             "quantization disabled first, then one layer's weights quantized at a time) and "
+             "correlate it against that layer's precomputed weight-Hessian trace. Writes "
+             "results/<RUN_ID>/csv/weight_ablation{,_correlation}.csv. Analysis only -- no "
+             "torchao/INT8/deployment path. Reuses --checkpoint-dir and --load-run-id. Prefers "
+             "CUDA; runs as a single local process, no SLURM/torchrun required."
+    )
+    parser.add_argument(
         "--diagnose-acc-mismatch",
         action="store_true",
         help="Isolate why the same checkpoint evaluates to a different top-1 accuracy locally "

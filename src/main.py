@@ -210,6 +210,29 @@ def main() -> None:
         return
 
     # -------------------------------------------------------------------
+    # Weight-Ablation mode: measure each layer's weight-quantization damage
+    # in isolation (all activation quantization disabled first) and
+    # correlate it against that layer's precomputed weight-Hessian trace.
+    # All logic lives in src/analysis/weight_ablation.py, which reuses (does
+    # not duplicate) the checkpoint loader / evaluation function / Identity-
+    # swap helpers from src/analysis/diagnose_activations.py and the Hessian
+    # trace CSV loader from src/analysis/layer_ablation.py. Analysis only --
+    # no torchao/INT8/deployment path. Skips FP32/PTQ/QAT training and all
+    # Hessian/eigenvalue/SQNR analysis. Runs as a single local process (no
+    # torchrun/distributed init needed), prefers CUDA when available.
+    # -------------------------------------------------------------------
+    if args.weight_ablation:
+        if local_rank == 0:
+            logger.info("=== Weight-Ablation: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.weight_ablation import run_weight_ablation
+        run_weight_ablation(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
     # Diagnose-Acc-Mismatch mode: isolate why the same checkpoint scores
     # differently locally than on the cluster. Fingerprints the checkpoints,
     # the class-to-index mapping and the transform pipeline, then evaluates

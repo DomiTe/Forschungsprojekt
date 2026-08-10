@@ -236,12 +236,85 @@ def _patch_residual_add_for_quantization(model: nn.Module) -> None:
             module.forward = types.MethodType(_bottleneck_forward, module)
 
 
+def _resolve_module_name(model: nn.Module, layer_name: str) -> str | None:
+    """
+    Resolves a bare layer name (e.g. "conv1") to its actual dotted path
+    inside `model`, accounting for two independent structural changes
+    _apply_fbgemm_ptq can make relative to the original checkpoint's naming:
+
+    - torch.ao.quantization.QuantWrapper, applied to architectures with no
+      native QuantStub/DeQuantStub (resnet18_no_weights / resnet50_no_weights),
+      shifts every submodule one level down under "module." -- "conv1"
+      becomes "module.conv1".
+    - _ExcludedLayerWrapper (see below), applied per excluded layer, takes
+      over the excluded layer's original name and holds the real leaf
+      Conv2d/Linear one level further down at its own ".module" attribute
+      -- so once found, if the resolved module is an _ExcludedLayerWrapper,
+      this drills in one more level to reach the actual leaf.
+
+    Returns None if no candidate form exists.
+    """
+    names = dict(model.named_modules())
+    if layer_name in names:
+        resolved = layer_name
+    elif f"module.{layer_name}" in names:
+        resolved = f"module.{layer_name}"
+    else:
+        return None
+
+    if isinstance(names[resolved], _ExcludedLayerWrapper):
+        resolved = f"{resolved}.module"
+    return resolved
+
+
+class _ExcludedLayerWrapper(nn.Module):
+    """
+    Wraps a single Conv2d/Linear that should stay FP32 while everything
+    around it gets quantized. Setting a submodule's .qconfig to None makes
+    prepare()/convert() skip *converting* it, but does nothing about the
+    tensor dtype at its boundary -- static quantization threads quint8
+    tensors directly between quantized ops with no implicit dequant/quant
+    in between, so an excluded module sitting downstream of the model's
+    QuantStub (or of another quantized layer) still receives a quint8
+    tensor and crashes on the first quantized-vs-float op (confirmed
+    empirically: "RuntimeError: Input type (c10::quint8) and bias type
+    (float) should be the same" when conv1 -- the very first layer after
+    the model's own QuantStub -- was excluded with a bare qconfig=None).
+    DeQuantStub/QuantStub are the standard library's mechanism for exactly
+    this: explicit, calibrated type-conversion boundaries. They inherit
+    the model-wide qconfig via propagation (this wrapper and they are never
+    given an explicit .qconfig of their own), while the wrapped module's
+    own .qconfig is forced to None so it alone stays FP32.
+    """
+
+    def __init__(self, module: nn.Module):
+        super().__init__()
+        self.dequant = DeQuantStub()
+        self.module = module
+        self.quant = QuantStub()
+
+    def forward(self, x):
+        x = self.dequant(x)
+        x = self.module(x)
+        x = self.quant(x)
+        return x
+
+
+def _replace_module_by_path(root: nn.Module, dotted_name: str, new_module: nn.Module) -> None:
+    parts = dotted_name.split(".")
+    parent = root
+    for part in parts[:-1]:
+        parent = getattr(parent, part)
+    setattr(parent, parts[-1], new_module)
+
+
 def _apply_fbgemm_ptq(
     baked_model: nn.Module,
     calibration_loader,
     label: str,
     model_name: str,
     num_calib_batches: int = NUM_CALIBRATION_BATCHES,
+    excluded_layers: frozenset[str] | None = None,
 ) -> tuple[nn.Module, object]:
     """
     Eager-mode static PTQ with the fbgemm backend.
@@ -255,6 +328,15 @@ def _apply_fbgemm_ptq(
     torch.ao.quantization.QuantWrapper -- the standard library utility for
     exactly this case -- rather than double-wrapping models that already
     have their own stubs.
+
+    excluded_layers (used by src/analysis/layer_ablation.py): bare layer
+    names to leave in FP32. Each is replaced by an _ExcludedLayerWrapper
+    (DeQuantStub -> module -> QuantStub) before prepare(), with the
+    wrapped module's own .qconfig forced to None -- prepare()/convert()
+    then skip converting it while still inserting real quantize/dequantize
+    ops at its boundary, so tensor dtypes stay consistent with the
+    quantized layers around it. See _ExcludedLayerWrapper's docstring for
+    why a bare qconfig=None (no wrapper) is not sufficient.
     """
     baked_model.eval()
     _fuse_leftover_conv_bn(baked_model, model_name)
@@ -263,6 +345,28 @@ def _apply_fbgemm_ptq(
     has_stubs = any(isinstance(m, (QuantStub, DeQuantStub)) for m in baked_model.modules())
     model_to_quantize = baked_model if has_stubs else torch.ao.quantization.QuantWrapper(baked_model)
     model_to_quantize.eval()
+
+    if excluded_layers:
+        for layer_name in excluded_layers:
+            resolved_name = _resolve_module_name(model_to_quantize, layer_name)
+            if resolved_name is None:
+                raise FbgemmBuildError(
+                    f"{label}: cannot exclude '{layer_name}' from quantization -- no such "
+                    f"module in {model_name} (checked '{layer_name}' and 'module.{layer_name}')."
+                )
+            leaf_module = dict(model_to_quantize.named_modules())[resolved_name]
+            if not isinstance(leaf_module, (nn.Conv2d, nn.Linear)):
+                raise FbgemmBuildError(
+                    f"{label}: cannot exclude '{resolved_name}' -- expected nn.Conv2d/nn.Linear, "
+                    f"got {type(leaf_module).__name__}."
+                )
+            wrapper = _ExcludedLayerWrapper(leaf_module)
+            wrapper.module.qconfig = None
+            _replace_module_by_path(model_to_quantize, resolved_name, wrapper)
+            logger.info(
+                f"[DeployFbgemm] {label}: wrapped '{resolved_name}' in dequant/quant stubs "
+                f"and excluded it from quantization (module.qconfig=None)"
+            )
 
     qconfig = torch.ao.quantization.get_default_qconfig("fbgemm")
     model_to_quantize.qconfig = qconfig

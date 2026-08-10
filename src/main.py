@@ -164,6 +164,30 @@ def main() -> None:
         return
 
     # -------------------------------------------------------------------
+    # Ablate-Layer-Quantization mode: measure the accuracy impact of
+    # excluding individual layers from fbgemm INT8 quantization, to test
+    # whether high-Hessian-trace layers cause the resnet50/CIFAR10/PTQ
+    # accuracy collapse. All logic lives in src/analysis/layer_ablation.py,
+    # which reuses (does not duplicate) the checkpoint reconstruction and
+    # fbgemm conversion path from src/quantization/deploy_fbgemm.py. Skips
+    # FP32/PTQ/QAT training and all Hessian/eigenvalue/SQNR analysis. Runs
+    # as a single local process (no torchrun/distributed init needed).
+    # -------------------------------------------------------------------
+    if args.ablate_layer_quantization:
+        if local_rank == 0:
+            logger.info("=== Ablate-Layer-Quantization: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.layer_ablation import run_layer_ablation
+        run_layer_ablation(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            ablate_top_k=args.ablate_top_k,
+            ablate_layers=args.ablate_layers,
+            eval_subset=args.eval_subset,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
     # Diagnose-Acc-Mismatch mode: isolate why the same checkpoint scores
     # differently locally than on the cluster. Fingerprints the checkpoints,
     # the class-to-index mapping and the transform pipeline, then evaluates

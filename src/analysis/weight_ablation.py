@@ -86,7 +86,7 @@ from src.utility.utils import get_data_loaders
 
 logger = logging.getLogger(__name__)
 
-SEED = 42
+SEED = None
 
 # Hard gate (Part 0): the act_fake_quant->Identity construction and the
 # bake_pot_into_standard_layers construction both apply the same weight
@@ -541,7 +541,7 @@ def run_weight_ablation(
     load_run_id: str | None,
     run_leave_one_out: bool = True,
 ) -> None:
-    torch.manual_seed(SEED)
+    # torch.manual_seed(SEED)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[WeightAblation] CUDA not available -- falling back to CPU, this will be slow.")

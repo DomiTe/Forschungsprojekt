@@ -269,3 +269,29 @@ SingleProcess AUTOTUNE benchmarking takes 9.5526 seconds and 1.4787 seconds prec
 [rank0]:W0810 19:46:26.547000 4142919 .conda/lib/python3.12/site-packages/torch/_inductor/cudagraph_utils.py:298] [__cudagraphs] 
 /scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
   return func(*args, **kwargs)
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)
+[rank0]:E0811 04:21:06.537000 4142919 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] Runtime error during autotuning: 
+[rank0]:E0811 04:21:06.537000 4142919 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0811 04:21:06.537000 4142919 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] Ignoring this choice.
+[rank0]:E0811 04:21:09.012000 4142919 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] Runtime error during autotuning: 
+[rank0]:E0811 04:21:09.012000 4142919 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] No valid triton configs. OutOfMemoryError: out of resource: triton_mm Required: 221184 Hardware limit:166912 Reducing block sizes or `num_stages` may help.. 
+[rank0]:E0811 04:21:09.012000 4142919 .conda/lib/python3.12/site-packages/torch/_inductor/select_algorithm.py:4888] [7/3_1] Ignoring this choice.
+Autotune Choices Stats:
+{"num_choices": 19, "num_triton_choices": 18, "best_kernel": "addmm", "best_time": 0.09830400347709656, "best_triton_pos": 1, "best_triton_time": 0.12083200365304947, "best_triton_kernel": "triton_mm_155", "best_triton_kernel_desc": "ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2"}
+AUTOTUNE addmm(1x100, 1x2048, 2048x100)
+strides: [0, 1], [2048, 1], [1, 2048]
+dtypes: torch.float32, torch.float32, torch.float32
+  addmm 0.0983 ms 100.0% 
+  triton_mm_155 0.1208 ms 81.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_152 0.1270 ms 77.4% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=2, num_warps=2
+  triton_mm_154 0.1290 ms 76.2% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=2
+  triton_mm_159 0.1802 ms 54.5% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=128, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_153 0.1823 ms 53.9% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=5, num_warps=4
+  triton_mm_164 0.1823 ms 53.9% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_165 0.1823 ms 53.9% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=32, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=4, num_warps=4
+  triton_mm_158 0.1853 ms 53.0% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=64, BLOCK_M=16, BLOCK_N=64, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=3, num_warps=4
+  triton_mm_151 0.2058 ms 47.8% ACC_TYPE='tl.float32', ALLOW_TF32=False, BLOCK_K=16, BLOCK_M=16, BLOCK_N=32, EVEN_K=True, GROUP_M=8, OUT_DTYPE='tl.float32', USE_FAST_ACCUM=False, num_stages=1, num_warps=2
+SingleProcess AUTOTUNE benchmarking takes 10.1285 seconds and 1.7080 seconds precompiling for 19 choices
+/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/c10d_logger.py:83: UserWarning: barrier(): using the device under current context. You can specify `device_id` in `init_process_group` to mute this warning.
+  return func(*args, **kwargs)

@@ -1,0 +1,6 @@
+quantity,old_value,old_source,canonical_value,ratio,explained_by_knob,note
+resnet50_conv1_fp32,13.87,prior run notes (unspecified estimator config),125.56843499077691,0.11045769584544683,fp32:basis=unfused (residual 5.51%),canonical basis=fused
+resnet50_conv1_fp32,11.79,"prior run notes (unspecified estimator config), second run",125.56843499077691,0.09389302336105394,UNRESOLVED (no knob reproduced this anchor within tolerance -- see drift_diagnosis.csv for closest residuals),canonical basis=fused
+resnet50_conv1_ptq,13161.8,"original src/main.py pipeline run, layerwise_hessian_traces.csv (PTQ stage)",29.433624561016376,447.1688484275994,UNRESOLVED (no knob reproduced this anchor within tolerance -- see drift_diagnosis.csv for closest residuals),
+resnet50_conv1_ptq,1030.9,a later/fresh run's notes,29.433624561016376,35.02456851221051,UNRESOLVED (no knob reproduced this anchor within tolerance -- see drift_diagnosis.csv for closest residuals),
+resnet50_conv1_elevation_fp32,14.0,prior 'conv1 14x' claim,6.182861084722084,2.2643238798610805,UNRESOLVED (no knob reproduced this anchor within tolerance -- see drift_diagnosis.csv for closest residuals),"elevation = conv1_trace / median(all-layer trace), fused basis"

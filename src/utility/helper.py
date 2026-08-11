@@ -157,6 +157,50 @@ def parse_args():
              "omit to skip reconciliation (reported as banked_fp32_matches=not_provided)."
     )
     parser.add_argument(
+        "--relock-traces",
+        action="store_true",
+        help="Freeze a single canonical Hessian-trace estimator configuration, diagnose which "
+             "configuration knob produced each drifting legacy trace number (resnet50 conv1: "
+             "13.87/11.79 FP32, 13161.8/1030.9 PTQ, ~14x elevation), recompute every headline "
+             "trace from the frozen config, and write an old->new reconciliation ledger. Writes "
+             "results/<RUN_ID>/trace_config.json and results/<RUN_ID>/csv/"
+             "{drift_diagnosis,canonical_traces,trace_reconciliation_ledger}.csv. Analysis only. "
+             "Reuses --checkpoint-dir and --load-run-id; see --banked-fp32-profile and "
+             "--legacy-anchors for the ledger's reconciliation inputs. Prefers CUDA; runs as a "
+             "single local process, no SLURM/torchrun required."
+    )
+    parser.add_argument(
+        "--legacy-anchors",
+        type=str,
+        default=None,
+        help="For --relock-traces: path to a JSON file (or an inline JSON string) overriding the "
+             "built-in legacy anchor values (resnet50 conv1 FP32/PTQ numbers, elevation claim) "
+             "that Part 1's drift-diagnosis grid tries to attribute to a configuration knob. "
+             "Optional; omit to use the built-in defaults."
+    )
+    parser.add_argument(
+        "--weight-ablation-canonical",
+        action="store_true",
+        help="Measure each layer's weight-only PoT quantization damage in isolation (P1, revised) "
+             "and test whether it is predicted by the raw canonical weight-Hessian trace "
+             "(fp32_fused, from --canonical-traces-csv), the weight-quantization perturbation "
+             "||delta W||^2 alone, or the HAWQ product Tr(H)*||delta W||^2. CIFAR10; "
+             "resnet18_no_weights and resnet50_no_weights required, cnn optional; PTQ required, "
+             "QAT optional (skipped with a warning if its checkpoint is missing). Writes "
+             "results/<RUN_ID>/csv/weight_ablation_canonical{,_correlation}.csv. Analysis only -- "
+             "no torchao/deployment. Reuses --checkpoint-dir and --load-run-id; requires "
+             "--canonical-traces-csv. Prefers CUDA; runs as a single local process, no "
+             "SLURM/torchrun required."
+    )
+    parser.add_argument(
+        "--canonical-traces-csv",
+        type=str,
+        default=None,
+        help="For --weight-ablation-canonical: path to the canonical_traces.csv written by "
+             "--relock-traces (results/<RUN_ID>/csv/canonical_traces.csv). Required -- the "
+             "fp32_fused Tr(H) values used as the curvature term come from here, not recomputed."
+    )
+    parser.add_argument(
         "--diagnose-acc-mismatch",
         action="store_true",
         help="Isolate why the same checkpoint evaluates to a different top-1 accuracy locally "

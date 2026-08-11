@@ -331,6 +331,66 @@ def main() -> None:
             checkpoint_dir=args.checkpoint_dir,
             load_run_id=args.load_run_id,
             canonical_traces_csv=args.canonical_traces_csv,
+            damage_mode=args.damage_mode,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
+    # Weight-Ablation-Diagnose mode: explain the v1->v2 weight-ablation-
+    # canonical damage-magnitude drift (resnet50/CIFAR10/PTQ conv1: 0.67 ->
+    # 1.62pts, ~2.4x) by varying one candidate cause at a time -- eval batch
+    # size, num_workers/shuffle, seed/dtype/determinism, the weight_fake_quant
+    # isolation mechanism, the FP32/PTQ checkpoint source, fresh-per-layer
+    # model reconstruction, BN eval mode, CUDA nondeterminism -- from the v2
+    # configuration on resnet50/CIFAR10/PTQ conv1, holding everything else
+    # fixed. All logic lives in src/analysis/weight_ablation_diagnose.py,
+    # which reuses (does not duplicate) the checkpoint loader, Identity-swap
+    # helpers, weight-mask verifier and robust checkpoint resolver already
+    # established by weight_ablation.py / diagnose_activations.py. Analysis
+    # only -- no torchao/deployment. Skips FP32/PTQ/QAT training and all
+    # Hessian/eigenvalue/SQNR analysis. Runs as a single local process (no
+    # torchrun/distributed init needed), prefers CUDA.
+    # -------------------------------------------------------------------
+    if args.weight_ablation_diagnose:
+        if local_rank == 0:
+            logger.info("=== Weight-Ablation-Diagnose: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.weight_ablation_diagnose import run_weight_ablation_diagnose
+        run_weight_ablation_diagnose(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            v1_checkpoint_dir=args.diagnose_v1_checkpoint_dir,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
+    # Spike-Layer-Cause mode: identifies the "spike layer" (highest fused-
+    # basis Tr(H); highest |weight_damage_pts|) per model x dataset -- no
+    # hardcoded conv1 -- then attributes its size-independent curvature
+    # excess to architectural descriptors (fan_in, output_map, Tr(A_prev))
+    # via a KFAC-style patch-unfolded forward/backward (A/G) hook split, and
+    # a CIFAR10-vs-IMAGENET100 resolution contrast to discriminate spatial-
+    # extent (H1), fan-in (H2), and input-covariance-conditioning (H3)
+    # hypotheses. All logic lives in src/analysis/spike_layer_cause.py,
+    # which reuses (does not duplicate) compute_layerwise_hessian_trace_
+    # pyhessian, the quant-induced mode's Part 0 mapping gate and model-
+    # construction helpers, and weight_ablation_canonical.py's own isolation
+    # sweep for the damage-based spike selection. Analysis only -- no
+    # torchao/deployment. Skips FP32/PTQ/QAT training and the eigenvalue/
+    # SQNR analyses. Runs as a single local process (no torchrun/distributed
+    # init needed), prefers CUDA. NOT run under torch.no_grad() -- the KFAC
+    # backward-hook measurement needs real gradients.
+    # -------------------------------------------------------------------
+    if args.spike_layer_cause:
+        if local_rank == 0:
+            logger.info("=== Spike-Layer-Cause: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.spike_layer_cause import run_spike_layer_cause
+        run_spike_layer_cause(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            canonical_traces_csv=args.canonical_traces_csv,
+            imagenet100_checkpoint_dir=args.imagenet100_checkpoint_dir,
         )
         _cleanup()
         return

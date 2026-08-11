@@ -201,6 +201,77 @@ def parse_args():
              "fp32_fused Tr(H) values used as the curvature term come from here, not recomputed."
     )
     parser.add_argument(
+        "--damage-mode",
+        type=str,
+        default="both",
+        choices=["signed", "abs", "both"],
+        help="For --weight-ablation-canonical: which weight_damage_pts target the correlation "
+             "summary's primary spearman_rho/spearman_p/top5_overlap/conv1_damage_rank columns "
+             "are computed against -- 'abs' (|weight_damage_pts|, the paper's headline: PTQ "
+             "damage is mostly positive and QAT damage is mostly negative, but both reflect the "
+             "same sign-agnostic 'how much does this layer's quantization state matter', which "
+             "conv1 tops in every configuration), 'signed' (the original P1-revised target, "
+             "which reads as a null on QAT), or 'both' (default -- writes both column sets in "
+             "the same row so neither is dropped). The per-layer CSV's weight_damage_pts stays "
+             "signed regardless; abs_weight_damage_pts is added alongside it."
+    )
+    parser.add_argument(
+        "--weight-ablation-diagnose",
+        action="store_true",
+        help="Diagnose the v1->v2 weight-ablation-canonical damage-magnitude drift (resnet50 "
+             "conv1 PTQ: 0.67 -> 1.62pts, ~2.4x; resnet18 conv1 PTQ: same direction/rough factor) "
+             "by varying one candidate cause at a time -- eval batch size, num_workers/shuffle, "
+             "seed/dtype/determinism, the weight_fake_quant isolation mechanism, the FP32/PTQ "
+             "checkpoint source, fresh-per-layer model reconstruction, BN eval mode, CUDA "
+             "nondeterminism -- from the v2 configuration on resnet50/CIFAR10/PTQ conv1 (the "
+             "cleanest anchor), holding everything else fixed, to identify which flip reproduces "
+             "the v1 magnitude. Writes results/<RUN_ID>/csv/weight_ablation_drift_ledger.csv. "
+             "Analysis only. Reuses --checkpoint-dir and --load-run-id for the v2 checkpoint set; "
+             "see --diagnose-v1-checkpoint-dir for the v1 checkpoint set being compared against. "
+             "Prefers CUDA; runs as a single local process, no SLURM/torchrun required."
+    )
+    parser.add_argument(
+        "--diagnose-v1-checkpoint-dir",
+        type=str,
+        default=None,
+        help="For --weight-ablation-diagnose: directory holding the v1 quantized checkpoints "
+             "(candidate 5 -- 'which checkpoint set is being differenced'), with its FP32 "
+             "baseline resolved as the sibling 'models' directory (same convention as "
+             "--checkpoint-dir elsewhere). Defaults to results/backup_models/quantized_models, "
+             "the checkpoint set the original v1 investigation run resolved to."
+    )
+    parser.add_argument(
+        "--spike-layer-cause",
+        action="store_true",
+        help="Identify the 'spike layer' (highest fused-basis Tr(H); highest |weight_damage_pts|) "
+             "per model x dataset -- no hardcoded conv1 -- then attribute its size-independent "
+             "curvature excess (log-log residual above the trace_per_param-vs-numel fit) to "
+             "architectural descriptors (fan_in, output_map, Tr(A_prev)), using a KFAC-style "
+             "patch-unfolded forward/backward (A/G) hook split to localise the excess, and a "
+             "CIFAR10 (32x32) vs IMAGENET100 (224x224) resolution contrast to discriminate spatial-"
+             "extent (H1), fan-in (H2), and input-covariance-conditioning (H3) hypotheses. Models "
+             "cnn, resnet18_no_weights, resnet50_no_weights; variants fp32_unfused, fp32_fused, "
+             "ptq (QAT excluded -- a training regime, not an architectural property). Writes "
+             "results/<RUN_ID>/csv/spike_{selection,layer_traces,layer_residual,layer_descriptors,"
+             "layer_kfac,layer_attribution}.csv. Analysis only -- no torchao/deployment. Reuses "
+             "--checkpoint-dir, --load-run-id, and --canonical-traces-csv (extends its sibling "
+             "trace_config.json with an IMAGENET100 entry; CIFAR10 entry untouched). Prefers CUDA "
+             "(A100); runs as a single local process, no SLURM/torchrun required. NOT run under "
+             "torch.no_grad() -- the KFAC backward-hook measurement needs real gradients."
+    )
+    parser.add_argument(
+        "--imagenet100-checkpoint-dir",
+        type=str,
+        default=None,
+        help="For --spike-layer-cause: overrides the quantized-checkpoint directory (FP32 baseline "
+             "resolved as its sibling 'models' dir, same convention as --checkpoint-dir) used for "
+             "IMAGENET100 only -- CIFAR10 always resolves via --checkpoint-dir/--load-run-id. No "
+             "single run_id in this project currently banks fresh checkpoints for both datasets at "
+             "once, so this lets the cross-dataset comparison pull each dataset from its own run "
+             "without silently mixing checkpoint provenance within a single dataset's numbers. "
+             "Omit to use the same source (--checkpoint-dir/--load-run-id) for both datasets."
+    )
+    parser.add_argument(
         "--diagnose-acc-mismatch",
         action="store_true",
         help="Isolate why the same checkpoint evaluates to a different top-1 accuracy locally "

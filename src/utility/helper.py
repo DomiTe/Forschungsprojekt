@@ -133,6 +133,30 @@ def parse_args():
              "process, no SLURM/torchrun required."
     )
     parser.add_argument(
+        "--quant-induced-trace",
+        action="store_true",
+        help="Measure each layer's weight-Hessian trace across four model variants -- unfused "
+             "FP32, fused FP32, PTQ, QAT -- with an identical estimator config and a single fixed "
+             "probe seed, and decompose the FP32->quantized change into a fusion effect (BN "
+             "folded into conv) and a quantization-induced effect (fake-quant noise). Includes a "
+             "conv1 spotlight (trace across all variants, amplification, rank) and reconciliation "
+             "against a banked FP32 profile (see --banked-fp32-profile). CIFAR10; "
+             "resnet18_no_weights and resnet50_no_weights required, cnn included only if it fuses "
+             "cleanly. Writes results/<RUN_ID>/csv/quant_induced_{traces,comparison,summary}.csv. "
+             "Analysis only -- no torchao/INT8/deployment path. Reuses --checkpoint-dir and "
+             "--load-run-id. Prefers CUDA; runs as a single local process, no SLURM/torchrun "
+             "required."
+    )
+    parser.add_argument(
+        "--banked-fp32-profile",
+        type=str,
+        default=None,
+        help="Path to a banked FP32 Hessian-trace CSV (e.g. results/<RUN_ID>/csv/"
+             "layerwise_hessian_traces.csv, or random_init_traces.csv) to reconcile against this "
+             "run's freshly-computed fp32_unfused profile in --quant-induced-trace. Optional; "
+             "omit to skip reconciliation (reported as banked_fp32_matches=not_provided)."
+    )
+    parser.add_argument(
         "--diagnose-acc-mismatch",
         action="store_true",
         help="Isolate why the same checkpoint evaluates to a different top-1 accuracy locally "

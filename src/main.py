@@ -257,6 +257,32 @@ def main() -> None:
         return
 
     # -------------------------------------------------------------------
+    # Quant-Induced-Trace mode: measure each layer's weight-Hessian trace
+    # across four model variants (unfused FP32, fused FP32, PTQ, QAT) with an
+    # identical estimator configuration, and decompose the FP32->quantized
+    # change into a fusion effect and a quantization-induced effect. All
+    # logic lives in src/analysis/quant_induced_trace.py, which reuses (does
+    # not duplicate) the loader chain (build_model -> fuse_model_architectures
+    # -> replace_layers_for_quantization -> load_state_dict),
+    # compute_layerwise_hessian_trace_pyhessian, and the Identity-swap helper
+    # from src/analysis/diagnose_activations.py. Analysis only -- no
+    # torchao/INT8/deployment. Skips FP32/PTQ/QAT training and all
+    # Hessian/eigenvalue/SQNR analysis. Runs as a single local process (no
+    # torchrun/distributed init needed), prefers CUDA.
+    # -------------------------------------------------------------------
+    if args.quant_induced_trace:
+        if local_rank == 0:
+            logger.info("=== Quant-Induced-Trace: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.quant_induced_trace import run_quant_induced_trace
+        run_quant_induced_trace(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            banked_fp32_profile=args.banked_fp32_profile,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
     # Diagnose-Acc-Mismatch mode: isolate why the same checkpoint scores
     # differently locally than on the cluster. Fingerprints the checkpoints,
     # the class-to-index mapping and the transform pipeline, then evaluates

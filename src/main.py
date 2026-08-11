@@ -283,6 +283,59 @@ def main() -> None:
         return
 
     # -------------------------------------------------------------------
+    # Relock-Traces mode: freeze a single canonical Hessian-trace estimator
+    # configuration, diagnose which configuration knob produced each
+    # drifting legacy trace number (a one-knob-at-a-time grid on resnet50
+    # conv1), recompute every headline trace from the frozen config, and
+    # write an old->new reconciliation ledger. All logic lives in
+    # src/analysis/relock_traces.py, which reuses (does not duplicate)
+    # compute_layerwise_hessian_trace_pyhessian and the quant-induced mode's
+    # Part 0 name/shape mapping gate and model-construction helpers
+    # (src/analysis/quant_induced_trace.py). Analysis only. Skips
+    # FP32/PTQ/QAT training and all Hessian/eigenvalue/SQNR analysis. Runs
+    # as a single local process (no torchrun/distributed init needed),
+    # prefers CUDA.
+    # -------------------------------------------------------------------
+    if args.relock_traces:
+        if local_rank == 0:
+            logger.info("=== Relock-Traces: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.relock_traces import run_relock_traces
+        run_relock_traces(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            banked_fp32_profile=args.banked_fp32_profile,
+            legacy_anchors=args.legacy_anchors,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
+    # Weight-Ablation-Canonical mode: measure each layer's weight-only PoT
+    # quantization damage in isolation (P1, revised) and test whether it is
+    # predicted by the raw canonical weight-Hessian trace, the weight-quant
+    # perturbation ||delta W||^2 alone, or the HAWQ product Tr(H)*||delta
+    # W||^2. All logic lives in src/analysis/weight_ablation_canonical.py,
+    # which reuses (does not duplicate) the loader, bake_pot_into_standard_
+    # layers, the evaluation function, and the Identity-swap helper from
+    # src/analysis/diagnose_activations.py, plus P1's path-equivalence gate
+    # and robust checkpoint resolver from src/analysis/weight_ablation.py.
+    # Analysis only -- no torchao/deployment. Skips FP32/PTQ/QAT training
+    # and all Hessian/eigenvalue/SQNR analysis. Runs as a single local
+    # process (no torchrun/distributed init needed), prefers CUDA.
+    # -------------------------------------------------------------------
+    if args.weight_ablation_canonical:
+        if local_rank == 0:
+            logger.info("=== Weight-Ablation-Canonical: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.weight_ablation_canonical import run_weight_ablation_canonical
+        run_weight_ablation_canonical(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            canonical_traces_csv=args.canonical_traces_csv,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
     # Diagnose-Acc-Mismatch mode: isolate why the same checkpoint scores
     # differently locally than on the cluster. Fingerprints the checkpoints,
     # the class-to-index mapping and the transform pipeline, then evaluates

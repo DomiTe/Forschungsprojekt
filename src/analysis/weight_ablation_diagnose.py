@@ -30,7 +30,7 @@ also fixes the mechanism for every other layer/model):
      as a numeric sweep (seed shouldn't matter with shuffle=False/no
      dropout) and a structural assertion (dtype, no autocast in evaluate()).
   4. The weight_fake_quant isolation mechanism (nn.Identity() replacement,
-     verified by weight_ablation.py's _verify_weight_mask). Checked with a
+     verified by _ablation_common.py's _verify_weight_mask). Checked with a
      positive case (normal isolation passes) and a deliberately broken mask
      (two layers left active) to confirm the assertion actually fires rather
      than silently drifting.
@@ -59,7 +59,7 @@ _load_fp32_reference), Identity-swap helpers (_disable_activation_quant,
 _disable_weight_quant), FP32 checkpoint-dir resolver and _append_row CSV
 writer (src/analysis/diagnose_activations.py); the robust checkpoint
 resolver, weight-mask verifier and WeightAblationError type
-(src/analysis/weight_ablation.py -- P1); _enable_determinism
+(src/analysis/_ablation_common.py); _enable_determinism
 (src/analysis/random_init_control.py); the quantized-checkpoint directory
 resolver (src/quantization/deploy_fbgemm.py); and the evaluation function
 (src/main.py's evaluate, deferred import to avoid a circular import -- same
@@ -87,7 +87,7 @@ from src.analysis.diagnose_activations import (
     _disable_weight_quant,
     _append_row,
 )
-from src.analysis.weight_ablation import (
+from src.analysis._ablation_common import (
     _resolve_checkpoint_robust,
     WeightAblationCheckpointError,
     WeightAblationError,

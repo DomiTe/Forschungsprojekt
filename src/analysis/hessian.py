@@ -39,7 +39,6 @@ def compute_layerwise_hessian_trace(
         inputs, targets = inputs.to(device), targets.to(device)
         
         for name, param in target_params.items():
-            # Forward pass
             outputs = model(inputs)
             loss = criterion(outputs, targets)
 
@@ -62,43 +61,5 @@ def compute_layerwise_hessian_trace(
             del outputs, loss, grad
             model.zero_grad()
             torch.cuda.empty_cache()
-            
-            # First Backward Pass (compute gradients)
-            # create_graph=True allows us to differentiate through the gradients
-            # grads = torch.autograd.grad(
-            #     loss, 
-            #     list(target_params.values()), 
-            #     create_graph=True
-            # )
-            # grad_dict = dict(zip(target_params.keys(), grads))
-            
-            # # Hutchinson Loop
-            # for _ in range(hutchinson_samples):
-            #     # Generate Rademacher vectors (+1 or -1)
-            #     vs = {
-            #         name: torch.randint_like(p, high=2, dtype=torch.float32, device=device) * 2 - 1.0 
-            #         for name, p in target_params.items()
-            #     }
-                
-            #     # Compute dot product of gradients and random vectors
-            #     v_dot_g = sum(
-            #         torch.sum(grad_dict[name] * vs[name]) 
-            #         for name in target_params
-            #     )
-                
-            #     # Second Backward Pass (Hessian-Vector Product)
-            #     hvp = torch.autograd.grad(
-            #         v_dot_g, 
-            #         list(target_params.values()), 
-            #         retain_graph=True
-            #     )
-                
-            #     # Accumulate v^T * H * v
-            #     for name, hv in zip(target_params.keys(), hvp):
-            #         v_t_h_v = torch.sum(vs[name] * hv).item()
-            #         # Normalize by number of samples and batches
-            #         traces[name] += v_t_h_v / (hutchinson_samples * num_batches)
-                
-
 
     return traces

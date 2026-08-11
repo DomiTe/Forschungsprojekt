@@ -61,9 +61,9 @@ replace_layers_for_quantization, compute_layerwise_hessian_trace_pyhessian
 (unchanged), the Identity-swap helpers (_disable_weight_quant,
 _disable_activation_quant, _verify_identity_swap) and FP32 checkpoint
 resolution from src/analysis/diagnose_activations.py, the robust checkpoint
-resolver (_resolve_checkpoint_robust) from src/analysis/weight_ablation.py
-(P1 -- filenames in this project are not perfectly uniform, so exact
-f-string paths are never used), the quantized-checkpoint directory resolver
+resolver (_resolve_checkpoint_robust) from src/analysis/_ablation_common.py
+(filenames in this project are not perfectly uniform, so exact f-string
+paths are never used), the quantized-checkpoint directory resolver
 from src/quantization/deploy_fbgemm.py, and _safe_div /
 _enable_determinism from src/analysis/random_init_control.py.
 
@@ -97,7 +97,7 @@ from src.analysis.diagnose_activations import (
     _append_row,
     DiagnoseActivationsError,
 )
-from src.analysis.weight_ablation import (
+from src.analysis._ablation_common import (
     _resolve_checkpoint_robust,
     WeightAblationCheckpointError,
 )

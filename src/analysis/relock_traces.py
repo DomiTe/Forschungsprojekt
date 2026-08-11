@@ -62,7 +62,7 @@ mapping gate and model-construction/Identity-swap helpers
 (src/analysis/quant_induced_trace.py: _build_layer_mapping,
 _load_unfused_fp32, _build_quant_skeleton, _load_quantized, _make_fused_fp32,
 _load_banked_fp32_profile), the robust checkpoint resolver
-(src/analysis/weight_ablation.py -- P1), the FP32 checkpoint directory
+(src/analysis/_ablation_common.py), the FP32 checkpoint directory
 resolver and _append_row CSV writer (src/analysis/diagnose_activations.py),
 the quantized-checkpoint directory resolver (src/quantization/deploy_fbgemm.py),
 and _enable_determinism (src/analysis/random_init_control.py).
@@ -89,7 +89,7 @@ import pandas as pd
 from src.model_cnn.train import build_model
 from src.analysis.pyhessian import compute_layerwise_hessian_trace_pyhessian
 from src.analysis.diagnose_activations import _resolve_fp32_models_dir, _append_row
-from src.analysis.weight_ablation import _resolve_checkpoint_robust, WeightAblationCheckpointError
+from src.analysis._ablation_common import _resolve_checkpoint_robust, WeightAblationCheckpointError
 from src.analysis.random_init_control import _enable_determinism, _safe_div
 from src.analysis.quant_induced_trace import (
     REQUIRED_MODELS,

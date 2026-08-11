@@ -94,7 +94,7 @@ _load_unfused_fp32, _build_quant_skeleton, _load_quantized, _make_fused_fp32,
 PROBE_SEED -- src/analysis/quant_induced_trace.py); the checkpoint loader,
 Identity-swap helpers, FP32 checkpoint-dir resolver and _append_row CSV
 writer (src/analysis/diagnose_activations.py); the robust checkpoint
-resolver and eval-loader builder (src/analysis/weight_ablation.py -- P1);
+resolver and eval-loader builder (src/analysis/_ablation_common.py);
 weight_ablation_canonical.py's own _run_isolation_sweep (unchanged) for
 spike_by_damage's fallback computation; _resolve_trace_config_path (src/
 analysis/weight_ablation_canonical.py); and _safe_div / _enable_determinism
@@ -129,7 +129,7 @@ from src.analysis.diagnose_activations import (
     _append_row,
     DiagnoseActivationsError,
 )
-from src.analysis.weight_ablation import (
+from src.analysis._ablation_common import (
     _resolve_checkpoint_robust,
     WeightAblationCheckpointError,
     _build_eval_loader,

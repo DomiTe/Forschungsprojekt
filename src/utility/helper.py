@@ -1,15 +1,6 @@
 import argparse
 
 def parse_args():
-    # Deferred so this module keeps importing nothing heavy at module scope.
-    # Imported (rather than duplicated) so the CLI defaults and the ones
-    # run_acc_mismatch_diagnosis falls back to can never drift apart.
-    from src.analysis.diagnose_acc import (
-        DEFAULT_MODEL as DEFAULT_DIAG_MODEL,
-        DEFAULT_DATASET as DEFAULT_DIAG_DATASET,
-        DEFAULT_STAGE as DEFAULT_DIAG_STAGE,
-    )
-
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--skip-training",
@@ -27,13 +18,6 @@ def parse_args():
         action="store_true",
         help="Load saved FP32 baselines and deployed full-int8 models and run "
              "GPU latency/throughput benchmarking only (no training, no analysis)"
-    )
-    parser.add_argument(
-        "--validate-pot-int8",
-        action="store_true",
-        help="Load saved PTQ/QAT models, reconstruct the deployed int8 models fresh, "
-             "and run the per-layer PoT-preservation functional check only "
-             "(no training, no Hessian/eigenvalue/SQNR analysis)"
     )
     parser.add_argument(
         "--diagnose-int8-perf",
@@ -67,7 +51,7 @@ def parse_args():
         "--eval-subset",
         type=int,
         default=None,
-        help="For --deploy-cpu-fbgemm and --diagnose-acc-mismatch: evaluate accuracy on only the "
+        help="For --deploy-cpu-fbgemm: evaluate accuracy on only the "
              "first N batches of the validation set (useful for IMAGENET100 at 224x224 on CPU). "
              "Default: full validation set."
     )
@@ -108,16 +92,6 @@ def parse_args():
              "results/<RUN_ID>/csv/activation_{load_check,decomposition,ranges,ablation}.csv. "
              "Reuses --checkpoint-dir, --load-run-id and --eval-subset. Intended for a local "
              "workstation run (python -m src.main ...), no SLURM/torchrun required."
-    )
-    parser.add_argument(
-        "--weight-ablation",
-        action="store_true",
-        help="Measure each layer's weight-quantization damage in isolation (all activation "
-             "quantization disabled first, then one layer's weights quantized at a time) and "
-             "correlate it against that layer's precomputed weight-Hessian trace. Writes "
-             "results/<RUN_ID>/csv/weight_ablation{,_correlation}.csv. Analysis only -- no "
-             "torchao/INT8/deployment path. Reuses --checkpoint-dir and --load-run-id. Prefers "
-             "CUDA; runs as a single local process, no SLURM/torchrun required."
     )
     parser.add_argument(
         "--random-init-control",
@@ -270,35 +244,5 @@ def parse_args():
              "once, so this lets the cross-dataset comparison pull each dataset from its own run "
              "without silently mixing checkpoint provenance within a single dataset's numbers. "
              "Omit to use the same source (--checkpoint-dir/--load-run-id) for both datasets."
-    )
-    parser.add_argument(
-        "--diagnose-acc-mismatch",
-        action="store_true",
-        help="Isolate why the same checkpoint evaluates to a different top-1 accuracy locally "
-             "than on the cluster: fingerprints the checkpoints, the class-to-index mapping and "
-             "the transform pipeline, then evaluates the plain FP32 baseline and inspects "
-             "label/per-class behaviour. Writes results/<RUN_ID>/logs/acc_mismatch_diagnosis.txt "
-             "for direct diffing against a cluster run of the same mode. Reuses --checkpoint-dir, "
-             "--load-run-id and --eval-subset. Intended for a local workstation run "
-             "(python -m src.main ...), no SLURM/torchrun required."
-    )
-    parser.add_argument(
-        "--diag-model",
-        type=str,
-        default=DEFAULT_DIAG_MODEL,
-        help=f"Model to scope --diagnose-acc-mismatch to (default: {DEFAULT_DIAG_MODEL})"
-    )
-    parser.add_argument(
-        "--diag-dataset",
-        type=str,
-        default=DEFAULT_DIAG_DATASET,
-        help=f"Dataset to scope --diagnose-acc-mismatch to (default: {DEFAULT_DIAG_DATASET})"
-    )
-    parser.add_argument(
-        "--diag-stage",
-        type=str,
-        default=DEFAULT_DIAG_STAGE,
-        choices=["PTQ", "QAT"],
-        help=f"Stage to scope --diagnose-acc-mismatch to (default: {DEFAULT_DIAG_STAGE})"
     )
     return parser.parse_args()

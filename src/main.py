@@ -44,7 +44,6 @@ from src.analysis.benchmark import (
     compare_fp32_vs_int8,
     log_quantization_audit,
 )
-from src.analysis import validate_pot
 from src.analysis import int8_profile
 from src.quantization import deploy
 
@@ -116,19 +115,6 @@ def main() -> None:
         if local_rank == 0:
             logger.info("=== Benchmark-Int8-Only: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         _run_benchmark_int8_only(args, local_rank)
-        _cleanup()
-        return
-
-    # -------------------------------------------------------------------
-    # Validate-PoT-Int8 mode: reconstruct the deployed int8 models fresh
-    # from saved PTQ/QAT checkpoints and run the per-layer functional
-    # PoT-preservation check. Skips FP32/PTQ/QAT training and all
-    # Hessian/eigenvalue/SQNR analysis.
-    # -------------------------------------------------------------------
-    if args.validate_pot_int8:
-        if local_rank == 0:
-            logger.info("=== Validate-PoT-Int8: skipping training and Hessian/eigenvalue/SQNR analysis ===")
-        _run_validate_pot_int8(args, local_rank)
         _cleanup()
         return
 
@@ -205,29 +191,6 @@ def main() -> None:
             checkpoint_dir=args.checkpoint_dir,
             load_run_id=args.load_run_id,
             eval_subset=args.eval_subset,
-        )
-        _cleanup()
-        return
-
-    # -------------------------------------------------------------------
-    # Weight-Ablation mode: measure each layer's weight-quantization damage
-    # in isolation (all activation quantization disabled first) and
-    # correlate it against that layer's precomputed weight-Hessian trace.
-    # All logic lives in src/analysis/weight_ablation.py, which reuses (does
-    # not duplicate) the checkpoint loader / evaluation function / Identity-
-    # swap helpers from src/analysis/diagnose_activations.py and the Hessian
-    # trace CSV loader from src/analysis/layer_ablation.py. Analysis only --
-    # no torchao/INT8/deployment path. Skips FP32/PTQ/QAT training and all
-    # Hessian/eigenvalue/SQNR analysis. Runs as a single local process (no
-    # torchrun/distributed init needed), prefers CUDA when available.
-    # -------------------------------------------------------------------
-    if args.weight_ablation:
-        if local_rank == 0:
-            logger.info("=== Weight-Ablation: skipping training and Hessian/eigenvalue/SQNR analysis ===")
-        from src.analysis.weight_ablation import run_weight_ablation
-        run_weight_ablation(
-            checkpoint_dir=args.checkpoint_dir,
-            load_run_id=args.load_run_id,
         )
         _cleanup()
         return
@@ -392,32 +355,6 @@ def main() -> None:
             canonical_traces_csv=args.canonical_traces_csv,
             imagenet100_checkpoint_dir=args.imagenet100_checkpoint_dir,
         )
-        _cleanup()
-        return
-
-    # -------------------------------------------------------------------
-    # Diagnose-Acc-Mismatch mode: isolate why the same checkpoint scores
-    # differently locally than on the cluster. Fingerprints the checkpoints,
-    # the class-to-index mapping and the transform pipeline, then evaluates
-    # the plain FP32 baseline and inspects label/per-class behaviour, and
-    # writes results/<RUN_ID>/logs/acc_mismatch_diagnosis.txt for direct
-    # diffing against a cluster run of the same mode. All logic lives in
-    # src/analysis/diagnose_acc.py -- see its docstring for the hypotheses
-    # under test. Runs as a single local process (no torchrun/distributed).
-    # -------------------------------------------------------------------
-    if args.diagnose_acc_mismatch:
-        if local_rank == 0:
-            logger.info("=== Diagnose-Acc-Mismatch: skipping training and Hessian/eigenvalue/SQNR analysis ===")
-            from src.analysis.diagnose_acc import run_acc_mismatch_diagnosis
-            run_acc_mismatch_diagnosis(
-                model_name=args.diag_model,
-                dataset_name=args.diag_dataset,
-                stage=args.diag_stage,
-                checkpoint_dir=args.checkpoint_dir,
-                load_run_id=args.load_run_id,
-                eval_subset=args.eval_subset,
-            )
-            logger.info("=== Diagnose-Acc-Mismatch complete ===")
         _cleanup()
         return
 
@@ -1199,88 +1136,6 @@ def _run_benchmark_int8_only(args, local_rank: int) -> None:
             "fp32_r2", "int8_r2", "compute_speedup_x", "decomposition_reliable", "conv_quantized",
         ], "benchmark_summary.csv")
         logger.info("=== Benchmark-Int8-Only complete ===")
-
-
-# Validate-PoT-Int8 reuses the same dataset/stage scope as Deploy/Benchmark-Int8-Only.
-VALIDATE_POT_DATASETS = DEPLOY_DATASETS
-VALIDATE_POT_STAGES = DEPLOY_STAGES
-
-
-def _run_validate_pot_int8(args, local_rank: int) -> None:
-    """
-    Orchestrates validate_pot's per-layer PoT-preservation check across the
-    model/dataset/stage matrix. All actual reconstruction/comparison logic
-    lives in src.analysis.validate_pot; this just loops, and rank-0-guards
-    logging/CSV/plotting.
-
-    Unlike Deploy/Benchmark-Int8-Only, this needs no data loader (inputs are
-    synthetic, fixed-seed) and no DDP-wrapped forward pass, so there is
-    nothing for non-zero ranks to usefully do -- the whole per-run body is
-    guarded, not just the logging tail. dist.destroy_process_group() in
-    _cleanup() is still called by every rank afterward.
-    """
-    load_run_id = args.load_run_id or RUN_ID
-    local_rank_device = int(os.environ.get("LOCAL_RANK", 0))
-    device = torch.device(f"cuda:{local_rank_device}" if torch.cuda.is_available() else "cpu")
-
-    if local_rank != 0:
-        return
-
-    csv_rows: list[dict] = []
-    plotted_models: set[str] = set()
-
-    for dataset_name in VALIDATE_POT_DATASETS:
-        specs = DATASET_SPECS[dataset_name]
-
-        for model_name in MODELS:
-            for stage_name, checkpoint_prefix in VALIDATE_POT_STAGES:
-                logger.info(f"\n--- Validate-PoT-Int8 {stage_name} {model_name} on {dataset_name} ---")
-                try:
-                    checkpoint_path = os.path.join(
-                        BASE_DIR, "results", load_run_id, "quantized_models",
-                        f"{checkpoint_prefix}_{model_name}_{dataset_name}.pt"
-                    )
-                    baked_model, int8_model, _ = deploy.build_int8_model(
-                        model_name=model_name,
-                        dataset_name=dataset_name,
-                        stage=stage_name,
-                        checkpoint_path=checkpoint_path,
-                        device=device,
-                        num_classes=specs["num_classes"],
-                        channels=specs["channels"],
-                        image_size=specs["image_size"],
-                    )
-
-                    layer_results = validate_pot.compare_pot_vs_int8_layers(
-                        baked_model, int8_model, device
-                    )
-                    validate_pot.log_and_summarize_pot_validation(
-                        layer_results, model_name, dataset_name, stage_name
-                    )
-                    csv_rows.extend(
-                        validate_pot.build_csv_rows(layer_results, model_name, dataset_name, stage_name)
-                    )
-
-                    if model_name not in plotted_models:
-                        try:
-                            validate_pot.plot_pot_weight_histogram(
-                                baked_model, model_name, dataset_name, stage_name, LOG_DIR
-                            )
-                            plotted_models.add(model_name)
-                        except Exception as exc:
-                            logger.warning(
-                                f"[ValidatePoT] Failed to save PoT weight histogram for {model_name}: {exc}"
-                            )
-
-                    del baked_model, int8_model
-
-                except Exception as exc:
-                    logger.error(f"FAILED {stage_name} {model_name}/{dataset_name}: {exc}", exc_info=True)
-                finally:
-                    torch.cuda.empty_cache()
-
-    _save_csv_summary(csv_rows, validate_pot.CSV_FIELDNAMES, "pot_validation.csv")
-    logger.info("=== Validate-PoT-Int8 complete ===")
 
 
 # Diagnose-Int8-Perf reuses the same dataset/stage scope and batch sizes as

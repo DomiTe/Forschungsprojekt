@@ -22,7 +22,7 @@ resnet50_no_weights required, cnn optional -- too few layers to correlate;
 PTQ required, QAT optional -- skipped with a warning if its checkpoint is
 missing):
 
-  Part 0 (gate): reuses weight_ablation.py's (P1's) path-equivalence gate
+  Part 0 (gate): reuses _ablation_common.py's path-equivalence gate
     unchanged -- the act_fake_quant->Identity weights-only construction must
     match bake_pot_into_standard_layers's weights-only construction within
     PATH_EQUIVALENCE_TOLERANCE_PTS, or the isolation sweep is unsound and is
@@ -51,13 +51,13 @@ missing):
 Reuses (does not duplicate): the checkpoint loader (_load_quant_model,
 _load_fp32_reference), bake_pot_into_standard_layers (src/main.py, deferred
 import to avoid a circular import -- same pattern used by
-src/analysis/weight_ablation.py and src/quantization/deploy_fbgemm.py), the
+src/analysis/_ablation_common.py and src/quantization/deploy_fbgemm.py), the
 evaluation function (src/main.py's evaluate), and the Identity-swap helpers
 (_disable_activation_quant, _disable_weight_quant, _verify_identity_swap),
 all from src/analysis/diagnose_activations.py; the path-equivalence gate
-(_run_part0) and the weight-mask verifier (_verify_weight_mask) from
-src/analysis/weight_ablation.py (P1); and the robust checkpoint resolver
-(_resolve_checkpoint_robust) also from weight_ablation.py.
+(_run_part0), the weight-mask verifier (_verify_weight_mask), and the robust
+checkpoint resolver (_resolve_checkpoint_robust), all from
+src/analysis/_ablation_common.py.
 
 Analysis only -- no torchao/deployment code. Runs as a single local process
 (`python -m src.main --weight-ablation-canonical ...`), no SLURM/torchrun
@@ -87,7 +87,7 @@ from src.analysis.diagnose_activations import (
     _append_row,
     DiagnoseActivationsError,
 )
-from src.analysis.weight_ablation import (
+from src.analysis._ablation_common import (
     _resolve_checkpoint_robust,
     WeightAblationCheckpointError,
     _run_part0,

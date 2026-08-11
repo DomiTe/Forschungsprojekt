@@ -8,16 +8,47 @@ def parse_args():
         help="Load saved FP32 models instead of training from scratch"
     )
     parser.add_argument(
-        "--deploy-int8-only",
+        "--train-only",
         action="store_true",
-        help="Load saved QAT models and run int8 conversion + accuracy gate only "
-             "(no training, no Hessian/eigenvalue/SQNR analysis)"
+        help="FP32 baseline -> PTQ -> QAT training and checkpointing for all 3 models x both "
+             "datasets, with throughput benchmarking at each stage. No Hessian/eigenvalue/quant-"
+             "error/classification-metrics analysis -- run --checkpoint-metrics or "
+             "--analyze-cifar10/--analyze-imagenet100 afterward for that, reading these same "
+             "checkpoints. Writes results/<RUN_ID>/csv/{pipeline,ptq,qat}_summary.csv."
     )
     parser.add_argument(
-        "--benchmark-int8-only",
+        "--checkpoint-metrics",
         action="store_true",
-        help="Load saved FP32 baselines and deployed full-int8 models and run "
-             "GPU latency/throughput benchmarking only (no training, no analysis)"
+        help="Per-layer Hessian trace, top eigenvalue, weight-quantization error (MSE/SQNR), and "
+             "whole-model classification metrics for FP32/PTQ/QAT, computed from saved "
+             "checkpoints (the analysis --train-only no longer runs inline). Writes "
+             "results/<RUN_ID>/csv/{layerwise_hessian_traces,layerwise_top_eigenvalues,"
+             "layerwise_quant_error,classification_metrics}.csv. Reuses --checkpoint-dir and "
+             "--load-run-id. Prefers CUDA; runs as a single local process, no SLURM/torchrun "
+             "required."
+    )
+    parser.add_argument(
+        "--analyze-cifar10",
+        action="store_true",
+        help="Runs every retained analysis pipeline (checkpoint-metrics, relock-traces, "
+             "quant-induced-trace, weight-ablation-canonical, spike-layer-cause, random-init-"
+             "control, diagnose-activation-quant, ablate-layer-quantization) scoped to CIFAR10 "
+             "only, all 3 models, reading checkpoints via --checkpoint-dir/--load-run-id (the "
+             "checkpoints --train-only writes). Meant to run in parallel with "
+             "--analyze-imagenet100 as a separate job/process. One step's failure is logged and "
+             "does not abort the remaining steps. Excludes --weight-ablation-diagnose (a fixed "
+             "one-off diagnostic, not a sweep) and --deploy-cpu-fbgemm/--diagnose-int8-perf "
+             "(deployment/benchmark, not analysis) -- run those separately if needed."
+    )
+    parser.add_argument(
+        "--analyze-imagenet100",
+        action="store_true",
+        help="Same bundle as --analyze-cifar10, scoped to IMAGENET100 only. Note: spike-layer-"
+             "cause's cross-dataset resolution_contrast_ratio needs both datasets' data in the "
+             "SAME process -- when run via --analyze-cifar10/--analyze-imagenet100 separately "
+             "(e.g. in parallel), that one comparison stays NaN in both runs' "
+             "spike_layer_attribution.csv; run --spike-layer-cause unscoped (both datasets, one "
+             "process) separately to get it."
     )
     parser.add_argument(
         "--diagnose-int8-perf",

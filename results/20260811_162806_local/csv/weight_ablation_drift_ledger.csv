@@ -1,0 +1,18 @@
+candidate,v2_setting,v1_setting,resulting_damage_pts,matches_v1
+0:v2_baseline,"checkpoint_dir=results/20260810_104157_31209/quantized_models, batch=512, workers=0, shuffle=False, seed=42","(reference row -- reproduces v2, not a flip)",1.620000,no (expected)
+1:eval_batch_size,batch_size=512 (v2 default),batch_size=32,1.620000,no
+1:eval_batch_size,batch_size=512 (v2 default),batch_size=64,1.610000,no
+1:eval_batch_size,batch_size=512 (v2 default),batch_size=128,1.620000,no
+1:eval_batch_size,batch_size=512 (v2 default),batch_size=256,1.620000,no
+1:eval_batch_size,batch_size=512 (v2 default),batch_size=512,1.620000,no
+2:shuffle,shuffle=False (v2/prompt-required default),shuffle=True,1.620000,no
+2:num_workers,num_workers=0 (v2/prompt-required default),num_workers=4,1.620000,no
+3:probe_seed,seed=42 (v2 default),seed=0,1.620000,no
+3:probe_seed,seed=42 (v2 default),seed=1234,1.620000,no
+3:deterministic_algorithms,ambient defaults (no explicit use_deterministic_algorithms/cudnn.deterministic call in weight_ablation_canonical.py),torch.use_deterministic_algorithms(True) + cudnn.deterministic=True + cudnn.benchmark=False (_enable_determinism),1.620000,no
+3:dtype_float32,float32 end-to-end (evaluate() has no autocast context -- confirmed by reading src/main.py),observed param dtype=torch.float32,,"n/a (structural check, PASS)"
+4:isolation_mechanism_assertion,"nn.Identity() replacement for both weight_fake_quant and act_fake_quant, _verify_weight_mask enforced","positive_check_passed=True, negative_check_correctly_raised=True (extra_active_layer=layer1.0.conv1)",,"n/a (structural check, PASS)"
+5:checkpoint_source,"checkpoint_dir=results/20260810_104157_31209/quantized_models (fp32_acc=80.56%, isolated_acc=78.94%)","checkpoint_dir=results/backup_models/quantized_models (fp32_acc=80.21%, isolated_acc=79.54%)",0.670000,yes
+6:fresh_model_reconstruction,fresh _load_quant_model() call per layer (unchanged v1/v2 code),"id() over 3 successive constructions: [139987956475200, 139987177972816, 139987180989104] (all distinct=True)",,"n/a (structural check, PASS)"
+7:bn_eval_mode,model.eval() called inside _load_quant_model; Identity swaps do not touch training mode,observed model.training==False after isolation swap (expected False),,"n/a (structural check, PASS)"
+8:cuda_determinism,run A damage=1.620000pts,"run B (identical seed/settings) damage=1.620000pts, |diff|=0.00e+00",1.620000,"n/a (stability check, PASS)"

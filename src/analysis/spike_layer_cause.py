@@ -828,6 +828,7 @@ def run_spike_layer_cause(
     load_run_id: str | None,
     canonical_traces_csv: str,
     imagenet100_checkpoint_dir: str | None = None,
+    datasets: list[str] | None = None,
 ) -> None:
     """
     imagenet100_checkpoint_dir: this module's whole point is a cross-dataset
@@ -839,7 +840,22 @@ def run_spike_layer_cause(
     --load-run-id) used for IMAGENET100 only; CIFAR10 always resolves via
     --checkpoint-dir/--load-run-id as every other mode does. Omit to use the
     same source for both datasets.
+
+    datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    for a parallel per-dataset analysis run) -- default None means every
+    dataset in DATASETS. IMPORTANT: Part 6's resolution_contrast_ratio needs
+    BOTH datasets' residual/KFAC data in the SAME process's memory (Part 6
+    runs once per model, after that model's dataset loop) -- when datasets
+    is restricted to one dataset, Part 6 cannot compute the cross-dataset
+    comparison and resolution_contrast_ratio stays NaN in that run's
+    spike_layer_attribution.csv, no matter how the two per-dataset runs'
+    output directories are combined afterward. Run this flag unscoped
+    (default, both datasets, one process) to get the full resolution
+    contrast -- the dataset-scoped runs are for parallelizing the other six
+    parts (spike selection, traces, residual, descriptors, KFAC, per-
+    dataset attribution regression), not Part 6 itself.
     """
+    datasets = datasets if datasets is not None else DATASETS
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[SpikeLayerCause] CUDA not available -- falling back to CPU, this will be slow.")
@@ -872,7 +888,7 @@ def run_spike_layer_cause(
         per_dataset_layer_type: dict[str, dict[str, str]] = {}
         spikes_seen: set[str] = set()
 
-        for dataset_name in DATASETS:
+        for dataset_name in datasets:
             label = f"{model_name}/{dataset_name}"
             logger.info(f"[SpikeLayerCause] === {label} ===")
             specs = DATASET_SPECS[dataset_name]

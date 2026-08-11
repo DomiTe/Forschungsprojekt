@@ -41,12 +41,11 @@ logger = logging.getLogger(__name__)
 # Normalisation statistics
 # ---------------------------------------------------------------------------
 _NORM = {
-    "MNIST":         {"mean": (0.1307,),                   "std": (0.3081,)},
-    "FASHION_MNIST": {"mean": (0.2860,),                   "std": (0.3530,)},
+    # "MNIST":         {"mean": (0.1307,),                   "std": (0.3081,)},
+    # "FASHION_MNIST": {"mean": (0.2860,),                   "std": (0.3530,)},
     "CIFAR10":       {"mean": (0.4914, 0.4822, 0.4465),    "std": (0.2023, 0.1994, 0.2010)},
-    "CIFAR100":      {"mean": (0.5071, 0.4867, 0.4408),    "std": (0.2675, 0.2565, 0.2761)},
-    "POKEMON":       {"mean": (0.5,    0.5,    0.5),       "std": (0.5,    0.5,    0.5)},
-    # "IMAGENET":      {"mean": (0.485,  0.456,  0.406),     "std": (0.229,  0.224,  0.225)},
+    # "CIFAR100":      {"mean": (0.5071, 0.4867, 0.4408),    "std": (0.2675, 0.2565, 0.2761)},
+    # "POKEMON":       {"mean": (0.5,    0.5,    0.5),       "std": (0.5,    0.5,    0.5)},
     "IMAGENET100":   {"mean": (0.485,  0.456,  0.406),     "std": (0.229,  0.224,  0.225)},
 }
 
@@ -74,12 +73,11 @@ def get_data_loaders(dataset_name: str = DATASET_NAME, batch_size: int | None = 
         raise ValueError(f"Unknown dataset: {dataset_name}")
     image_size = DATASET_SPECS[dataset_name]["image_size"]
     dispatch = {
-        "MNIST":         _get_mnist_loaders,
-        "FASHION_MNIST": _get_fashion_loaders,
+        # "MNIST":         _get_mnist_loaders,
+        # "FASHION_MNIST": _get_fashion_loaders,
         "CIFAR10":       _get_cifar10_loaders,
-        "CIFAR100":      _get_cifar100_loaders,
-        "POKEMON":       _get_pokemon_loaders,
-        # "IMAGENET":      _get_imagenet_loaders,
+        # "CIFAR100":      _get_cifar100_loaders,
+        # "POKEMON":       _get_pokemon_loaders,
         "IMAGENET100":   _get_imagenet100_loaders,
     }
     return dispatch[dataset_name](image_size, batch_size)
@@ -230,32 +228,32 @@ def _norm(name: str):
     return _NORM.get(name, {"mean": (0.5,), "std": (0.5,)})
 
 
-def _get_mnist_loaders(image_size: int, batch_size: int | None = None):
-    n = _norm("MNIST")
-    tf = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
-        transforms.ToTensor(),
-        transforms.Normalize(n["mean"], n["std"]),
-    ])
-    train = datasets.MNIST(DATA_DIR, train=True,  download=True, transform=tf)
-    test  = datasets.MNIST(DATA_DIR, train=False, download=True, transform=tf)
-    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  pin_memory=PIN_MEMORY),
-            DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, pin_memory=PIN_MEMORY),
-            10)
+# def _get_mnist_loaders(image_size: int, batch_size: int | None = None):
+#     n = _norm("MNIST")
+#     tf = transforms.Compose([
+#         transforms.Resize((image_size, image_size)),
+#         transforms.ToTensor(),
+#         transforms.Normalize(n["mean"], n["std"]),
+#     ])
+#     train = datasets.MNIST(DATA_DIR, train=True,  download=True, transform=tf)
+#     test  = datasets.MNIST(DATA_DIR, train=False, download=True, transform=tf)
+#     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  pin_memory=PIN_MEMORY),
+#             DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, pin_memory=PIN_MEMORY),
+#             10)
 
 
-def _get_fashion_loaders(image_size: int, batch_size: int | None = None):
-    n = _norm("FASHION_MNIST")
-    tf = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
-        transforms.ToTensor(),
-        transforms.Normalize(n["mean"], n["std"]),
-    ])
-    train = datasets.FashionMNIST(DATA_DIR, train=True,  download=True, transform=tf)
-    test  = datasets.FashionMNIST(DATA_DIR, train=False, download=True, transform=tf)
-    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  pin_memory=PIN_MEMORY),
-            DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, pin_memory=PIN_MEMORY),
-            10)
+# def _get_fashion_loaders(image_size: int, batch_size: int | None = None):
+#     n = _norm("FASHION_MNIST")
+#     tf = transforms.Compose([
+#         transforms.Resize((image_size, image_size)),
+#         transforms.ToTensor(),
+#         transforms.Normalize(n["mean"], n["std"]),
+#     ])
+#     train = datasets.FashionMNIST(DATA_DIR, train=True,  download=True, transform=tf)
+#     test  = datasets.FashionMNIST(DATA_DIR, train=False, download=True, transform=tf)
+#     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  pin_memory=PIN_MEMORY),
+#             DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, pin_memory=PIN_MEMORY),
+#             10)
 
 
 def _get_cifar10_loaders(image_size: int, batch_size: int | None = None):
@@ -281,99 +279,59 @@ def _get_cifar10_loaders(image_size: int, batch_size: int | None = None):
             10)
 
 
-def _get_cifar100_loaders(image_size: int, batch_size: int | None = None):
-    n = _norm("CIFAR100")
-    tf_train = transforms.Compose([
-        transforms.RandomCrop(32, padding=4),
-        transforms.RandomHorizontalFlip(),
-        transforms.Resize((image_size, image_size)),
-        transforms.ToTensor(),
-        transforms.Normalize(n["mean"], n["std"]),
-    ])
-    tf_test = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
-        transforms.ToTensor(),
-        transforms.Normalize(n["mean"], n["std"]),
-    ])
-    train = datasets.CIFAR100(DATA_DIR, train=True,  download=True, transform=tf_train)
-    test  = datasets.CIFAR100(DATA_DIR, train=False, download=True, transform=tf_test)
-    kw = {"num_workers": 8, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
-    logger.info(f"CIFAR-100: {len(train)} train / {len(test)} test")
-    return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
-            DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
-            100)
-
-
-def _get_pokemon_loaders(image_size: int, batch_size: int | None = None):
-    n = _norm("POKEMON")
-    tf_train = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomRotation(15),
-        transforms.ColorJitter(brightness=0.2, contrast=0.2),
-        transforms.ToTensor(),
-        transforms.Normalize(n["mean"], n["std"]),
-    ])
-    tf_val = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
-        transforms.ToTensor(),
-        transforms.Normalize(n["mean"], n["std"]),
-    ])
-    dataset_path = os.path.join(DATA_DIR, "PokemonData")
-    full_train   = datasets.ImageFolder(dataset_path, transform=tf_train)
-    full_val     = datasets.ImageFolder(dataset_path, transform=tf_val)
-    total        = len(full_train)
-    train_sz     = int(0.8 * total)
-    val_sz       = total - train_sz
-    gen          = torch.Generator().manual_seed(42)
-    train_data, _ = random_split(full_train, [train_sz, val_sz], generator=gen)
-    _, val_data   = random_split(full_val,   [train_sz, val_sz], generator=gen)
-    kw = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
-    num_classes  = len(full_train.classes)
-    logger.info(f"Pokemon: {len(train_data)} train / {len(val_data)} val — {num_classes} classes")
-    return (DataLoader(train_data, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
-            DataLoader(val_data,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
-            num_classes)
-
-
-# def _get_imagenet_loaders(image_size: int, batch_size: int | None = None):
-#     """
-#     Expects ImageNet data laid out as:
-#         data/imagenet/train/<class_dir>/*.JPEG
-#         data/imagenet/val/<class_dir>/*.JPEG
-
-#     The standard ImageNet validation folder structure is produced by
-#     the official torchvision download script or ILSVRC devkit.
-#     """
-#     n = _norm("IMAGENET")
+# def _get_cifar100_loaders(image_size: int, batch_size: int | None = None):
+#     n = _norm("CIFAR100")
 #     tf_train = transforms.Compose([
-#         transforms.RandomResizedCrop(image_size),
+#         transforms.RandomCrop(32, padding=4),
 #         transforms.RandomHorizontalFlip(),
-#         transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2),
+#         transforms.Resize((image_size, image_size)),
+#         transforms.ToTensor(),
+#         transforms.Normalize(n["mean"], n["std"]),
+#     ])
+#     tf_test = transforms.Compose([
+#         transforms.Resize((image_size, image_size)),
+#         transforms.ToTensor(),
+#         transforms.Normalize(n["mean"], n["std"]),
+#     ])
+#     train = datasets.CIFAR100(DATA_DIR, train=True,  download=True, transform=tf_train)
+#     test  = datasets.CIFAR100(DATA_DIR, train=False, download=True, transform=tf_test)
+#     kw = {"num_workers": 8, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+#     logger.info(f"CIFAR-100: {len(train)} train / {len(test)} test")
+#     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
+#             DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
+#             100)
+
+
+# def _get_pokemon_loaders(image_size: int, batch_size: int | None = None):
+#     n = _norm("POKEMON")
+#     tf_train = transforms.Compose([
+#         transforms.Resize((image_size, image_size)),
+#         transforms.RandomHorizontalFlip(),
+#         transforms.RandomRotation(15),
+#         transforms.ColorJitter(brightness=0.2, contrast=0.2),
 #         transforms.ToTensor(),
 #         transforms.Normalize(n["mean"], n["std"]),
 #     ])
 #     tf_val = transforms.Compose([
-#         transforms.Resize(256),
-#         transforms.CenterCrop(image_size),
+#         transforms.Resize((image_size, image_size)),
 #         transforms.ToTensor(),
 #         transforms.Normalize(n["mean"], n["std"]),
 #     ])
-#     train_dir = os.path.join(IMAGENET_DIR, "train")
-#     val_dir   = os.path.join(IMAGENET_DIR, "val")
-#     if not os.path.isdir(train_dir) or not os.path.isdir(val_dir):
-#         raise FileNotFoundError(
-#             f"ImageNet not found at {IMAGENET_DIR}.\n"
-#             "Expected sub-directories: train/ and val/\n"
-#             "Download from https://image-net.org/request  or use a torrent/academic mirror."
-#         )
-#     train = datasets.ImageFolder(train_dir, transform=tf_train)
-#     val   = datasets.ImageFolder(val_dir,   transform=tf_val)
-#     kw = {"num_workers": 0, "pin_memory": PIN_MEMORY, "persistent_workers": False} if PIN_MEMORY else {"num_workers": 0}
-#     logger.info(f"ImageNet: {len(train)} train / {len(val)} val")
-#     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
-#             DataLoader(val,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
-#             1000)
+#     dataset_path = os.path.join(DATA_DIR, "PokemonData")
+#     full_train   = datasets.ImageFolder(dataset_path, transform=tf_train)
+#     full_val     = datasets.ImageFolder(dataset_path, transform=tf_val)
+#     total        = len(full_train)
+#     train_sz     = int(0.8 * total)
+#     val_sz       = total - train_sz
+#     gen          = torch.Generator().manual_seed(42)
+#     train_data, _ = random_split(full_train, [train_sz, val_sz], generator=gen)
+#     _, val_data   = random_split(full_val,   [train_sz, val_sz], generator=gen)
+#     kw = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
+#     num_classes  = len(full_train.classes)
+#     logger.info(f"Pokemon: {len(train_data)} train / {len(val_data)} val — {num_classes} classes")
+#     return (DataLoader(train_data, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
+#             DataLoader(val_data,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
+#             num_classes)
 
 
 def _get_imagenet100_loaders(image_size: int, batch_size: int | None = None):

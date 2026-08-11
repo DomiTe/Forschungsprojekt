@@ -512,7 +512,12 @@ def run_diagnose_activation_quant(
     checkpoint_dir: str | None,
     load_run_id: str | None,
     eval_subset: int | None,
+    datasets: list[str] | None = None,
 ) -> None:
+    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    for a parallel per-dataset analysis run) -- default None means every
+    dataset in DATASETS."""
+    datasets = datasets if datasets is not None else DATASETS
     resolved_checkpoint_dir = _resolve_checkpoint_dir(checkpoint_dir, load_run_id)
     fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
 
@@ -522,7 +527,7 @@ def run_diagnose_activation_quant(
     ranges_csv = os.path.join(CSV_DIR, "activation_ranges.csv")
     ablation_csv = os.path.join(CSV_DIR, "activation_ablation.csv")
 
-    for dataset_name in DATASETS:
+    for dataset_name in datasets:
         specs = DATASET_SPECS[dataset_name]
         channels, image_size = specs["channels"], specs["image_size"]
 

@@ -98,8 +98,8 @@ from src.utility.config import CSV_DIR, DATASET_SPECS
 
 logger = logging.getLogger(__name__)
 
-DATASET_NAME = "CIFAR10"
-REQUIRED_MODELS = ["resnet18_no_weights", "resnet50_no_weights"]   # resnet18 first -- run/report order per spec
+DATASETS = ["CIFAR10", "IMAGENET100"]
+REQUIRED_MODELS = ["resnet18_no_weights", "resnet50_no_weights", "cnn"]   # resnet18 first -- run/report order per spec
 STAGES = ["PTQ", "QAT"]                                            # QAT optional, skipped with a warning if missing
 
 SEED = 42
@@ -490,13 +490,18 @@ def run_weight_ablation_canonical(
     load_run_id: str | None,
     canonical_traces_csv: str,
     damage_mode: str = "both",
+    datasets: list[str] | None = None,
 ) -> None:
+    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    for a parallel per-dataset analysis run) -- default None means every
+    dataset in DATASETS."""
     assert damage_mode in DAMAGE_MODES, f"damage_mode must be one of {DAMAGE_MODES}, got {damage_mode!r}"
+    datasets = datasets if datasets is not None else DATASETS
     torch.manual_seed(SEED)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[WeightAblationCanonical] CUDA not available -- falling back to CPU, this will be slow.")
-    logger.info(f"[WeightAblationCanonical] device={device} seed={SEED} damage_mode={damage_mode} canonical_traces_csv={canonical_traces_csv}")
+    logger.info(f"[WeightAblationCanonical] device={device} seed={SEED} damage_mode={damage_mode} datasets={datasets} canonical_traces_csv={canonical_traces_csv}")
     _log_trace_config(canonical_traces_csv)
 
     fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
@@ -506,41 +511,43 @@ def run_weight_ablation_canonical(
     ablation_csv = os.path.join(CSV_DIR, "weight_ablation_canonical_v2.csv")
     correlation_csv = os.path.join(CSV_DIR, "weight_ablation_canonical_correlation_v2.csv")
 
-    specs = DATASET_SPECS[DATASET_NAME]
-    try:
-        eval_loader, num_classes = _build_eval_loader(DATASET_NAME)
-    except Exception as exc:
-        logger.error(f"[WeightAblationCanonical] {DATASET_NAME}: could not load dataset ({exc}) -- aborting")
-        return
+    for dataset_name in datasets:
+        specs = DATASET_SPECS[dataset_name]
+        try:
+            eval_loader, num_classes = _build_eval_loader(dataset_name)
+        except Exception as exc:
+            logger.error(f"[WeightAblationCanonical] {dataset_name}: could not load dataset ({exc}) -- skipping dataset")
+            continue
 
-    # Stage-outer, model-inner: resnet18/PTQ, resnet50/PTQ, then (if reached)
-    # resnet18/QAT, resnet50/QAT -- matches the spec's explicit run/report order.
-    for stage in STAGES:
-        for model_name in REQUIRED_MODELS:
-            label = f"{stage} {model_name}/{DATASET_NAME}"
-            logger.info(f"[WeightAblationCanonical] === {label} ===")
-            try:
-                fp32_ckpt_path = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": DATASET_NAME})
-                quant_ckpt_path = _resolve_checkpoint_robust(quant_dir, {"stage": stage, "model": model_name, "dataset": DATASET_NAME})
-            except FileNotFoundError as exc:
-                level = logger.warning if stage == "QAT" else logger.error
-                level(f"[WeightAblationCanonical] {label}: checkpoint missing ({exc}) -- skipping{' (QAT optional)' if stage == 'QAT' else ''}")
-                continue
-            except WeightAblationCheckpointError as exc:
-                logger.error(f"[WeightAblationCanonical] {label}: checkpoint resolution AMBIGUOUS/NEAR-MISS -- {exc} -- skipping, needs human attention")
-                continue
+        # Stage-outer, model-inner: resnet18/PTQ, resnet50/PTQ, then (if reached)
+        # resnet18/QAT, resnet50/QAT -- matches the spec's explicit run/report order.
+        for stage in STAGES:
+            for model_name in REQUIRED_MODELS:
+                label = f"{stage} {model_name}/{dataset_name}"
+                logger.info(f"[WeightAblationCanonical] === {label} ===")
+                try:
+                    fp32_ckpt_path = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": dataset_name})
+                    quant_ckpt_path = _resolve_checkpoint_robust(quant_dir, {"stage": stage, "model": model_name, "dataset": dataset_name})
+                except FileNotFoundError as exc:
+                    level = logger.warning if stage == "QAT" else logger.error
+                    level(f"[WeightAblationCanonical] {label}: checkpoint missing ({exc}) -- skipping{' (QAT optional)' if stage == 'QAT' else ''}")
+                    continue
+                except WeightAblationCheckpointError as exc:
+                    logger.error(f"[WeightAblationCanonical] {label}: checkpoint resolution AMBIGUOUS/NEAR-MISS -- {exc} -- skipping, needs human attention")
+                    continue
 
-            try:
-                _run_one_combo(
-                    model_name, DATASET_NAME, stage, specs, num_classes, device, eval_loader,
-                    quant_ckpt_path, fp32_ckpt_path, canonical_traces_csv, ablation_csv, correlation_csv,
-                )
-            except DiagnoseActivationsError as exc:
-                logger.error(f"[WeightAblationCanonical] {label}: Identity-swap verification FAILED -- {exc}")
-            except Exception as exc:
-                logger.error(f"[WeightAblationCanonical] FAILED {label}: {exc}", exc_info=True)
-            finally:
-                if device.type == "cuda":
-                    torch.cuda.empty_cache()
+                try:
+                    _run_one_combo(
+                        model_name, dataset_name, stage, specs, num_classes, device, eval_loader,
+                        quant_ckpt_path, fp32_ckpt_path, canonical_traces_csv, ablation_csv, correlation_csv,
+                        damage_mode=damage_mode,
+                    )
+                except DiagnoseActivationsError as exc:
+                    logger.error(f"[WeightAblationCanonical] {label}: Identity-swap verification FAILED -- {exc}")
+                except Exception as exc:
+                    logger.error(f"[WeightAblationCanonical] FAILED {label}: {exc}", exc_info=True)
+                finally:
+                    if device.type == "cuda":
+                        torch.cuda.empty_cache()
 
     logger.info("[WeightAblationCanonical] === Weight-Ablation-Canonical complete ===")

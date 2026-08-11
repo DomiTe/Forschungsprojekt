@@ -1,0 +1,7 @@
+model,dataset,spike_by_trace,spike_by_damage,agreement
+resnet50_no_weights,CIFAR10,conv1,conv1,yes
+resnet50_no_weights,IMAGENET100,conv1,conv1,yes
+resnet18_no_weights,CIFAR10,layer1.1.conv1,conv1,no
+resnet18_no_weights,IMAGENET100,conv1,conv1,yes
+cnn,CIFAR10,conv2,conv1,no
+cnn,IMAGENET100,conv2,conv1,no

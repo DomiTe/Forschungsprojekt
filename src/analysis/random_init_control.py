@@ -91,7 +91,7 @@ from src.utility.utils import get_data_loaders
 
 logger = logging.getLogger(__name__)
 
-DATASETS = ["CIFAR10"]
+DATASETS = ["CIFAR10", "IMAGENET100"]
 # resnet50 first -- it carries the headline conv1 spike this control targets.
 ORDERED_MODELS = ["resnet50_no_weights", "resnet18_no_weights", "cnn"]
 
@@ -490,7 +490,13 @@ def _run_one_model(
         _write_summary(model_name, dataset_name, len(INIT_SEEDS), per_layer_bn, "populated", summary_csv)
 
 
-def run_random_init_control(checkpoint_dir: str | None, load_run_id: str | None) -> None:
+def run_random_init_control(
+    checkpoint_dir: str | None, load_run_id: str | None, datasets: list[str] | None = None,
+) -> None:
+    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    for a parallel per-dataset analysis run) -- default None means every
+    dataset in DATASETS."""
+    datasets = datasets if datasets is not None else DATASETS
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[RandomInitControl] CUDA not available -- falling back to CPU, this will be slow.")
@@ -504,7 +510,7 @@ def run_random_init_control(checkpoint_dir: str | None, load_run_id: str | None)
     comparison_csv = os.path.join(CSV_DIR, "random_init_comparison.csv")
     summary_csv = os.path.join(CSV_DIR, "random_init_summary.csv")
 
-    for dataset_name in DATASETS:
+    for dataset_name in datasets:
         specs = DATASET_SPECS[dataset_name]
         try:
             hessian_loader, chance_loader, num_classes = _build_loaders(dataset_name)

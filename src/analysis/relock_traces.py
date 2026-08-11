@@ -109,9 +109,17 @@ from src.utility.utils import get_data_loaders
 
 logger = logging.getLogger(__name__)
 
-DATASET_NAME = "CIFAR10"
+DATASET_NAME = "CIFAR10"                         # Part 1's drift-diagnosis anchor dataset, per spec
 DIAGNOSIS_MODEL = "resnet50_no_weights"          # Part 1's grid runs only on this model's conv1, per spec
-PART2_MODELS = ["resnet50_no_weights", "resnet18_no_weights"]   # cnn optional -- not run by default
+PART2_MODELS = ["resnet50_no_weights", "resnet18_no_weights", "cnn"]
+PART2_DATASETS = ["CIFAR10", "IMAGENET100"]
+
+# Part 2's per-dataset trace budget. CIFAR10 uses the frozen canonical
+# config (CANONICAL_* above) unchanged. IMAGENET100 is reduced -- 224x224
+# HVP cost is far higher per iteration than 32x32 -- matching
+# spike_layer_cause.py's own IMAGENET100 budget for consistency across the
+# codebase's canonical-trace outputs.
+IMAGENET100_TRACE_CONFIG = {"batch_size": 8, "num_batches": 3, "max_iter": 30, "tol": 1e-3}
 
 # ---------------------------------------------------------------------------
 # Frozen canonical config (Part 0). Every trace call in this module reads
@@ -255,10 +263,10 @@ def _load_legacy_anchors(path_or_json: str | None) -> dict:
 # Loaders
 # ---------------------------------------------------------------------------
 
-def _build_val_hessian_loader(dataset_name: str) -> tuple[DataLoader, int]:
+def _build_val_hessian_loader(dataset_name: str, batch_size: int = CANONICAL_BATCH_SIZE) -> tuple[DataLoader, int]:
     _, val_loader, num_classes = get_data_loaders(dataset_name)
     loader = DataLoader(
-        val_loader.dataset, batch_size=CANONICAL_BATCH_SIZE, shuffle=False, num_workers=0, pin_memory=False,
+        val_loader.dataset, batch_size=batch_size, shuffle=False, num_workers=0, pin_memory=False,
     )
     return loader, num_classes
 
@@ -533,7 +541,15 @@ def _run_canonical_variant_traces(
     val_loader: DataLoader, mapping: list[dict],
     fp32_ckpt: str, ptq_ckpt: str | None, qat_ckpt: str | None,
     canonical_csv: str, reuse: dict[str, dict[str, float]] | None = None,
+    num_batches: int = CANONICAL_NUM_BATCHES, max_iter: int = CANONICAL_MAX_ITER, tol: float = CANONICAL_TOL,
 ) -> dict[str, dict[str, float]]:
+    """
+    num_batches/max_iter/tol default to the frozen CIFAR10 canonical config;
+    pass a dataset's own (reduced) budget for datasets where the canonical
+    values are too costly (e.g. IMAGENET100 at 224x224 -- see
+    IMAGENET100_TRACE_CONFIG). Still probe_seed-locked to CANONICAL_PROBE_SEED
+    regardless, so cross-variant ratios within one dataset stay comparable.
+    """
     channels, image_size = specs["channels"], specs["image_size"]
     criterion = nn.CrossEntropyLoss(reduction=CANONICAL_LOSS_REDUCTION)
     reuse = reuse or {}
@@ -567,7 +583,7 @@ def _run_canonical_variant_traces(
             logger.info(f"[RelockTraces] {model_name}/{dataset_name} variant={variant}: reusing Part 1's canonical run (identical config)")
         else:
             model = build_fn(device)
-            traces = _trace_full(model, val_loader, criterion, device, CANONICAL_PROBE_SEED, CANONICAL_NUM_BATCHES, CANONICAL_MAX_ITER, CANONICAL_TOL)
+            traces = _trace_full(model, val_loader, criterion, device, CANONICAL_PROBE_SEED, num_batches, max_iter, tol)
             del model
             if device.type == "cuda":
                 torch.cuda.empty_cache()
@@ -789,7 +805,18 @@ def run_relock_traces(
     load_run_id: str | None,
     banked_fp32_profile: str | None,
     legacy_anchors: str | None,
+    datasets: list[str] | None = None,
 ) -> None:
+    """
+    datasets restricts Part 2's canonical recompute to a subset of
+    PART2_DATASETS (e.g. one dataset, for a parallel per-dataset analysis
+    run) -- default None means every dataset in PART2_DATASETS. Part 1
+    (drift diagnosis) and Part 3 (determinism check) are anchored on
+    DATASET_NAME/DIAGNOSIS_MODEL by design (the legacy anchors being
+    diagnosed are CIFAR10-specific numbers) and only run when "CIFAR10" is
+    among the requested datasets.
+    """
+    datasets = datasets if datasets is not None else PART2_DATASETS
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[RelockTraces] CUDA not available -- falling back to CPU, this will be slow.")
@@ -797,7 +824,7 @@ def run_relock_traces(
 
     anchors = _load_legacy_anchors(legacy_anchors)
     config = _freeze_config(RUN_DIR, device)
-    logger.info(f"[RelockTraces] device={device} probe_seed={config['estimator']['probe_seed']} basis={config['basis']['canonical_for_cross_stage_comparison']}")
+    logger.info(f"[RelockTraces] device={device} probe_seed={config['estimator']['probe_seed']} basis={config['basis']['canonical_for_cross_stage_comparison']} datasets={datasets}")
 
     fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
     quant_dir = _resolve_checkpoint_dir(checkpoint_dir, load_run_id)
@@ -807,103 +834,121 @@ def run_relock_traces(
     canonical_csv = os.path.join(CSV_DIR, "canonical_traces.csv")
     ledger_csv = os.path.join(CSV_DIR, "trace_reconciliation_ledger.csv")
 
-    specs = DATASET_SPECS[DATASET_NAME]
-    val_loader, num_classes = _build_val_hessian_loader(DATASET_NAME)
-    orig_loader, _ = _build_original_pipeline_loader(DATASET_NAME)
-
-    # ---- Part 1: drift diagnosis on resnet50 conv1 ----
     canonical_by_model: dict[str, dict[str, dict[str, float]]] = {}
     mapping_by_model: dict[str, list[dict]] = {}
+    diag_canonical: dict[str, dict[str, float]] = {}
+    diag_fp32_ckpt = None
 
-    try:
-        diag_fp32_ckpt = _resolve_checkpoint_robust(fp32_models_dir, {"model": DIAGNOSIS_MODEL, "dataset": DATASET_NAME})
-        diag_ptq_ckpt = _resolve_checkpoint_robust(quant_dir, {"stage": "PTQ", "model": DIAGNOSIS_MODEL, "dataset": DATASET_NAME})
-    except (FileNotFoundError, WeightAblationCheckpointError) as exc:
-        raise RelockTracesError(f"Part 1 requires {DIAGNOSIS_MODEL}/{DATASET_NAME} FP32 and PTQ checkpoints -- {exc}") from exc
+    # ---- Part 1: drift diagnosis on resnet50 conv1 (CIFAR10 anchor only) ----
+    if DATASET_NAME in datasets:
+        diag_specs = DATASET_SPECS[DATASET_NAME]
+        diag_val_loader, diag_num_classes = _build_val_hessian_loader(DATASET_NAME)
+        orig_loader, _ = _build_original_pipeline_loader(DATASET_NAME)
 
-    logger.info(f"[RelockTraces] === Part 1: drift diagnosis on {DIAGNOSIS_MODEL} conv1 ===")
-    diag_canonical = _run_part1_drift_diagnosis(
-        DIAGNOSIS_MODEL, specs, num_classes, device, val_loader, orig_loader,
-        diag_fp32_ckpt, diag_ptq_ckpt, anchors, drift_csv,
-    )
-    canonical_by_model[DIAGNOSIS_MODEL] = dict(diag_canonical)
-
-    largest_ptq_anchor = max(anchors.get("resnet50_conv1_ptq", []), key=lambda a: a["value"], default=None)
-    if largest_ptq_anchor is not None:
-        explained = _anchor_explained(drift_csv, largest_ptq_anchor["name"])
-        if explained:
-            logger.info(
-                f"[RelockTraces] Part 1 RESULT: legacy anchor {largest_ptq_anchor['name']}="
-                f"{largest_ptq_anchor['value']} was reproduced within {ANCHOR_TOLERANCE*100:.0f}% by "
-                f"a tested knob -- drift is understood, Part 2's canonical recompute is trustworthy."
-            )
-        else:
-            logger.error(
-                f"[RelockTraces] Part 1 RESULT: UNRESOLVED -- legacy anchor {largest_ptq_anchor['name']}="
-                f"{largest_ptq_anchor['value']} was NOT reproduced within {ANCHOR_TOLERANCE*100:.0f}% by any "
-                f"tested knob (including the bonus data-source and observer-calibration checks). See "
-                f"{drift_csv} for the closest residuals per knob. Proceeding to Part 2/3 anyway -- the "
-                f"frozen canonical config is well-defined independent of this historical gap -- but this "
-                f"gap must be flagged as UNRESOLVED wherever the legacy number is cited."
-            )
-
-    # ---- Part 0 mapping gate for Part 2 (both required models) ----
-    for model_name in PART2_MODELS:
-        unfused_skel = build_model(num_classes=num_classes, model_name=model_name, channels=specs["channels"], image_size=specs["image_size"])
-        quant_skel = _build_quant_skeleton(model_name, num_classes, specs["channels"], specs["image_size"])
         try:
-            mapping_by_model[model_name] = _build_layer_mapping(model_name, unfused_skel, quant_skel)
-        except QuantInducedMappingError as exc:
-            logger.error(f"[RelockTraces] {model_name}: Part 0 mapping gate FAILED -- {exc} -- skipping Part 2/3 for this model")
-            mapping_by_model.pop(model_name, None)
-        finally:
-            del unfused_skel, quant_skel
-
-    # ---- Part 2: canonical recompute ----
-    logger.info("[RelockTraces] === Part 2: canonical recompute (frozen config only) ===")
-    for model_name in PART2_MODELS:
-        if model_name not in mapping_by_model:
-            continue
-        try:
-            m_fp32_ckpt = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": DATASET_NAME})
+            diag_fp32_ckpt = _resolve_checkpoint_robust(fp32_models_dir, {"model": DIAGNOSIS_MODEL, "dataset": DATASET_NAME})
+            diag_ptq_ckpt = _resolve_checkpoint_robust(quant_dir, {"stage": "PTQ", "model": DIAGNOSIS_MODEL, "dataset": DATASET_NAME})
         except (FileNotFoundError, WeightAblationCheckpointError) as exc:
-            logger.error(f"[RelockTraces] {model_name}: FP32 baseline checkpoint unresolvable -- {exc} -- skipping")
-            continue
+            raise RelockTracesError(f"Part 1 requires {DIAGNOSIS_MODEL}/{DATASET_NAME} FP32 and PTQ checkpoints -- {exc}") from exc
 
-        m_ptq_ckpt = None
-        try:
-            m_ptq_ckpt = _resolve_checkpoint_robust(quant_dir, {"stage": "PTQ", "model": model_name, "dataset": DATASET_NAME})
-        except FileNotFoundError as exc:
-            logger.warning(f"[RelockTraces] {model_name}: PTQ checkpoint missing ({exc}) -- skipping PTQ/fp32_fused variants")
-        except WeightAblationCheckpointError as exc:
-            logger.error(f"[RelockTraces] {model_name}: PTQ checkpoint AMBIGUOUS/NEAR-MISS -- {exc} -- skipping PTQ/fp32_fused variants")
-
-        m_qat_ckpt = None
-        try:
-            m_qat_ckpt = _resolve_checkpoint_robust(quant_dir, {"stage": "QAT", "model": model_name, "dataset": DATASET_NAME})
-        except FileNotFoundError as exc:
-            logger.warning(f"[RelockTraces] {model_name}: QAT checkpoint missing ({exc}) -- skipping QAT/fp32_fused_qat variants")
-        except WeightAblationCheckpointError as exc:
-            logger.error(f"[RelockTraces] {model_name}: QAT checkpoint AMBIGUOUS/NEAR-MISS -- {exc} -- skipping QAT/fp32_fused_qat variants")
-
-        reuse = {}
-        if model_name == DIAGNOSIS_MODEL:
-            reuse = {k: v for k, v in diag_canonical.items() if v}
-
-        results = _run_canonical_variant_traces(
-            model_name, DATASET_NAME, specs, num_classes, device, val_loader, mapping_by_model[model_name],
-            m_fp32_ckpt, m_ptq_ckpt, m_qat_ckpt, canonical_csv, reuse=reuse,
+        logger.info(f"[RelockTraces] === Part 1: drift diagnosis on {DIAGNOSIS_MODEL} conv1 ===")
+        diag_canonical = _run_part1_drift_diagnosis(
+            DIAGNOSIS_MODEL, diag_specs, diag_num_classes, device, diag_val_loader, orig_loader,
+            diag_fp32_ckpt, diag_ptq_ckpt, anchors, drift_csv,
         )
-        canonical_by_model[model_name] = results
+        canonical_by_model[DIAGNOSIS_MODEL] = dict(diag_canonical)
 
-    # ---- Part 3: determinism check + reconciliation ledger ----
-    logger.info("[RelockTraces] === Part 3: determinism check + reconciliation ledger ===")
-    if DIAGNOSIS_MODEL in mapping_by_model:
+        largest_ptq_anchor = max(anchors.get("resnet50_conv1_ptq", []), key=lambda a: a["value"], default=None)
+        if largest_ptq_anchor is not None:
+            explained = _anchor_explained(drift_csv, largest_ptq_anchor["name"])
+            if explained:
+                logger.info(
+                    f"[RelockTraces] Part 1 RESULT: legacy anchor {largest_ptq_anchor['name']}="
+                    f"{largest_ptq_anchor['value']} was reproduced within {ANCHOR_TOLERANCE*100:.0f}% by "
+                    f"a tested knob -- drift is understood, Part 2's canonical recompute is trustworthy."
+                )
+            else:
+                logger.error(
+                    f"[RelockTraces] Part 1 RESULT: UNRESOLVED -- legacy anchor {largest_ptq_anchor['name']}="
+                    f"{largest_ptq_anchor['value']} was NOT reproduced within {ANCHOR_TOLERANCE*100:.0f}% by any "
+                    f"tested knob (including the bonus data-source and observer-calibration checks). See "
+                    f"{drift_csv} for the closest residuals per knob. Proceeding to Part 2/3 anyway -- the "
+                    f"frozen canonical config is well-defined independent of this historical gap -- but this "
+                    f"gap must be flagged as UNRESOLVED wherever the legacy number is cited."
+                )
+    else:
+        logger.info(f"[RelockTraces] Part 1 skipped -- {DATASET_NAME} (its anchor dataset) not in requested datasets={datasets}")
+
+    # ---- Part 2: canonical recompute, per requested dataset ----
+    logger.info(f"[RelockTraces] === Part 2: canonical recompute (frozen config only), datasets={datasets} ===")
+    for dataset_name in datasets:
+        specs = DATASET_SPECS[dataset_name]
+        trace_cfg = (
+            {"batch_size": CANONICAL_BATCH_SIZE, "num_batches": CANONICAL_NUM_BATCHES, "max_iter": CANONICAL_MAX_ITER, "tol": CANONICAL_TOL}
+            if dataset_name == "CIFAR10" else IMAGENET100_TRACE_CONFIG
+        )
+        val_loader, num_classes = _build_val_hessian_loader(dataset_name, batch_size=trace_cfg["batch_size"])
+
+        # ---- Part 0 mapping gate (per dataset -- e.g. conv1's kernel differs by image_size) ----
+        mapping_by_model[dataset_name] = {}
+        for model_name in PART2_MODELS:
+            unfused_skel = build_model(num_classes=num_classes, model_name=model_name, channels=specs["channels"], image_size=specs["image_size"])
+            quant_skel = _build_quant_skeleton(model_name, num_classes, specs["channels"], specs["image_size"])
+            try:
+                mapping_by_model[dataset_name][model_name] = _build_layer_mapping(model_name, unfused_skel, quant_skel)
+            except QuantInducedMappingError as exc:
+                logger.error(f"[RelockTraces] {model_name}/{dataset_name}: Part 0 mapping gate FAILED -- {exc} -- skipping Part 2 for this model/dataset")
+            finally:
+                del unfused_skel, quant_skel
+
+        for model_name in PART2_MODELS:
+            if model_name not in mapping_by_model[dataset_name]:
+                continue
+            try:
+                m_fp32_ckpt = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": dataset_name})
+            except (FileNotFoundError, WeightAblationCheckpointError) as exc:
+                logger.error(f"[RelockTraces] {model_name}/{dataset_name}: FP32 baseline checkpoint unresolvable -- {exc} -- skipping")
+                continue
+
+            m_ptq_ckpt = None
+            try:
+                m_ptq_ckpt = _resolve_checkpoint_robust(quant_dir, {"stage": "PTQ", "model": model_name, "dataset": dataset_name})
+            except FileNotFoundError as exc:
+                logger.warning(f"[RelockTraces] {model_name}/{dataset_name}: PTQ checkpoint missing ({exc}) -- skipping PTQ/fp32_fused variants")
+            except WeightAblationCheckpointError as exc:
+                logger.error(f"[RelockTraces] {model_name}/{dataset_name}: PTQ checkpoint AMBIGUOUS/NEAR-MISS -- {exc} -- skipping PTQ/fp32_fused variants")
+
+            m_qat_ckpt = None
+            try:
+                m_qat_ckpt = _resolve_checkpoint_robust(quant_dir, {"stage": "QAT", "model": model_name, "dataset": dataset_name})
+            except FileNotFoundError as exc:
+                logger.warning(f"[RelockTraces] {model_name}/{dataset_name}: QAT checkpoint missing ({exc}) -- skipping QAT/fp32_fused_qat variants")
+            except WeightAblationCheckpointError as exc:
+                logger.error(f"[RelockTraces] {model_name}/{dataset_name}: QAT checkpoint AMBIGUOUS/NEAR-MISS -- {exc} -- skipping QAT/fp32_fused_qat variants")
+
+            reuse = {}
+            if model_name == DIAGNOSIS_MODEL and dataset_name == DATASET_NAME:
+                reuse = {k: v for k, v in diag_canonical.items() if v}
+
+            results = _run_canonical_variant_traces(
+                model_name, dataset_name, specs, num_classes, device, val_loader, mapping_by_model[dataset_name][model_name],
+                m_fp32_ckpt, m_ptq_ckpt, m_qat_ckpt, canonical_csv, reuse=reuse,
+                num_batches=trace_cfg["num_batches"], max_iter=trace_cfg["max_iter"], tol=trace_cfg["tol"],
+            )
+            canonical_by_model.setdefault(dataset_name, {})[model_name] = results
+
+    # ---- Part 3: determinism check + reconciliation ledger (CIFAR10 anchor only) ----
+    if DATASET_NAME in datasets and DIAGNOSIS_MODEL in mapping_by_model.get(DATASET_NAME, {}):
+        logger.info("[RelockTraces] === Part 3: determinism check + reconciliation ledger ===")
         _run_part3_determinism(
-            DIAGNOSIS_MODEL, specs, num_classes, device, val_loader, mapping_by_model[DIAGNOSIS_MODEL],
+            DIAGNOSIS_MODEL, DATASET_SPECS[DATASET_NAME], diag_num_classes, device, diag_val_loader, mapping_by_model[DATASET_NAME][DIAGNOSIS_MODEL],
             diag_fp32_ckpt, canonical_run_a=canonical_by_model.get(DIAGNOSIS_MODEL, {}).get("fp32_unfused"),
         )
-
-    _write_reconciliation_ledger(ledger_csv, drift_csv, anchors, canonical_by_model, mapping_by_model, banked_fp32_profile, DATASET_NAME)
+        _write_reconciliation_ledger(
+            ledger_csv, drift_csv, anchors, canonical_by_model.get(DATASET_NAME, {}),
+            mapping_by_model[DATASET_NAME], banked_fp32_profile, DATASET_NAME,
+        )
+    else:
+        logger.info(f"[RelockTraces] Part 3 skipped -- {DATASET_NAME} (its anchor dataset) not in requested datasets={datasets}")
 
     logger.info("[RelockTraces] === Relock-Traces complete ===")

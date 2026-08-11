@@ -108,10 +108,17 @@ from src.utility.utils import get_data_loaders
 
 logger = logging.getLogger(__name__)
 
-DATASETS = ["CIFAR10"]
+DATASETS = ["CIFAR10", "IMAGENET100"]
 # resnet50 first -- it carries the headline conv1 spike this mode targets.
 ORDERED_MODELS = ["resnet50_no_weights", "resnet18_no_weights", "cnn"]
-REQUIRED_MODELS = {"resnet50_no_weights", "resnet18_no_weights"}
+REQUIRED_MODELS = {"resnet50_no_weights", "resnet18_no_weights", "cnn"}
+
+# Per-dataset Hessian-trace budget. CIFAR10 uses HESSIAN_NUM_BATCHES/
+# HESSIAN_MAX_ITER/HESSIAN_TOL below unchanged. IMAGENET100 is reduced --
+# 224x224 HVP cost is far higher per iteration than 32x32 -- matching
+# relock_traces.py's and spike_layer_cause.py's own IMAGENET100 budget for
+# consistency across the codebase's trace outputs.
+IMAGENET100_HESSIAN_CONFIG = {"num_batches": 3, "max_iter": 30, "tol": 1e-3}
 
 # Fixed and reset immediately before every estimator call, across every
 # variant -- the config-lock this mode's cross-variant ratios depend on.
@@ -271,13 +278,16 @@ def _build_hessian_loader(dataset_name: str) -> tuple[DataLoader, int]:
     return hessian_loader, num_classes
 
 
-def _trace_variant(model: nn.Module, hessian_loader: DataLoader, criterion: nn.Module, device: torch.device) -> dict[str, float]:
+def _trace_variant(
+    model: nn.Module, hessian_loader: DataLoader, criterion: nn.Module, device: torch.device,
+    num_batches: int = HESSIAN_NUM_BATCHES, max_iter: int = HESSIAN_MAX_ITER, tol: float = HESSIAN_TOL,
+) -> dict[str, float]:
     # Probe seed reset immediately before this call, not once per model --
     # the config-lock every cross-variant ratio in this mode depends on.
     torch.manual_seed(PROBE_SEED)
     return compute_layerwise_hessian_trace_pyhessian(
         model, hessian_loader, criterion, device,
-        num_batches=HESSIAN_NUM_BATCHES, max_iter=HESSIAN_MAX_ITER, tol=HESSIAN_TOL,
+        num_batches=num_batches, max_iter=max_iter, tol=tol,
     )
 
 
@@ -550,7 +560,7 @@ def _write_summary(
 def _run_one_model(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
     hessian_loader: DataLoader, fp32_models_dir: str, quant_dir: str, banked_profile_path: str | None,
-    traces_csv: str, comparison_csv: str, summary_csv: str,
+    traces_csv: str, comparison_csv: str, summary_csv: str, trace_cfg: dict,
 ) -> None:
     channels, image_size = specs["channels"], specs["image_size"]
     criterion = nn.CrossEntropyLoss()
@@ -586,7 +596,7 @@ def _run_one_model(
     traces: dict[str, dict[str, float]] = {}
 
     model = _load_unfused_fp32(model_name, fp32_ckpt, num_classes, channels, image_size, device)
-    traces["fp32_unfused"] = _trace_variant(model, hessian_loader, criterion, device)
+    traces["fp32_unfused"] = _trace_variant(model, hessian_loader, criterion, device, **trace_cfg)
     _write_variant_traces(model_name, dataset_name, "fp32_unfused", mapping, traces["fp32_unfused"], "canonical", traces_csv)
     del model
     if device.type == "cuda":
@@ -594,7 +604,7 @@ def _run_one_model(
 
     if "PTQ" in stage_ckpts:
         ptq_model = _load_quantized(model_name, stage_ckpts["PTQ"], num_classes, channels, image_size, device)
-        traces["ptq"] = _trace_variant(ptq_model, hessian_loader, criterion, device)
+        traces["ptq"] = _trace_variant(ptq_model, hessian_loader, criterion, device, **trace_cfg)
         _write_variant_traces(model_name, dataset_name, "ptq", mapping, traces["ptq"], "quantized", traces_csv)
         del ptq_model
         if device.type == "cuda":
@@ -602,7 +612,7 @@ def _run_one_model(
 
         fused_model = _load_quantized(model_name, stage_ckpts["PTQ"], num_classes, channels, image_size, device)
         _make_fused_fp32(fused_model, f"{label} fp32_fused")
-        traces["fp32_fused"] = _trace_variant(fused_model, hessian_loader, criterion, device)
+        traces["fp32_fused"] = _trace_variant(fused_model, hessian_loader, criterion, device, **trace_cfg)
         _write_variant_traces(model_name, dataset_name, "fp32_fused", mapping, traces["fp32_fused"], "quantized", traces_csv)
         del fused_model
         if device.type == "cuda":
@@ -610,7 +620,7 @@ def _run_one_model(
 
     if "QAT" in stage_ckpts:
         qat_model = _load_quantized(model_name, stage_ckpts["QAT"], num_classes, channels, image_size, device)
-        traces["qat"] = _trace_variant(qat_model, hessian_loader, criterion, device)
+        traces["qat"] = _trace_variant(qat_model, hessian_loader, criterion, device, **trace_cfg)
         _write_variant_traces(model_name, dataset_name, "qat", mapping, traces["qat"], "quantized", traces_csv)
         del qat_model
         if device.type == "cuda":
@@ -618,7 +628,7 @@ def _run_one_model(
 
         fused_qat_model = _load_quantized(model_name, stage_ckpts["QAT"], num_classes, channels, image_size, device)
         _make_fused_fp32(fused_qat_model, f"{label} fp32_fused_qat")
-        traces["fp32_fused_qat"] = _trace_variant(fused_qat_model, hessian_loader, criterion, device)
+        traces["fp32_fused_qat"] = _trace_variant(fused_qat_model, hessian_loader, criterion, device, **trace_cfg)
         _write_variant_traces(model_name, dataset_name, "fp32_fused_qat", mapping, traces["fp32_fused_qat"], "quantized", traces_csv)
         del fused_qat_model
         if device.type == "cuda":
@@ -636,12 +646,17 @@ def run_quant_induced_trace(
     checkpoint_dir: str | None,
     load_run_id: str | None,
     banked_fp32_profile: str | None,
+    datasets: list[str] | None = None,
 ) -> None:
+    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    for a parallel per-dataset analysis run) -- default None means every
+    dataset in DATASETS."""
+    datasets = datasets if datasets is not None else DATASETS
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[QuantInducedTrace] CUDA not available -- falling back to CPU, this will be slow.")
     _enable_determinism()
-    logger.info(f"[QuantInducedTrace] device={device} probe_seed={PROBE_SEED} banked_fp32_profile={banked_fp32_profile}")
+    logger.info(f"[QuantInducedTrace] device={device} probe_seed={PROBE_SEED} banked_fp32_profile={banked_fp32_profile} datasets={datasets}")
 
     fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
     quant_dir = _resolve_checkpoint_dir(checkpoint_dir, load_run_id)
@@ -651,8 +666,12 @@ def run_quant_induced_trace(
     comparison_csv = os.path.join(CSV_DIR, "quant_induced_comparison.csv")
     summary_csv = os.path.join(CSV_DIR, "quant_induced_summary.csv")
 
-    for dataset_name in DATASETS:
+    for dataset_name in datasets:
         specs = DATASET_SPECS[dataset_name]
+        trace_cfg = (
+            {"num_batches": HESSIAN_NUM_BATCHES, "max_iter": HESSIAN_MAX_ITER, "tol": HESSIAN_TOL}
+            if dataset_name == "CIFAR10" else IMAGENET100_HESSIAN_CONFIG
+        )
         try:
             hessian_loader, num_classes = _build_hessian_loader(dataset_name)
         except Exception as exc:
@@ -665,7 +684,7 @@ def run_quant_induced_trace(
                 _run_one_model(
                     model_name, dataset_name, specs, num_classes, device,
                     hessian_loader, fp32_models_dir, quant_dir, banked_fp32_profile,
-                    traces_csv, comparison_csv, summary_csv,
+                    traces_csv, comparison_csv, summary_csv, trace_cfg,
                 )
             except QuantInducedMappingError as exc:
                 if model_name in REQUIRED_MODELS:

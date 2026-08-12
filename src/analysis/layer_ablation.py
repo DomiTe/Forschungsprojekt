@@ -162,28 +162,49 @@ def _verify_ablation(model: nn.Module, layer_name: str, label: str) -> tuple[boo
 
     other_conv_hit = None
     other_linear_hit = None
+    other_conv_total = 0
+    other_linear_total = 0
     for name, module in named.items():
         if name == resolved_name:
             continue
-        if other_conv_hit is None and isinstance(module, nnq.Conv2d):
-            other_conv_hit = name
-        if other_linear_hit is None and isinstance(module, nnq.Linear):
-            other_linear_hit = name
+        if isinstance(module, (nn.Conv2d, nnq.Conv2d)):
+            other_conv_total += 1
+            if other_conv_hit is None and isinstance(module, nnq.Conv2d):
+                other_conv_hit = name
+        if isinstance(module, (nn.Linear, nnq.Linear)):
+            other_linear_total += 1
+            if other_linear_hit is None and isinstance(module, nnq.Linear):
+                other_linear_hit = name
 
-    if other_conv_hit is None:
+    # other_{conv,linear}_total counts how many OTHER layers of that type
+    # exist in the architecture at all (quantized or not) -- resnet18/50
+    # have exactly one nn.Linear (fc); when fc itself is the excluded layer,
+    # "no other Linear quantized" is an architectural certainty, not
+    # evidence the build silently unquantized the whole model. Only raise
+    # when there WAS another same-type layer available to stay quantized
+    # and none did.
+    if other_conv_total > 0 and other_conv_hit is None:
         raise FbgemmBuildError(
-            f"{label}: excluding '{resolved_name}' left no OTHER Conv2d layer quantized -- "
+            f"{label}: excluding '{resolved_name}' left no OTHER Conv2d layer quantized "
+            f"(model has {other_conv_total} other Conv2d layer(s) architecturally) -- "
             f"model is silently fully-unquantized, ablation result is meaningless."
         )
-    if other_linear_hit is None:
+    if other_linear_total > 0 and other_linear_hit is None:
         raise FbgemmBuildError(
-            f"{label}: excluding '{resolved_name}' left no OTHER Linear layer quantized -- "
+            f"{label}: excluding '{resolved_name}' left no OTHER Linear layer quantized "
+            f"(model has {other_linear_total} other Linear layer(s) architecturally) -- "
             f"model is silently fully-unquantized, ablation result is meaningless."
         )
 
+    skipped = []
+    if other_conv_total == 0:
+        skipped.append("Conv2d")
+    if other_linear_total == 0:
+        skipped.append("Linear")
+    skip_note = f" (no other {'/'.join(skipped)} layer exists in this architecture -- nothing to check there)" if skipped else ""
     logger.info(
         f"[LayerAblation] {label}: verified -- '{resolved_name}' still fp32, "
-        f"other Conv2d '{other_conv_hit}' and Linear '{other_linear_hit}' quantized"
+        f"other Conv2d '{other_conv_hit or 'n/a'}' and Linear '{other_linear_hit or 'n/a'}' quantized{skip_note}"
     )
     return True, True
 

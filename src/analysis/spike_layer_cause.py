@@ -149,6 +149,7 @@ from src.analysis.quant_induced_trace import (
 )
 from src.analysis.pyhessian import compute_layerwise_hessian_trace_pyhessian, _single_batch, _disable_inplace_ops
 from src.analysis.random_init_control import _safe_div, _enable_determinism
+from src.analysis._seed_stats import derive_seeds, aggregate
 from src.quantization.deploy_fbgemm import _resolve_checkpoint_dir
 from src.utility.config import CSV_DIR, DATASET_SPECS, RESULTS_DIR
 from src.utility.utils import get_data_loaders
@@ -180,15 +181,25 @@ SPIKE_SELECTION_FIELDNAMES = ["model", "dataset", "spike_by_trace", "spike_by_da
 TRACES_FIELDNAMES = [
     "model", "dataset", "variant", "layer", "layer_type", "numel", "trace_raw", "trace_per_param",
     "elev_raw", "elev_per_param", "raw_vs_numel_slope", "raw_vs_numel_r2",
+    "seed", "n_seeds", "metric_std",
 ]
 RESIDUAL_FIELDNAMES = ["model", "dataset", "variant", "layer", "per_param_residual", "matched_count_ratio"]
 DESCRIPTORS_FIELDNAMES = [
     "model", "dataset", "layer", "layer_type", "fan_in", "fan_out", "kh", "kw",
     "input_map", "output_map", "numel",
 ]
+# tr_A/tr_G/A_per_infan/G_per_outfan/predicted_per_param are batch-dependent
+# (--n-seeds pass); metric_std reports tr_A's cross-seed std specifically --
+# Tr(A) (input-covariance trace) is the module's headline KFAC quantity (H3:
+# "carried by Tr(A)", see module docstring) and the schema has one std
+# column for five seed-dependent fields. Per-seed rows carry every field's
+# individual seed value in full, so this choice loses no information, only
+# summarizes it. measured_per_param is Part 2/3's own cross-reference and is
+# only populated on the aggregate row (see _write_kfac_rows).
 KFAC_FIELDNAMES = [
     "model", "dataset", "variant", "layer", "tr_A", "tr_G",
     "A_per_infan", "G_per_outfan", "predicted_per_param", "measured_per_param",
+    "seed", "n_seeds", "metric_std",
 ]
 ATTRIBUTION_FIELDNAMES = [
     "model", "dataset", "spike_layer", "descriptor", "spearman_vs_residual", "partial_corr_controlling_numel",
@@ -284,11 +295,31 @@ def _build_hessian_loader(dataset_name: str) -> tuple[DataLoader, int]:
     return loader, num_classes
 
 
-def _trace_variant(model: nn.Module, loader: DataLoader, criterion: nn.Module, device: torch.device, cfg: dict) -> dict[str, float]:
-    torch.manual_seed(PROBE_SEED)
-    return compute_layerwise_hessian_trace_pyhessian(
-        model, loader, criterion, device, num_batches=cfg["num_batches"], max_iter=cfg["max_iter"], tol=cfg["tol"],
-    )
+def _draw_kfac_batch(hessian_loader: DataLoader, cfg: dict, device: torch.device, seed: int, single_seed_mode: bool) -> tuple[torch.Tensor, torch.Tensor]:
+    """
+    single_seed_mode (n_seeds==1): the historical, unconditional draw --
+    _single_batch(hessian_loader, ...), the loader's own first num_batches
+    batches (shuffle=False), no seed dependence at all. This is what makes
+    n_seeds=1 reproduce this phase's pre-n_seeds KFAC behavior bit-exact
+    regardless of base_seed, mirroring diagnose_activations.py's
+    _draw_range_batch (same rationale: the mechanism itself, not just the
+    seed value, must stay unchanged at n_seeds=1).
+
+    Multi-seed: a fresh shuffle=True loader over the same dataset, ambient
+    torch RNG seeded immediately before the draw -- this phase's second
+    stochastic source (batch selection for KFAC A/G), alongside the
+    Hutchinson probe seed used for Part 2's traces. Called independently
+    per variant at the same seed value; torch.manual_seed(seed) resets the
+    global generator to a defined state, so independent calls at the same
+    seed reproduce the identical permutation/batch every time -- the same
+    seed's batch is therefore identical across fp32_unfused/fp32_fused/ptq
+    without needing to hoist and reuse a single batch object across variants.
+    """
+    if single_seed_mode:
+        return _single_batch(hessian_loader, cfg["num_batches"], device)
+    torch.manual_seed(seed)
+    shuffled_loader = DataLoader(hessian_loader.dataset, batch_size=hessian_loader.batch_size, shuffle=True, num_workers=0, pin_memory=False)
+    return _single_batch(shuffled_loader, cfg["num_batches"], device)
 
 
 # ---------------------------------------------------------------------------
@@ -426,14 +457,37 @@ def _loglog_fit(xs: list[float], ys: list[float]) -> tuple[float, float, float]:
     return result.slope, result.intercept, result.rvalue ** 2
 
 
-def _write_variant_trace_and_residual_rows(
+def _write_variant_trace_rows(
     model_name: str, dataset_name: str, variant: str, mapping_names: list[str],
-    trace_dict: dict[str, float], numel_map: dict[str, int], layer_type_map: dict[str, str],
+    traces_by_seed: dict[int, dict[str, float]], seeds: list[int],
+    numel_map: dict[str, int], layer_type_map: dict[str, str],
     traces_csv: str, residual_csv: str,
 ) -> dict[str, dict]:
+    """
+    Per layer: writes len(seeds) per-seed rows (that seed's own trace_raw/
+    trace_per_param; elev/slope columns blank -- those are cross-layer
+    aggregate-level summary stats, not meaningfully defined for a single
+    seed's draw) followed by one seed="aggregate" row carrying the
+    cross-seed mean (used for elev_raw/elev_per_param/the log-log
+    regression/residual, exactly as the pre-n_seeds code used its single
+    trace value) and metric_std. At n_seeds=1 the aggregate row's values
+    are bit-exact with the pre-n_seeds single-seed computation (mean of one
+    value = that value, std=0.0). Returns {layer: {...}} keyed off the
+    AGGREGATE trace_raw/trace_per_param/residual -- unchanged contract for
+    downstream Part 1/3/4/6 consumers.
+    """
+    mean_by_key: dict[str, float] = {}
+    std_by_key: dict[str, float] = {}
+    for name in mapping_names:
+        key = f"{name}.weight"
+        vals = [traces_by_seed[s][key] for s in seeds if key in traces_by_seed.get(s, {})]
+        if not vals:
+            continue
+        mean_by_key[key], std_by_key[key] = aggregate(vals)
+
     layer_data: dict[str, dict] = {}
     for name in mapping_names:
-        trace_val = trace_dict.get(f"{name}.weight")
+        trace_val = mean_by_key.get(f"{name}.weight")
         numel = numel_map.get(name)
         if trace_val is None or not numel:
             continue
@@ -456,13 +510,28 @@ def _write_variant_trace_and_residual_rows(
     matched_ratio = n_fit / len(layer_data)
 
     for name, d in layer_data.items():
+        key = f"{name}.weight"
         layer_type = layer_type_map.get(name, "")
+
+        for seed in seeds:
+            seed_val = traces_by_seed.get(seed, {}).get(key)
+            if seed_val is None:
+                continue
+            _append_row(traces_csv, {
+                "model": model_name, "dataset": dataset_name, "variant": variant, "layer": name,
+                "layer_type": layer_type, "numel": d["numel"], "trace_raw": seed_val,
+                "trace_per_param": seed_val / d["numel"],
+                "elev_raw": "", "elev_per_param": "", "raw_vs_numel_slope": "", "raw_vs_numel_r2": "",
+                "seed": seed, "n_seeds": len(seeds), "metric_std": "",
+            }, TRACES_FIELDNAMES)
+
         _append_row(traces_csv, {
             "model": model_name, "dataset": dataset_name, "variant": variant, "layer": name,
             "layer_type": layer_type, "numel": d["numel"], "trace_raw": d["trace_raw"],
             "trace_per_param": d["trace_per_param"],
             "elev_raw": _safe_div(d["trace_raw"], median_raw), "elev_per_param": _safe_div(d["trace_per_param"], median_pp),
             "raw_vs_numel_slope": slope_raw, "raw_vs_numel_r2": r2_raw,
+            "seed": "aggregate", "n_seeds": len(seeds), "metric_std": std_by_key.get(key, ""),
         }, TRACES_FIELDNAMES)
 
         if d["numel"] > 0 and d["trace_per_param"] > 0 and slope_pp == slope_pp:
@@ -477,10 +546,78 @@ def _write_variant_trace_and_residual_rows(
         }, RESIDUAL_FIELDNAMES)
 
     logger.info(
-        f"[SpikeLayerCause] {model_name}/{dataset_name} variant={variant}: {len(layer_data)} layers -- "
+        f"[SpikeLayerCause] {model_name}/{dataset_name} variant={variant}: {len(layer_data)} layers (n_seeds={len(seeds)}) -- "
         f"raw_vs_numel(slope={slope_raw:.3f}, r2={r2_raw:.3f}) trace_per_param_vs_numel(slope={slope_pp:.3f}, r2={r2_pp:.3f})"
     )
     return layer_data
+
+
+def _write_kfac_rows(
+    model_name: str, dataset_name: str, variant: str,
+    kfac_by_seed: dict[int, dict[str, dict]], seeds: list[int],
+    trace_rows: dict[str, dict], kfac_csv: str,
+) -> dict[str, dict]:
+    """
+    Per layer: writes one per-seed KFAC row per seed present (that seed's
+    own tr_A/tr_G/A_per_infan/G_per_outfan/predicted_per_param, measured_
+    per_param left blank -- Part 2/3's "measured" cross-reference is only
+    defined at the aggregate level, see trace_rows) followed by one
+    seed="aggregate" row with the cross-seed mean of the batch-dependent
+    fields and metric_std = std of tr_A (see KFAC_FIELDNAMES comment).
+    Architectural fields (layer_type, fan_in, fan_out, kh, kw, input_map,
+    output_map, numel) are invariant across seeds -- taken directly from
+    the first present seed's result rather than averaged, keeping their
+    exact original values/types (bit-exact at n_seeds=1). Returns
+    {layer: mean_measurement_dict} in the same shape _measure_kfac_and_
+    descriptors returns, for downstream descriptor/attribution use.
+    """
+    all_layers: set[str] = set()
+    for kfac in kfac_by_seed.values():
+        all_layers.update(kfac.keys())
+
+    mean_kfac: dict[str, dict] = {}
+    for name in sorted(all_layers):
+        present = [s for s in seeds if name in kfac_by_seed.get(s, {})]
+        if not present:
+            continue
+        first = kfac_by_seed[present[0]][name]
+
+        mean_tr_a, std_tr_a = aggregate([kfac_by_seed[s][name]["tr_A"] for s in present])
+        mean_tr_g, _ = aggregate([kfac_by_seed[s][name]["tr_G"] for s in present])
+        mean_a, _ = aggregate([kfac_by_seed[s][name]["A_per_infan"] for s in present])
+        mean_g, _ = aggregate([kfac_by_seed[s][name]["G_per_outfan"] for s in present])
+
+        mean_kfac[name] = {
+            "layer_type": first["layer_type"], "fan_in": first["fan_in"], "fan_out": first["fan_out"],
+            "kh": first["kh"], "kw": first["kw"], "input_map": first["input_map"], "output_map": first["output_map"],
+            "numel": first["numel"], "tr_A": mean_tr_a, "tr_G": mean_tr_g,
+            "A_per_infan": mean_a, "G_per_outfan": mean_g,
+        }
+
+        for seed in present:
+            k = kfac_by_seed[seed][name]
+            a_ok = k["A_per_infan"] == k["A_per_infan"]
+            g_ok = k["G_per_outfan"] == k["G_per_outfan"]
+            predicted = k["A_per_infan"] * k["G_per_outfan"] if (a_ok and g_ok) else float("nan")
+            _append_row(kfac_csv, {
+                "model": model_name, "dataset": dataset_name, "variant": variant, "layer": name,
+                "tr_A": k["tr_A"], "tr_G": k["tr_G"], "A_per_infan": k["A_per_infan"], "G_per_outfan": k["G_per_outfan"],
+                "predicted_per_param": predicted, "measured_per_param": "",
+                "seed": seed, "n_seeds": len(present), "metric_std": "",
+            }, KFAC_FIELDNAMES)
+
+        measured = trace_rows.get(name, {}).get("trace_per_param")
+        a_ok = mean_a == mean_a
+        g_ok = mean_g == mean_g
+        predicted_agg = mean_a * mean_g if (a_ok and g_ok) else float("nan")
+        _append_row(kfac_csv, {
+            "model": model_name, "dataset": dataset_name, "variant": variant, "layer": name,
+            "tr_A": mean_tr_a, "tr_G": mean_tr_g, "A_per_infan": mean_a, "G_per_outfan": mean_g,
+            "predicted_per_param": predicted_agg, "measured_per_param": measured if measured is not None else "",
+            "seed": "aggregate", "n_seeds": len(present), "metric_std": std_tr_a,
+        }, KFAC_FIELDNAMES)
+
+    return mean_kfac
 
 
 # ---------------------------------------------------------------------------
@@ -716,11 +853,13 @@ def _run_model_dataset(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
     fp32_ckpt: str, ptq_ckpt: str | None,
     traces_csv: str, residual_csv: str, descriptors_csv: str, kfac_csv: str, damage_csv: str,
+    seeds: list[int],
 ) -> dict | None:
     channels, image_size = specs["channels"], specs["image_size"]
     cfg = DATASET_TRACE_CONFIG[dataset_name]
     criterion = nn.CrossEntropyLoss()
     label = f"{model_name}/{dataset_name}"
+    single_seed_mode = (len(seeds) == 1)
 
     unfused_skel = build_model(num_classes=num_classes, model_name=model_name, channels=channels, image_size=image_size)
     quant_skel = _build_quant_skeleton(model_name, num_classes, channels, image_size)
@@ -733,11 +872,10 @@ def _run_model_dataset(
     except Exception as exc:
         logger.error(f"[SpikeLayerCause] {label}: could not build hessian loader ({exc}) -- skipping")
         return None
-    batch = _single_batch(hessian_loader, cfg["num_batches"], device)
-    if batch is None:
+    probe_batch = _single_batch(hessian_loader, cfg["num_batches"], device)
+    if probe_batch is None:
         logger.error(f"[SpikeLayerCause] {label}: empty hessian loader -- skipping")
         return None
-    inputs, targets = batch
 
     variant_builders = {"fp32_unfused": lambda: _load_unfused_fp32(model_name, fp32_ckpt, num_classes, channels, image_size, device)}
     if ptq_ckpt is not None:
@@ -748,8 +886,8 @@ def _run_model_dataset(
     else:
         logger.warning(f"[SpikeLayerCause] {label}: PTQ checkpoint missing -- fp32_fused/ptq variants skipped, fp32_unfused only")
 
-    trace_by_variant: dict[str, dict[str, float]] = {}
-    kfac_by_variant: dict[str, dict[str, dict]] = {}
+    traces_by_seed_by_variant: dict[str, dict[int, dict[str, float]]] = {}
+    kfac_by_seed_by_variant: dict[str, dict[int, dict[str, dict]]] = {}
     descriptors: dict[str, dict] | None = None
     numel_map: dict[str, int] | None = None
     layer_type_map: dict[str, str] | None = None
@@ -759,13 +897,25 @@ def _run_model_dataset(
         if builder is None:
             continue
         model = builder()
-        trace_by_variant[variant] = _trace_variant(model, hessian_loader, criterion, device, cfg)
-        kfac = _measure_kfac_and_descriptors(model, mapping_names, inputs, targets, criterion, device)
-        kfac_by_variant[variant] = kfac
+
+        traces_by_seed: dict[int, dict[str, float]] = {}
+        kfac_by_seed: dict[int, dict[str, dict]] = {}
+        for seed in seeds:
+            torch.manual_seed(seed)
+            traces_by_seed[seed] = compute_layerwise_hessian_trace_pyhessian(
+                model, hessian_loader, criterion, device, num_batches=cfg["num_batches"], max_iter=cfg["max_iter"], tol=cfg["tol"],
+            )
+            kfac_inputs, kfac_targets = _draw_kfac_batch(hessian_loader, cfg, device, seed, single_seed_mode)
+            kfac_by_seed[seed] = _measure_kfac_and_descriptors(model, mapping_names, kfac_inputs, kfac_targets, criterion, device)
+
+        traces_by_seed_by_variant[variant] = traces_by_seed
+        kfac_by_seed_by_variant[variant] = kfac_by_seed
+
         if variant == "fp32_unfused":
-            descriptors = {n: {k: v[k] for k in ("layer_type", "fan_in", "fan_out", "kh", "kw", "input_map", "output_map", "numel")} for n, v in kfac.items()}
-            numel_map = {n: v["numel"] for n, v in kfac.items()}
-            layer_type_map = {n: v["layer_type"] for n, v in kfac.items()}
+            first_kfac = kfac_by_seed[seeds[0]]
+            descriptors = {n: {k: v[k] for k in ("layer_type", "fan_in", "fan_out", "kh", "kw", "input_map", "output_map", "numel")} for n, v in first_kfac.items()}
+            numel_map = {n: v["numel"] for n, v in first_kfac.items()}
+            layer_type_map = {n: v["layer_type"] for n, v in first_kfac.items()}
         del model
         if device.type == "cuda":
             torch.cuda.empty_cache()
@@ -782,25 +932,17 @@ def _run_model_dataset(
 
     trace_rows_by_variant: dict[str, dict[str, dict]] = {}
     residual_by_variant: dict[str, dict[str, float]] = {}
-    for variant, trace_dict in trace_by_variant.items():
-        rows = _write_variant_trace_and_residual_rows(
-            model_name, dataset_name, variant, mapping_names, trace_dict, numel_map, layer_type_map, traces_csv, residual_csv,
+    for variant, traces_by_seed in traces_by_seed_by_variant.items():
+        rows = _write_variant_trace_rows(
+            model_name, dataset_name, variant, mapping_names, traces_by_seed, seeds, numel_map, layer_type_map, traces_csv, residual_csv,
         )
         trace_rows_by_variant[variant] = rows
         residual_by_variant[variant] = {n: d["residual"] for n, d in rows.items()}
 
-    for variant, kfac in kfac_by_variant.items():
+    kfac_by_variant: dict[str, dict[str, dict]] = {}
+    for variant, kfac_by_seed in kfac_by_seed_by_variant.items():
         trace_rows = trace_rows_by_variant.get(variant, {})
-        for name, k in kfac.items():
-            measured = trace_rows.get(name, {}).get("trace_per_param")
-            a_ok = k["A_per_infan"] == k["A_per_infan"]
-            g_ok = k["G_per_outfan"] == k["G_per_outfan"]
-            predicted = k["A_per_infan"] * k["G_per_outfan"] if (a_ok and g_ok) else float("nan")
-            _append_row(kfac_csv, {
-                "model": model_name, "dataset": dataset_name, "variant": variant, "layer": name,
-                "tr_A": k["tr_A"], "tr_G": k["tr_G"], "A_per_infan": k["A_per_infan"], "G_per_outfan": k["G_per_outfan"],
-                "predicted_per_param": predicted, "measured_per_param": measured if measured is not None else "",
-            }, KFAC_FIELDNAMES)
+        kfac_by_variant[variant] = _write_kfac_rows(model_name, dataset_name, variant, kfac_by_seed, seeds, trace_rows, kfac_csv)
 
     spike_trace = _spike_by_trace(trace_rows_by_variant.get("fp32_fused") or trace_rows_by_variant.get("fp32_unfused") or {})
 
@@ -829,8 +971,23 @@ def run_spike_layer_cause(
     canonical_traces_csv: str,
     imagenet100_checkpoint_dir: str | None = None,
     datasets: list[str] | None = None,
+    n_seeds: int = 1,
+    base_seed: int = 42,
 ) -> None:
     """
+    n_seeds/base_seed: this phase has TWO stochastic sources sharing the
+    same derived seed list -- the Hutchinson probe seed (Part 2 traces) and
+    val-batch selection for the KFAC A/G forward+backward pass (Part 5).
+    At n_seeds=1 both reproduce their pre-n_seeds behavior bit-exact
+    regardless of base_seed: traces still call torch.manual_seed(seeds[0])
+    exactly once before the single estimator call (previously PROBE_SEED,
+    imported from quant_induced_trace.py -- see the module-level warning
+    logged when n_seeds==1 and base_seed != PROBE_SEED), and the KFAC batch
+    draw falls back to the original unconditional _single_batch(hessian_
+    loader, ...) call with no seed dependence at all (see _draw_kfac_batch).
+    Parts 0/1/3/4/6 are unaffected directly -- they consume Part 2/5's
+    (now seed-aggregated) outputs, never re-seed anything themselves.
+
     imagenet100_checkpoint_dir: this module's whole point is a cross-dataset
     (CIFAR10 vs IMAGENET100) comparison, but in practice no single run_id in
     this project has banked freshly-trained checkpoints for BOTH datasets at
@@ -856,11 +1013,21 @@ def run_spike_layer_cause(
     dataset attribution regression), not Part 6 itself.
     """
     datasets = datasets if datasets is not None else DATASETS
+    seeds = derive_seeds(base_seed, n_seeds)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[SpikeLayerCause] CUDA not available -- falling back to CPU, this will be slow.")
     _enable_determinism()
-    logger.info(f"[SpikeLayerCause] device={device} canonical_traces_csv={canonical_traces_csv} imagenet100_checkpoint_dir={imagenet100_checkpoint_dir}")
+    logger.info(f"[SpikeLayerCause] device={device} canonical_traces_csv={canonical_traces_csv} imagenet100_checkpoint_dir={imagenet100_checkpoint_dir} seeds={seeds}")
+    if n_seeds == 1 and base_seed != PROBE_SEED:
+        logger.warning(
+            f"[SpikeLayerCause] --n-seeds 1 with --base-seed {base_seed}: the trace CSVs' aggregate row will "
+            f"NOT numerically match a saved pre-n_seeds CSV (different probe-seed value in, different Hutchinson "
+            f"draw out) -- the code PATH is unchanged (a single estimator call, matching the historical behavior "
+            f"exactly), but the NUMBERS only match a historical run if you pass --base-seed {PROBE_SEED} "
+            f"(quant_induced_trace.PROBE_SEED, this module's own historical constant). The KFAC A/G measurements "
+            f"are unaffected by base_seed at n_seeds=1 -- their batch draw has no seed dependence in that mode."
+        )
 
     _extend_trace_config_with_imagenet100(canonical_traces_csv)
 
@@ -913,7 +1080,7 @@ def run_spike_layer_cause(
             try:
                 result = _run_model_dataset(
                     model_name, dataset_name, specs, num_classes, device, fp32_ckpt, ptq_ckpt,
-                    traces_csv, residual_csv, descriptors_csv, kfac_csv, damage_csv,
+                    traces_csv, residual_csv, descriptors_csv, kfac_csv, damage_csv, seeds,
                 )
             except QuantInducedMappingError as exc:
                 logger.error(f"[SpikeLayerCause] {label}: Part 0 mapping gate FAILED -- {exc} -- skipping")

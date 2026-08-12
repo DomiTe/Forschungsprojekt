@@ -91,6 +91,7 @@ from src.analysis.pyhessian import compute_layerwise_hessian_trace_pyhessian
 from src.analysis.diagnose_activations import _resolve_fp32_models_dir, _append_row
 from src.analysis._ablation_common import _resolve_checkpoint_robust, WeightAblationCheckpointError
 from src.analysis.random_init_control import _enable_determinism, _safe_div
+from src.analysis._seed_stats import derive_seeds, aggregate
 from src.analysis.quant_induced_trace import (
     REQUIRED_MODELS,
     _build_layer_mapping,
@@ -170,6 +171,7 @@ DRIFT_FIELDNAMES = ["knob", "setting", "resnet50_conv1_trace", "reproduces_ancho
 CANONICAL_FIELDNAMES = [
     "model", "dataset", "variant", "canonical_layer", "weight_shape",
     "trace_raw", "trace_per_param", "probe_seed",
+    "seed", "n_seeds", "metric_std",
 ]
 LEDGER_FIELDNAMES = ["quantity", "old_value", "old_source", "canonical_value", "ratio", "explained_by_knob", "note"]
 
@@ -542,17 +544,33 @@ def _run_canonical_variant_traces(
     fp32_ckpt: str, ptq_ckpt: str | None, qat_ckpt: str | None,
     canonical_csv: str, reuse: dict[str, dict[str, float]] | None = None,
     num_batches: int = CANONICAL_NUM_BATCHES, max_iter: int = CANONICAL_MAX_ITER, tol: float = CANONICAL_TOL,
+    seeds: list[int] | None = None,
 ) -> dict[str, dict[str, float]]:
     """
     num_batches/max_iter/tol default to the frozen CIFAR10 canonical config;
     pass a dataset's own (reduced) budget for datasets where the canonical
     values are too costly (e.g. IMAGENET100 at 224x224 -- see
-    IMAGENET100_TRACE_CONFIG). Still probe_seed-locked to CANONICAL_PROBE_SEED
-    regardless, so cross-variant ratios within one dataset stay comparable.
+    IMAGENET100_TRACE_CONFIG).
+
+    seeds: probe seeds to average the Hutchinson trace estimate over (the
+    --n-seeds variance pass) -- defaults to [CANONICAL_PROBE_SEED], the
+    historical single-seed behavior, when not given. reuse (Part 1's
+    already-computed canonical run) is only honored when seeds is exactly
+    [CANONICAL_PROBE_SEED]; any other seed set always recomputes, since
+    Part 1's own drift-diagnosis grid stays single-seed by design and
+    cannot substitute for a multi-seed aggregate.
+
+    Writes one row per seed per layer to canonical_csv, plus one
+    seed="aggregate" row per layer holding the cross-seed mean (trace_raw,
+    trace_per_param) and metric_std. Returns {variant: {layer_key: mean}} --
+    downstream Part 2/3 code consumes the aggregate, never a single seed's
+    draw.
     """
     channels, image_size = specs["channels"], specs["image_size"]
     criterion = nn.CrossEntropyLoss(reduction=CANONICAL_LOSS_REDUCTION)
     reuse = reuse or {}
+    seeds = seeds if seeds is not None else [CANONICAL_PROBE_SEED]
+    can_reuse = (seeds == [CANONICAL_PROBE_SEED])
 
     variant_specs = [
         ("fp32_unfused", lambda dev: _load_unfused_fp32(model_name, fp32_ckpt, num_classes, channels, image_size, dev), "canonical"),
@@ -578,29 +596,49 @@ def _run_canonical_variant_traces(
 
     results: dict[str, dict[str, float]] = {}
     for variant, build_fn, key_kind in variant_specs:
-        if variant in reuse:
-            traces = reuse[variant]
+        if can_reuse and variant in reuse:
+            traces_by_seed = {CANONICAL_PROBE_SEED: reuse[variant]}
             logger.info(f"[RelockTraces] {model_name}/{dataset_name} variant={variant}: reusing Part 1's canonical run (identical config)")
         else:
             model = build_fn(device)
-            traces = _trace_full(model, val_loader, criterion, device, CANONICAL_PROBE_SEED, num_batches, max_iter, tol)
+            traces_by_seed = {seed: _trace_full(model, val_loader, criterion, device, seed, num_batches, max_iter, tol) for seed in seeds}
             del model
             if device.type == "cuda":
                 torch.cuda.empty_cache()
-        results[variant] = traces
 
+        seeds_present = list(traces_by_seed.keys())
+        variant_mean: dict[str, float] = {}
         for row in mapping:
             name_key = row["canonical_name"] if key_kind == "canonical" else row["quantized_name"]
-            trace_val = traces.get(f"{name_key}.weight")
-            if trace_val is None:
-                continue
+            weight_key = f"{name_key}.weight"
             numel = _numel(row["unfused_shape"])
+
+            per_seed_vals = []
+            for seed in seeds_present:
+                trace_val = traces_by_seed[seed].get(weight_key)
+                if trace_val is None:
+                    continue
+                per_seed_vals.append(trace_val)
+                _append_row(canonical_csv, {
+                    "model": model_name, "dataset": dataset_name, "variant": variant,
+                    "canonical_layer": row["canonical_name"], "weight_shape": str(row["unfused_shape"]),
+                    "trace_raw": trace_val, "trace_per_param": trace_val / numel if numel else "",
+                    "probe_seed": seed, "seed": seed, "n_seeds": len(seeds_present), "metric_std": "",
+                }, CANONICAL_FIELDNAMES)
+
+            if not per_seed_vals:
+                continue
+            mean, std = aggregate(per_seed_vals)
+            variant_mean[weight_key] = mean
             _append_row(canonical_csv, {
                 "model": model_name, "dataset": dataset_name, "variant": variant,
                 "canonical_layer": row["canonical_name"], "weight_shape": str(row["unfused_shape"]),
-                "trace_raw": trace_val, "trace_per_param": trace_val / numel if numel else "",
-                "probe_seed": CANONICAL_PROBE_SEED,
+                "trace_raw": mean, "trace_per_param": mean / numel if numel else "",
+                "probe_seed": ",".join(str(s) for s in seeds_present), "seed": "aggregate",
+                "n_seeds": len(seeds_present), "metric_std": std,
             }, CANONICAL_FIELDNAMES)
+
+        results[variant] = variant_mean
 
     return results
 
@@ -806,6 +844,8 @@ def run_relock_traces(
     banked_fp32_profile: str | None,
     legacy_anchors: str | None,
     datasets: list[str] | None = None,
+    n_seeds: int = 1,
+    base_seed: int = 42,
 ) -> None:
     """
     datasets restricts Part 2's canonical recompute to a subset of
@@ -814,9 +854,36 @@ def run_relock_traces(
     (drift diagnosis) and Part 3 (determinism check) are anchored on
     DATASET_NAME/DIAGNOSIS_MODEL by design (the legacy anchors being
     diagnosed are CIFAR10-specific numbers) and only run when "CIFAR10" is
-    among the requested datasets.
+    among the requested datasets; both stay single-seed (CANONICAL_PROBE_SEED)
+    regardless of n_seeds -- they are diagnostics of a specific historical
+    drift, not the headline trace measurement this pass estimates variance
+    for.
+
+    n_seeds/base_seed (the --n-seeds/--base-seed variance pass): Part 2's
+    canonical recompute runs compute_layerwise_hessian_trace_pyhessian
+    n_seeds times per variant, with probe seeds derive_seeds(base_seed,
+    n_seeds), and writes both the per-seed rows and a seed="aggregate"
+    mean/std row to canonical_traces.csv (see _run_canonical_variant_traces).
+
+    IMPORTANT: base_seed's default (42, matching the shared CLI default) is
+    NOT this module's historical probe seed (CANONICAL_PROBE_SEED=20260811).
+    A bare --n-seeds 1 run (base_seed left at 42) will NOT numerically match
+    a pre-n_seeds saved canonical_traces.csv -- different seed in, different
+    Hutchinson probe draw out, even though the call sequence is otherwise a
+    single-iteration no-op. To bit-exact reproduce old numbers for the
+    verification this task's spec calls for, pass
+    --base-seed 20260811 --n-seeds 1 explicitly. See _seed_stats.py's module
+    docstring for the general note.
     """
     datasets = datasets if datasets is not None else PART2_DATASETS
+    seeds = derive_seeds(base_seed, n_seeds)
+    if n_seeds == 1 and base_seed != CANONICAL_PROBE_SEED:
+        logger.warning(
+            f"[RelockTraces] n_seeds=1 with base_seed={base_seed} -- this will NOT numerically "
+            f"match a pre-n_seeds saved canonical_traces.csv, which used probe_seed="
+            f"{CANONICAL_PROBE_SEED}. Pass --base-seed {CANONICAL_PROBE_SEED} --n-seeds 1 for a "
+            f"bit-exact reproduction check."
+        )
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[RelockTraces] CUDA not available -- falling back to CPU, this will be slow.")
@@ -934,6 +1001,7 @@ def run_relock_traces(
                 model_name, dataset_name, specs, num_classes, device, val_loader, mapping_by_model[dataset_name][model_name],
                 m_fp32_ckpt, m_ptq_ckpt, m_qat_ckpt, canonical_csv, reuse=reuse,
                 num_batches=trace_cfg["num_batches"], max_iter=trace_cfg["max_iter"], tol=trace_cfg["tol"],
+                seeds=seeds,
             )
             canonical_by_model.setdefault(dataset_name, {})[model_name] = results
 

@@ -200,6 +200,8 @@ def main() -> None:
             checkpoint_dir=args.checkpoint_dir,
             load_run_id=args.load_run_id,
             eval_subset=args.eval_subset,
+            n_seeds=args.n_seeds,
+            base_seed=args.base_seed,
         )
         _cleanup()
         return
@@ -224,6 +226,8 @@ def main() -> None:
         run_random_init_control(
             checkpoint_dir=args.checkpoint_dir,
             load_run_id=args.load_run_id,
+            n_seeds=args.n_seeds,
+            base_seed=args.base_seed,
         )
         _cleanup()
         return
@@ -250,6 +254,8 @@ def main() -> None:
             checkpoint_dir=args.checkpoint_dir,
             load_run_id=args.load_run_id,
             banked_fp32_profile=args.banked_fp32_profile,
+            n_seeds=args.n_seeds,
+            base_seed=args.base_seed,
         )
         _cleanup()
         return
@@ -277,6 +283,8 @@ def main() -> None:
             load_run_id=args.load_run_id,
             banked_fp32_profile=args.banked_fp32_profile,
             legacy_anchors=args.legacy_anchors,
+            n_seeds=args.n_seeds,
+            base_seed=args.base_seed,
         )
         _cleanup()
         return
@@ -363,6 +371,8 @@ def main() -> None:
             load_run_id=args.load_run_id,
             canonical_traces_csv=args.canonical_traces_csv,
             imagenet100_checkpoint_dir=args.imagenet100_checkpoint_dir,
+            n_seeds=args.n_seeds,
+            base_seed=args.base_seed,
         )
         _cleanup()
         return
@@ -1062,12 +1072,14 @@ def _run_analyze_dataset(args, local_rank: int, dataset_name: str) -> None:
 
     _step(2, "relock-traces", run_relock_traces,
           checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
-          banked_fp32_profile=args.banked_fp32_profile, legacy_anchors=args.legacy_anchors, datasets=datasets)
+          banked_fp32_profile=args.banked_fp32_profile, legacy_anchors=args.legacy_anchors, datasets=datasets,
+          n_seeds=args.n_seeds, base_seed=args.base_seed)
     canonical_traces_csv = args.canonical_traces_csv or os.path.join(CSV_DIR, "canonical_traces.csv")
 
     _step(3, "quant-induced-trace", run_quant_induced_trace,
           checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
-          banked_fp32_profile=args.banked_fp32_profile, datasets=datasets)
+          banked_fp32_profile=args.banked_fp32_profile, datasets=datasets,
+          n_seeds=args.n_seeds, base_seed=args.base_seed)
 
     _step(4, "weight-ablation-canonical", run_weight_ablation_canonical,
           checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
@@ -1076,14 +1088,17 @@ def _run_analyze_dataset(args, local_rank: int, dataset_name: str) -> None:
     _step(5, "spike-layer-cause", run_spike_layer_cause,
           checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
           canonical_traces_csv=canonical_traces_csv,
-          imagenet100_checkpoint_dir=args.imagenet100_checkpoint_dir, datasets=datasets)
+          imagenet100_checkpoint_dir=args.imagenet100_checkpoint_dir, datasets=datasets,
+          n_seeds=args.n_seeds, base_seed=args.base_seed)
 
     _step(6, "random-init-control", run_random_init_control,
-          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id, datasets=datasets)
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id, datasets=datasets,
+          n_seeds=args.n_seeds, base_seed=args.base_seed)
 
     _step(7, "diagnose-activation-quant", run_diagnose_activation_quant,
           checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
-          eval_subset=args.eval_subset, datasets=datasets)
+          eval_subset=args.eval_subset, datasets=datasets,
+          n_seeds=args.n_seeds, base_seed=args.base_seed)
 
     _step(8, "ablate-layer-quantization", run_layer_ablation,
           checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,

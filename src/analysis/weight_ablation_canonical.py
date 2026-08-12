@@ -163,10 +163,25 @@ def _log_trace_config(canonical_traces_csv: str) -> None:
 
 
 def _load_canonical_traces(canonical_traces_csv: str, model_name: str, dataset_name: str, variant: str) -> dict[str, tuple[float, str]]:
-    """Returns {canonical_layer: (trace_raw, weight_shape_str)} for the given (model, dataset, variant)."""
+    """
+    Returns {canonical_layer: (trace_raw, weight_shape_str)} for the given
+    (model, dataset, variant).
+
+    Since the --n-seeds pass (relock_traces.py), canonical_traces.csv can
+    hold multiple rows per layer -- one per probe seed plus one
+    seed="aggregate" mean/std row. Filtering to seed=="aggregate" when that
+    column is present is required, not optional: without it, the dict
+    comprehension below would keep whichever row happens to appear last for
+    a given layer (a single noisy per-seed draw, not the mean) --
+    non-deterministic-feeling and silently wrong. Falls back to using every
+    row as-is for older canonical_traces.csv files that predate the "seed"
+    column (single row per layer already, so the filter is a no-op there).
+    """
     if not os.path.exists(canonical_traces_csv):
         raise WeightAblationCanonicalError(f"canonical traces CSV not found: {canonical_traces_csv}")
     df = pd.read_csv(canonical_traces_csv)
+    if "seed" in df.columns:
+        df = df[df["seed"] == "aggregate"]
     subset = df[(df["model"] == model_name) & (df["dataset"] == dataset_name) & (df["variant"] == variant)]
     if subset.empty:
         raise WeightAblationCanonicalError(

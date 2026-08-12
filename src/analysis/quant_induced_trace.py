@@ -102,6 +102,7 @@ from src.analysis._ablation_common import (
     WeightAblationCheckpointError,
 )
 from src.analysis.random_init_control import _safe_div, _enable_determinism
+from src.analysis._seed_stats import derive_seeds, aggregate
 from src.quantization.deploy_fbgemm import _resolve_checkpoint_dir
 from src.utility.config import CSV_DIR, DATASET_SPECS, HESSIAN_BATCH_SIZE
 from src.utility.utils import get_data_loaders
@@ -148,6 +149,7 @@ RECONCILE_MATCH_FRACTION = 0.8
 TRACES_FIELDNAMES = [
     "model", "dataset", "variant", "probe_seed",
     "canonical_layer", "quantized_layer", "weight_shape", "hessian_trace",
+    "seed", "n_seeds", "metric_std",
 ]
 COMPARISON_FIELDNAMES = [
     "model", "dataset", "canonical_layer",
@@ -278,19 +280,6 @@ def _build_hessian_loader(dataset_name: str) -> tuple[DataLoader, int]:
     return hessian_loader, num_classes
 
 
-def _trace_variant(
-    model: nn.Module, hessian_loader: DataLoader, criterion: nn.Module, device: torch.device,
-    num_batches: int = HESSIAN_NUM_BATCHES, max_iter: int = HESSIAN_MAX_ITER, tol: float = HESSIAN_TOL,
-) -> dict[str, float]:
-    # Probe seed reset immediately before this call, not once per model --
-    # the config-lock every cross-variant ratio in this mode depends on.
-    torch.manual_seed(PROBE_SEED)
-    return compute_layerwise_hessian_trace_pyhessian(
-        model, hessian_loader, criterion, device,
-        num_batches=num_batches, max_iter=max_iter, tol=tol,
-    )
-
-
 # ---------------------------------------------------------------------------
 # CSV writing helpers
 # ---------------------------------------------------------------------------
@@ -303,24 +292,62 @@ def _nan_to_blank(v):
     return v
 
 
-def _write_variant_traces(
-    model_name: str, dataset_name: str, variant: str,
-    mapping: list[dict], trace_dict: dict[str, float], key_kind: str, csv_path: str,
-) -> None:
+def _trace_variant_multiseed(
+    model: nn.Module, hessian_loader: DataLoader, criterion: nn.Module, device: torch.device,
+    seeds: list[int], num_batches: int, max_iter: int, tol: float,
+    model_name: str, dataset_name: str, variant: str, mapping: list[dict], key_kind: str, csv_path: str,
+) -> dict[str, float]:
+    """
+    Runs compute_layerwise_hessian_trace_pyhessian once per seed (the
+    --n-seeds variance pass -- probe seed reset immediately before each
+    call, matching the original single-seed reset-per-call discipline).
+    Writes a per-seed row plus a seed="aggregate" mean/std row per layer to
+    csv_path, and returns {layer_key: mean} -- Part 2's decomposition
+    consumes the aggregate, never a single seed's draw.
+    """
+    traces_by_seed: dict[int, dict[str, float]] = {}
+    for seed in seeds:
+        torch.manual_seed(seed)
+        traces_by_seed[seed] = compute_layerwise_hessian_trace_pyhessian(
+            model, hessian_loader, criterion, device, num_batches=num_batches, max_iter=max_iter, tol=tol,
+        )
+
+    aggregated: dict[str, float] = {}
     for row in mapping:
         name_key = row["canonical_name"] if key_kind == "canonical" else row["quantized_name"]
-        trace_val = trace_dict.get(f"{name_key}.weight")
-        if trace_val is None:
+        weight_key = f"{name_key}.weight"
+
+        per_seed_vals = []
+        for seed in seeds:
+            trace_val = traces_by_seed[seed].get(weight_key)
+            if trace_val is None:
+                continue
+            per_seed_vals.append(trace_val)
+            _append_row(csv_path, {
+                "model": model_name, "dataset": dataset_name, "variant": variant, "probe_seed": seed,
+                "canonical_layer": row["canonical_name"], "quantized_layer": row["quantized_name"],
+                "weight_shape": str(row["unfused_shape"]), "hessian_trace": trace_val,
+                "seed": seed, "n_seeds": len(seeds), "metric_std": "",
+            }, TRACES_FIELDNAMES)
+
+        if not per_seed_vals:
             logger.warning(
                 f"[QuantInducedTrace] {model_name}/{dataset_name} variant={variant}: no trace "
-                f"found for '{name_key}.weight' -- layer omitted from this variant's trace rows"
+                f"found for '{weight_key}' across any seed -- layer omitted from this variant's trace rows"
             )
             continue
+
+        mean, std = aggregate(per_seed_vals)
+        aggregated[weight_key] = mean
         _append_row(csv_path, {
-            "model": model_name, "dataset": dataset_name, "variant": variant, "probe_seed": PROBE_SEED,
+            "model": model_name, "dataset": dataset_name, "variant": variant,
+            "probe_seed": ",".join(str(s) for s in seeds),
             "canonical_layer": row["canonical_name"], "quantized_layer": row["quantized_name"],
-            "weight_shape": str(row["unfused_shape"]), "hessian_trace": trace_val,
+            "weight_shape": str(row["unfused_shape"]), "hessian_trace": mean,
+            "seed": "aggregate", "n_seeds": len(seeds), "metric_std": std,
         }, TRACES_FIELDNAMES)
+
+    return aggregated
 
 
 # ---------------------------------------------------------------------------
@@ -560,7 +587,7 @@ def _write_summary(
 def _run_one_model(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
     hessian_loader: DataLoader, fp32_models_dir: str, quant_dir: str, banked_profile_path: str | None,
-    traces_csv: str, comparison_csv: str, summary_csv: str, trace_cfg: dict,
+    traces_csv: str, comparison_csv: str, summary_csv: str, trace_cfg: dict, seeds: list[int],
 ) -> None:
     channels, image_size = specs["channels"], specs["image_size"]
     criterion = nn.CrossEntropyLoss()
@@ -596,40 +623,50 @@ def _run_one_model(
     traces: dict[str, dict[str, float]] = {}
 
     model = _load_unfused_fp32(model_name, fp32_ckpt, num_classes, channels, image_size, device)
-    traces["fp32_unfused"] = _trace_variant(model, hessian_loader, criterion, device, **trace_cfg)
-    _write_variant_traces(model_name, dataset_name, "fp32_unfused", mapping, traces["fp32_unfused"], "canonical", traces_csv)
+    traces["fp32_unfused"] = _trace_variant_multiseed(
+        model, hessian_loader, criterion, device, seeds, trace_cfg["num_batches"], trace_cfg["max_iter"], trace_cfg["tol"],
+        model_name, dataset_name, "fp32_unfused", mapping, "canonical", traces_csv,
+    )
     del model
     if device.type == "cuda":
         torch.cuda.empty_cache()
 
     if "PTQ" in stage_ckpts:
         ptq_model = _load_quantized(model_name, stage_ckpts["PTQ"], num_classes, channels, image_size, device)
-        traces["ptq"] = _trace_variant(ptq_model, hessian_loader, criterion, device, **trace_cfg)
-        _write_variant_traces(model_name, dataset_name, "ptq", mapping, traces["ptq"], "quantized", traces_csv)
+        traces["ptq"] = _trace_variant_multiseed(
+            ptq_model, hessian_loader, criterion, device, seeds, trace_cfg["num_batches"], trace_cfg["max_iter"], trace_cfg["tol"],
+            model_name, dataset_name, "ptq", mapping, "quantized", traces_csv,
+        )
         del ptq_model
         if device.type == "cuda":
             torch.cuda.empty_cache()
 
         fused_model = _load_quantized(model_name, stage_ckpts["PTQ"], num_classes, channels, image_size, device)
         _make_fused_fp32(fused_model, f"{label} fp32_fused")
-        traces["fp32_fused"] = _trace_variant(fused_model, hessian_loader, criterion, device, **trace_cfg)
-        _write_variant_traces(model_name, dataset_name, "fp32_fused", mapping, traces["fp32_fused"], "quantized", traces_csv)
+        traces["fp32_fused"] = _trace_variant_multiseed(
+            fused_model, hessian_loader, criterion, device, seeds, trace_cfg["num_batches"], trace_cfg["max_iter"], trace_cfg["tol"],
+            model_name, dataset_name, "fp32_fused", mapping, "quantized", traces_csv,
+        )
         del fused_model
         if device.type == "cuda":
             torch.cuda.empty_cache()
 
     if "QAT" in stage_ckpts:
         qat_model = _load_quantized(model_name, stage_ckpts["QAT"], num_classes, channels, image_size, device)
-        traces["qat"] = _trace_variant(qat_model, hessian_loader, criterion, device, **trace_cfg)
-        _write_variant_traces(model_name, dataset_name, "qat", mapping, traces["qat"], "quantized", traces_csv)
+        traces["qat"] = _trace_variant_multiseed(
+            qat_model, hessian_loader, criterion, device, seeds, trace_cfg["num_batches"], trace_cfg["max_iter"], trace_cfg["tol"],
+            model_name, dataset_name, "qat", mapping, "quantized", traces_csv,
+        )
         del qat_model
         if device.type == "cuda":
             torch.cuda.empty_cache()
 
         fused_qat_model = _load_quantized(model_name, stage_ckpts["QAT"], num_classes, channels, image_size, device)
         _make_fused_fp32(fused_qat_model, f"{label} fp32_fused_qat")
-        traces["fp32_fused_qat"] = _trace_variant(fused_qat_model, hessian_loader, criterion, device, **trace_cfg)
-        _write_variant_traces(model_name, dataset_name, "fp32_fused_qat", mapping, traces["fp32_fused_qat"], "quantized", traces_csv)
+        traces["fp32_fused_qat"] = _trace_variant_multiseed(
+            fused_qat_model, hessian_loader, criterion, device, seeds, trace_cfg["num_batches"], trace_cfg["max_iter"], trace_cfg["tol"],
+            model_name, dataset_name, "fp32_fused_qat", mapping, "quantized", traces_csv,
+        )
         del fused_qat_model
         if device.type == "cuda":
             torch.cuda.empty_cache()
@@ -647,16 +684,38 @@ def run_quant_induced_trace(
     load_run_id: str | None,
     banked_fp32_profile: str | None,
     datasets: list[str] | None = None,
+    n_seeds: int = 1,
+    base_seed: int = 42,
 ) -> None:
-    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    """
+    datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
     for a parallel per-dataset analysis run) -- default None means every
-    dataset in DATASETS."""
+    dataset in DATASETS.
+
+    n_seeds/base_seed (the --n-seeds/--base-seed variance pass): each
+    variant's trace is computed n_seeds times with probe seeds
+    derive_seeds(base_seed, n_seeds), and quant_induced_traces.csv gets both
+    the per-seed rows and a seed="aggregate" mean/std row per layer (see
+    _trace_variant_multiseed). IMPORTANT: base_seed's default (42) is NOT
+    this module's historical probe seed (PROBE_SEED=20260811) -- a bare
+    --n-seeds 1 run will NOT numerically match a pre-n_seeds saved
+    quant_induced_traces.csv. Pass --base-seed 20260811 --n-seeds 1
+    explicitly to bit-exact reproduce old numbers. See _seed_stats.py's
+    module docstring for the general note.
+    """
     datasets = datasets if datasets is not None else DATASETS
+    seeds = derive_seeds(base_seed, n_seeds)
+    if n_seeds == 1 and base_seed != PROBE_SEED:
+        logger.warning(
+            f"[QuantInducedTrace] n_seeds=1 with base_seed={base_seed} -- this will NOT numerically "
+            f"match a pre-n_seeds saved quant_induced_traces.csv, which used probe_seed={PROBE_SEED}. "
+            f"Pass --base-seed {PROBE_SEED} --n-seeds 1 for a bit-exact reproduction check."
+        )
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[QuantInducedTrace] CUDA not available -- falling back to CPU, this will be slow.")
     _enable_determinism()
-    logger.info(f"[QuantInducedTrace] device={device} probe_seed={PROBE_SEED} banked_fp32_profile={banked_fp32_profile} datasets={datasets}")
+    logger.info(f"[QuantInducedTrace] device={device} seeds={seeds} banked_fp32_profile={banked_fp32_profile} datasets={datasets}")
 
     fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
     quant_dir = _resolve_checkpoint_dir(checkpoint_dir, load_run_id)
@@ -684,7 +743,7 @@ def run_quant_induced_trace(
                 _run_one_model(
                     model_name, dataset_name, specs, num_classes, device,
                     hessian_loader, fp32_models_dir, quant_dir, banked_fp32_profile,
-                    traces_csv, comparison_csv, summary_csv, trace_cfg,
+                    traces_csv, comparison_csv, summary_csv, trace_cfg, seeds,
                 )
             except QuantInducedMappingError as exc:
                 if model_name in REQUIRED_MODELS:

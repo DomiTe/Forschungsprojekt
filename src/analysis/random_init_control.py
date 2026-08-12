@@ -81,6 +81,7 @@ from scipy.stats import spearmanr
 
 from src.model_cnn.train import build_model
 from src.analysis.pyhessian import compute_layerwise_hessian_trace_pyhessian
+from src.analysis._seed_stats import derive_seeds
 from src.analysis.diagnose_activations import (
     _resolve_fp32_models_dir,
     _fp32_checkpoint_path,
@@ -134,9 +135,17 @@ BN_POPULATE_BATCHES = 20
 FRACTION_ARCHITECTURAL_MIN = 0.7
 FRACTION_LEARNED_MAX = 0.3
 
-TRACES_FIELDNAMES = ["model", "dataset", "init", "seed", "layer", "hessian_trace"]
+TRACES_FIELDNAMES = ["model", "dataset", "init", "seed", "n_seeds", "layer", "hessian_trace"]
+# This module already reported a per-seed/aggregate schema before the
+# --n-seeds pass existed: TRACES_FIELDNAMES' "seed" column already holds
+# each per-seed row's init seed (blank for the single trained_fp32
+# reference row), and COMPARISON_FIELDNAMES' trace_random_mean/
+# trace_random_std are already the cross-seed aggregate this task's
+# "metric_std" column asks for elsewhere. Extended with n_seeds rather than
+# renamed, to avoid breaking either column name for anything already
+# reading them.
 COMPARISON_FIELDNAMES = [
-    "model", "dataset", "layer", "trace_random_mean", "trace_random_std",
+    "model", "dataset", "layer", "n_seeds", "trace_random_mean", "trace_random_std",
     "trace_trained_fp32", "ratio_trained_over_random", "elev_over_median_random",
     "elev_over_median_trained", "classification",
 ]
@@ -241,7 +250,7 @@ def _get_trained_fp32_traces(
     for layer, trace_val in traces.items():
         _append_row(traces_csv_path, {
             "model": model_name, "dataset": dataset_name, "init": "trained_fp32",
-            "seed": "", "layer": layer, "hessian_trace": trace_val,
+            "seed": "", "n_seeds": "", "layer": layer, "hessian_trace": trace_val,
         }, TRACES_FIELDNAMES)
 
     del model
@@ -287,7 +296,7 @@ def _run_random_seeds(
         for layer, trace_val in traces.items():
             _append_row(traces_csv_path, {
                 "model": model_name, "dataset": dataset_name, "init": "random",
-                "seed": seed, "layer": layer, "hessian_trace": trace_val,
+                "seed": seed, "n_seeds": len(seeds), "layer": layer, "hessian_trace": trace_val,
             }, TRACES_FIELDNAMES)
             per_layer_traces.setdefault(layer, []).append(trace_val)
 
@@ -369,7 +378,7 @@ def _compare_and_classify(
         }
 
         _append_row(comparison_csv_path, {
-            "model": model_name, "dataset": dataset_name, "layer": l,
+            "model": model_name, "dataset": dataset_name, "layer": l, "n_seeds": len(random_traces[l]),
             "trace_random_mean": trace_random_mean[l],
             "trace_random_std": trace_random_std[l],
             "trace_trained_fp32": trace_trained[l],
@@ -456,7 +465,7 @@ def _sibling_path(path: str, suffix: str) -> str:
 def _run_one_model(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
     hessian_loader: DataLoader, chance_loader: DataLoader, fp32_models_dir: str,
-    traces_csv: str, comparison_csv: str, summary_csv: str,
+    traces_csv: str, comparison_csv: str, summary_csv: str, init_seeds: list[int],
 ) -> None:
     criterion = nn.CrossEntropyLoss()
 
@@ -469,10 +478,10 @@ def _run_one_model(
 
     random_traces = _run_random_seeds(
         model_name, dataset_name, specs, num_classes, device,
-        hessian_loader, chance_loader, criterion, INIT_SEEDS, "default", traces_csv,
+        hessian_loader, chance_loader, criterion, init_seeds, "default", traces_csv,
     )
     per_layer = _compare_and_classify(model_name, dataset_name, random_traces, trained_traces, comparison_csv)
-    verdict = _write_summary(model_name, dataset_name, len(INIT_SEEDS), per_layer, "default", summary_csv)
+    verdict = _write_summary(model_name, dataset_name, len(init_seeds), per_layer, "default", summary_csv)
 
     if verdict != "architectural":
         logger.info(
@@ -484,24 +493,50 @@ def _run_one_model(
         comparison_csv_bn = _sibling_path(comparison_csv, "_bn_populated")
         random_traces_bn = _run_random_seeds(
             model_name, dataset_name, specs, num_classes, device,
-            hessian_loader, chance_loader, criterion, INIT_SEEDS, "populated", traces_csv_bn,
+            hessian_loader, chance_loader, criterion, init_seeds, "populated", traces_csv_bn,
         )
         per_layer_bn = _compare_and_classify(model_name, dataset_name, random_traces_bn, trained_traces, comparison_csv_bn)
-        _write_summary(model_name, dataset_name, len(INIT_SEEDS), per_layer_bn, "populated", summary_csv)
+        _write_summary(model_name, dataset_name, len(init_seeds), per_layer_bn, "populated", summary_csv)
 
 
 def run_random_init_control(
     checkpoint_dir: str | None, load_run_id: str | None, datasets: list[str] | None = None,
+    n_seeds: int = 1, base_seed: int = 42,
 ) -> None:
-    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    """
+    datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
     for a parallel per-dataset analysis run) -- default None means every
-    dataset in DATASETS."""
+    dataset in DATASETS.
+
+    n_seeds/base_seed (the --n-seeds/--base-seed variance pass): this
+    module's own "seed" axis is already the random-weight INIT seed, not a
+    Hutchinson probe seed -- it already loops >=1 independent weight draws
+    per architecture (historically hardcoded to INIT_SEEDS=[0,1,2]). This
+    unifies that loop's seed LIST with the shared derive_seeds(base_seed,
+    n_seeds) mechanism, so --n-seeds N means "N independent init draws"
+    here, consistent with what it means everywhere else ("N independent
+    probe/batch draws"). PROBE_SEED stays fixed regardless of n_seeds --
+    per this module's own design (see its docstring, Part 1), the
+    Hutchinson probe draw is deliberately held IDENTICAL across every init
+    seed so the across-seed std reflects only the weight draw, never probe
+    noise; varying it too would conflate the two variance sources this
+    module exists to separate.
+
+    IMPORTANT: this is the one phase where n_seeds=1 does NOT reproduce
+    historical behavior even at default base_seed -- the pre-n_seeds code
+    unconditionally used 3 init draws (INIT_SEEDS=[0,1,2]); there was no
+    single-seed mode to begin with. Pass --n-seeds 3 --base-seed 0 to
+    reproduce the historical [0,1,2] sweep exactly; the bare default
+    (--n-seeds 1) is a genuine, intentional behavior change to unify with
+    the rest of the CLI's n_seeds=1 default, not a bug.
+    """
     datasets = datasets if datasets is not None else DATASETS
+    init_seeds = derive_seeds(base_seed, n_seeds)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[RandomInitControl] CUDA not available -- falling back to CPU, this will be slow.")
     _enable_determinism()
-    logger.info(f"[RandomInitControl] device={device} init_seeds={INIT_SEEDS} probe_seed={PROBE_SEED}")
+    logger.info(f"[RandomInitControl] device={device} init_seeds={init_seeds} probe_seed={PROBE_SEED} (fixed, not varied by n_seeds -- see docstring)")
 
     fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
 
@@ -524,7 +559,7 @@ def run_random_init_control(
                 _run_one_model(
                     model_name, dataset_name, specs, num_classes, device,
                     hessian_loader, chance_loader, fp32_models_dir,
-                    traces_csv, comparison_csv, summary_csv,
+                    traces_csv, comparison_csv, summary_csv, init_seeds,
                 )
             except Exception as exc:
                 logger.error(f"[RandomInitControl] FAILED {model_name}/{dataset_name}: {exc}", exc_info=True)

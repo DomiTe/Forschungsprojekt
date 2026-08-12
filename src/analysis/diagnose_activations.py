@@ -49,6 +49,7 @@ import logging
 
 import torch
 import torch.nn as nn
+from torch.utils.data import DataLoader
 
 from src.model_cnn.train import build_model
 from src.quantization.quantizer import (
@@ -65,6 +66,7 @@ from src.quantization.deploy_fbgemm import (
     _checkpoint_path,
     _evaluate_accuracy,
 )
+from src.analysis._seed_stats import derive_seeds, aggregate
 from src.utility.config import RESULTS_DIR, RUN_ID, CSV_DIR, DATASET_SPECS
 from src.utility.utils import get_data_loaders
 
@@ -88,6 +90,7 @@ DECOMPOSITION_FIELDNAMES = [
 RANGES_FIELDNAMES = [
     "model", "dataset", "stage", "layer", "calib_min", "calib_max", "range_width",
     "scale", "zero_point", "act_p99", "act_p999", "act_max", "outlier_factor", "range_over_p99",
+    "seed", "n_seeds", "metric_std",
 ]
 ABLATION_FIELDNAMES = [
     "model", "dataset", "stage", "selection", "num_disabled", "newly_disabled_layer",
@@ -403,46 +406,108 @@ def _collect_activation_tensors(model: nn.Module, batch_input: torch.Tensor) -> 
     return tensors
 
 
+def _draw_range_batch(val_loader, seed: int, single_seed_mode: bool) -> torch.Tensor:
+    """
+    single_seed_mode (n_seeds==1): the historical, unconditional draw --
+    next(iter(val_loader)), the loader's own first batch, no shuffling, no
+    seed dependence at all. This is what makes n_seeds=1 reproduce
+    pre-n_seeds behavior bit-exact regardless of base_seed for this phase
+    specifically (unlike the probe-seed phases, which still depend on
+    base_seed's value at n_seeds=1).
+
+    Multi-seed (n_seeds>1): a fresh shuffle=True loader over the same
+    dataset, ambient torch RNG seeded immediately before the draw -- the
+    --n-seeds variance pass's stochastic source for this phase (val-batch
+    selection), per spec.
+    """
+    if single_seed_mode:
+        inputs, _ = next(iter(val_loader))
+        return inputs
+    torch.manual_seed(seed)
+    shuffled_loader = DataLoader(val_loader.dataset, batch_size=val_loader.batch_size, shuffle=True, num_workers=0, pin_memory=False)
+    inputs, _ = next(iter(shuffled_loader))
+    return inputs
+
+
+_RANGE_METRICS = ("calib_min", "calib_max", "range_width", "scale", "zero_point", "act_p99", "act_p999", "act_max", "outlier_factor", "range_over_p99")
+
+
 def _run_range_analysis(
     model_name: str, dataset_name: str, stage: str,
-    loaded_model: nn.Module, val_loader, output_csv_path: str,
+    loaded_model: nn.Module, val_loader, output_csv_path: str, seeds: list[int],
 ) -> list[dict]:
     label = f"{stage} {model_name}/{dataset_name}"
+    single_seed_mode = (len(seeds) == 1)
 
-    inputs, _ = next(iter(val_loader))
-    inputs = inputs[:RANGE_STATS_BATCH_SIZE]
-    activation_tensors = _collect_activation_tensors(loaded_model, inputs)
+    per_seed_layer_metrics: dict[int, dict[str, dict]] = {}
+    for seed in seeds:
+        inputs = _draw_range_batch(val_loader, seed, single_seed_mode)
+        inputs = inputs[:RANGE_STATS_BATCH_SIZE]
+        activation_tensors = _collect_activation_tensors(loaded_model, inputs)
+
+        layer_metrics: dict[str, dict] = {}
+        for name, module in loaded_model.named_modules():
+            if not isinstance(module, (QuantizedConv2d, QuantizedLinear)):
+                continue
+
+            observer = _get_observer(module.act_fake_quant, label, name)
+            calib_min = observer.min_val.item()
+            calib_max = observer.max_val.item()
+            range_width = calib_max - calib_min
+            scale_t, zero_point_t = observer.calculate_qparams()
+            scale = scale_t.item()
+            zero_point = int(zero_point_t.item())
+
+            tensor = activation_tensors.get(name)
+            if tensor is None or tensor.numel() == 0:
+                logger.warning(f"[DiagnoseActivations] {label} seed={seed}: no activation samples captured for '{name}', skipping")
+                continue
+
+            act_p99 = torch.quantile(tensor, 0.99).item()
+            act_p999 = torch.quantile(tensor, 0.999).item()
+            act_max = tensor.max().item()
+            outlier_factor = (act_max / act_p99) if act_p99 != 0 else float("inf")
+            range_over_p99 = (range_width / act_p99) if act_p99 != 0 else float("inf")
+
+            metrics = {
+                "calib_min": calib_min, "calib_max": calib_max, "range_width": range_width,
+                "scale": scale, "zero_point": zero_point,
+                "act_p99": act_p99, "act_p999": act_p999, "act_max": act_max,
+                "outlier_factor": outlier_factor, "range_over_p99": range_over_p99,
+            }
+            layer_metrics[name] = metrics
+            _append_row(output_csv_path, {
+                "model": model_name, "dataset": dataset_name, "stage": stage, "layer": name,
+                **metrics, "seed": seed, "n_seeds": len(seeds), "metric_std": "",
+            }, RANGES_FIELDNAMES)
+
+        per_seed_layer_metrics[seed] = layer_metrics
+
+    # Aggregate across seeds per layer -- mean for every batch-dependent
+    # metric (calib_min/max/scale/zero_point aren't actually batch-
+    # dependent, since they come from the calibrated observer, not the
+    # drawn batch; averaging them is a harmless no-op when they're constant
+    # across seeds). metric_std reports the std of outlier_factor
+    # specifically -- the one metric Part 3's cumulative ablation actually
+    # ranks/selects layers by, and this schema's single std column.
+    all_layers: set[str] = set()
+    for lm in per_seed_layer_metrics.values():
+        all_layers.update(lm.keys())
 
     rows = []
-    for name, module in loaded_model.named_modules():
-        if not isinstance(module, (QuantizedConv2d, QuantizedLinear)):
+    for name in sorted(all_layers):
+        present_seeds = [s for s in seeds if name in per_seed_layer_metrics.get(s, {})]
+        if not present_seeds:
             continue
-
-        observer = _get_observer(module.act_fake_quant, label, name)
-        calib_min = observer.min_val.item()
-        calib_max = observer.max_val.item()
-        range_width = calib_max - calib_min
-        scale_t, zero_point_t = observer.calculate_qparams()
-        scale = scale_t.item()
-        zero_point = int(zero_point_t.item())
-
-        tensor = activation_tensors.get(name)
-        if tensor is None or tensor.numel() == 0:
-            logger.warning(f"[DiagnoseActivations] {label}: no activation samples captured for '{name}', skipping")
-            continue
-
-        act_p99 = torch.quantile(tensor, 0.99).item()
-        act_p999 = torch.quantile(tensor, 0.999).item()
-        act_max = tensor.max().item()
-        outlier_factor = (act_max / act_p99) if act_p99 != 0 else float("inf")
-        range_over_p99 = (range_width / act_p99) if act_p99 != 0 else float("inf")
+        agg = {}
+        for metric in _RANGE_METRICS:
+            vals = [per_seed_layer_metrics[s][name][metric] for s in present_seeds]
+            agg[metric], _ = aggregate(vals)
+        _, outlier_std = aggregate([per_seed_layer_metrics[s][name]["outlier_factor"] for s in present_seeds])
 
         row = {
             "model": model_name, "dataset": dataset_name, "stage": stage, "layer": name,
-            "calib_min": calib_min, "calib_max": calib_max, "range_width": range_width,
-            "scale": scale, "zero_point": zero_point,
-            "act_p99": act_p99, "act_p999": act_p999, "act_max": act_max,
-            "outlier_factor": outlier_factor, "range_over_p99": range_over_p99,
+            **agg, "seed": "aggregate", "n_seeds": len(present_seeds), "metric_std": outlier_std,
         }
         _append_row(output_csv_path, row, RANGES_FIELDNAMES)
         rows.append(row)
@@ -450,8 +515,8 @@ def _run_range_analysis(
     ranked_desc = sorted(rows, key=lambda r: r["outlier_factor"], reverse=True)
     worst10 = ranked_desc[:10]
     logger.info(
-        f"[DiagnoseActivations] {label}: worst 10 layers by outlier factor -- "
-        + ", ".join(f"{r['layer']}({r['outlier_factor']:.2f})" for r in worst10)
+        f"[DiagnoseActivations] {label}: worst 10 layers by outlier factor (n_seeds={len(seeds)}) -- "
+        + ", ".join(f"{r['layer']}({r['outlier_factor']:.2f}+/-{r['metric_std']:.2f})" for r in worst10)
     )
 
     return ranked_desc
@@ -513,11 +578,22 @@ def run_diagnose_activation_quant(
     load_run_id: str | None,
     eval_subset: int | None,
     datasets: list[str] | None = None,
+    n_seeds: int = 1,
+    base_seed: int = 42,
 ) -> None:
     """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
     for a parallel per-dataset analysis run) -- default None means every
-    dataset in DATASETS."""
+    dataset in DATASETS.
+
+    n_seeds/base_seed only affect Part 2 (per-layer activation range
+    statistics, which depends on val-batch selection). Parts 0/1/3 are
+    deterministic on a fixed model+dataset (full-val-set or fixed-subset
+    evaluation, no probe/batch stochasticity) and are left untouched --
+    they always run their single existing deterministic pass. At n_seeds=1,
+    Part 2 also reproduces its pre-n_seeds behavior bit-exact regardless of
+    base_seed (see _draw_range_batch's single_seed_mode)."""
     datasets = datasets if datasets is not None else DATASETS
+    seeds = derive_seeds(base_seed, n_seeds)
     resolved_checkpoint_dir = _resolve_checkpoint_dir(checkpoint_dir, load_run_id)
     fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
 
@@ -570,7 +646,7 @@ def run_diagnose_activation_quant(
 
                 # ---- Part 2: per-layer activation range statistics ----
                 ranked_layers = _run_range_analysis(
-                    model_name, dataset_name, stage, loaded_model, val_loader, ranges_csv,
+                    model_name, dataset_name, stage, loaded_model, val_loader, ranges_csv, seeds,
                 )
 
                 # ---- Part 3: cumulative activation ablation (top vs. low outlier control) ----

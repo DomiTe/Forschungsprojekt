@@ -265,6 +265,34 @@ def parse_args():
              "torch.no_grad() -- the KFAC backward-hook measurement needs real gradients."
     )
     parser.add_argument(
+        "--n-seeds",
+        type=int,
+        default=1,
+        help="Global reproducibility knob: for the phases whose outputs depend on Hutchinson probe "
+             "seeds or val-batch selection (--relock-traces, --random-init-control, "
+             "--quant-induced-trace, --diagnose-activation-quant's Part 2 activation ranges, "
+             "--spike-layer-cause), run the core stochastic measurement N times under distinct "
+             "derived seeds ([--base-seed, --base-seed+1, ..., --base-seed+N-1]) and emit mean +/- "
+             "std across seeds (an additive 'seed'/'n_seeds'/'metric_std' CSV column triple; "
+             "per-seed rows are always kept, never destructively aggregated). Default 1 -- matches "
+             "the ships-headline-numbers config and (mechanism-for-mechanism) reproduces each "
+             "phase's pre-n_seeds behavior; a bare --n-seeds 1 will only numerically match an old "
+             "saved CSV if --base-seed is also set to that phase's historical constant -- each "
+             "affected phase logs a warning naming the exact flags when this isn't the case. "
+             "Phases NOT in this list (--weight-ablation-canonical, --diagnose-activation-quant "
+             "Parts 1/3, --deploy-cpu-fbgemm) are deterministic on a fixed model/checkpoint and are "
+             "left untouched -- no seed columns, no repeated computation. Analysis only; does not "
+             "retrain or resample any model."
+    )
+    parser.add_argument(
+        "--base-seed",
+        type=int,
+        default=42,
+        help="Starting seed for --n-seeds' derived seed list ([--base-seed, ..., --base-seed+"
+             "n_seeds-1]). Default 42. See --n-seeds for which phases this affects and the "
+             "historical-constant caveat at --n-seeds 1."
+    )
+    parser.add_argument(
         "--imagenet100-checkpoint-dir",
         type=str,
         default=None,

@@ -1,0 +1,63 @@
+{
+  "frozen_at_utc": "2026-08-12T15:28:34.481587+00:00",
+  "frozen_by": "src/analysis/relock_traces.py",
+  "data": {
+    "dataset": "CIFAR10",
+    "split": "test (val)",
+    "shuffle": false,
+    "num_workers": 0,
+    "pin_memory": false,
+    "batch_size": 16,
+    "num_batches": 5,
+    "num_images": 80,
+    "image_selection": "first num_images images of the CIFAR10 test split in dataset order (deterministic -- shuffle=False, no DataLoader generator randomness)",
+    "normalization": "standard CIFAR10 mean/std (src/utility/utils.py _norm); no augmentation (test transform: Resize -> ToTensor -> Normalize only, RandomCrop/Flip excluded)"
+  },
+  "loss": {
+    "criterion": "CrossEntropyLoss",
+    "reduction": "mean"
+  },
+  "estimator": {
+    "engine": "compute_layerwise_hessian_trace_pyhessian (src/analysis/pyhessian.py, unchanged)",
+    "probe_distribution": "Rademacher (PyHessian hessian.trace() default)",
+    "probe_seed": 20260811,
+    "probe_seed_reset": "torch.manual_seed(probe_seed) immediately before every estimator call",
+    "max_iter": 100,
+    "tol": 0.001
+  },
+  "model_mode": "eval",
+  "basis": {
+    "canonical_for_cross_stage_comparison": "fused",
+    "note": "PTQ/QAT exist only fused+quantized, so fused is canonical for any PTQ/QAT comparison. FP32 is still traced in BOTH bases (fp32_unfused, fp32_fused) and the unfused->fused fusion_ratio is always reported alongside FP32 so nothing is hidden by the basis choice (see src/analysis/quant_induced_trace.py)."
+  },
+  "trace_normalization": {
+    "headline": "trace_raw",
+    "companion": "trace_per_param = trace_raw / weight.numel()"
+  },
+  "numerics": {
+    "dtype": "float32",
+    "device": "cuda",
+    "deterministic_algorithms": true,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true
+  },
+  "datasets": {
+    "CIFAR10": {
+      "batch_size": 16,
+      "num_batches": 5,
+      "num_images": 80,
+      "max_iter": 100,
+      "tol": 0.001,
+      "note": "original frozen CIFAR10 config (relock_traces.py Part 0) -- referenced here, not duplicated logic; top-level keys are the source of truth and are unchanged by this extension."
+    },
+    "IMAGENET100": {
+      "batch_size": 8,
+      "num_batches": 3,
+      "num_images": 24,
+      "max_iter": 30,
+      "tol": 0.001,
+      "normalization": "standard IMAGENET100 mean/std (src/utility/utils.py _norm); val transform only (Resize(256) -> CenterCrop(224) -> ToTensor -> Normalize, no augmentation)",
+      "note": "probe count (max_iter=30) and image count (24) reduced from CIFAR10's (max_iter=100, num_images=80) -- 224x224 HVP cost is far higher per iteration than 32x32; this is a recorded cross-dataset difference (spike_layer_cause.py Part 0), not a silent one. Matched WITHIN IMAGENET100 across every model/variant in this module -- spike_layer_cause.py's cross-dataset comparisons (Part 6) use ratios/residuals, not raw trace magnitudes, precisely because of this difference."
+    }
+  }
+}

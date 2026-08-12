@@ -213,7 +213,14 @@ def run_layer_ablation(
     ablate_top_k: int,
     ablate_layers: str | None,
     eval_subset: int | None,
+    datasets: list[str] | None = None,
 ) -> None:
+    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    for a parallel per-dataset analysis run) -- default None means every
+    dataset in DATASETS. Requires layerwise_hessian_traces.csv to already
+    exist for --checkpoint-dir/--load-run-id (written by the checkpoint-
+    metrics pipeline) -- the trace-guided top-k/low-k selection reads it."""
+    datasets = datasets if datasets is not None else DATASETS
     torch.backends.quantized.engine = "fbgemm"
     num_threads = os.cpu_count() or 1
     torch.set_num_threads(num_threads)
@@ -236,7 +243,7 @@ def run_layer_ablation(
     else:
         logger.info(f"[LayerAblation] Trace-guided mode: top-{ablate_top_k} + low-{ablate_top_k} (control)")
 
-    for dataset_name in DATASETS:
+    for dataset_name in datasets:
         specs = DATASET_SPECS[dataset_name]
         channels, image_size = specs["channels"], specs["image_size"]
 

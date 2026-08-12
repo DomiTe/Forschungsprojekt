@@ -47,7 +47,7 @@ from src.analysis.benchmark import model_size_bytes, benchmark_latency
 logger = logging.getLogger(__name__)
 
 MODELS = ["cnn", "resnet18_no_weights", "resnet50_no_weights"]
-DATASETS = ["CIFAR10"] # "CIFAR10", "IMAGENET100"
+DATASETS = ["CIFAR10", "IMAGENET100"]
 STAGES = ["PTQ", "QAT"]
 
 NUM_CALIBRATION_BATCHES = 50
@@ -508,7 +508,12 @@ def run_deploy_cpu_fbgemm(
     load_run_id: str | None,
     checkpoint_dir: str | None,
     eval_subset: int | None,
+    datasets: list[str] | None = None,
 ) -> None:
+    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    for a parallel per-dataset analysis run) -- default None means every
+    dataset in DATASETS."""
+    datasets = datasets if datasets is not None else DATASETS
     torch.backends.quantized.engine = "fbgemm"
     num_threads = os.cpu_count() or 1
     torch.set_num_threads(num_threads)
@@ -526,7 +531,7 @@ def run_deploy_cpu_fbgemm(
     summary_rows: list[dict] = []
     sweep_rows: list[dict] = []
 
-    for dataset_name in DATASETS:
+    for dataset_name in datasets:
         specs = DATASET_SPECS[dataset_name]
         channels, image_size = specs["channels"], specs["image_size"]
 

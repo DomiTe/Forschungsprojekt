@@ -1,0 +1,44 @@
+{
+  "frozen_at_utc": "2026-08-11T21:19:18.470357+00:00",
+  "frozen_by": "src/analysis/relock_traces.py",
+  "data": {
+    "dataset": "CIFAR10",
+    "split": "test (val)",
+    "shuffle": false,
+    "num_workers": 0,
+    "pin_memory": false,
+    "batch_size": 16,
+    "num_batches": 5,
+    "num_images": 80,
+    "image_selection": "first num_images images of the CIFAR10 test split in dataset order (deterministic -- shuffle=False, no DataLoader generator randomness)",
+    "normalization": "standard CIFAR10 mean/std (src/utility/utils.py _norm); no augmentation (test transform: Resize -> ToTensor -> Normalize only, RandomCrop/Flip excluded)"
+  },
+  "loss": {
+    "criterion": "CrossEntropyLoss",
+    "reduction": "mean"
+  },
+  "estimator": {
+    "engine": "compute_layerwise_hessian_trace_pyhessian (src/analysis/pyhessian.py, unchanged)",
+    "probe_distribution": "Rademacher (PyHessian hessian.trace() default)",
+    "probe_seed": 20260811,
+    "probe_seed_reset": "torch.manual_seed(probe_seed) immediately before every estimator call",
+    "max_iter": 100,
+    "tol": 0.001
+  },
+  "model_mode": "eval",
+  "basis": {
+    "canonical_for_cross_stage_comparison": "fused",
+    "note": "PTQ/QAT exist only fused+quantized, so fused is canonical for any PTQ/QAT comparison. FP32 is still traced in BOTH bases (fp32_unfused, fp32_fused) and the unfused->fused fusion_ratio is always reported alongside FP32 so nothing is hidden by the basis choice (see src/analysis/quant_induced_trace.py)."
+  },
+  "trace_normalization": {
+    "headline": "trace_raw",
+    "companion": "trace_per_param = trace_raw / weight.numel()"
+  },
+  "numerics": {
+    "dtype": "float32",
+    "device": "cuda",
+    "deterministic_algorithms": true,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true
+  }
+}

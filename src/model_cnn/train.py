@@ -62,11 +62,11 @@ def build_model(num_classes: int,
         return ResNet18(num_classes=num_classes, channels=channels, image_size=image_size)
 
     elif model_name == "resnet18_no_weights":
-        from src.model_cnn.pretrained_resnet18 import get_resnet18
+        from src.model_cnn.resnets import get_resnet18
         return get_resnet18(num_classes=num_classes, channels=channels, image_size=image_size, pretrained=False)
 
     elif model_name == "resnet50_no_weights":
-        from src.model_cnn.pretrained_resnet18 import get_resnet50
+        from src.model_cnn.resnets import get_resnet50
         return get_resnet50(num_classes=num_classes, channels=channels, image_size=image_size, pretrained=False)
 
     else:

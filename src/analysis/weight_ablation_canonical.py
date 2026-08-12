@@ -22,7 +22,7 @@ resnet50_no_weights required, cnn optional -- too few layers to correlate;
 PTQ required, QAT optional -- skipped with a warning if its checkpoint is
 missing):
 
-  Part 0 (gate): reuses weight_ablation.py's (P1's) path-equivalence gate
+  Part 0 (gate): reuses _ablation_common.py's path-equivalence gate
     unchanged -- the act_fake_quant->Identity weights-only construction must
     match bake_pot_into_standard_layers's weights-only construction within
     PATH_EQUIVALENCE_TOLERANCE_PTS, or the isolation sweep is unsound and is
@@ -51,13 +51,13 @@ missing):
 Reuses (does not duplicate): the checkpoint loader (_load_quant_model,
 _load_fp32_reference), bake_pot_into_standard_layers (src/main.py, deferred
 import to avoid a circular import -- same pattern used by
-src/analysis/weight_ablation.py and src/quantization/deploy_fbgemm.py), the
+src/analysis/_ablation_common.py and src/quantization/deploy_fbgemm.py), the
 evaluation function (src/main.py's evaluate), and the Identity-swap helpers
 (_disable_activation_quant, _disable_weight_quant, _verify_identity_swap),
 all from src/analysis/diagnose_activations.py; the path-equivalence gate
-(_run_part0) and the weight-mask verifier (_verify_weight_mask) from
-src/analysis/weight_ablation.py (P1); and the robust checkpoint resolver
-(_resolve_checkpoint_robust) also from weight_ablation.py.
+(_run_part0), the weight-mask verifier (_verify_weight_mask), and the robust
+checkpoint resolver (_resolve_checkpoint_robust), all from
+src/analysis/_ablation_common.py.
 
 Analysis only -- no torchao/deployment code. Runs as a single local process
 (`python -m src.main --weight-ablation-canonical ...`), no SLURM/torchrun
@@ -87,7 +87,7 @@ from src.analysis.diagnose_activations import (
     _append_row,
     DiagnoseActivationsError,
 )
-from src.analysis.weight_ablation import (
+from src.analysis._ablation_common import (
     _resolve_checkpoint_robust,
     WeightAblationCheckpointError,
     _run_part0,
@@ -98,22 +98,34 @@ from src.utility.config import CSV_DIR, DATASET_SPECS
 
 logger = logging.getLogger(__name__)
 
-DATASET_NAME = "CIFAR10"
-REQUIRED_MODELS = ["resnet18_no_weights", "resnet50_no_weights"]   # resnet18 first -- run/report order per spec
+DATASETS = ["CIFAR10", "IMAGENET100"]
+REQUIRED_MODELS = ["resnet18_no_weights", "resnet50_no_weights", "cnn"]   # resnet18 first -- run/report order per spec
 STAGES = ["PTQ", "QAT"]                                            # QAT optional, skipped with a warning if missing
 
 SEED = 42
 
 ABLATION_FIELDNAMES = [
     "model", "dataset", "stage", "layer", "hessian_trace_fused", "delta_w_sq", "delta_w_sq_per_param",
-    "trh_times_dwsq", "fp32_acc", "isolated_acc", "weight_damage_pts",
+    "trh_times_dwsq", "fp32_acc", "isolated_acc", "weight_damage_pts", "abs_weight_damage_pts",
 ]
+# Signed vs. |damage| (see module docstring addendum below): PTQ damage is
+# mostly positive (quant hurts) and QAT damage is mostly negative (the QAT
+# model has adapted TO the quantized weights, so isolating one layer's quant
+# noise on an otherwise-FP32 forward pass reads as an IMPROVEMENT), but the
+# underlying quantity in both is the same sign-agnostic one: how much does
+# this layer's quantization state matter. abs_weight_damage_pts is the
+# primary correlation target (--damage-mode default "both" still reports
+# signed alongside it, never dropped -- the sign is what carries the
+# PTQ-vs-QAT distinction).
 CORRELATION_FIELDNAMES = [
-    "model", "dataset", "stage", "predictor", "n_layers", "spearman_rho", "spearman_p",
-    "top5_overlap_with_damage", "conv1_predictor_rank", "conv1_damage_rank",
+    "model", "dataset", "stage", "predictor", "n_layers", "damage_mode",
+    "spearman_rho_abs", "spearman_p_abs", "top5_overlap_abs", "conv1_damage_rank_abs",
+    "spearman_rho_signed", "spearman_p_signed", "top5_overlap_signed", "conv1_damage_rank_signed",
+    "conv1_predictor_rank",
 ]
 
 PREDICTORS = ["raw_trh", "dwsq", "trh_dwsq"]
+DAMAGE_MODES = ("signed", "abs", "both")
 
 
 class WeightAblationCanonicalError(RuntimeError):
@@ -300,11 +312,34 @@ def _rank_desc(values: dict[str, float], layer: str) -> int | None:
     return ranked.index(layer) + 1
 
 
+def _spearman_and_overlap(
+    layers: list[str], predictor_vals: dict[str, float], target_vals: dict[str, float], top_k: int,
+) -> tuple[float, float, int]:
+    n = len(layers)
+    if n >= 3:
+        rho, p_value = spearmanr([predictor_vals[l] for l in layers], [target_vals[l] for l in layers])
+    else:
+        rho, p_value = float("nan"), float("nan")
+    top_k_by_target = set(sorted(layers, key=lambda l: target_vals[l], reverse=True)[:top_k]) if n else set()
+    top_k_by_predictor = set(sorted(layers, key=lambda l: predictor_vals[l], reverse=True)[:top_k]) if n else set()
+    overlap = len(top_k_by_target & top_k_by_predictor)
+    return rho, p_value, overlap
+
+
 def _run_correlations(
     model_name: str, dataset_name: str, stage: str,
     damage: dict[str, float], raw_trh: dict[str, float], dwsq: dict[str, float],
-    correlation_csv: str,
+    correlation_csv: str, damage_mode: str = "both",
 ) -> None:
+    """
+    damage_mode selects which target(s) the primary spearman_rho_*/top5_overlap_*/
+    conv1_damage_rank_* columns are computed for -- "abs" (the paper's headline;
+    see module docstring addendum), "signed" (the original P1-revised target), or
+    "both" (default -- computes and writes both column sets in the same row, so
+    the signed-vs-QAT-null / abs-vs-top-rank contrast is visible without
+    re-running anything).
+    """
+    assert damage_mode in DAMAGE_MODES, f"damage_mode must be one of {DAMAGE_MODES}, got {damage_mode!r}"
     label = f"{stage} {model_name}/{dataset_name}"
     layers = sorted(set(damage) & set(raw_trh) & set(dwsq))
     n = len(layers)
@@ -313,63 +348,71 @@ def _run_correlations(
 
     trh_dwsq = {l: raw_trh[l] * dwsq[l] for l in layers}
     predictor_values = {"raw_trh": raw_trh, "dwsq": dwsq, "trh_dwsq": trh_dwsq}
-    damage_values = {l: damage[l] for l in layers}
-    conv1_damage_rank = _rank_desc(damage_values, "conv1")
+    damage_signed = {l: damage[l] for l in layers}
+    damage_abs = {l: abs(damage[l]) for l in layers}
+    conv1_damage_rank_signed = _rank_desc(damage_signed, "conv1")
+    conv1_damage_rank_abs = _rank_desc(damage_abs, "conv1")
 
     top_k = min(5, n)
-    top_k_by_damage = set(sorted(layers, key=lambda l: damage_values[l], reverse=True)[:top_k]) if n else set()
+    want_abs = damage_mode in ("abs", "both")
+    want_signed = damage_mode in ("signed", "both")
 
     summary_lines = []
     for predictor in PREDICTORS:
-        pvals = predictor_values[predictor]
-        vals = {l: pvals[l] for l in layers}
-
-        if n >= 3:
-            rho, p_value = spearmanr([vals[l] for l in layers], [damage_values[l] for l in layers])
-        else:
-            rho, p_value = float("nan"), float("nan")
-
-        top_k_by_predictor = set(sorted(layers, key=lambda l: vals[l], reverse=True)[:top_k]) if n else set()
-        overlap = len(top_k_by_damage & top_k_by_predictor)
+        vals = {l: predictor_values[predictor][l] for l in layers}
         conv1_predictor_rank = _rank_desc(vals, "conv1")
 
-        _append_row(correlation_csv, {
+        row = {
             "model": model_name, "dataset": dataset_name, "stage": stage, "predictor": predictor,
-            "n_layers": n, "spearman_rho": rho, "spearman_p": p_value,
-            "top5_overlap_with_damage": f"{overlap}/{top_k}" if n else "",
+            "n_layers": n, "damage_mode": damage_mode,
+            "spearman_rho_abs": "", "spearman_p_abs": "", "top5_overlap_abs": "", "conv1_damage_rank_abs": "",
+            "spearman_rho_signed": "", "spearman_p_signed": "", "top5_overlap_signed": "", "conv1_damage_rank_signed": "",
             "conv1_predictor_rank": conv1_predictor_rank if conv1_predictor_rank is not None else "",
-            "conv1_damage_rank": conv1_damage_rank if conv1_damage_rank is not None else "",
-        }, CORRELATION_FIELDNAMES)
+        }
 
-        summary_lines.append(
-            f"{predictor}: rho={rho:.4f} p={p_value:.4g} top{top_k}_overlap={overlap}/{top_k} "
-            f"conv1_predictor_rank={conv1_predictor_rank}/{n}"
-        )
+        summary_bits = []
+        if want_abs:
+            rho_abs, p_abs, overlap_abs = _spearman_and_overlap(layers, vals, damage_abs, top_k)
+            row["spearman_rho_abs"] = rho_abs
+            row["spearman_p_abs"] = p_abs
+            row["top5_overlap_abs"] = f"{overlap_abs}/{top_k}" if n else ""
+            row["conv1_damage_rank_abs"] = conv1_damage_rank_abs if conv1_damage_rank_abs is not None else ""
+            summary_bits.append(f"abs: rho={rho_abs:.4f} p={p_abs:.4g} top{top_k}_overlap={overlap_abs}/{top_k}")
+        if want_signed:
+            rho_signed, p_signed, overlap_signed = _spearman_and_overlap(layers, vals, damage_signed, top_k)
+            row["spearman_rho_signed"] = rho_signed
+            row["spearman_p_signed"] = p_signed
+            row["top5_overlap_signed"] = f"{overlap_signed}/{top_k}" if n else ""
+            row["conv1_damage_rank_signed"] = conv1_damage_rank_signed if conv1_damage_rank_signed is not None else ""
+            summary_bits.append(f"signed: rho={rho_signed:.4f} p={p_signed:.4g} top{top_k}_overlap={overlap_signed}/{top_k}")
+
+        _append_row(correlation_csv, row, CORRELATION_FIELDNAMES)
+        summary_lines.append(f"{predictor} [{', '.join(summary_bits)}] conv1_predictor_rank={conv1_predictor_rank}/{n}")
 
     logger.info(
-        f"[WeightAblationCanonical] {label}: n_layers={n} conv1_damage_rank={conv1_damage_rank}/{n} -- "
+        f"[WeightAblationCanonical] {label}: n_layers={n} damage_mode={damage_mode} "
+        f"conv1_damage_rank_abs={conv1_damage_rank_abs}/{n} conv1_damage_rank_signed={conv1_damage_rank_signed}/{n} -- "
         + " | ".join(summary_lines)
     )
 
     # Honest, non-cherry-picked verdict -- reported, not used to alter any CSV row.
-    if conv1_damage_rank is not None:
-        rho_raw, _ = spearmanr(
-            [raw_trh[l] for l in layers], [damage_values[l] for l in layers]
-        ) if n >= 3 else (float("nan"), float("nan"))
-        rho_dwsq, _ = spearmanr(
-            [dwsq[l] for l in layers], [damage_values[l] for l in layers]
-        ) if n >= 3 else (float("nan"), float("nan"))
-        rho_trh_dwsq, _ = spearmanr(
-            [trh_dwsq[l] for l in layers], [damage_values[l] for l in layers]
-        ) if n >= 3 else (float("nan"), float("nan"))
+    # Always computed (both targets) regardless of --damage-mode, purely as a log
+    # message -- this is what motivated the |damage| reframing in the first place
+    # (conv1 sits at the top by |damage| in every configuration; signed rank
+    # buries this on QAT, where per-layer damage is mostly negative).
+    if conv1_damage_rank_abs is not None:
+        rho_raw_abs, _ = spearmanr([raw_trh[l] for l in layers], [damage_abs[l] for l in layers]) if n >= 3 else (float("nan"), float("nan"))
+        rho_dwsq_abs, _ = spearmanr([dwsq[l] for l in layers], [damage_abs[l] for l in layers]) if n >= 3 else (float("nan"), float("nan"))
+        rho_trh_dwsq_abs, _ = spearmanr([trh_dwsq[l] for l in layers], [damage_abs[l] for l in layers]) if n >= 3 else (float("nan"), float("nan"))
         conv1_rank_raw = _rank_desc(raw_trh, "conv1")
         conv1_rank_dwsq = _rank_desc(dwsq, "conv1")
         conv1_rank_trh_dwsq = _rank_desc(trh_dwsq, "conv1")
 
         logger.info(
-            f"[WeightAblationCanonical] {label}: VERDICT -- conv1 ranks #{conv1_damage_rank}/{n} by damage, "
-            f"#{conv1_rank_raw}/{n} by raw_trh (rho={rho_raw:.3f}), #{conv1_rank_dwsq}/{n} by dwsq "
-            f"(rho={rho_dwsq:.3f}), #{conv1_rank_trh_dwsq}/{n} by trh_dwsq (rho={rho_trh_dwsq:.3f}). "
+            f"[WeightAblationCanonical] {label}: VERDICT (|damage|) -- conv1 ranks #{conv1_damage_rank_abs}/{n} "
+            f"by |damage| (signed rank #{conv1_damage_rank_signed}/{n}), #{conv1_rank_raw}/{n} by raw_trh "
+            f"(rho_abs={rho_raw_abs:.3f}), #{conv1_rank_dwsq}/{n} by dwsq (rho_abs={rho_dwsq_abs:.3f}), "
+            f"#{conv1_rank_trh_dwsq}/{n} by trh_dwsq (rho_abs={rho_trh_dwsq_abs:.3f}). "
             f"Interpretation left to the reader per predictor's numbers above -- not selected post hoc."
         )
 
@@ -381,7 +424,7 @@ def _run_correlations(
 def _run_one_combo(
     model_name: str, dataset_name: str, stage: str, specs: dict, num_classes: int, device: torch.device,
     eval_loader: DataLoader, quant_ckpt_path: str, fp32_ckpt_path: str, canonical_traces_csv: str,
-    ablation_csv: str, correlation_csv: str,
+    ablation_csv: str, correlation_csv: str, damage_mode: str = "both",
 ) -> None:
     channels, image_size = specs["channels"], specs["image_size"]
     label = f"{stage} {model_name}/{dataset_name}"
@@ -428,29 +471,37 @@ def _run_one_combo(
     for layer_name in all_layer_names:
         dwsq, dwsq_per_param = dwsq_map.get(layer_name, (float("nan"), float("nan")))
         trh = raw_trh.get(layer_name, float("nan"))
+        layer_damage = damage.get(layer_name, float("nan"))
         _append_row(ablation_csv, {
             "model": model_name, "dataset": dataset_name, "stage": stage, "layer": layer_name,
             "hessian_trace_fused": trh, "delta_w_sq": dwsq, "delta_w_sq_per_param": dwsq_per_param,
             "trh_times_dwsq": trh * dwsq if trh == trh and dwsq == dwsq else float("nan"),
-            "fp32_acc": fp32_acc, "isolated_acc": fp32_acc - damage.get(layer_name, float("nan")),
-            "weight_damage_pts": damage.get(layer_name, float("nan")),
+            "fp32_acc": fp32_acc, "isolated_acc": fp32_acc - layer_damage,
+            "weight_damage_pts": layer_damage, "abs_weight_damage_pts": abs(layer_damage),
         }, ABLATION_FIELDNAMES)
 
     # ---- Part 3: correlations (decision) ----
     dwsq_only = {l: dwsq_map[l][0] for l in dwsq_map}
-    _run_correlations(model_name, dataset_name, stage, damage, raw_trh, dwsq_only, correlation_csv)
+    _run_correlations(model_name, dataset_name, stage, damage, raw_trh, dwsq_only, correlation_csv, damage_mode=damage_mode)
 
 
 def run_weight_ablation_canonical(
     checkpoint_dir: str | None,
     load_run_id: str | None,
     canonical_traces_csv: str,
+    damage_mode: str = "both",
+    datasets: list[str] | None = None,
 ) -> None:
+    """datasets restricts the sweep to a subset of DATASETS (e.g. one dataset,
+    for a parallel per-dataset analysis run) -- default None means every
+    dataset in DATASETS."""
+    assert damage_mode in DAMAGE_MODES, f"damage_mode must be one of {DAMAGE_MODES}, got {damage_mode!r}"
+    datasets = datasets if datasets is not None else DATASETS
     torch.manual_seed(SEED)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     if device.type != "cuda":
         logger.warning("[WeightAblationCanonical] CUDA not available -- falling back to CPU, this will be slow.")
-    logger.info(f"[WeightAblationCanonical] device={device} seed={SEED} canonical_traces_csv={canonical_traces_csv}")
+    logger.info(f"[WeightAblationCanonical] device={device} seed={SEED} damage_mode={damage_mode} datasets={datasets} canonical_traces_csv={canonical_traces_csv}")
     _log_trace_config(canonical_traces_csv)
 
     fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
@@ -460,41 +511,43 @@ def run_weight_ablation_canonical(
     ablation_csv = os.path.join(CSV_DIR, "weight_ablation_canonical_v2.csv")
     correlation_csv = os.path.join(CSV_DIR, "weight_ablation_canonical_correlation_v2.csv")
 
-    specs = DATASET_SPECS[DATASET_NAME]
-    try:
-        eval_loader, num_classes = _build_eval_loader(DATASET_NAME)
-    except Exception as exc:
-        logger.error(f"[WeightAblationCanonical] {DATASET_NAME}: could not load dataset ({exc}) -- aborting")
-        return
+    for dataset_name in datasets:
+        specs = DATASET_SPECS[dataset_name]
+        try:
+            eval_loader, num_classes = _build_eval_loader(dataset_name)
+        except Exception as exc:
+            logger.error(f"[WeightAblationCanonical] {dataset_name}: could not load dataset ({exc}) -- skipping dataset")
+            continue
 
-    # Stage-outer, model-inner: resnet18/PTQ, resnet50/PTQ, then (if reached)
-    # resnet18/QAT, resnet50/QAT -- matches the spec's explicit run/report order.
-    for stage in STAGES:
-        for model_name in REQUIRED_MODELS:
-            label = f"{stage} {model_name}/{DATASET_NAME}"
-            logger.info(f"[WeightAblationCanonical] === {label} ===")
-            try:
-                fp32_ckpt_path = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": DATASET_NAME})
-                quant_ckpt_path = _resolve_checkpoint_robust(quant_dir, {"stage": stage, "model": model_name, "dataset": DATASET_NAME})
-            except FileNotFoundError as exc:
-                level = logger.warning if stage == "QAT" else logger.error
-                level(f"[WeightAblationCanonical] {label}: checkpoint missing ({exc}) -- skipping{' (QAT optional)' if stage == 'QAT' else ''}")
-                continue
-            except WeightAblationCheckpointError as exc:
-                logger.error(f"[WeightAblationCanonical] {label}: checkpoint resolution AMBIGUOUS/NEAR-MISS -- {exc} -- skipping, needs human attention")
-                continue
+        # Stage-outer, model-inner: resnet18/PTQ, resnet50/PTQ, then (if reached)
+        # resnet18/QAT, resnet50/QAT -- matches the spec's explicit run/report order.
+        for stage in STAGES:
+            for model_name in REQUIRED_MODELS:
+                label = f"{stage} {model_name}/{dataset_name}"
+                logger.info(f"[WeightAblationCanonical] === {label} ===")
+                try:
+                    fp32_ckpt_path = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": dataset_name})
+                    quant_ckpt_path = _resolve_checkpoint_robust(quant_dir, {"stage": stage, "model": model_name, "dataset": dataset_name})
+                except FileNotFoundError as exc:
+                    level = logger.warning if stage == "QAT" else logger.error
+                    level(f"[WeightAblationCanonical] {label}: checkpoint missing ({exc}) -- skipping{' (QAT optional)' if stage == 'QAT' else ''}")
+                    continue
+                except WeightAblationCheckpointError as exc:
+                    logger.error(f"[WeightAblationCanonical] {label}: checkpoint resolution AMBIGUOUS/NEAR-MISS -- {exc} -- skipping, needs human attention")
+                    continue
 
-            try:
-                _run_one_combo(
-                    model_name, DATASET_NAME, stage, specs, num_classes, device, eval_loader,
-                    quant_ckpt_path, fp32_ckpt_path, canonical_traces_csv, ablation_csv, correlation_csv,
-                )
-            except DiagnoseActivationsError as exc:
-                logger.error(f"[WeightAblationCanonical] {label}: Identity-swap verification FAILED -- {exc}")
-            except Exception as exc:
-                logger.error(f"[WeightAblationCanonical] FAILED {label}: {exc}", exc_info=True)
-            finally:
-                if device.type == "cuda":
-                    torch.cuda.empty_cache()
+                try:
+                    _run_one_combo(
+                        model_name, dataset_name, stage, specs, num_classes, device, eval_loader,
+                        quant_ckpt_path, fp32_ckpt_path, canonical_traces_csv, ablation_csv, correlation_csv,
+                        damage_mode=damage_mode,
+                    )
+                except DiagnoseActivationsError as exc:
+                    logger.error(f"[WeightAblationCanonical] {label}: Identity-swap verification FAILED -- {exc}")
+                except Exception as exc:
+                    logger.error(f"[WeightAblationCanonical] FAILED {label}: {exc}", exc_info=True)
+                finally:
+                    if device.type == "cuda":
+                        torch.cuda.empty_cache()
 
     logger.info("[WeightAblationCanonical] === Weight-Ablation-Canonical complete ===")

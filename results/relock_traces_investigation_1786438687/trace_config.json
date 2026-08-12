@@ -40,5 +40,24 @@
     "deterministic_algorithms": true,
     "cudnn_benchmark": false,
     "cudnn_deterministic": true
+  },
+  "datasets": {
+    "CIFAR10": {
+      "batch_size": 16,
+      "num_batches": 5,
+      "num_images": 80,
+      "max_iter": 100,
+      "tol": 0.001,
+      "note": "original frozen CIFAR10 config (relock_traces.py Part 0) -- referenced here, not duplicated logic; top-level keys are the source of truth and are unchanged by this extension."
+    },
+    "IMAGENET100": {
+      "batch_size": 8,
+      "num_batches": 3,
+      "num_images": 24,
+      "max_iter": 30,
+      "tol": 0.001,
+      "normalization": "standard IMAGENET100 mean/std (src/utility/utils.py _norm); val transform only (Resize(256) -> CenterCrop(224) -> ToTensor -> Normalize, no augmentation)",
+      "note": "probe count (max_iter=30) and image count (24) reduced from CIFAR10's (max_iter=100, num_images=80) -- 224x224 HVP cost is far higher per iteration than 32x32; this is a recorded cross-dataset difference (spike_layer_cause.py Part 0), not a silent one. Matched WITHIN IMAGENET100 across every model/variant in this module -- spike_layer_cause.py's cross-dataset comparisons (Part 6) use ratios/residuals, not raw trace magnitudes, precisely because of this difference."
+    }
   }
 }

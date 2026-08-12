@@ -35,23 +35,11 @@ from src.quantization.quantizer import (
     QuantizedLinear,
 )
 
-from src.analysis.hessian import compute_layerwise_hessian_trace
 from src.analysis.pyhessian import compute_layerwise_hessian_trace_pyhessian
 from src.analysis.top_eigenvalue import compute_top_eigenvalue
 from src.analysis.quant_error import compute_layerwise_quant_error
 from src.analysis.classification_metrics import compute_classification_metrics
-from src.analysis.benchmark import (
-    compare_fp32_vs_int8,
-    log_quantization_audit,
-)
-from src.analysis import validate_pot
 from src.analysis import int8_profile
-from src.quantization import deploy
-
-from torchao.quantization import (
-    quantize_,
-    Int8WeightOnlyConfig,
-)
 
 from src.utility.helper import parse_args
 from src.utility.utils import setup_global_logging, get_data_loaders, measure_throughput
@@ -61,7 +49,7 @@ from src.utility.config import (
     BASE_DIR,
     DATASET_SPECS,
     QUANTIZED_MODELS,
-    DEPLOYED_MODELS,
+    # DEPLOYED_MODELS,
     QAT_EPOCH,
     QAT_LR,
     HESSIAN_BATCH_SIZE,
@@ -80,8 +68,7 @@ MODELS = [
 
 DATASETS = [
     "CIFAR10",
-    # "IMAGENET100",
-    
+    "IMAGENET100",
 ]
 
 
@@ -96,39 +83,47 @@ def main() -> None:
         logger.info(f"=== Pipeline start: {len(MODELS)} models - {len(DATASETS)} datasets = {total} runs ===")
 
     # -------------------------------------------------------------------
-    # Deploy-Int8-Only mode: reconstruct saved QAT checkpoints, bake PoT
-    # weights into standard layers, run the int8 accuracy gate, and exit.
-    # Skips FP32/PTQ/QAT training and all Hessian/eigenvalue/SQNR analysis.
+    # Train-Only mode: FP32 -> PTQ -> QAT training and checkpointing for
+    # all 3 models x both datasets, with throughput benchmarking. No
+    # Hessian/eigenvalue/quant-error/classification analysis -- see
+    # --checkpoint-metrics / --analyze-{dataset} for that, run afterward
+    # from these same checkpoints.
     # -------------------------------------------------------------------
-    if args.deploy_int8_only:
+    if args.train_only:
         if local_rank == 0:
-            logger.info("=== Deploy-Int8-Only: skipping training and Hessian/eigenvalue/SQNR analysis ===")
-        _run_deploy_int8_only(args, local_rank)
+            logger.info("=== Train-Only: FP32/PTQ/QAT training only, no analysis ===")
+        _run_train_only(args, local_rank)
         _cleanup()
         return
 
     # -------------------------------------------------------------------
-    # Benchmark-Int8-Only mode: reload saved FP32 baselines and deployed
-    # full-int8 models, measure GPU latency/throughput/size, and exit.
-    # Skips FP32/PTQ/QAT training and all Hessian/eigenvalue/SQNR analysis.
+    # Checkpoint-Metrics mode: per-layer Hessian trace, top eigenvalue,
+    # weight-quantization error, and classification metrics for FP32/PTQ/
+    # QAT, computed from saved checkpoints. All logic lives in
+    # src/analysis/checkpoint_metrics.py. Skips training entirely. Runs as
+    # a single local process (no torchrun/distributed init needed).
     # -------------------------------------------------------------------
-    if args.benchmark_int8_only:
+    if args.checkpoint_metrics:
         if local_rank == 0:
-            logger.info("=== Benchmark-Int8-Only: skipping training and Hessian/eigenvalue/SQNR analysis ===")
-        _run_benchmark_int8_only(args, local_rank)
+            logger.info("=== Checkpoint-Metrics: skipping training ===")
+            from src.analysis.checkpoint_metrics import run_checkpoint_metrics
+            run_checkpoint_metrics(checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id)
         _cleanup()
         return
 
     # -------------------------------------------------------------------
-    # Validate-PoT-Int8 mode: reconstruct the deployed int8 models fresh
-    # from saved PTQ/QAT checkpoints and run the per-layer functional
-    # PoT-preservation check. Skips FP32/PTQ/QAT training and all
-    # Hessian/eigenvalue/SQNR analysis.
+    # Analyze-CIFAR10 / Analyze-IMAGENET100 modes: every retained analysis
+    # pipeline (see ANALYZE_STEPS / _run_analyze_dataset), scoped to one
+    # dataset, all 3 models, so the two can run as separate parallel jobs.
+    # Skips training entirely.
     # -------------------------------------------------------------------
-    if args.validate_pot_int8:
-        if local_rank == 0:
-            logger.info("=== Validate-PoT-Int8: skipping training and Hessian/eigenvalue/SQNR analysis ===")
-        _run_validate_pot_int8(args, local_rank)
+    if args.analyze_cifar10:
+        _run_analyze_dataset(args, local_rank, "CIFAR10")
+        _cleanup()
+        return
+
+    if args.analyze_imagenet100:
+        _run_analyze_dataset(args, local_rank, "IMAGENET100")
         _cleanup()
         return
 
@@ -205,29 +200,6 @@ def main() -> None:
             checkpoint_dir=args.checkpoint_dir,
             load_run_id=args.load_run_id,
             eval_subset=args.eval_subset,
-        )
-        _cleanup()
-        return
-
-    # -------------------------------------------------------------------
-    # Weight-Ablation mode: measure each layer's weight-quantization damage
-    # in isolation (all activation quantization disabled first) and
-    # correlate it against that layer's precomputed weight-Hessian trace.
-    # All logic lives in src/analysis/weight_ablation.py, which reuses (does
-    # not duplicate) the checkpoint loader / evaluation function / Identity-
-    # swap helpers from src/analysis/diagnose_activations.py and the Hessian
-    # trace CSV loader from src/analysis/layer_ablation.py. Analysis only --
-    # no torchao/INT8/deployment path. Skips FP32/PTQ/QAT training and all
-    # Hessian/eigenvalue/SQNR analysis. Runs as a single local process (no
-    # torchrun/distributed init needed), prefers CUDA when available.
-    # -------------------------------------------------------------------
-    if args.weight_ablation:
-        if local_rank == 0:
-            logger.info("=== Weight-Ablation: skipping training and Hessian/eigenvalue/SQNR analysis ===")
-        from src.analysis.weight_ablation import run_weight_ablation
-        run_weight_ablation(
-            checkpoint_dir=args.checkpoint_dir,
-            load_run_id=args.load_run_id,
         )
         _cleanup()
         return
@@ -331,33 +303,67 @@ def main() -> None:
             checkpoint_dir=args.checkpoint_dir,
             load_run_id=args.load_run_id,
             canonical_traces_csv=args.canonical_traces_csv,
+            damage_mode=args.damage_mode,
         )
         _cleanup()
         return
 
     # -------------------------------------------------------------------
-    # Diagnose-Acc-Mismatch mode: isolate why the same checkpoint scores
-    # differently locally than on the cluster. Fingerprints the checkpoints,
-    # the class-to-index mapping and the transform pipeline, then evaluates
-    # the plain FP32 baseline and inspects label/per-class behaviour, and
-    # writes results/<RUN_ID>/logs/acc_mismatch_diagnosis.txt for direct
-    # diffing against a cluster run of the same mode. All logic lives in
-    # src/analysis/diagnose_acc.py -- see its docstring for the hypotheses
-    # under test. Runs as a single local process (no torchrun/distributed).
+    # Weight-Ablation-Diagnose mode: explain the v1->v2 weight-ablation-
+    # canonical damage-magnitude drift (resnet50/CIFAR10/PTQ conv1: 0.67 ->
+    # 1.62pts, ~2.4x) by varying one candidate cause at a time -- eval batch
+    # size, num_workers/shuffle, seed/dtype/determinism, the weight_fake_quant
+    # isolation mechanism, the FP32/PTQ checkpoint source, fresh-per-layer
+    # model reconstruction, BN eval mode, CUDA nondeterminism -- from the v2
+    # configuration on resnet50/CIFAR10/PTQ conv1, holding everything else
+    # fixed. All logic lives in src/analysis/weight_ablation_diagnose.py,
+    # which reuses (does not duplicate) the checkpoint loader, Identity-swap
+    # helpers, weight-mask verifier and robust checkpoint resolver already
+    # established by weight_ablation.py / diagnose_activations.py. Analysis
+    # only -- no torchao/deployment. Skips FP32/PTQ/QAT training and all
+    # Hessian/eigenvalue/SQNR analysis. Runs as a single local process (no
+    # torchrun/distributed init needed), prefers CUDA.
     # -------------------------------------------------------------------
-    if args.diagnose_acc_mismatch:
+    if args.weight_ablation_diagnose:
         if local_rank == 0:
-            logger.info("=== Diagnose-Acc-Mismatch: skipping training and Hessian/eigenvalue/SQNR analysis ===")
-            from src.analysis.diagnose_acc import run_acc_mismatch_diagnosis
-            run_acc_mismatch_diagnosis(
-                model_name=args.diag_model,
-                dataset_name=args.diag_dataset,
-                stage=args.diag_stage,
-                checkpoint_dir=args.checkpoint_dir,
-                load_run_id=args.load_run_id,
-                eval_subset=args.eval_subset,
-            )
-            logger.info("=== Diagnose-Acc-Mismatch complete ===")
+            logger.info("=== Weight-Ablation-Diagnose: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.weight_ablation_diagnose import run_weight_ablation_diagnose
+        run_weight_ablation_diagnose(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            v1_checkpoint_dir=args.diagnose_v1_checkpoint_dir,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
+    # Spike-Layer-Cause mode: identifies the "spike layer" (highest fused-
+    # basis Tr(H); highest |weight_damage_pts|) per model x dataset -- no
+    # hardcoded conv1 -- then attributes its size-independent curvature
+    # excess to architectural descriptors (fan_in, output_map, Tr(A_prev))
+    # via a KFAC-style patch-unfolded forward/backward (A/G) hook split, and
+    # a CIFAR10-vs-IMAGENET100 resolution contrast to discriminate spatial-
+    # extent (H1), fan-in (H2), and input-covariance-conditioning (H3)
+    # hypotheses. All logic lives in src/analysis/spike_layer_cause.py,
+    # which reuses (does not duplicate) compute_layerwise_hessian_trace_
+    # pyhessian, the quant-induced mode's Part 0 mapping gate and model-
+    # construction helpers, and weight_ablation_canonical.py's own isolation
+    # sweep for the damage-based spike selection. Analysis only -- no
+    # torchao/deployment. Skips FP32/PTQ/QAT training and the eigenvalue/
+    # SQNR analyses. Runs as a single local process (no torchrun/distributed
+    # init needed), prefers CUDA. NOT run under torch.no_grad() -- the KFAC
+    # backward-hook measurement needs real gradients.
+    # -------------------------------------------------------------------
+    if args.spike_layer_cause:
+        if local_rank == 0:
+            logger.info("=== Spike-Layer-Cause: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.spike_layer_cause import run_spike_layer_cause
+        run_spike_layer_cause(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            canonical_traces_csv=args.canonical_traces_csv,
+            imagenet100_checkpoint_dir=args.imagenet100_checkpoint_dir,
+        )
         _cleanup()
         return
 
@@ -782,451 +788,320 @@ def main() -> None:
         logger.info("=== Pipeline complete ===")
     _cleanup()
 
-# Deploy-Int8-Only is restricted to this subset of DATASETS regardless of
-# what the training path has enabled above.
-DEPLOY_DATASETS = ["CIFAR10", "IMAGENET100"]
-
-# (stage label, checkpoint filename prefix) — both PTQ and QAT checkpoints
-# went through fuse_model_architectures + replace_layers_for_quantization,
-# so they share the same custom-quantized-layer structure and loader.
-DEPLOY_STAGES = [
-    ("PTQ", "ptq_po2"),
-    ("QAT", "qat_po2"),
-]
 
 
-def _run_deploy_int8_only(args, local_rank: int) -> None:
-    load_run_id = args.load_run_id or RUN_ID
-    local_rank_device = int(os.environ.get("LOCAL_RANK", 0))
-    device = torch.device(f"cuda:{local_rank_device}" if torch.cuda.is_available() else "cpu")
+def _run_train_only(args, local_rank: int) -> None:
+    """
+    FP32 baseline -> PTQ -> QAT training and checkpointing, with throughput
+    benchmarking at each stage, and NO Hessian/eigenvalue/quant-error/
+    classification-metrics analysis -- that analysis reads these same
+    checkpoints afterward via --checkpoint-metrics (see
+    src/analysis/checkpoint_metrics.py) or the --analyze-{dataset} bundles,
+    so it can be rerun independently without retraining. This is the
+    default (no-flag) pipeline's training logic with every analysis call
+    removed; the default pipeline itself is left untouched for backward
+    compatibility with existing invocations that expect the old combined
+    behavior.
+    """
+    total = len(MODELS) * len(DATASETS)
+    summary: list[dict] = []
+    ptq_summary: list[dict] = []
+    qat_summary: list[dict] = []
+    run_idx = 0
 
-    deployment_summary: list[dict] = []
-
-    for dataset_name in DEPLOY_DATASETS:
+    for dataset_name in DATASETS:
         if local_rank == 0:
             logger.info(f"\n{'='*60}")
-            logger.info(f"[Deploy-Int8] Loading dataset: {dataset_name}")
+            logger.info(f"[TrainOnly] Loading dataset: {dataset_name}")
         try:
             specs = DATASET_SPECS[dataset_name]
-            _, val_loader, _ = get_data_loaders(dataset_name)
+            train_loader, val_loader, num_classes = get_data_loaders(dataset_name)
         except Exception as exc:
             if local_rank == 0:
-                logger.error(f"Failed to load {dataset_name}: {exc}")
-                for model_name in MODELS:
-                    for stage_name, _ in DEPLOY_STAGES:
-                        deployment_summary.append({
-                            "model": model_name,
-                            "dataset": dataset_name,
-                            "stage": stage_name,
-                            "pot_baked_acc": "LOAD_ERROR",
-                            "weight_only_int8_acc": "LOAD_ERROR",
-                            "full_int8_acc": "LOAD_ERROR",
-                        })
+                logger.error(f"[TrainOnly] Failed to load {dataset_name}: {exc}")
+            for model_name in MODELS:
+                summary.append({
+                    "model": model_name, "dataset": dataset_name,
+                    "best_val_acc": "LOAD_ERROR", "wall_time_min": "", "status": "failed",
+                })
             continue
 
         for model_name in MODELS:
-            for stage_name, checkpoint_prefix in DEPLOY_STAGES:
-                if local_rank == 0:
-                    logger.info(f"\n--- Deploy-Int8 {stage_name} {model_name} on {dataset_name} ---")
-                try:
-                    # ---------------------------------------------------------
-                    # Reconstruct and load the saved PTQ/QAT model
-                    # ---------------------------------------------------------
-                    checkpoint_path = os.path.join(
-                        BASE_DIR, "results", load_run_id, "quantized_models",
-                        f"{checkpoint_prefix}_{model_name}_{dataset_name}.pt"
-                    )
-                    if not os.path.exists(checkpoint_path):
-                        raise FileNotFoundError(f"No saved {stage_name} model at {checkpoint_path}")
+            run_idx += 1
+            if local_rank == 0:
+                logger.info(f"\n--- [TrainOnly] Run {run_idx}/{total}: {model_name} on {dataset_name} ---")
 
-                    # ---------------------------------------------------------
-                    # Reconstruction + quantization both go through the
-                    # shared builder now (src.quantization.deploy), which
-                    # asserts Conv2d AND Linear actually got quantized. See
-                    # deploy.py's docstring: a bare quantize_(model,
-                    # Int8DynamicActivationInt8WeightConfig()) here used to
-                    # silently skip every Conv2d layer.
-                    # ---------------------------------------------------------
-                    pot_baked_model, full_int8_model, _ = deploy.build_int8_model(
-                        model_name=model_name,
-                        dataset_name=dataset_name,
-                        stage=stage_name,
-                        checkpoint_path=checkpoint_path,
-                        device=device,
-                        num_classes=specs["num_classes"],
-                        channels=specs["channels"],
-                        image_size=specs["image_size"],
-                    )
-                    pot_baked_acc = evaluate(pot_baked_model, val_loader, device)
-                    full_int8_acc = evaluate(full_int8_model, val_loader, device)
-
-                    # ---------------------------------------------------------
-                    # Weight-only int8 — PoT-preservation gate. Deliberately
-                    # a different, Linear-only config (Int8WeightOnlyConfig's
-                    # default filter_fn leaves Conv2d untouched) -- this is
-                    # an intentional diagnostic comparison, not "the"
-                    # deployed model, so it stays outside the shared builder.
-                    # ---------------------------------------------------------
-                    weight_only_model = copy.deepcopy(pot_baked_model)
-                    quantize_(weight_only_model, Int8WeightOnlyConfig())
-                    weight_only_int8_acc = evaluate(weight_only_model, val_loader, device)
-
-                    if local_rank == 0:
-                        logger.info(
-                            f"[Deploy-Int8] {stage_name} {model_name}/{dataset_name} | "
-                            f"PoT baked: {pot_baked_acc:.2f}% | "
-                            f"Weight-only int8: {weight_only_int8_acc:.2f}% | "
-                            f"Full int8: {full_int8_acc:.2f}%"
-                        )
-
-                        # -----------------------------------------------------
-                        # Save the deployed int8 models. These state dicts
-                        # contain torchao tensor subclasses, so reloading them
-                        # elsewhere requires `import torchao` before torch.load.
-                        # -----------------------------------------------------
-                        weight_only_path = os.path.join(
-                            DEPLOYED_MODELS,
-                            f"deployed_weightonly_{stage_name}_{model_name}_{dataset_name}.pt"
-                        )
-                        full_int8_path = os.path.join(
-                            DEPLOYED_MODELS,
-                            f"deployed_full_{stage_name}_{model_name}_{dataset_name}.pt"
-                        )
-                        torch.save(weight_only_model.state_dict(), weight_only_path)
-                        torch.save(full_int8_model.state_dict(), full_int8_path)
-                        logger.info(f"Saved deployed int8 models -> {weight_only_path}, {full_int8_path}")
-
-                        # -----------------------------------------------------
-                        # Round-trip check on the full-int8 model: reload the
-                        # saved state dict into a freshly-baked+quantized
-                        # skeleton and confirm accuracy matches, to catch
-                        # torchao serialization issues early.
-                        # -----------------------------------------------------
-                        _, reload_model, _ = deploy.build_int8_model(
-                            model_name=model_name,
-                            dataset_name=dataset_name,
-                            stage=stage_name,
-                            checkpoint_path=checkpoint_path,
-                            device=device,
-                            num_classes=specs["num_classes"],
-                            channels=specs["channels"],
-                            image_size=specs["image_size"],
-                        )
-                        # torchao tensor subclasses require `import torchao`
-                        # (done at module import time above) before this load.
-                        reload_model.load_state_dict(
-                            torch.load(full_int8_path, map_location=device, weights_only=False)
-                        )
-                        reload_model.eval()
-                        reloaded_full_int8_acc = evaluate(reload_model, val_loader, device)
-
-                        if abs(reloaded_full_int8_acc - full_int8_acc) > 0.01:
-                            logger.warning(
-                                f"[Deploy-Int8] Round-trip mismatch for {stage_name} {model_name}/{dataset_name}: "
-                                f"pre-save full int8 acc {full_int8_acc:.4f}% vs reloaded {reloaded_full_int8_acc:.4f}%"
-                            )
-
-                        deployment_summary.append({
-                            "model": model_name,
-                            "dataset": dataset_name,
-                            "stage": stage_name,
-                            "pot_baked_acc": f"{pot_baked_acc:.2f}",
-                            "weight_only_int8_acc": f"{weight_only_int8_acc:.2f}",
-                            "full_int8_acc": f"{full_int8_acc:.2f}",
-                        })
-
-                        del reload_model
-
-                    del pot_baked_model, weight_only_model, full_int8_model
-
-                except Exception as exc:
-                    if local_rank == 0:
-                        logger.error(f"FAILED {stage_name} {model_name}/{dataset_name}: {exc}", exc_info=True)
-                        deployment_summary.append({
-                            "model": model_name,
-                            "dataset": dataset_name,
-                            "stage": stage_name,
-                            "pot_baked_acc": "ERROR",
-                            "weight_only_int8_acc": "ERROR",
-                            "full_int8_acc": "ERROR",
-                        })
-                finally:
-                    torch.cuda.empty_cache()
-
-    if local_rank == 0:
-        _save_csv_summary(deployment_summary, [
-            "model", "dataset", "stage", "pot_baked_acc", "weight_only_int8_acc", "full_int8_acc",
-        ], "deployment_int8.csv")
-        logger.info("=== Deploy-Int8-Only complete ===")
-
-
-# Benchmark-Int8-Only reuses the same dataset/stage scope as Deploy-Int8-Only.
-BENCHMARK_DATASETS = DEPLOY_DATASETS
-BENCHMARK_STAGES = DEPLOY_STAGES
-
-
-def _run_benchmark_int8_only(args, local_rank: int) -> None:
-    load_run_id = args.load_run_id or RUN_ID
-    local_rank_device = int(os.environ.get("LOCAL_RANK", 0))
-    device = torch.device(f"cuda:{local_rank_device}" if torch.cuda.is_available() else "cpu")
-
-    sweep_summary: list[dict] = []
-    fit_summary: list[dict] = []
-
-    for dataset_name in BENCHMARK_DATASETS:
-        specs = DATASET_SPECS[dataset_name]
-        base_input_shape = (specs["channels"], specs["image_size"], specs["image_size"])
-
-        for model_name in MODELS:
-            for stage_name, checkpoint_prefix in BENCHMARK_STAGES:
-                if local_rank == 0:
-                    logger.info(f"\n--- Benchmark-Int8 {stage_name} {model_name} on {dataset_name} ---")
-                try:
-                    # ---------------------------------------------------------
-                    # Reload the FP32 baseline
-                    # ---------------------------------------------------------
-                    fp32_path = os.path.join(
+            t0 = time.perf_counter()
+            try:
+                # -------------------------------------------------------------
+                # FP32 Baseline Training
+                # -------------------------------------------------------------
+                if args.skip_training:
+                    local_rank_device = int(os.environ.get("LOCAL_RANK", 0))
+                    device = torch.device(f"cuda:{local_rank_device}" if torch.cuda.is_available() else "cpu")
+                    load_run_id = args.load_run_id or RUN_ID
+                    model_path = os.path.join(
                         BASE_DIR, "results", load_run_id, "models",
                         f"baseline_{model_name}_{dataset_name}_float32.pt"
                     )
-                    if not os.path.exists(fp32_path):
-                        raise FileNotFoundError(f"No saved FP32 baseline at {fp32_path}")
-
+                    if not os.path.exists(model_path):
+                        raise FileNotFoundError(f"No saved model at {model_path}")
                     fp32_model = build_model(
-                        num_classes=specs["num_classes"],
-                        model_name=model_name,
-                        channels=specs["channels"],
-                        image_size=specs["image_size"]
+                        num_classes=specs["num_classes"], model_name=model_name,
+                        channels=specs["channels"], image_size=specs["image_size"]
                     ).to(device)
-                    fp32_model.load_state_dict(
-                        torch.load(fp32_path, map_location=device, weights_only=True)
-                    )
-                    fp32_model.eval()
-
-                    # ---------------------------------------------------------
-                    # Reconstruct the int8 model FRESH — the same path
-                    # Deploy-Int8-Only proved preserves accuracy: rebuild the
-                    # quantized-layer skeleton, load the PTQ/QAT checkpoint,
-                    # bake PoT weights into standard layers, then apply the
-                    # full-int8 torchao config.
-                    #
-                    # We deliberately do NOT save/reload this model. torchao
-                    # quantized state dicts do not reliably round-trip through
-                    # load_state_dict into a fresh skeleton — an earlier
-                    # version of this code did that and silently ended up
-                    # benchmarking an fp32 model under the "int8" label.
-                    # ---------------------------------------------------------
-                    checkpoint_path = os.path.join(
-                        BASE_DIR, "results", load_run_id, "quantized_models",
-                        f"{checkpoint_prefix}_{model_name}_{dataset_name}.pt"
-                    )
-                    if not os.path.exists(checkpoint_path):
-                        raise FileNotFoundError(f"No saved {stage_name} model at {checkpoint_path}")
-
-                    # Reconstruction + quantization both go through the
-                    # shared builder now (src.quantization.deploy), which
-                    # applies dynamic-activation int8 to Linear and
-                    # weight-only int8 to Conv2d (see apply_int8_quantization's
-                    # docstring in benchmark.py) and asserts both actually
-                    # got quantized -- fails loudly rather than silently
-                    # benchmarking fp32 numbers under an "int8" label.
-                    label = f"{stage_name} {model_name}/{dataset_name}"
-                    _, int8_model, audit_details = deploy.build_int8_model(
-                        model_name=model_name,
-                        dataset_name=dataset_name,
-                        stage=stage_name,
-                        checkpoint_path=checkpoint_path,
-                        device=device,
-                        num_classes=specs["num_classes"],
-                        channels=specs["channels"],
-                        image_size=specs["image_size"],
+                    fp32_model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
+                    _, best_val_acc = _evaluate(fp32_model, val_loader, torch.nn.CrossEntropyLoss(), device)
+                    history = {"train_acc": [0.0], "val_acc": [best_val_acc]}
+                else:
+                    fp32_model, history, _ = train_model(
+                        train_loader, val_loader, num_classes,
+                        model_name=model_name, dataset_name=dataset_name,
                     )
 
-                    quant_summary = None
-                    if local_rank == 0:
-                        quant_summary = log_quantization_audit(audit_details, label)
+                device = next(fp32_model.parameters()).device
+                best_val_acc = max(history["val_acc"])
+                unwrapped_fp32 = fp32_model.module if hasattr(fp32_model, "module") else fp32_model
 
-                    # ---------------------------------------------------------
-                    # FP32 vs int8 latency/throughput/size sweep. Both models
-                    # are benchmarked uncompiled, so the comparison isolates
-                    # precision rather than compile effects. Benchmarking
-                    # torch.compile'd variants could be a useful follow-up,
-                    # but both sides would need to be compiled for a fair
-                    # comparison.
-                    # ---------------------------------------------------------
-                    with torch.no_grad():
-                        result = compare_fp32_vs_int8(
-                            fp32_model, int8_model, base_input_shape, device
-                        )
+                dummy_shape = (1, specs["channels"], specs["image_size"], specs["image_size"])
+                fp32_metrics = measure_throughput(fp32_model, device, dummy_shape)
+                if local_rank == 0:
+                    logger.info(f"[TrainOnly][FP32] Best Val Acc: {best_val_acc:.2f}% | Latency: {fp32_metrics['latency_ms']:.2f}ms")
 
-                    if local_rank == 0:
-                        logger.info(
-                            f"[Benchmark-Int8] {stage_name} {model_name}/{dataset_name} | "
-                            f"size {result['fp32_size_bytes'] / 1024**2:.2f}MB -> "
-                            f"{result['int8_size_bytes'] / 1024**2:.2f}MB "
-                            f"({result['size_reduction_x']:.2f}x) | "
-                            f"compute speedup {result['compute_speedup_x']:.2f}x"
-                        )
+                fp32_model.zero_grad(set_to_none=True)
+                torch.cuda.empty_cache()
 
-                        for row in result["sweep"]:
-                            sweep_summary.append({
-                                "model": model_name,
-                                "dataset": dataset_name,
-                                "stage": stage_name,
-                                "batch": row["batch"],
-                                "fp32_latency_ms": f"{row['fp32_latency_ms']:.4f}",
-                                "int8_latency_ms": f"{row['int8_latency_ms']:.4f}",
-                                "fp32_throughput_ips": f"{row['fp32_throughput_ips']:.1f}",
-                                "int8_throughput_ips": f"{row['int8_throughput_ips']:.1f}",
-                                "speedup_x": f"{row['speedup_x']:.2f}",
-                            })
+                # -------------------------------------------------------------
+                # PTQ Workflow (Power-of-Two + Asymmetric)
+                # -------------------------------------------------------------
+                if local_rank == 0:
+                    logger.info("[TrainOnly] Starting PTQ Calibration...")
 
-                        fp32_fit = result["fp32_fit"]
-                        int8_fit = result["int8_fit"]
-                        fit_summary.append({
-                            "model": model_name,
-                            "dataset": dataset_name,
-                            "stage": stage_name,
-                            "fp32_size_mb": f"{result['fp32_size_bytes'] / 1024**2:.2f}",
-                            "int8_size_mb": f"{result['int8_size_bytes'] / 1024**2:.2f}",
-                            "size_reduction_x": f"{result['size_reduction_x']:.2f}",
-                            "fp32_intercept_ms": f"{fp32_fit['intercept_ms']:.4f}",
-                            "int8_intercept_ms": f"{int8_fit['intercept_ms']:.4f}",
-                            "fp32_slope_ms": f"{fp32_fit['slope_ms_per_sample']:.4f}",
-                            "int8_slope_ms": f"{int8_fit['slope_ms_per_sample']:.4f}",
-                            "fp32_r2": f"{fp32_fit['r2']:.4f}",
-                            "int8_r2": f"{int8_fit['r2']:.4f}",
-                            "compute_speedup_x": f"{result['compute_speedup_x']:.2f}",
-                            "decomposition_reliable": result["decomposition_reliable"],
-                            "conv_quantized": quant_summary["conv_quantized"],
-                        })
+                ptq_model = copy.deepcopy(unwrapped_fp32)  # preserve FP32 weights for QAT below
+                del fp32_model
+                torch.cuda.empty_cache()
 
-                    del fp32_model, int8_model
+                ptq_model.eval()
+                fuse_model_architectures(ptq_model, model_name)
+                replace_layers_for_quantization(ptq_model)
+                ptq_model = ptq_model.to(device)
+                calibrate_ptq(ptq_model, train_loader, device, num_batches=20)
 
-                except Exception as exc:
-                    if local_rank == 0:
-                        logger.error(f"FAILED {stage_name} {model_name}/{dataset_name}: {exc}", exc_info=True)
-                        fit_summary.append({
-                            "model": model_name,
-                            "dataset": dataset_name,
-                            "stage": stage_name,
-                            "fp32_size_mb": "ERROR",
-                            "int8_size_mb": "ERROR",
-                            "size_reduction_x": "ERROR",
-                            "fp32_intercept_ms": "ERROR",
-                            "int8_intercept_ms": "ERROR",
-                            "fp32_slope_ms": "ERROR",
-                            "int8_slope_ms": "ERROR",
-                            "fp32_r2": "ERROR",
-                            "int8_r2": "ERROR",
-                            "compute_speedup_x": "ERROR",
-                            "decomposition_reliable": "ERROR",
-                            "conv_quantized": "ERROR",
-                        })
-                finally:
-                    torch.cuda.empty_cache()
+                ptq_loss, ptq_acc = _evaluate(ptq_model, val_loader, torch.nn.CrossEntropyLoss(), device)
+
+                if local_rank == 0:
+                    ptq_path = os.path.join(QUANTIZED_MODELS, f"ptq_po2_{model_name}_{dataset_name}.pt")
+                    torch.save(ptq_model.state_dict(), ptq_path)
+                    logger.info(f"[TrainOnly] Saved PTQ state_dict -> {ptq_path}")
+
+                # max-autotune profiles Triton kernels on the target GPU to find the fastest one
+                compiled_ptq_model = torch.compile(ptq_model, mode="max-autotune")
+                ptq_metrics = measure_throughput(compiled_ptq_model, device, dummy_shape)
+
+                if local_rank == 0:
+                    logger.info(f"[TrainOnly][PTQ] Val Acc: {ptq_acc:.2f}% | Latency: {ptq_metrics['latency_ms']:.2f}ms")
+                    ptq_summary.append({
+                        "model": model_name, "dataset": dataset_name,
+                        "fp32_val_acc": f"{best_val_acc:.2f}", "ptq_val_acc": f"{ptq_acc:.2f}",
+                        "acc_drop": f"{best_val_acc - ptq_acc:.2f}",
+                        "fp32_fps": f"{fp32_metrics['throughput_fps']:.1f}", "ptq_fps": f"{ptq_metrics['throughput_fps']:.1f}",
+                        "speedup": f"{ptq_metrics['throughput_fps'] / fp32_metrics['throughput_fps']:.2f}",
+                        "status": "ok",
+                    })
+
+                compiled_ptq_model.zero_grad(set_to_none=True)
+                torch.cuda.empty_cache()
+
+                # -------------------------------------------------------------
+                # QAT Workflow (Building on PTQ)
+                # -------------------------------------------------------------
+                if local_rank == 0:
+                    logger.info("[TrainOnly] Starting Quantization-Aware Training (QAT)...")
+
+                qat_model, qat_history, _ = train_qat(
+                    ptq_model=ptq_model, train_loader=train_loader, val_loader=val_loader,
+                    device=device, epochs=QAT_EPOCH, lr=QAT_LR,
+                )
+                qat_acc = max(qat_history["val_acc"])
+
+                if local_rank == 0:
+                    qat_path = os.path.join(QUANTIZED_MODELS, f"qat_po2_{model_name}_{dataset_name}.pt")
+                    torch.save(qat_model.state_dict(), qat_path)
+                    logger.info(f"[TrainOnly] Saved QAT state_dict -> {qat_path}")
+
+                compiled_qat_model = torch.compile(qat_model, mode="max-autotune")
+                qat_metrics = measure_throughput(compiled_qat_model, device, dummy_shape)
+
+                if local_rank == 0:
+                    logger.info(f"[TrainOnly][QAT] Val Acc: {qat_acc:.2f}% | Latency: {qat_metrics['latency_ms']:.2f}ms")
+                    qat_summary.append({
+                        "model": model_name, "dataset": dataset_name,
+                        "ptq_val_acc": f"{ptq_acc:.2f}", "qat_val_acc": f"{qat_acc:.2f}",
+                        "acc_recovered": f"{qat_acc - ptq_acc:.2f}",
+                        "fp32_fps": f"{fp32_metrics['throughput_fps']:.1f}", "qat_fps": f"{qat_metrics['throughput_fps']:.1f}",
+                        "speedup": f"{qat_metrics['throughput_fps'] / fp32_metrics['throughput_fps']:.2f}",
+                        "status": "ok",
+                    })
+
+                elapsed_min = (time.perf_counter() - t0) / 60
+                summary.append({
+                    "model": model_name, "dataset": dataset_name,
+                    "best_train_acc": f"{max(history['train_acc']):.2f}", "best_val_acc": f"{best_val_acc:.2f}",
+                    "ptq_val_acc": f"{ptq_acc:.2f}", "qat_val_acc": f"{qat_acc:.2f}",
+                    "fp32_fps": f"{fp32_metrics['throughput_fps']:.1f}", "ptq_fps": f"{ptq_metrics['throughput_fps']:.1f}",
+                    "qat_fps": f"{qat_metrics['throughput_fps']:.1f}",
+                    "wall_time_min": f"{elapsed_min:.1f}", "status": "ok",
+                })
+
+                compiled_qat_model.zero_grad(set_to_none=True)
+                del compiled_ptq_model, compiled_qat_model, ptq_model, qat_model
+                torch.cuda.empty_cache()
+
+            except Exception as exc:
+                elapsed_min = (time.perf_counter() - t0) / 60
+                if local_rank == 0:
+                    logger.error(f"[TrainOnly] FAILED {model_name}/{dataset_name}: {exc}", exc_info=True)
+                summary.append({
+                    "model": model_name, "dataset": dataset_name,
+                    "best_train_acc": "ERROR", "best_val_acc": "ERROR", "ptq_val_acc": "ERROR", "qat_val_acc": "ERROR",
+                    "fp32_fps": "ERROR", "ptq_fps": "ERROR", "qat_fps": "ERROR",
+                    "wall_time_min": f"{elapsed_min:.1f}", "status": "failed",
+                })
+                ptq_summary.append({
+                    "model": model_name, "dataset": dataset_name,
+                    "fp32_val_acc": "ERROR", "ptq_val_acc": "ERROR", "acc_drop": "ERROR",
+                    "fp32_fps": "ERROR", "ptq_fps": "ERROR", "speedup": "ERROR", "status": "failed",
+                })
+                qat_summary.append({
+                    "model": model_name, "dataset": dataset_name,
+                    "ptq_val_acc": "ERROR", "qat_val_acc": "ERROR", "acc_recovered": "ERROR",
+                    "fp32_fps": "ERROR", "qat_fps": "ERROR", "speedup": "ERROR", "status": "failed",
+                })
+            finally:
+                import gc
+                for name in ['fp32_model', 'ptq_model', 'qat_model', 'compiled_ptq_model', 'compiled_qat_model']:
+                    if name in dir():
+                        exec(f'del {name}')
+                gc.collect()
+                torch.cuda.empty_cache()
 
     if local_rank == 0:
-        _save_csv_summary(sweep_summary, [
-            "model", "dataset", "stage", "batch",
-            "fp32_latency_ms", "int8_latency_ms",
-            "fp32_throughput_ips", "int8_throughput_ips", "speedup_x",
-        ], "benchmark_sweep.csv")
-
-        _save_csv_summary(fit_summary, [
-            "model", "dataset", "stage", "fp32_size_mb", "int8_size_mb", "size_reduction_x",
-            "fp32_intercept_ms", "int8_intercept_ms", "fp32_slope_ms", "int8_slope_ms",
-            "fp32_r2", "int8_r2", "compute_speedup_x", "decomposition_reliable", "conv_quantized",
-        ], "benchmark_summary.csv")
-        logger.info("=== Benchmark-Int8-Only complete ===")
-
-
-# Validate-PoT-Int8 reuses the same dataset/stage scope as Deploy/Benchmark-Int8-Only.
-VALIDATE_POT_DATASETS = DEPLOY_DATASETS
-VALIDATE_POT_STAGES = DEPLOY_STAGES
+        _save_csv_summary(summary, [
+            "model", "dataset", "best_train_acc", "best_val_acc",
+            "ptq_val_acc", "qat_val_acc", "fp32_fps", "ptq_fps", "qat_fps",
+            "wall_time_min", "status",
+        ], "pipeline_summary.csv")
+        _save_csv_summary(ptq_summary, [
+            "model", "dataset", "fp32_val_acc", "ptq_val_acc", "acc_drop",
+            "fp32_fps", "ptq_fps", "speedup", "status",
+        ], "ptq_summary.csv")
+        _save_csv_summary(qat_summary, [
+            "model", "dataset", "ptq_val_acc", "qat_val_acc", "acc_recovered",
+            "fp32_fps", "qat_fps", "speedup", "status",
+        ], "qat_summary.csv")
+        _print_summary(summary)
+        logger.info("=== Train-Only complete ===")
 
 
-def _run_validate_pot_int8(args, local_rank: int) -> None:
+# Order matters: checkpoint-metrics writes layerwise_hessian_traces.csv,
+# which --ablate-layer-quantization (layer_ablation.py) reads for its
+# trace-guided top-k/low-k layer selection; relock-traces writes
+# canonical_traces.csv, which weight-ablation-canonical and spike-layer-
+# cause both read (via canonical_traces_csv) for their fused-basis Tr(H)
+# lookups. Both must run before their respective consumers.
+ANALYZE_STEPS = [
+    "checkpoint-metrics", "relock-traces", "quant-induced-trace",
+    "weight-ablation-canonical", "spike-layer-cause", "random-init-control",
+    "diagnose-activation-quant", "ablate-layer-quantization",
+]
+
+
+def _run_analyze_dataset(args, local_rank: int, dataset_name: str) -> None:
     """
-    Orchestrates validate_pot's per-layer PoT-preservation check across the
-    model/dataset/stage matrix. All actual reconstruction/comparison logic
-    lives in src.analysis.validate_pot; this just loops, and rank-0-guards
-    logging/CSV/plotting.
+    Runs every retained analysis pipeline (ANALYZE_STEPS) scoped to ONE
+    dataset, all 3 models, reading checkpoints via --checkpoint-dir/
+    --load-run-id (the same checkpoints --train-only writes). Scoped to one
+    dataset so --analyze-cifar10 and --analyze-imagenet100 can run as
+    separate, parallel jobs. One step's failure is logged and does not
+    abort the remaining steps -- this is a multi-hour bundle, not a single
+    atomic operation.
 
-    Unlike Deploy/Benchmark-Int8-Only, this needs no data loader (inputs are
-    synthetic, fixed-seed) and no DDP-wrapped forward pass, so there is
-    nothing for non-zero ranks to usefully do -- the whole per-run body is
-    guarded, not just the logging tail. dist.destroy_process_group() in
-    _cleanup() is still called by every rank afterward.
+    Not bundled here: --weight-ablation-diagnose (a fixed one-off
+    diagnostic, not a per-model-per-dataset sweep -- its drift question is
+    already answered) and --deploy-cpu-fbgemm/--diagnose-int8-perf
+    (deployment/benchmark concerns, not analysis).
     """
-    load_run_id = args.load_run_id or RUN_ID
-    local_rank_device = int(os.environ.get("LOCAL_RANK", 0))
-    device = torch.device(f"cuda:{local_rank_device}" if torch.cuda.is_available() else "cpu")
+    from src.analysis.checkpoint_metrics import run_checkpoint_metrics
+    from src.analysis.relock_traces import run_relock_traces
+    from src.analysis.quant_induced_trace import run_quant_induced_trace
+    from src.analysis.weight_ablation_canonical import run_weight_ablation_canonical
+    from src.analysis.spike_layer_cause import run_spike_layer_cause
+    from src.analysis.random_init_control import run_random_init_control
+    from src.analysis.diagnose_activations import run_diagnose_activation_quant
+    from src.analysis.layer_ablation import run_layer_ablation
 
     if local_rank != 0:
         return
 
-    csv_rows: list[dict] = []
-    plotted_models: set[str] = set()
+    datasets = [dataset_name]
+    label = f"Analyze-{dataset_name}"
+    logger.info(f"=== {label}: {len(ANALYZE_STEPS)} pipelines, all models, {dataset_name} only ===")
 
-    for dataset_name in VALIDATE_POT_DATASETS:
-        specs = DATASET_SPECS[dataset_name]
+    def _step(n: int, name: str, fn, **kwargs) -> None:
+        logger.info(f"[{label}] --- {n}/{len(ANALYZE_STEPS)}: {name} ---")
+        try:
+            fn(**kwargs)
+        except Exception as exc:
+            logger.error(f"[{label}] {name} FAILED -- {exc}", exc_info=True)
+        finally:
+            if torch.cuda.is_available():
+                torch.cuda.empty_cache()
 
-        for model_name in MODELS:
-            for stage_name, checkpoint_prefix in VALIDATE_POT_STAGES:
-                logger.info(f"\n--- Validate-PoT-Int8 {stage_name} {model_name} on {dataset_name} ---")
-                try:
-                    checkpoint_path = os.path.join(
-                        BASE_DIR, "results", load_run_id, "quantized_models",
-                        f"{checkpoint_prefix}_{model_name}_{dataset_name}.pt"
-                    )
-                    baked_model, int8_model, _ = deploy.build_int8_model(
-                        model_name=model_name,
-                        dataset_name=dataset_name,
-                        stage=stage_name,
-                        checkpoint_path=checkpoint_path,
-                        device=device,
-                        num_classes=specs["num_classes"],
-                        channels=specs["channels"],
-                        image_size=specs["image_size"],
-                    )
+    _step(1, "checkpoint-metrics", run_checkpoint_metrics,
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id, datasets=datasets)
 
-                    layer_results = validate_pot.compare_pot_vs_int8_layers(
-                        baked_model, int8_model, device
-                    )
-                    validate_pot.log_and_summarize_pot_validation(
-                        layer_results, model_name, dataset_name, stage_name
-                    )
-                    csv_rows.extend(
-                        validate_pot.build_csv_rows(layer_results, model_name, dataset_name, stage_name)
-                    )
+    _step(2, "relock-traces", run_relock_traces,
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
+          banked_fp32_profile=args.banked_fp32_profile, legacy_anchors=args.legacy_anchors, datasets=datasets)
+    canonical_traces_csv = args.canonical_traces_csv or os.path.join(CSV_DIR, "canonical_traces.csv")
 
-                    if model_name not in plotted_models:
-                        try:
-                            validate_pot.plot_pot_weight_histogram(
-                                baked_model, model_name, dataset_name, stage_name, LOG_DIR
-                            )
-                            plotted_models.add(model_name)
-                        except Exception as exc:
-                            logger.warning(
-                                f"[ValidatePoT] Failed to save PoT weight histogram for {model_name}: {exc}"
-                            )
+    _step(3, "quant-induced-trace", run_quant_induced_trace,
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
+          banked_fp32_profile=args.banked_fp32_profile, datasets=datasets)
 
-                    del baked_model, int8_model
+    _step(4, "weight-ablation-canonical", run_weight_ablation_canonical,
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
+          canonical_traces_csv=canonical_traces_csv, damage_mode=args.damage_mode, datasets=datasets)
 
-                except Exception as exc:
-                    logger.error(f"FAILED {stage_name} {model_name}/{dataset_name}: {exc}", exc_info=True)
-                finally:
-                    torch.cuda.empty_cache()
+    _step(5, "spike-layer-cause", run_spike_layer_cause,
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
+          canonical_traces_csv=canonical_traces_csv,
+          imagenet100_checkpoint_dir=args.imagenet100_checkpoint_dir, datasets=datasets)
 
-    _save_csv_summary(csv_rows, validate_pot.CSV_FIELDNAMES, "pot_validation.csv")
-    logger.info("=== Validate-PoT-Int8 complete ===")
+    _step(6, "random-init-control", run_random_init_control,
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id, datasets=datasets)
+
+    _step(7, "diagnose-activation-quant", run_diagnose_activation_quant,
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
+          eval_subset=args.eval_subset, datasets=datasets)
+
+    _step(8, "ablate-layer-quantization", run_layer_ablation,
+          checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id,
+          ablate_top_k=args.ablate_top_k, ablate_layers=args.ablate_layers,
+          eval_subset=args.eval_subset, datasets=datasets)
+
+    logger.info(f"=== {label} complete ===")
 
 
-# Diagnose-Int8-Perf reuses the same dataset/stage scope and batch sizes as
-# the rest of the *_int8_only pipeline modes.
-DIAGNOSE_INT8_PERF_DATASETS = DEPLOY_DATASETS
-DIAGNOSE_INT8_PERF_STAGES = DEPLOY_STAGES
+DIAGNOSE_INT8_PERF_DATASETS = ["CIFAR10", "IMAGENET100"]
+
+# (stage label, checkpoint filename prefix) -- both PTQ and QAT checkpoints
+# went through fuse_model_architectures + replace_layers_for_quantization,
+# so they share the same custom-quantized-layer structure and loader.
+DIAGNOSE_INT8_PERF_STAGES = [
+    ("PTQ", "ptq_po2"),
+    ("QAT", "qat_po2"),
+]
 
 
 def _run_diagnose_int8_perf(args, local_rank: int) -> None:
@@ -1236,8 +1111,8 @@ def _run_diagnose_int8_perf(args, local_rank: int) -> None:
     profiling logic lives in src.analysis.int8_profile; this just loops,
     collects results, and writes the sweep CSV + combined text report.
 
-    Like Validate-PoT-Int8, this needs no data loader and no DDP-wrapped
-    forward pass (synthetic fixed-shape inputs only), so the whole body is
+    Needs no data loader and no DDP-wrapped forward pass (synthetic
+    fixed-shape inputs only), so the whole body is
     rank-0-guarded rather than duplicating identical benchmarking/profiling
     work across ranks.
     """

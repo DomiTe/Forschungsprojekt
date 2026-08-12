@@ -1,0 +1,515 @@
+2026-08-11 15:17:55 [INFO] __main__: === Pipeline start: 3 models - 1 datasets = 3 runs ===
+2026-08-11 15:17:55 [INFO] __main__: === Weight-Ablation-Canonical: skipping training and Hessian/eigenvalue/SQNR analysis ===
+2026-08-11 15:17:55 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] device=cuda seed=42 canonical_traces_csv=results/relock_traces_investigation_1786438687/csv/canonical_traces.csv
+2026-08-11 15:17:55 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] canonical trace source config: results/relock_traces_investigation_1786438687/trace_config.json (basis=fused, probe_seed=20260811)
+2026-08-11 15:17:55 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] FP32 baseline models directory: /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/models
+2026-08-11 15:17:55 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models
+2026-08-11 15:17:56 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-11 15:17:56 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === PTQ resnet18_no_weights/CIFAR10 ===
+2026-08-11 15:17:56 [INFO] src.analysis.weight_ablation: [WeightAblation] Resolved checkpoint (model=resnet18_no_weights, dataset=CIFAR10) -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/models/baseline_resnet18_no_weights_CIFAR10_float32.pt
+2026-08-11 15:17:56 [INFO] src.analysis.weight_ablation: [WeightAblation] Resolved checkpoint (stage=PTQ, model=resnet18_no_weights, dataset=CIFAR10) -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/ptq_po2_resnet18_no_weights_CIFAR10.pt
+2026-08-11 15:18:00 [INFO] src.analysis.weight_ablation: [WeightAblation] PTQ resnet18_no_weights/CIFAR10: fp32_acc=84.69% weights_only(act->Identity)=82.43% weights_only(baked)=82.43% (21 layers)
+2026-08-11 15:18:00 [INFO] src.analysis.weight_ablation: [WeightAblation] PTQ resnet18_no_weights/CIFAR10: path-equivalence gate -- |82.43% - 82.43%| = 0.000pt (tolerance < 0.1pt) -- PASS
+2026-08-11 15:18:01 [INFO] src.analysis.weight_ablation: [WeightAblation] PTQ resnet18_no_weights/CIFAR10: optional end-to-end check (PTQ) -- both-Identity acc 84.69% vs FP32 reference 84.69% (diff 0.00pt) -- informational only, not gated
+2026-08-11 15:18:01 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] resnet18_no_weights: Part 0 canonical<->ablation alignment table (21 canonical layers vs 21 ablation layers):
+layer                                    in_canonical  in_ablation  shape_match
+conv1                                    True          True         True
+fc                                       True          True         True
+layer1.0.conv1                           True          True         True
+layer1.0.conv2                           True          True         True
+layer1.1.conv1                           True          True         True
+layer1.1.conv2                           True          True         True
+layer2.0.conv1                           True          True         True
+layer2.0.conv2                           True          True         True
+layer2.0.downsample.0                    True          True         True
+layer2.1.conv1                           True          True         True
+layer2.1.conv2                           True          True         True
+layer3.0.conv1                           True          True         True
+layer3.0.conv2                           True          True         True
+layer3.0.downsample.0                    True          True         True
+layer3.1.conv1                           True          True         True
+layer3.1.conv2                           True          True         True
+layer4.0.conv1                           True          True         True
+layer4.0.conv2                           True          True         True
+layer4.0.downsample.0                    True          True         True
+layer4.1.conv1                           True          True         True
+layer4.1.conv2                           True          True         True
+2026-08-11 15:18:01 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] resnet18_no_weights: Part 0 alignment gate PASSED -- 21 layers bijective and shape-matched
+2026-08-11 15:18:02 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=conv1: isolated_acc=83.79% weight_damage=0.900pts
+2026-08-11 15:18:03 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer1.0.conv1: isolated_acc=84.94% weight_damage=-0.250pts
+2026-08-11 15:18:04 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer1.0.conv2: isolated_acc=84.81% weight_damage=-0.120pts
+2026-08-11 15:18:06 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer1.1.conv1: isolated_acc=84.45% weight_damage=0.240pts
+2026-08-11 15:18:07 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer1.1.conv2: isolated_acc=84.36% weight_damage=0.330pts
+2026-08-11 15:18:08 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer2.0.conv1: isolated_acc=84.63% weight_damage=0.060pts
+2026-08-11 15:18:09 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer2.0.conv2: isolated_acc=84.48% weight_damage=0.210pts
+2026-08-11 15:18:10 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer2.0.downsample.0: isolated_acc=84.27% weight_damage=0.420pts
+2026-08-11 15:18:11 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer2.1.conv1: isolated_acc=84.47% weight_damage=0.220pts
+2026-08-11 15:18:13 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer2.1.conv2: isolated_acc=84.70% weight_damage=-0.010pts
+2026-08-11 15:18:14 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer3.0.conv1: isolated_acc=84.57% weight_damage=0.120pts
+2026-08-11 15:18:15 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer3.0.conv2: isolated_acc=84.77% weight_damage=-0.080pts
+2026-08-11 15:18:16 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer3.0.downsample.0: isolated_acc=84.52% weight_damage=0.170pts
+2026-08-11 15:18:17 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer3.1.conv1: isolated_acc=84.58% weight_damage=0.110pts
+2026-08-11 15:18:18 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer3.1.conv2: isolated_acc=84.64% weight_damage=0.050pts
+2026-08-11 15:18:20 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer4.0.conv1: isolated_acc=84.47% weight_damage=0.220pts
+2026-08-11 15:18:21 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer4.0.conv2: isolated_acc=84.71% weight_damage=-0.020pts
+2026-08-11 15:18:22 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer4.0.downsample.0: isolated_acc=84.63% weight_damage=0.060pts
+2026-08-11 15:18:23 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer4.1.conv1: isolated_acc=84.64% weight_damage=0.050pts
+2026-08-11 15:18:24 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=layer4.1.conv2: isolated_acc=84.71% weight_damage=-0.020pts
+2026-08-11 15:18:25 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10 layer=fc: isolated_acc=84.96% weight_damage=-0.270pts
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:18:26 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10: n_layers=21 conv1_damage_rank=1/21 -- raw_trh: rho=0.2399 p=0.2949 top5_overlap=2/5 conv1_predictor_rank=2/21 | dwsq: rho=-0.3934 p=0.0777 top5_overlap=0/5 conv1_predictor_rank=21/21 | trh_dwsq: rho=-0.2217 p=0.3341 top5_overlap=0/5 conv1_predictor_rank=18/21
+2026-08-11 15:18:26 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10: VERDICT -- conv1 ranks #1/21 by damage, #2/21 by raw_trh (rho=0.240), #21/21 by dwsq (rho=-0.393), #18/21 by trh_dwsq (rho=-0.222). Interpretation left to the reader per predictor's numbers above -- not selected post hoc.
+2026-08-11 15:18:26 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === PTQ resnet50_no_weights/CIFAR10 ===
+2026-08-11 15:18:26 [INFO] src.analysis.weight_ablation: [WeightAblation] Resolved checkpoint (model=resnet50_no_weights, dataset=CIFAR10) -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/models/baseline_resnet50_no_weights_CIFAR10_float32.pt
+2026-08-11 15:18:26 [INFO] src.analysis.weight_ablation: [WeightAblation] Resolved checkpoint (stage=PTQ, model=resnet50_no_weights, dataset=CIFAR10) -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/ptq_po2_resnet50_no_weights_CIFAR10.pt
+2026-08-11 15:18:34 [INFO] src.analysis.weight_ablation: [WeightAblation] PTQ resnet50_no_weights/CIFAR10: fp32_acc=80.56% weights_only(act->Identity)=75.47% weights_only(baked)=75.47% (54 layers)
+2026-08-11 15:18:34 [INFO] src.analysis.weight_ablation: [WeightAblation] PTQ resnet50_no_weights/CIFAR10: path-equivalence gate -- |75.47% - 75.47%| = 0.000pt (tolerance < 0.1pt) -- PASS
+2026-08-11 15:18:34 [INFO] src.analysis.weight_ablation: [WeightAblation] PTQ resnet50_no_weights/CIFAR10: soft anchor check OK -- fp32 80.56% (known 80.56%), weights_only 75.47% (known 75.46%)
+2026-08-11 15:18:37 [INFO] src.analysis.weight_ablation: [WeightAblation] PTQ resnet50_no_weights/CIFAR10: optional end-to-end check (PTQ) -- both-Identity acc 80.56% vs FP32 reference 80.56% (diff 0.00pt) -- informational only, not gated
+2026-08-11 15:18:37 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] resnet50_no_weights: Part 0 canonical<->ablation alignment table (54 canonical layers vs 54 ablation layers):
+layer                                    in_canonical  in_ablation  shape_match
+conv1                                    True          True         True
+fc                                       True          True         True
+layer1.0.conv1                           True          True         True
+layer1.0.conv2                           True          True         True
+layer1.0.conv3                           True          True         True
+layer1.0.downsample.0                    True          True         True
+layer1.1.conv1                           True          True         True
+layer1.1.conv2                           True          True         True
+layer1.1.conv3                           True          True         True
+layer1.2.conv1                           True          True         True
+layer1.2.conv2                           True          True         True
+layer1.2.conv3                           True          True         True
+layer2.0.conv1                           True          True         True
+layer2.0.conv2                           True          True         True
+layer2.0.conv3                           True          True         True
+layer2.0.downsample.0                    True          True         True
+layer2.1.conv1                           True          True         True
+layer2.1.conv2                           True          True         True
+layer2.1.conv3                           True          True         True
+layer2.2.conv1                           True          True         True
+layer2.2.conv2                           True          True         True
+layer2.2.conv3                           True          True         True
+layer2.3.conv1                           True          True         True
+layer2.3.conv2                           True          True         True
+layer2.3.conv3                           True          True         True
+layer3.0.conv1                           True          True         True
+layer3.0.conv2                           True          True         True
+layer3.0.conv3                           True          True         True
+layer3.0.downsample.0                    True          True         True
+layer3.1.conv1                           True          True         True
+layer3.1.conv2                           True          True         True
+layer3.1.conv3                           True          True         True
+layer3.2.conv1                           True          True         True
+layer3.2.conv2                           True          True         True
+layer3.2.conv3                           True          True         True
+layer3.3.conv1                           True          True         True
+layer3.3.conv2                           True          True         True
+layer3.3.conv3                           True          True         True
+layer3.4.conv1                           True          True         True
+layer3.4.conv2                           True          True         True
+layer3.4.conv3                           True          True         True
+layer3.5.conv1                           True          True         True
+layer3.5.conv2                           True          True         True
+layer3.5.conv3                           True          True         True
+layer4.0.conv1                           True          True         True
+layer4.0.conv2                           True          True         True
+layer4.0.conv3                           True          True         True
+layer4.0.downsample.0                    True          True         True
+layer4.1.conv1                           True          True         True
+layer4.1.conv2                           True          True         True
+layer4.1.conv3                           True          True         True
+layer4.2.conv1                           True          True         True
+layer4.2.conv2                           True          True         True
+layer4.2.conv3                           True          True         True
+2026-08-11 15:18:37 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] resnet50_no_weights: Part 0 alignment gate PASSED -- 54 layers bijective and shape-matched
+2026-08-11 15:18:40 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=conv1: isolated_acc=78.94% weight_damage=1.620pts
+2026-08-11 15:18:43 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.0.conv1: isolated_acc=80.52% weight_damage=0.040pts
+2026-08-11 15:18:46 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.0.conv2: isolated_acc=80.59% weight_damage=-0.030pts
+2026-08-11 15:18:49 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.0.conv3: isolated_acc=80.46% weight_damage=0.100pts
+2026-08-11 15:18:52 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.0.downsample.0: isolated_acc=80.01% weight_damage=0.550pts
+2026-08-11 15:18:55 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.1.conv1: isolated_acc=80.56% weight_damage=0.000pts
+2026-08-11 15:18:57 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.1.conv2: isolated_acc=80.63% weight_damage=-0.070pts
+2026-08-11 15:19:00 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.1.conv3: isolated_acc=80.52% weight_damage=0.040pts
+2026-08-11 15:19:03 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.2.conv1: isolated_acc=80.49% weight_damage=0.070pts
+2026-08-11 15:19:06 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.2.conv2: isolated_acc=80.43% weight_damage=0.130pts
+2026-08-11 15:19:09 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer1.2.conv3: isolated_acc=80.51% weight_damage=0.050pts
+2026-08-11 15:19:12 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.0.conv1: isolated_acc=80.43% weight_damage=0.130pts
+2026-08-11 15:19:15 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.0.conv2: isolated_acc=80.28% weight_damage=0.280pts
+2026-08-11 15:19:18 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.0.conv3: isolated_acc=80.42% weight_damage=0.140pts
+2026-08-11 15:19:21 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.0.downsample.0: isolated_acc=80.41% weight_damage=0.150pts
+2026-08-11 15:19:24 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.1.conv1: isolated_acc=80.61% weight_damage=-0.050pts
+2026-08-11 15:19:27 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.1.conv2: isolated_acc=80.57% weight_damage=-0.010pts
+2026-08-11 15:19:30 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.1.conv3: isolated_acc=80.58% weight_damage=-0.020pts
+2026-08-11 15:19:33 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.2.conv1: isolated_acc=80.45% weight_damage=0.110pts
+2026-08-11 15:19:36 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.2.conv2: isolated_acc=80.62% weight_damage=-0.060pts
+2026-08-11 15:19:39 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.2.conv3: isolated_acc=80.70% weight_damage=-0.140pts
+2026-08-11 15:19:43 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.3.conv1: isolated_acc=80.49% weight_damage=0.070pts
+2026-08-11 15:19:46 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.3.conv2: isolated_acc=80.69% weight_damage=-0.130pts
+2026-08-11 15:19:49 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer2.3.conv3: isolated_acc=80.69% weight_damage=-0.130pts
+2026-08-11 15:19:52 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.0.conv1: isolated_acc=80.57% weight_damage=-0.010pts
+2026-08-11 15:19:55 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.0.conv2: isolated_acc=80.78% weight_damage=-0.220pts
+2026-08-11 15:19:58 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.0.conv3: isolated_acc=80.69% weight_damage=-0.130pts
+2026-08-11 15:20:01 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.0.downsample.0: isolated_acc=80.70% weight_damage=-0.140pts
+2026-08-11 15:20:04 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.1.conv1: isolated_acc=80.70% weight_damage=-0.140pts
+2026-08-11 15:20:07 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.1.conv2: isolated_acc=80.62% weight_damage=-0.060pts
+2026-08-11 15:20:10 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.1.conv3: isolated_acc=80.56% weight_damage=0.000pts
+2026-08-11 15:20:13 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.2.conv1: isolated_acc=80.64% weight_damage=-0.080pts
+2026-08-11 15:20:16 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.2.conv2: isolated_acc=80.62% weight_damage=-0.060pts
+2026-08-11 15:20:19 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.2.conv3: isolated_acc=80.48% weight_damage=0.080pts
+2026-08-11 15:20:22 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.3.conv1: isolated_acc=80.58% weight_damage=-0.020pts
+2026-08-11 15:20:25 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.3.conv2: isolated_acc=80.55% weight_damage=0.010pts
+2026-08-11 15:20:28 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.3.conv3: isolated_acc=80.59% weight_damage=-0.030pts
+2026-08-11 15:20:31 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.4.conv1: isolated_acc=80.76% weight_damage=-0.200pts
+2026-08-11 15:20:34 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.4.conv2: isolated_acc=80.38% weight_damage=0.180pts
+2026-08-11 15:20:38 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.4.conv3: isolated_acc=80.48% weight_damage=0.080pts
+2026-08-11 15:20:41 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.5.conv1: isolated_acc=80.55% weight_damage=0.010pts
+2026-08-11 15:20:44 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.5.conv2: isolated_acc=80.55% weight_damage=0.010pts
+2026-08-11 15:20:47 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer3.5.conv3: isolated_acc=80.59% weight_damage=-0.030pts
+2026-08-11 15:20:50 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.0.conv1: isolated_acc=80.49% weight_damage=0.070pts
+2026-08-11 15:20:53 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.0.conv2: isolated_acc=80.45% weight_damage=0.110pts
+2026-08-11 15:20:56 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.0.conv3: isolated_acc=80.53% weight_damage=0.030pts
+2026-08-11 15:20:59 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.0.downsample.0: isolated_acc=80.20% weight_damage=0.360pts
+2026-08-11 15:21:02 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.1.conv1: isolated_acc=80.57% weight_damage=-0.010pts
+2026-08-11 15:21:05 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.1.conv2: isolated_acc=80.53% weight_damage=0.030pts
+2026-08-11 15:21:08 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.1.conv3: isolated_acc=80.61% weight_damage=-0.050pts
+2026-08-11 15:21:11 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.2.conv1: isolated_acc=80.34% weight_damage=0.220pts
+2026-08-11 15:21:14 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.2.conv2: isolated_acc=80.61% weight_damage=-0.050pts
+2026-08-11 15:21:17 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=layer4.2.conv3: isolated_acc=80.57% weight_damage=-0.010pts
+2026-08-11 15:21:20 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10 layer=fc: isolated_acc=80.45% weight_damage=0.110pts
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:21:20 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10: n_layers=54 conv1_damage_rank=1/54 -- raw_trh: rho=0.2487 p=0.06975 top5_overlap=1/5 conv1_predictor_rank=1/54 | dwsq: rho=0.0288 p=0.8364 top5_overlap=1/5 conv1_predictor_rank=54/54 | trh_dwsq: rho=0.1396 p=0.3142 top5_overlap=2/5 conv1_predictor_rank=41/54
+2026-08-11 15:21:20 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10: VERDICT -- conv1 ranks #1/54 by damage, #1/54 by raw_trh (rho=0.249), #54/54 by dwsq (rho=0.029), #41/54 by trh_dwsq (rho=0.140). Interpretation left to the reader per predictor's numbers above -- not selected post hoc.
+2026-08-11 15:21:20 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === QAT resnet18_no_weights/CIFAR10 ===
+2026-08-11 15:21:20 [INFO] src.analysis.weight_ablation: [WeightAblation] Resolved checkpoint (model=resnet18_no_weights, dataset=CIFAR10) -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/models/baseline_resnet18_no_weights_CIFAR10_float32.pt
+2026-08-11 15:21:20 [INFO] src.analysis.weight_ablation: [WeightAblation] Resolved checkpoint (stage=QAT, model=resnet18_no_weights, dataset=CIFAR10) -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/qat_po2_resnet18_no_weights_CIFAR10.pt
+2026-08-11 15:21:24 [INFO] src.analysis.weight_ablation: [WeightAblation] QAT resnet18_no_weights/CIFAR10: fp32_acc=84.69% weights_only(act->Identity)=90.54% weights_only(baked)=90.54% (21 layers)
+2026-08-11 15:21:24 [INFO] src.analysis.weight_ablation: [WeightAblation] QAT resnet18_no_weights/CIFAR10: path-equivalence gate -- |90.54% - 90.54%| = 0.000pt (tolerance < 0.1pt) -- PASS
+2026-08-11 15:21:25 [INFO] src.analysis.weight_ablation: [WeightAblation] QAT resnet18_no_weights/CIFAR10: optional end-to-end check (QAT) -- both-Identity acc 89.78% (informational: reflects the QAT-trained weights' own clean-forward accuracy, NOT expected to match the frozen FP32 baseline 84.69% since QAT continued training beyond that checkpoint)
+2026-08-11 15:21:25 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] resnet18_no_weights: Part 0 canonical<->ablation alignment table (21 canonical layers vs 21 ablation layers):
+layer                                    in_canonical  in_ablation  shape_match
+conv1                                    True          True         True
+fc                                       True          True         True
+layer1.0.conv1                           True          True         True
+layer1.0.conv2                           True          True         True
+layer1.1.conv1                           True          True         True
+layer1.1.conv2                           True          True         True
+layer2.0.conv1                           True          True         True
+layer2.0.conv2                           True          True         True
+layer2.0.downsample.0                    True          True         True
+layer2.1.conv1                           True          True         True
+layer2.1.conv2                           True          True         True
+layer3.0.conv1                           True          True         True
+layer3.0.conv2                           True          True         True
+layer3.0.downsample.0                    True          True         True
+layer3.1.conv1                           True          True         True
+layer3.1.conv2                           True          True         True
+layer4.0.conv1                           True          True         True
+layer4.0.conv2                           True          True         True
+layer4.0.downsample.0                    True          True         True
+layer4.1.conv1                           True          True         True
+layer4.1.conv2                           True          True         True
+2026-08-11 15:21:25 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] resnet18_no_weights: Part 0 alignment gate PASSED -- 21 layers bijective and shape-matched
+2026-08-11 15:21:27 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=conv1: isolated_acc=90.05% weight_damage=-5.360pts
+2026-08-11 15:21:28 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer1.0.conv1: isolated_acc=89.84% weight_damage=-5.150pts
+2026-08-11 15:21:29 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer1.0.conv2: isolated_acc=89.56% weight_damage=-4.870pts
+2026-08-11 15:21:30 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer1.1.conv1: isolated_acc=89.98% weight_damage=-5.290pts
+2026-08-11 15:21:31 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer1.1.conv2: isolated_acc=89.83% weight_damage=-5.140pts
+2026-08-11 15:21:32 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer2.0.conv1: isolated_acc=89.88% weight_damage=-5.190pts
+2026-08-11 15:21:34 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer2.0.conv2: isolated_acc=90.06% weight_damage=-5.370pts
+2026-08-11 15:21:35 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer2.0.downsample.0: isolated_acc=89.84% weight_damage=-5.150pts
+2026-08-11 15:21:36 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer2.1.conv1: isolated_acc=89.84% weight_damage=-5.150pts
+2026-08-11 15:21:37 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer2.1.conv2: isolated_acc=89.96% weight_damage=-5.270pts
+2026-08-11 15:21:38 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer3.0.conv1: isolated_acc=89.80% weight_damage=-5.110pts
+2026-08-11 15:21:39 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer3.0.conv2: isolated_acc=89.98% weight_damage=-5.290pts
+2026-08-11 15:21:41 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer3.0.downsample.0: isolated_acc=89.91% weight_damage=-5.220pts
+2026-08-11 15:21:42 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer3.1.conv1: isolated_acc=89.71% weight_damage=-5.020pts
+2026-08-11 15:21:43 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer3.1.conv2: isolated_acc=89.84% weight_damage=-5.150pts
+2026-08-11 15:21:44 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer4.0.conv1: isolated_acc=89.81% weight_damage=-5.120pts
+2026-08-11 15:21:45 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer4.0.conv2: isolated_acc=89.79% weight_damage=-5.100pts
+2026-08-11 15:21:47 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer4.0.downsample.0: isolated_acc=89.74% weight_damage=-5.050pts
+2026-08-11 15:21:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer4.1.conv1: isolated_acc=89.75% weight_damage=-5.060pts
+2026-08-11 15:21:49 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=layer4.1.conv2: isolated_acc=89.72% weight_damage=-5.030pts
+2026-08-11 15:21:50 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10 layer=fc: isolated_acc=89.93% weight_damage=-5.240pts
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:21:51 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10: n_layers=21 conv1_damage_rank=20/21 -- raw_trh: rho=-0.0508 p=0.8268 top5_overlap=0/5 conv1_predictor_rank=1/21 | dwsq: rho=0.3858 p=0.08412 top5_overlap=2/5 conv1_predictor_rank=21/21 | trh_dwsq: rho=0.3930 p=0.07803 top5_overlap=2/5 conv1_predictor_rank=18/21
+2026-08-11 15:21:51 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10: VERDICT -- conv1 ranks #20/21 by damage, #1/21 by raw_trh (rho=-0.051), #21/21 by dwsq (rho=0.386), #18/21 by trh_dwsq (rho=0.393). Interpretation left to the reader per predictor's numbers above -- not selected post hoc.
+2026-08-11 15:21:51 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === QAT resnet50_no_weights/CIFAR10 ===
+2026-08-11 15:21:51 [INFO] src.analysis.weight_ablation: [WeightAblation] Resolved checkpoint (model=resnet50_no_weights, dataset=CIFAR10) -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/models/baseline_resnet50_no_weights_CIFAR10_float32.pt
+2026-08-11 15:21:51 [INFO] src.analysis.weight_ablation: [WeightAblation] Resolved checkpoint (stage=QAT, model=resnet50_no_weights, dataset=CIFAR10) -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260810_104157_31209/quantized_models/qat_po2_resnet50_no_weights_CIFAR10.pt
+2026-08-11 15:22:00 [INFO] src.analysis.weight_ablation: [WeightAblation] QAT resnet50_no_weights/CIFAR10: fp32_acc=80.56% weights_only(act->Identity)=84.44% weights_only(baked)=84.44% (54 layers)
+2026-08-11 15:22:00 [INFO] src.analysis.weight_ablation: [WeightAblation] QAT resnet50_no_weights/CIFAR10: path-equivalence gate -- |84.44% - 84.44%| = 0.000pt (tolerance < 0.1pt) -- PASS
+2026-08-11 15:22:03 [INFO] src.analysis.weight_ablation: [WeightAblation] QAT resnet50_no_weights/CIFAR10: optional end-to-end check (QAT) -- both-Identity acc 80.46% (informational: reflects the QAT-trained weights' own clean-forward accuracy, NOT expected to match the frozen FP32 baseline 80.56% since QAT continued training beyond that checkpoint)
+2026-08-11 15:22:03 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] resnet50_no_weights: Part 0 canonical<->ablation alignment table (54 canonical layers vs 54 ablation layers):
+layer                                    in_canonical  in_ablation  shape_match
+conv1                                    True          True         True
+fc                                       True          True         True
+layer1.0.conv1                           True          True         True
+layer1.0.conv2                           True          True         True
+layer1.0.conv3                           True          True         True
+layer1.0.downsample.0                    True          True         True
+layer1.1.conv1                           True          True         True
+layer1.1.conv2                           True          True         True
+layer1.1.conv3                           True          True         True
+layer1.2.conv1                           True          True         True
+layer1.2.conv2                           True          True         True
+layer1.2.conv3                           True          True         True
+layer2.0.conv1                           True          True         True
+layer2.0.conv2                           True          True         True
+layer2.0.conv3                           True          True         True
+layer2.0.downsample.0                    True          True         True
+layer2.1.conv1                           True          True         True
+layer2.1.conv2                           True          True         True
+layer2.1.conv3                           True          True         True
+layer2.2.conv1                           True          True         True
+layer2.2.conv2                           True          True         True
+layer2.2.conv3                           True          True         True
+layer2.3.conv1                           True          True         True
+layer2.3.conv2                           True          True         True
+layer2.3.conv3                           True          True         True
+layer3.0.conv1                           True          True         True
+layer3.0.conv2                           True          True         True
+layer3.0.conv3                           True          True         True
+layer3.0.downsample.0                    True          True         True
+layer3.1.conv1                           True          True         True
+layer3.1.conv2                           True          True         True
+layer3.1.conv3                           True          True         True
+layer3.2.conv1                           True          True         True
+layer3.2.conv2                           True          True         True
+layer3.2.conv3                           True          True         True
+layer3.3.conv1                           True          True         True
+layer3.3.conv2                           True          True         True
+layer3.3.conv3                           True          True         True
+layer3.4.conv1                           True          True         True
+layer3.4.conv2                           True          True         True
+layer3.4.conv3                           True          True         True
+layer3.5.conv1                           True          True         True
+layer3.5.conv2                           True          True         True
+layer3.5.conv3                           True          True         True
+layer4.0.conv1                           True          True         True
+layer4.0.conv2                           True          True         True
+layer4.0.conv3                           True          True         True
+layer4.0.downsample.0                    True          True         True
+layer4.1.conv1                           True          True         True
+layer4.1.conv2                           True          True         True
+layer4.1.conv3                           True          True         True
+layer4.2.conv1                           True          True         True
+layer4.2.conv2                           True          True         True
+layer4.2.conv3                           True          True         True
+2026-08-11 15:22:03 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] resnet50_no_weights: Part 0 alignment gate PASSED -- 54 layers bijective and shape-matched
+2026-08-11 15:22:06 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=conv1: isolated_acc=81.91% weight_damage=-1.350pts
+2026-08-11 15:22:09 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.0.conv1: isolated_acc=80.81% weight_damage=-0.250pts
+2026-08-11 15:22:12 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.0.conv2: isolated_acc=80.39% weight_damage=0.170pts
+2026-08-11 15:22:15 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.0.conv3: isolated_acc=80.29% weight_damage=0.270pts
+2026-08-11 15:22:18 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.0.downsample.0: isolated_acc=80.40% weight_damage=0.160pts
+2026-08-11 15:22:21 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.1.conv1: isolated_acc=80.44% weight_damage=0.120pts
+2026-08-11 15:22:24 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.1.conv2: isolated_acc=80.48% weight_damage=0.080pts
+2026-08-11 15:22:27 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.1.conv3: isolated_acc=80.36% weight_damage=0.200pts
+2026-08-11 15:22:30 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.2.conv1: isolated_acc=80.20% weight_damage=0.360pts
+2026-08-11 15:22:33 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.2.conv2: isolated_acc=80.72% weight_damage=-0.160pts
+2026-08-11 15:22:36 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer1.2.conv3: isolated_acc=80.57% weight_damage=-0.010pts
+2026-08-11 15:22:39 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.0.conv1: isolated_acc=80.78% weight_damage=-0.220pts
+2026-08-11 15:22:42 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.0.conv2: isolated_acc=80.89% weight_damage=-0.330pts
+2026-08-11 15:22:45 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.0.conv3: isolated_acc=80.90% weight_damage=-0.340pts
+2026-08-11 15:22:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.0.downsample.0: isolated_acc=81.01% weight_damage=-0.450pts
+2026-08-11 15:22:51 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.1.conv1: isolated_acc=80.37% weight_damage=0.190pts
+2026-08-11 15:22:54 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.1.conv2: isolated_acc=80.49% weight_damage=0.070pts
+2026-08-11 15:22:57 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.1.conv3: isolated_acc=80.52% weight_damage=0.040pts
+2026-08-11 15:23:00 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.2.conv1: isolated_acc=80.48% weight_damage=0.080pts
+2026-08-11 15:23:03 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.2.conv2: isolated_acc=80.42% weight_damage=0.140pts
+2026-08-11 15:23:06 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.2.conv3: isolated_acc=80.45% weight_damage=0.110pts
+2026-08-11 15:23:09 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.3.conv1: isolated_acc=80.52% weight_damage=0.040pts
+2026-08-11 15:23:12 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.3.conv2: isolated_acc=80.60% weight_damage=-0.040pts
+2026-08-11 15:23:15 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer2.3.conv3: isolated_acc=80.44% weight_damage=0.120pts
+2026-08-11 15:23:18 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.0.conv1: isolated_acc=80.66% weight_damage=-0.100pts
+2026-08-11 15:23:21 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.0.conv2: isolated_acc=80.83% weight_damage=-0.270pts
+2026-08-11 15:23:24 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.0.conv3: isolated_acc=80.70% weight_damage=-0.140pts
+2026-08-11 15:23:27 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.0.downsample.0: isolated_acc=80.71% weight_damage=-0.150pts
+2026-08-11 15:23:30 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.1.conv1: isolated_acc=80.55% weight_damage=0.010pts
+2026-08-11 15:23:33 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.1.conv2: isolated_acc=80.67% weight_damage=-0.110pts
+2026-08-11 15:23:36 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.1.conv3: isolated_acc=80.53% weight_damage=0.030pts
+2026-08-11 15:23:39 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.2.conv1: isolated_acc=80.50% weight_damage=0.060pts
+2026-08-11 15:23:42 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.2.conv2: isolated_acc=80.57% weight_damage=-0.010pts
+2026-08-11 15:23:45 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.2.conv3: isolated_acc=80.42% weight_damage=0.140pts
+2026-08-11 15:23:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.3.conv1: isolated_acc=80.49% weight_damage=0.070pts
+2026-08-11 15:23:51 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.3.conv2: isolated_acc=80.46% weight_damage=0.100pts
+2026-08-11 15:23:54 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.3.conv3: isolated_acc=80.45% weight_damage=0.110pts
+2026-08-11 15:23:57 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.4.conv1: isolated_acc=80.64% weight_damage=-0.080pts
+2026-08-11 15:24:00 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.4.conv2: isolated_acc=80.47% weight_damage=0.090pts
+2026-08-11 15:24:03 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.4.conv3: isolated_acc=80.44% weight_damage=0.120pts
+2026-08-11 15:24:06 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.5.conv1: isolated_acc=80.64% weight_damage=-0.080pts
+2026-08-11 15:24:09 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.5.conv2: isolated_acc=80.63% weight_damage=-0.070pts
+2026-08-11 15:24:12 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer3.5.conv3: isolated_acc=80.51% weight_damage=0.050pts
+2026-08-11 15:24:15 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.0.conv1: isolated_acc=80.41% weight_damage=0.150pts
+2026-08-11 15:24:18 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.0.conv2: isolated_acc=80.53% weight_damage=0.030pts
+2026-08-11 15:24:21 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.0.conv3: isolated_acc=80.43% weight_damage=0.130pts
+2026-08-11 15:24:24 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.0.downsample.0: isolated_acc=80.96% weight_damage=-0.400pts
+2026-08-11 15:24:27 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.1.conv1: isolated_acc=80.55% weight_damage=0.010pts
+2026-08-11 15:24:30 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.1.conv2: isolated_acc=80.53% weight_damage=0.030pts
+2026-08-11 15:24:33 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.1.conv3: isolated_acc=80.43% weight_damage=0.130pts
+2026-08-11 15:24:36 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.2.conv1: isolated_acc=80.45% weight_damage=0.110pts
+2026-08-11 15:24:39 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.2.conv2: isolated_acc=80.39% weight_damage=0.170pts
+2026-08-11 15:24:42 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=layer4.2.conv3: isolated_acc=80.37% weight_damage=0.190pts
+2026-08-11 15:24:45 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10 layer=fc: isolated_acc=80.79% weight_damage=-0.230pts
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] row appended -> /home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt/results/20260811_151754_local/csv/weight_ablation_canonical_correlation_v2.csv
+2026-08-11 15:24:45 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10: n_layers=54 conv1_damage_rank=54/54 -- raw_trh: rho=-0.1015 p=0.465 top5_overlap=0/5 conv1_predictor_rank=1/54 | dwsq: rho=0.0014 p=0.9921 top5_overlap=0/5 conv1_predictor_rank=54/54 | trh_dwsq: rho=-0.0525 p=0.7059 top5_overlap=0/5 conv1_predictor_rank=40/54
+2026-08-11 15:24:45 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10: VERDICT -- conv1 ranks #54/54 by damage, #1/54 by raw_trh (rho=-0.102), #54/54 by dwsq (rho=0.001), #40/54 by trh_dwsq (rho=-0.053). Interpretation left to the reader per predictor's numbers above -- not selected post hoc.
+2026-08-11 15:24:45 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === Weight-Ablation-Canonical complete ===

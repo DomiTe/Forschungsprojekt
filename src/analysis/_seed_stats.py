@@ -26,6 +26,7 @@ Verify this bit-exact-at-matching-seed property before trusting any
 multi-seed output; this module does not run anything itself.
 """
 
+import math
 import statistics
 
 
@@ -37,13 +38,23 @@ def derive_seeds(base_seed: int, n_seeds: int) -> list[int]:
 def aggregate(values: list[float]) -> tuple[float, float]:
     """
     Returns (mean, std) across seeds for one layer/metric. std is the
-    sample std (ddof=1, statistics.stdev) when len(values) >= 2, else 0.0 --
-    a single sample has no estimable spread, and reporting NaN there would
-    read as a missing-data gap rather than "not enough seeds to estimate
-    variance," which is what it actually is.
+    sample std (ddof=1) when len(values) >= 2, else 0.0 -- a single sample
+    has no estimable spread, and reporting NaN there would read as a
+    missing-data gap rather than "not enough seeds to estimate variance,"
+    which is what it actually is.
+
+    Metrics fed in here (e.g. outlier_factor) deliberately use inf as a
+    sentinel for "act_p99 == 0", so this can't delegate to
+    statistics.stdev: its exact-Fraction internals raise AttributeError as
+    soon as one value is inf/nan (mss ends up a bare float, which has no
+    .numerator). Computed by hand instead -- mean/std of a list containing
+    inf/nan naturally comes out inf/nan rather than crashing.
     """
     if not values:
         return float("nan"), float("nan")
+    if any(not math.isfinite(v) for v in values):
+        mean = statistics.mean(values)
+        return mean, float("nan") if len(values) >= 2 else 0.0
     mean = statistics.mean(values)
     std = statistics.stdev(values) if len(values) >= 2 else 0.0
     return mean, std

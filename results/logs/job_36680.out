@@ -1,0 +1,302 @@
+2026-08-12 19:19:37 [INFO] __main__: === Pipeline start: 3 models - 2 datasets = 6 runs ===
+2026-08-12 19:19:37 [INFO] __main__: === Analyze-CIFAR10: 8 pipelines, all models, CIFAR10 only ===
+2026-08-12 19:19:37 [INFO] __main__: [Analyze-CIFAR10] --- 1/8: checkpoint-metrics ---
+2026-08-12 19:19:37 [INFO] src.analysis.checkpoint_metrics: [CheckpointMetrics] device=cuda datasets=['CIFAR10']
+2026-08-12 19:19:37 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] FP32 baseline models directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models
+2026-08-12 19:19:37 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models
+2026-08-12 19:19:39 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:40 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:40 [WARNING] src.analysis.checkpoint_metrics: [CheckpointMetrics] cnn/CIFAR10: FP32 baseline checkpoint unresolvable (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=cnn, dataset=CIFAR10)) -- skipping model
+2026-08-12 19:19:40 [WARNING] src.analysis.checkpoint_metrics: [CheckpointMetrics] resnet18_no_weights/CIFAR10: FP32 baseline checkpoint unresolvable (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet18_no_weights, dataset=CIFAR10)) -- skipping model
+2026-08-12 19:19:40 [WARNING] src.analysis.checkpoint_metrics: [CheckpointMetrics] resnet50_no_weights/CIFAR10: FP32 baseline checkpoint unresolvable (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet50_no_weights, dataset=CIFAR10)) -- skipping model
+2026-08-12 19:19:40 [INFO] src.analysis.checkpoint_metrics: [CheckpointMetrics] === Checkpoint-Metrics complete ===
+2026-08-12 19:19:40 [INFO] __main__: [Analyze-CIFAR10] --- 2/8: relock-traces ---
+2026-08-12 19:19:40 [INFO] src.analysis.relock_traces: [RelockTraces] Part 0: frozen canonical config -> /scratch/dominic/Forschungsprojekt/results/20260812_191926_36680/trace_config.json
+{
+  "frozen_at_utc": "2026-08-12T17:19:40.631156+00:00",
+  "frozen_by": "src/analysis/relock_traces.py",
+  "data": {
+    "dataset": "CIFAR10",
+    "split": "test (val)",
+    "shuffle": false,
+    "num_workers": 0,
+    "pin_memory": false,
+    "batch_size": 16,
+    "num_batches": 5,
+    "num_images": 80,
+    "image_selection": "first num_images images of the CIFAR10 test split in dataset order (deterministic -- shuffle=False, no DataLoader generator randomness)",
+    "normalization": "standard CIFAR10 mean/std (src/utility/utils.py _norm); no augmentation (test transform: Resize -> ToTensor -> Normalize only, RandomCrop/Flip excluded)"
+  },
+  "loss": {
+    "criterion": "CrossEntropyLoss",
+    "reduction": "mean"
+  },
+  "estimator": {
+    "engine": "compute_layerwise_hessian_trace_pyhessian (src/analysis/pyhessian.py, unchanged)",
+    "probe_distribution": "Rademacher (PyHessian hessian.trace() default)",
+    "probe_seed": 20260811,
+    "probe_seed_reset": "torch.manual_seed(probe_seed) immediately before every estimator call",
+    "max_iter": 100,
+    "tol": 0.001
+  },
+  "model_mode": "eval",
+  "basis": {
+    "canonical_for_cross_stage_comparison": "fused",
+    "note": "PTQ/QAT exist only fused+quantized, so fused is canonical for any PTQ/QAT comparison. FP32 is still traced in BOTH bases (fp32_unfused, fp32_fused) and the unfused->fused fusion_ratio is always reported alongside FP32 so nothing is hidden by the basis choice (see src/analysis/quant_induced_trace.py)."
+  },
+  "trace_normalization": {
+    "headline": "trace_raw",
+    "companion": "trace_per_param = trace_raw / weight.numel()"
+  },
+  "numerics": {
+    "dtype": "float32",
+    "device": "cuda",
+    "deterministic_algorithms": true,
+    "cudnn_benchmark": false,
+    "cudnn_deterministic": true
+  }
+}
+2026-08-12 19:19:40 [INFO] src.analysis.relock_traces: [RelockTraces] device=cuda probe_seed=20260811 basis=fused datasets=['CIFAR10']
+2026-08-12 19:19:40 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] FP32 baseline models directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models
+2026-08-12 19:19:40 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models
+2026-08-12 19:19:42 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:43 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:43 [ERROR] __main__: [Analyze-CIFAR10] relock-traces FAILED -- Part 1 requires resnet50_no_weights/CIFAR10 FP32 and PTQ checkpoints -- checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet50_no_weights, dataset=CIFAR10)
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/relock_traces.py", line 916, in run_relock_traces
+    diag_fp32_ckpt = _resolve_checkpoint_robust(fp32_models_dir, {"model": DIAGNOSIS_MODEL, "dataset": DATASET_NAME})
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/_ablation_common.py", line 103, in _resolve_checkpoint_robust
+    raise FileNotFoundError(f"checkpoint directory does not exist: {directory} (looking for {token_desc})")
+FileNotFoundError: checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet50_no_weights, dataset=CIFAR10)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/main.py", line 1063, in _step
+    fn(**kwargs)
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/relock_traces.py", line 919, in run_relock_traces
+    raise RelockTracesError(f"Part 1 requires {DIAGNOSIS_MODEL}/{DATASET_NAME} FP32 and PTQ checkpoints -- {exc}") from exc
+src.analysis.relock_traces.RelockTracesError: Part 1 requires resnet50_no_weights/CIFAR10 FP32 and PTQ checkpoints -- checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet50_no_weights, dataset=CIFAR10)
+2026-08-12 19:19:43 [INFO] __main__: [Analyze-CIFAR10] --- 3/8: quant-induced-trace ---
+2026-08-12 19:19:43 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] device=cuda seeds=[42, 43, 44] banked_fp32_profile=None datasets=['CIFAR10']
+2026-08-12 19:19:43 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] FP32 baseline models directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models
+2026-08-12 19:19:43 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models
+2026-08-12 19:19:45 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:45 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] === resnet50_no_weights/CIFAR10 ===
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] resnet50_no_weights: Part 0 layer mapping table (54 unfused vs 54 quantized conv/linear layers):
+ pos canonical_name                           quantized_name                           unfused_shape          quantized_shape        match
+   0 conv1                                    conv1                                    (64, 3, 3, 3)          (64, 3, 3, 3)          True
+   1 layer1.0.conv1                           layer1.0.conv1                           (64, 64, 1, 1)         (64, 64, 1, 1)         True
+   2 layer1.0.conv2                           layer1.0.conv2                           (64, 64, 3, 3)         (64, 64, 3, 3)         True
+   3 layer1.0.conv3                           layer1.0.conv3                           (256, 64, 1, 1)        (256, 64, 1, 1)        True
+   4 layer1.0.downsample.0                    layer1.0.downsample.0                    (256, 64, 1, 1)        (256, 64, 1, 1)        True
+   5 layer1.1.conv1                           layer1.1.conv1                           (64, 256, 1, 1)        (64, 256, 1, 1)        True
+   6 layer1.1.conv2                           layer1.1.conv2                           (64, 64, 3, 3)         (64, 64, 3, 3)         True
+   7 layer1.1.conv3                           layer1.1.conv3                           (256, 64, 1, 1)        (256, 64, 1, 1)        True
+   8 layer1.2.conv1                           layer1.2.conv1                           (64, 256, 1, 1)        (64, 256, 1, 1)        True
+   9 layer1.2.conv2                           layer1.2.conv2                           (64, 64, 3, 3)         (64, 64, 3, 3)         True
+  10 layer1.2.conv3                           layer1.2.conv3                           (256, 64, 1, 1)        (256, 64, 1, 1)        True
+  11 layer2.0.conv1                           layer2.0.conv1                           (128, 256, 1, 1)       (128, 256, 1, 1)       True
+  12 layer2.0.conv2                           layer2.0.conv2                           (128, 128, 3, 3)       (128, 128, 3, 3)       True
+  13 layer2.0.conv3                           layer2.0.conv3                           (512, 128, 1, 1)       (512, 128, 1, 1)       True
+  14 layer2.0.downsample.0                    layer2.0.downsample.0                    (512, 256, 1, 1)       (512, 256, 1, 1)       True
+  15 layer2.1.conv1                           layer2.1.conv1                           (128, 512, 1, 1)       (128, 512, 1, 1)       True
+  16 layer2.1.conv2                           layer2.1.conv2                           (128, 128, 3, 3)       (128, 128, 3, 3)       True
+  17 layer2.1.conv3                           layer2.1.conv3                           (512, 128, 1, 1)       (512, 128, 1, 1)       True
+  18 layer2.2.conv1                           layer2.2.conv1                           (128, 512, 1, 1)       (128, 512, 1, 1)       True
+  19 layer2.2.conv2                           layer2.2.conv2                           (128, 128, 3, 3)       (128, 128, 3, 3)       True
+  20 layer2.2.conv3                           layer2.2.conv3                           (512, 128, 1, 1)       (512, 128, 1, 1)       True
+  21 layer2.3.conv1                           layer2.3.conv1                           (128, 512, 1, 1)       (128, 512, 1, 1)       True
+  22 layer2.3.conv2                           layer2.3.conv2                           (128, 128, 3, 3)       (128, 128, 3, 3)       True
+  23 layer2.3.conv3                           layer2.3.conv3                           (512, 128, 1, 1)       (512, 128, 1, 1)       True
+  24 layer3.0.conv1                           layer3.0.conv1                           (256, 512, 1, 1)       (256, 512, 1, 1)       True
+  25 layer3.0.conv2                           layer3.0.conv2                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  26 layer3.0.conv3                           layer3.0.conv3                           (1024, 256, 1, 1)      (1024, 256, 1, 1)      True
+  27 layer3.0.downsample.0                    layer3.0.downsample.0                    (1024, 512, 1, 1)      (1024, 512, 1, 1)      True
+  28 layer3.1.conv1                           layer3.1.conv1                           (256, 1024, 1, 1)      (256, 1024, 1, 1)      True
+  29 layer3.1.conv2                           layer3.1.conv2                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  30 layer3.1.conv3                           layer3.1.conv3                           (1024, 256, 1, 1)      (1024, 256, 1, 1)      True
+  31 layer3.2.conv1                           layer3.2.conv1                           (256, 1024, 1, 1)      (256, 1024, 1, 1)      True
+  32 layer3.2.conv2                           layer3.2.conv2                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  33 layer3.2.conv3                           layer3.2.conv3                           (1024, 256, 1, 1)      (1024, 256, 1, 1)      True
+  34 layer3.3.conv1                           layer3.3.conv1                           (256, 1024, 1, 1)      (256, 1024, 1, 1)      True
+  35 layer3.3.conv2                           layer3.3.conv2                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  36 layer3.3.conv3                           layer3.3.conv3                           (1024, 256, 1, 1)      (1024, 256, 1, 1)      True
+  37 layer3.4.conv1                           layer3.4.conv1                           (256, 1024, 1, 1)      (256, 1024, 1, 1)      True
+  38 layer3.4.conv2                           layer3.4.conv2                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  39 layer3.4.conv3                           layer3.4.conv3                           (1024, 256, 1, 1)      (1024, 256, 1, 1)      True
+  40 layer3.5.conv1                           layer3.5.conv1                           (256, 1024, 1, 1)      (256, 1024, 1, 1)      True
+  41 layer3.5.conv2                           layer3.5.conv2                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  42 layer3.5.conv3                           layer3.5.conv3                           (1024, 256, 1, 1)      (1024, 256, 1, 1)      True
+  43 layer4.0.conv1                           layer4.0.conv1                           (512, 1024, 1, 1)      (512, 1024, 1, 1)      True
+  44 layer4.0.conv2                           layer4.0.conv2                           (512, 512, 3, 3)       (512, 512, 3, 3)       True
+  45 layer4.0.conv3                           layer4.0.conv3                           (2048, 512, 1, 1)      (2048, 512, 1, 1)      True
+  46 layer4.0.downsample.0                    layer4.0.downsample.0                    (2048, 1024, 1, 1)     (2048, 1024, 1, 1)     True
+  47 layer4.1.conv1                           layer4.1.conv1                           (512, 2048, 1, 1)      (512, 2048, 1, 1)      True
+  48 layer4.1.conv2                           layer4.1.conv2                           (512, 512, 3, 3)       (512, 512, 3, 3)       True
+  49 layer4.1.conv3                           layer4.1.conv3                           (2048, 512, 1, 1)      (2048, 512, 1, 1)      True
+  50 layer4.2.conv1                           layer4.2.conv1                           (512, 2048, 1, 1)      (512, 2048, 1, 1)      True
+  51 layer4.2.conv2                           layer4.2.conv2                           (512, 512, 3, 3)       (512, 512, 3, 3)       True
+  52 layer4.2.conv3                           layer4.2.conv3                           (2048, 512, 1, 1)      (2048, 512, 1, 1)      True
+  53 fc                                       fc                                       (10, 2048)             (10, 2048)             True
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] resnet50_no_weights: Part 0 gate PASSED -- 54 layers bijective and shape-matched
+2026-08-12 19:19:46 [WARNING] src.analysis.quant_induced_trace: [QuantInducedTrace] resnet50_no_weights/CIFAR10: FP32 baseline checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet50_no_weights, dataset=CIFAR10)) -- skipping model (required reference)
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] === resnet18_no_weights/CIFAR10 ===
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] resnet18_no_weights: Part 0 layer mapping table (21 unfused vs 21 quantized conv/linear layers):
+ pos canonical_name                           quantized_name                           unfused_shape          quantized_shape        match
+   0 conv1                                    conv1                                    (64, 3, 3, 3)          (64, 3, 3, 3)          True
+   1 layer1.0.conv1                           layer1.0.conv1                           (64, 64, 3, 3)         (64, 64, 3, 3)         True
+   2 layer1.0.conv2                           layer1.0.conv2                           (64, 64, 3, 3)         (64, 64, 3, 3)         True
+   3 layer1.1.conv1                           layer1.1.conv1                           (64, 64, 3, 3)         (64, 64, 3, 3)         True
+   4 layer1.1.conv2                           layer1.1.conv2                           (64, 64, 3, 3)         (64, 64, 3, 3)         True
+   5 layer2.0.conv1                           layer2.0.conv1                           (128, 64, 3, 3)        (128, 64, 3, 3)        True
+   6 layer2.0.conv2                           layer2.0.conv2                           (128, 128, 3, 3)       (128, 128, 3, 3)       True
+   7 layer2.0.downsample.0                    layer2.0.downsample.0                    (128, 64, 1, 1)        (128, 64, 1, 1)        True
+   8 layer2.1.conv1                           layer2.1.conv1                           (128, 128, 3, 3)       (128, 128, 3, 3)       True
+   9 layer2.1.conv2                           layer2.1.conv2                           (128, 128, 3, 3)       (128, 128, 3, 3)       True
+  10 layer3.0.conv1                           layer3.0.conv1                           (256, 128, 3, 3)       (256, 128, 3, 3)       True
+  11 layer3.0.conv2                           layer3.0.conv2                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  12 layer3.0.downsample.0                    layer3.0.downsample.0                    (256, 128, 1, 1)       (256, 128, 1, 1)       True
+  13 layer3.1.conv1                           layer3.1.conv1                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  14 layer3.1.conv2                           layer3.1.conv2                           (256, 256, 3, 3)       (256, 256, 3, 3)       True
+  15 layer4.0.conv1                           layer4.0.conv1                           (512, 256, 3, 3)       (512, 256, 3, 3)       True
+  16 layer4.0.conv2                           layer4.0.conv2                           (512, 512, 3, 3)       (512, 512, 3, 3)       True
+  17 layer4.0.downsample.0                    layer4.0.downsample.0                    (512, 256, 1, 1)       (512, 256, 1, 1)       True
+  18 layer4.1.conv1                           layer4.1.conv1                           (512, 512, 3, 3)       (512, 512, 3, 3)       True
+  19 layer4.1.conv2                           layer4.1.conv2                           (512, 512, 3, 3)       (512, 512, 3, 3)       True
+  20 fc                                       fc                                       (10, 512)              (10, 512)              True
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] resnet18_no_weights: Part 0 gate PASSED -- 21 layers bijective and shape-matched
+2026-08-12 19:19:46 [WARNING] src.analysis.quant_induced_trace: [QuantInducedTrace] resnet18_no_weights/CIFAR10: FP32 baseline checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet18_no_weights, dataset=CIFAR10)) -- skipping model (required reference)
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] === cnn/CIFAR10 ===
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] cnn: Part 0 layer mapping table (6 unfused vs 6 quantized conv/linear layers):
+ pos canonical_name                           quantized_name                           unfused_shape          quantized_shape        match
+   0 conv1                                    conv1                                    (32, 3, 3, 3)          (32, 3, 3, 3)          True
+   1 conv2                                    conv2                                    (64, 32, 3, 3)         (64, 32, 3, 3)         True
+   2 conv3                                    conv3                                    (128, 64, 3, 3)        (128, 64, 3, 3)        True
+   3 conv4                                    conv4                                    (256, 128, 3, 3)       (256, 128, 3, 3)       True
+   4 fc1                                      fc1                                      (1024, 1024)           (1024, 1024)           True
+   5 fc2                                      fc2                                      (10, 1024)             (10, 1024)             True
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] cnn: Part 0 gate PASSED -- 6 layers bijective and shape-matched
+2026-08-12 19:19:46 [WARNING] src.analysis.quant_induced_trace: [QuantInducedTrace] cnn/CIFAR10: FP32 baseline checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=cnn, dataset=CIFAR10)) -- skipping model (required reference)
+2026-08-12 19:19:46 [INFO] src.analysis.quant_induced_trace: [QuantInducedTrace] === Quant-Induced-Trace complete ===
+2026-08-12 19:19:46 [INFO] __main__: [Analyze-CIFAR10] --- 4/8: weight-ablation-canonical ---
+2026-08-12 19:19:46 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] device=cuda seed=42 damage_mode=both datasets=['CIFAR10'] canonical_traces_csv=/scratch/dominic/Forschungsprojekt/results/20260812_191926_36680/csv/canonical_traces.csv
+2026-08-12 19:19:46 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] canonical trace source config: /scratch/dominic/Forschungsprojekt/results/20260812_191926_36680/trace_config.json (basis=fused, probe_seed=20260811)
+2026-08-12 19:19:46 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] FP32 baseline models directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models
+2026-08-12 19:19:46 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models
+2026-08-12 19:19:48 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === PTQ resnet18_no_weights/CIFAR10 ===
+2026-08-12 19:19:48 [ERROR] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet18_no_weights/CIFAR10: checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet18_no_weights, dataset=CIFAR10)) -- skipping
+2026-08-12 19:19:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === PTQ resnet50_no_weights/CIFAR10 ===
+2026-08-12 19:19:48 [ERROR] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ resnet50_no_weights/CIFAR10: checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet50_no_weights, dataset=CIFAR10)) -- skipping
+2026-08-12 19:19:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === PTQ cnn/CIFAR10 ===
+2026-08-12 19:19:48 [ERROR] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] PTQ cnn/CIFAR10: checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=cnn, dataset=CIFAR10)) -- skipping
+2026-08-12 19:19:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === QAT resnet18_no_weights/CIFAR10 ===
+2026-08-12 19:19:48 [WARNING] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet18_no_weights/CIFAR10: checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet18_no_weights, dataset=CIFAR10)) -- skipping (QAT optional)
+2026-08-12 19:19:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === QAT resnet50_no_weights/CIFAR10 ===
+2026-08-12 19:19:48 [WARNING] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT resnet50_no_weights/CIFAR10: checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet50_no_weights, dataset=CIFAR10)) -- skipping (QAT optional)
+2026-08-12 19:19:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === QAT cnn/CIFAR10 ===
+2026-08-12 19:19:48 [WARNING] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] QAT cnn/CIFAR10: checkpoint missing (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=cnn, dataset=CIFAR10)) -- skipping (QAT optional)
+2026-08-12 19:19:48 [INFO] src.analysis.weight_ablation_canonical: [WeightAblationCanonical] === Weight-Ablation-Canonical complete ===
+2026-08-12 19:19:48 [INFO] __main__: [Analyze-CIFAR10] --- 5/8: spike-layer-cause ---
+2026-08-12 19:19:48 [INFO] src.analysis.spike_layer_cause: [SpikeLayerCause] device=cuda canonical_traces_csv=/scratch/dominic/Forschungsprojekt/results/20260812_191926_36680/csv/canonical_traces.csv imagenet100_checkpoint_dir=None seeds=[42, 43, 44]
+2026-08-12 19:19:48 [INFO] src.analysis.spike_layer_cause: [SpikeLayerCause] Part 0: trace_config.json extended with IMAGENET100 entry -> /scratch/dominic/Forschungsprojekt/results/20260812_191926_36680/trace_config.json (CIFAR10 entry preserved; verified by read-back)
+2026-08-12 19:19:48 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] FP32 baseline models directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models
+2026-08-12 19:19:48 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models
+2026-08-12 19:19:48 [INFO] src.analysis.spike_layer_cause: [SpikeLayerCause] === resnet50_no_weights/CIFAR10 ===
+2026-08-12 19:19:48 [WARNING] src.analysis.spike_layer_cause: [SpikeLayerCause] resnet50_no_weights/CIFAR10: FP32 baseline checkpoint unresolvable (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet50_no_weights, dataset=CIFAR10)) -- skipping dataset for this model
+2026-08-12 19:19:48 [INFO] src.analysis.spike_layer_cause: [SpikeLayerCause] === resnet18_no_weights/CIFAR10 ===
+2026-08-12 19:19:48 [WARNING] src.analysis.spike_layer_cause: [SpikeLayerCause] resnet18_no_weights/CIFAR10: FP32 baseline checkpoint unresolvable (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=resnet18_no_weights, dataset=CIFAR10)) -- skipping dataset for this model
+2026-08-12 19:19:48 [INFO] src.analysis.spike_layer_cause: [SpikeLayerCause] === cnn/CIFAR10 ===
+2026-08-12 19:19:48 [WARNING] src.analysis.spike_layer_cause: [SpikeLayerCause] cnn/CIFAR10: FP32 baseline checkpoint unresolvable (checkpoint directory does not exist: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models (looking for model=cnn, dataset=CIFAR10)) -- skipping dataset for this model
+2026-08-12 19:19:48 [INFO] src.analysis.spike_layer_cause: [SpikeLayerCause] === Spike-Layer-Cause complete ===
+2026-08-12 19:19:48 [INFO] __main__: [Analyze-CIFAR10] --- 6/8: random-init-control ---
+2026-08-12 19:19:48 [INFO] src.analysis.random_init_control: [RandomInitControl] device=cuda init_seeds=[42, 43, 44] probe_seed=20260810 (fixed, not varied by n_seeds -- see docstring)
+2026-08-12 19:19:48 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] FP32 baseline models directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models
+2026-08-12 19:19:49 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:49 [INFO] src.analysis.random_init_control: [RandomInitControl] === resnet50_no_weights/CIFAR10 ===
+2026-08-12 19:19:49 [INFO] src.analysis.random_init_control: [RandomInitControl] resnet50_no_weights/CIFAR10: banked FP32 Hessian profile (layerwise_hessian_traces.csv) does not record its estimator config -- recomputing the trained-FP32 profile in this run with the identical config used for the random-init sweep, so this is a controlled comparison rather than two settings compared by accident.
+2026-08-12 19:19:49 [ERROR] src.analysis.random_init_control: [RandomInitControl] FAILED resnet50_no_weights/CIFAR10: Missing FP32 baseline checkpoint: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models/baseline_resnet50_no_weights_CIFAR10_float32.pt
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 559, in run_random_init_control
+    _run_one_model(
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 472, in _run_one_model
+    trained_traces = _get_trained_fp32_traces(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 240, in _get_trained_fp32_traces
+    ckpt_path = _fp32_checkpoint_path(fp32_models_dir, model_name, dataset_name)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/diagnose_activations.py", line 138, in _fp32_checkpoint_path
+    raise FileNotFoundError(f"Missing FP32 baseline checkpoint: {path}")
+FileNotFoundError: Missing FP32 baseline checkpoint: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models/baseline_resnet50_no_weights_CIFAR10_float32.pt
+2026-08-12 19:19:49 [INFO] src.analysis.random_init_control: [RandomInitControl] === resnet18_no_weights/CIFAR10 ===
+2026-08-12 19:19:49 [INFO] src.analysis.random_init_control: [RandomInitControl] resnet18_no_weights/CIFAR10: banked FP32 Hessian profile (layerwise_hessian_traces.csv) does not record its estimator config -- recomputing the trained-FP32 profile in this run with the identical config used for the random-init sweep, so this is a controlled comparison rather than two settings compared by accident.
+2026-08-12 19:19:49 [ERROR] src.analysis.random_init_control: [RandomInitControl] FAILED resnet18_no_weights/CIFAR10: Missing FP32 baseline checkpoint: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models/baseline_resnet18_no_weights_CIFAR10_float32.pt
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 559, in run_random_init_control
+    _run_one_model(
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 472, in _run_one_model
+    trained_traces = _get_trained_fp32_traces(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 240, in _get_trained_fp32_traces
+    ckpt_path = _fp32_checkpoint_path(fp32_models_dir, model_name, dataset_name)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/diagnose_activations.py", line 138, in _fp32_checkpoint_path
+    raise FileNotFoundError(f"Missing FP32 baseline checkpoint: {path}")
+FileNotFoundError: Missing FP32 baseline checkpoint: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models/baseline_resnet18_no_weights_CIFAR10_float32.pt
+2026-08-12 19:19:49 [INFO] src.analysis.random_init_control: [RandomInitControl] === cnn/CIFAR10 ===
+2026-08-12 19:19:49 [INFO] src.analysis.random_init_control: [RandomInitControl] cnn/CIFAR10: banked FP32 Hessian profile (layerwise_hessian_traces.csv) does not record its estimator config -- recomputing the trained-FP32 profile in this run with the identical config used for the random-init sweep, so this is a controlled comparison rather than two settings compared by accident.
+2026-08-12 19:19:49 [ERROR] src.analysis.random_init_control: [RandomInitControl] FAILED cnn/CIFAR10: Missing FP32 baseline checkpoint: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models/baseline_cnn_CIFAR10_float32.pt
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 559, in run_random_init_control
+    _run_one_model(
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 472, in _run_one_model
+    trained_traces = _get_trained_fp32_traces(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/random_init_control.py", line 240, in _get_trained_fp32_traces
+    ckpt_path = _fp32_checkpoint_path(fp32_models_dir, model_name, dataset_name)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/src/analysis/diagnose_activations.py", line 138, in _fp32_checkpoint_path
+    raise FileNotFoundError(f"Missing FP32 baseline checkpoint: {path}")
+FileNotFoundError: Missing FP32 baseline checkpoint: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models/baseline_cnn_CIFAR10_float32.pt
+2026-08-12 19:19:49 [INFO] src.analysis.random_init_control: [RandomInitControl] === Random-Init-Control complete ===
+2026-08-12 19:19:49 [INFO] __main__: [Analyze-CIFAR10] --- 7/8: diagnose-activation-quant ---
+2026-08-12 19:19:49 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models
+2026-08-12 19:19:49 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] FP32 baseline models directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/models
+2026-08-12 19:19:51 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] === PTQ cnn/CIFAR10 ===
+2026-08-12 19:19:51 [WARNING] src.analysis.diagnose_activations: [DiagnoseActivations] PTQ cnn/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for PTQ cnn/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/ptq_po2_cnn_CIFAR10.pt) -- skipping
+2026-08-12 19:19:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] === QAT cnn/CIFAR10 ===
+2026-08-12 19:19:51 [WARNING] src.analysis.diagnose_activations: [DiagnoseActivations] QAT cnn/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for QAT cnn/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/qat_po2_cnn_CIFAR10.pt) -- skipping
+2026-08-12 19:19:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] === PTQ resnet18_no_weights/CIFAR10 ===
+2026-08-12 19:19:51 [WARNING] src.analysis.diagnose_activations: [DiagnoseActivations] PTQ resnet18_no_weights/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for PTQ resnet18_no_weights/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/ptq_po2_resnet18_no_weights_CIFAR10.pt) -- skipping
+2026-08-12 19:19:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] === QAT resnet18_no_weights/CIFAR10 ===
+2026-08-12 19:19:51 [WARNING] src.analysis.diagnose_activations: [DiagnoseActivations] QAT resnet18_no_weights/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for QAT resnet18_no_weights/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/qat_po2_resnet18_no_weights_CIFAR10.pt) -- skipping
+2026-08-12 19:19:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] === PTQ resnet50_no_weights/CIFAR10 ===
+2026-08-12 19:19:51 [WARNING] src.analysis.diagnose_activations: [DiagnoseActivations] PTQ resnet50_no_weights/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for PTQ resnet50_no_weights/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/ptq_po2_resnet50_no_weights_CIFAR10.pt) -- skipping
+2026-08-12 19:19:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] === QAT resnet50_no_weights/CIFAR10 ===
+2026-08-12 19:19:51 [WARNING] src.analysis.diagnose_activations: [DiagnoseActivations] QAT resnet50_no_weights/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for QAT resnet50_no_weights/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/qat_po2_resnet50_no_weights_CIFAR10.pt) -- skipping
+2026-08-12 19:19:51 [INFO] src.analysis.diagnose_activations: [DiagnoseActivations] === Diagnose-Activation-Quant complete ===
+2026-08-12 19:19:51 [INFO] __main__: [Analyze-CIFAR10] --- 8/8: ablate-layer-quantization ---
+2026-08-12 19:19:51 [INFO] src.analysis.layer_ablation: [LayerAblation] backend=fbgemm num_threads=128
+2026-08-12 19:19:51 [INFO] src.analysis.layer_ablation: [LayerAblation] calibration batches = 50 (same as --deploy-cpu-fbgemm)
+2026-08-12 19:19:51 [INFO] src.quantization.deploy_fbgemm: [DeployFbgemm] Checkpoint directory: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models
+2026-08-12 19:19:51 [INFO] src.analysis.layer_ablation: [LayerAblation] Hessian trace CSV path: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/csv/layerwise_hessian_traces.csv
+2026-08-12 19:19:51 [WARNING] src.analysis.layer_ablation: [LayerAblation] Hessian trace CSV not found: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/csv/layerwise_hessian_traces.csv
+2026-08-12 19:19:51 [INFO] src.analysis.layer_ablation: [LayerAblation] Trace-guided mode: top-3 + low-3 (control)
+2026-08-12 19:19:53 [INFO] src.utility.utils: CIFAR-10: 50000 train / 10000 test
+2026-08-12 19:19:53 [INFO] src.analysis.layer_ablation: [LayerAblation] --- PTQ cnn/CIFAR10 ---
+2026-08-12 19:19:53 [WARNING] src.analysis.layer_ablation: [LayerAblation] PTQ cnn/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for PTQ cnn/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/ptq_po2_cnn_CIFAR10.pt) -- skipping
+2026-08-12 19:19:53 [INFO] src.analysis.layer_ablation: [LayerAblation] --- QAT cnn/CIFAR10 ---
+2026-08-12 19:19:53 [WARNING] src.analysis.layer_ablation: [LayerAblation] QAT cnn/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for QAT cnn/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/qat_po2_cnn_CIFAR10.pt) -- skipping
+2026-08-12 19:19:53 [INFO] src.analysis.layer_ablation: [LayerAblation] --- PTQ resnet18_no_weights/CIFAR10 ---
+2026-08-12 19:19:53 [WARNING] src.analysis.layer_ablation: [LayerAblation] PTQ resnet18_no_weights/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for PTQ resnet18_no_weights/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/ptq_po2_resnet18_no_weights_CIFAR10.pt) -- skipping
+2026-08-12 19:19:53 [INFO] src.analysis.layer_ablation: [LayerAblation] --- QAT resnet18_no_weights/CIFAR10 ---
+2026-08-12 19:19:53 [WARNING] src.analysis.layer_ablation: [LayerAblation] QAT resnet18_no_weights/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for QAT resnet18_no_weights/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/qat_po2_resnet18_no_weights_CIFAR10.pt) -- skipping
+2026-08-12 19:19:53 [INFO] src.analysis.layer_ablation: [LayerAblation] --- PTQ resnet50_no_weights/CIFAR10 ---
+2026-08-12 19:19:53 [WARNING] src.analysis.layer_ablation: [LayerAblation] PTQ resnet50_no_weights/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for PTQ resnet50_no_weights/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/ptq_po2_resnet50_no_weights_CIFAR10.pt) -- skipping
+2026-08-12 19:19:53 [INFO] src.analysis.layer_ablation: [LayerAblation] --- QAT resnet50_no_weights/CIFAR10 ---
+2026-08-12 19:19:53 [WARNING] src.analysis.layer_ablation: [LayerAblation] QAT resnet50_no_weights/CIFAR10: missing checkpoint ([DeployFbgemm] Missing checkpoint for QAT resnet50_no_weights/CIFAR10: /scratch/dominic/Forschungsprojekt/results/20260810_104157_31213/quantized_models/qat_po2_resnet50_no_weights_CIFAR10.pt) -- skipping
+2026-08-12 19:19:53 [INFO] src.analysis.layer_ablation: [LayerAblation] === Layer ablation complete ===
+2026-08-12 19:19:53 [INFO] __main__: === Analyze-CIFAR10 complete ===

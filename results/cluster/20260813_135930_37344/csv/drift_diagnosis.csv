@@ -1,0 +1,23 @@
+knob,setting,resnet50_conv1_trace,reproduces_anchor,residual_pct
+fp32:basis,unfused,11.790860557556153,fp32_conv1_11.79,0.007299046277807903
+fp32_fused:canonical,mean/given-device/val/canonical_probes/canonical_images,199.42232942581177,none,1337.796174663387
+fp32_fused:loss_reduction,sum,15953.682113647461,none,114922.94241995284
+fp32_fused:trace_normalization,per_param(numel=1728),0.11540644063993737,none,99.0211497825281
+fp32_fused:probe_count,smaller_maxIter=20,160.8321361541748,none,1059.5683933249807
+fp32_fused:probe_count,larger_maxIter=300,199.42232942581177,none,1337.796174663387
+fp32_fused:num_images,one_batch(16_images),148.64952002631293,none,971.7341025689469
+fp32_fused:data_source_original_pipeline(bonus),train_shuffled_augmented_unseeded_run1,171.91814526149204,none,1139.4963609336126
+fp32_fused:data_source_original_pipeline(bonus),train_shuffled_augmented_unseeded_run2,158.1393585205078,none,1040.1539907751105
+fp32_fused:basis,fused(canonical),199.42232942581177,none,1337.796174663387
+fp32_fused:elevation_ratio,conv1_over_median,12.470088778839283,none,10.927937294005119
+ptq:canonical,mean/given-device/val/canonical_probes/canonical_images,1030.9168579989466,ptq_conv1_1030.9,0.001635270050105178
+ptq:loss_reduction,sum,82475.35460110368,none,526.6267121602187
+ptq:trace_normalization,per_param(numel=1728),0.5965954039345756,none,99.9421286832928
+ptq:probe_count,smaller_maxIter=20,910.1100297451019,none,11.716943472198874
+ptq:probe_count,larger_maxIter=300,1030.9168579989466,ptq_conv1_1030.9,0.001635270050105178
+ptq:num_images,one_batch(16_images),0.6014145493507386,none,99.94166121356575
+ptq:data_source_original_pipeline(bonus),train_shuffled_augmented_unseeded_run1,15268.594409291338,none,16.006886666651514
+ptq:data_source_original_pipeline(bonus),train_shuffled_augmented_unseeded_run2,11573.98285929362,none,12.063829724706196
+fp32_fused:device,"cuda(reduced: num_batches=1,maxIter=20)",148.64952002631293,none,971.7341025689469
+fp32_fused:device,"cpu(reduced: num_batches=1,maxIter=20)",139.0902551651001,none,902.81366377145
+observer_calibration,ptq_checkpoint calibrated=True uncalibrated_count=0,,,

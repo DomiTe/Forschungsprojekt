@@ -1,0 +1,5 @@
+model,dataset,n_seeds,spearman_profile_rho,spearman_p,spike_layer,elev_random,elev_trained,verdict,bn_mode
+resnet50_no_weights,CIFAR10,3,0.4424242424242424,0.0008088402799001635,layer4.1.conv2.weight,38.79105222603589,4.472253541346877,architectural,default
+resnet18_no_weights,CIFAR10,3,0.03766233766233767,0.8712435420745898,layer3.0.conv2.weight,3.2504381796101023,1.7954400541860684,architectural,default
+cnn,CIFAR10,3,-0.6,0.208,conv3.weight,0.5181904752407023,3.432318743107098,learned,default
+cnn,CIFAR10,3,-0.3142857142857143,0.5440932944606415,conv3.weight,0.7084289345894864,3.432318743107098,learned,populated

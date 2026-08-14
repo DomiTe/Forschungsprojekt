@@ -1,0 +1,44 @@
+W0810 18:06:53.826000 86067 .conda/lib/python3.12/site-packages/torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+usage: main.py [-h] [--skip-training] [--deploy-int8-only]
+               [--benchmark-int8-only] [--validate-pot-int8]
+               [--diagnose-int8-perf] [--load-run-id LOAD_RUN_ID]
+               [--deploy-cpu-fbgemm] [--checkpoint-dir CHECKPOINT_DIR]
+               [--eval-subset EVAL_SUBSET] [--ablate-layer-quantization]
+               [--ablate-top-k ABLATE_TOP_K] [--ablate-layers ABLATE_LAYERS]
+               [--diagnose-activation-quant] [--weight-ablation]
+               [--diagnose-acc-mismatch] [--diag-model DIAG_MODEL]
+               [--diag-dataset DIAG_DATASET] [--diag-stage {PTQ,QAT}]
+main.py: error: argument --eval-subset: expected one argument
+E0810 18:06:54.897000 86027 site-packages/torch/distributed/elastic/multiprocessing/api.py:988] failed (exitcode: 2) local_rank: 0 (pid: 86067) of binary: /scratch/dominic/Forschungsprojekt/.conda/bin/python3.1
+Traceback (most recent call last):
+  File "/scratch/dominic/Forschungsprojekt/.conda/bin/torchrun", line 6, in <module>
+    sys.exit(main())
+             ^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+    return f(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/run.py", line 1016, in main
+    run(args)
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/run.py", line 1007, in run
+    elastic_launch(
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 191, in __call__
+    return launch_agent(self._config, self._entrypoint, list(args))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/scratch/dominic/Forschungsprojekt/.conda/lib/python3.12/site-packages/torch/distributed/launcher/api.py", line 371, in launch_agent
+    raise ChildFailedError(
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+src.main FAILED
+------------------------------------------------------------
+Failures:
+  <NO_OTHER_FAILURES>
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-08-10_18:06:54
+  host      : kiwinode01.localdomain
+  rank      : 0 (local_rank: 0)
+  exitcode  : 2 (pid: 86067) 
+  error_file: <N/A>
+  traceback : To enable traceback see: https://pytorch.org/docs/stable/elastic/errors.html
+============================================================

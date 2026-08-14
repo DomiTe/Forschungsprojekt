@@ -1,0 +1,4 @@
+model,dataset,spearman_fp32_ptq,spearman_fp32_qat,conv1_fp32,conv1_ptq,conv1_ptq_amplification,conv1_amp_rank,top_amplified_layer,banked_fp32_matches,note
+resnet50_no_weights,IMAGENET100,0.8146750524109013,0.7856298837430912,432.21565743905524,4866.855699916969,0.5693455499597523,54,layer1.2.conv1,not_provided,
+resnet18_no_weights,IMAGENET100,0.39610389610389607,0.47922077922077916,67.12941558598793,1119.2371995229569,0.6185222702977275,18,layer1.1.conv1,not_provided,
+cnn,IMAGENET100,,,127.70233412848579,765.3151450941298,1.3987429748327092,5,fc2,not_provided,

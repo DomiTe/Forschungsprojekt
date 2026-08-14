@@ -1,0 +1,7 @@
+model,dataset,best_train_acc,best_val_acc,ptq_val_acc,qat_val_acc,fp32_fps,ptq_fps,qat_fps,wall_time_min,status
+cnn,CIFAR10,82.46,81.30,71.08,84.46,1027.6,397.1,390.4,5.2,ok
+resnet18_no_weights,CIFAR10,89.71,84.18,82.76,90.51,306.2,79.5,37.7,11.5,ok
+resnet50_no_weights,CIFAR10,84.56,81.14,79.54,86.80,133.6,27.6,13.8,24.2,ok
+cnn,IMAGENET100,40.42,43.04,25.06,51.18,861.6,322.0,314.4,112.2,ok
+resnet18_no_weights,IMAGENET100,84.65,80.06,71.30,82.52,292.9,74.9,74.7,343.9,ok
+resnet50_no_weights,IMAGENET100,83.08,80.02,64.06,83.22,127.8,26.5,13.7,537.9,ok

@@ -1,0 +1,6 @@
+model,dataset,stage,fp32_acc,weights_only_acc,activations_only_acc,full_acc,weight_loss_pts,activation_loss_pts,total_loss_pts,dominant_source
+cnn,CIFAR10,PTQ,80.01,66.22,79.77,66.02,13.790000000000006,0.2400000000000091,13.990000000000009,weight
+cnn,CIFAR10,QAT,80.01,85.3,80.11,85.19,-5.289999999999992,-0.09999999999999432,-5.179999999999993,activation
+resnet18_no_weights,CIFAR10,PTQ,84.69,82.43,84.69,82.26,2.259999999999991,0.0,2.4299999999999926,weight
+resnet18_no_weights,CIFAR10,QAT,84.69,90.54,89.82,90.62,-5.8500000000000085,-5.1299999999999955,-5.930000000000007,activation
+resnet50_no_weights,CIFAR10,PTQ,80.56,75.46,10.05,11.81,5.1000000000000085,70.51,68.75,activation

@@ -10,5 +10,11 @@ __pycache__/
 results/*/models/
 results/*/quantized_models/
 results/*/deployed_models/
+results/cluster/*/models/
+results/cluster/*/quantized_models/
+results/cluster/*/deployed_models/
+results/local/*/models/
+results/local/*/quantized_models/
+results/local/*/deployed_models/
 # results/*/backup_quantized_models/
 results/*/backup_deployed_models/

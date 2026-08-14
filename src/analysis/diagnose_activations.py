@@ -431,6 +431,23 @@ def _draw_range_batch(val_loader, seed: int, single_seed_mode: bool) -> torch.Te
 
 _RANGE_METRICS = ("calib_min", "calib_max", "range_width", "scale", "zero_point", "act_p99", "act_p999", "act_max", "outlier_factor", "range_over_p99")
 
+# torch.quantile refuses tensors with more elements than this (2^24). ImageNet100's
+# 224x224 inputs make early-layer activation tensors far larger than CIFAR10's
+# (32x32) ever were, so this is routinely hit there. Subsample with a fixed
+# generator seed for reproducibility -- the exact p99/p999 of a >16M-element
+# activation tensor from a fixed subsample is stable enough for range diagnostics.
+_QUANTILE_MAX_ELEMENTS = 16_000_000
+_QUANTILE_SUBSAMPLE_SEED = 0
+
+
+def _safe_quantile(tensor: torch.Tensor, q: float) -> float:
+    if tensor.numel() > _QUANTILE_MAX_ELEMENTS:
+        generator = torch.Generator().manual_seed(_QUANTILE_SUBSAMPLE_SEED)
+        idx = torch.randperm(tensor.numel(), generator=generator)[:_QUANTILE_MAX_ELEMENTS]
+        tensor = tensor[idx]
+    return torch.quantile(tensor, q).item()
+
+
 def _run_range_analysis(
     model_name: str, dataset_name: str, stage: str,
     loaded_model: nn.Module, val_loader, output_csv_path: str, seeds: list[int],
@@ -462,8 +479,8 @@ def _run_range_analysis(
                 logger.warning(f"[DiagnoseActivations] {label} seed={seed}: no activation samples captured for '{name}', skipping")
                 continue
 
-            act_p99 = torch.quantile(tensor, 0.99).item()
-            act_p999 = torch.quantile(tensor, 0.999).item()
+            act_p99 = _safe_quantile(tensor, 0.99)
+            act_p999 = _safe_quantile(tensor, 0.999)
             act_max = tensor.max().item()
             outlier_factor = (act_max / act_p99) if act_p99 != 0 else float("inf")
             range_over_p99 = (range_width / act_p99) if act_p99 != 0 else float("inf")

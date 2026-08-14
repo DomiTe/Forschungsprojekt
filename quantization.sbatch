@@ -1,9 +1,9 @@
 #!/bin/bash
 
-#SBATCH --job-name=weight_ablation
+#SBATCH --job-name=imagenet_v2
 #SBATCH --output=Forschungsprojekt/results/logs/job_%j.out  # %A = Array ID, %a = Task ID, %j = SLURM JOB ID
 #SBATCH --error=Forschungsprojekt/results/logs/job_%j.err
-#SBATCH --gres=gpu:1
+#SBATCH --gres=gpu:2
 #SBATCH --nodes=1
 #SBATCH --time=04-00:00:00
 #SBATCH --cpus-per-gpu=32
@@ -30,5 +30,4 @@ export RUN_ID=$(date +%Y%m%d_%H%M%S)_$SLURM_JOB_ID
 #known good multi GPU torchrun --nproc_per_node=1 --standalone Forschungsprojekt/src/main.py name=multi_GPU_2_cramming  arch=bert-base train=bert-base data=sanity-check-2
 cd /scratch/dominic/Forschungsprojekt
 # --deploy-int8-only --load-run-id 20260624_100106_23827
-CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=1 --standalone -m src.main --relock-traces \
-    --load-run-id 20260810_104157_31209 \
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=1 --standalone -m src.main --analyze-imagenet100 --load-run-id 20260813_053524_36857 --n-seeds 3

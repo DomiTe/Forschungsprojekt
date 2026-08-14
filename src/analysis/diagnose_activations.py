@@ -431,7 +431,6 @@ def _draw_range_batch(val_loader, seed: int, single_seed_mode: bool) -> torch.Te
 
 _RANGE_METRICS = ("calib_min", "calib_max", "range_width", "scale", "zero_point", "act_p99", "act_p999", "act_max", "outlier_factor", "range_over_p99")
 
-
 def _run_range_analysis(
     model_name: str, dataset_name: str, stage: str,
     loaded_model: nn.Module, val_loader, output_csv_path: str, seeds: list[int],

@@ -1,0 +1,7 @@
+model,dataset,stage,excluded_layer,selection,excluded_trace,fp32_acc,all_quantized_acc,ablated_acc,recovery_pts,fraction_of_fp32_recovered,excluded_layer_still_fp32,other_layers_quantized
+cnn,IMAGENET100,PTQ,,none,,25.52,25.18,25.18,0.0,0.0,,True
+cnn,IMAGENET100,QAT,,none,,51.18,50.42,50.42,0.0,0.0,,True
+resnet18_no_weights,IMAGENET100,PTQ,,none,,71.1,71.3,71.3,0.0,0.0,,True
+resnet18_no_weights,IMAGENET100,QAT,,none,,82.3,82.44,82.44,0.0,0.0,,True
+resnet50_no_weights,IMAGENET100,PTQ,,none,,64.1,63.96,63.96,0.0,0.0,,True
+resnet50_no_weights,IMAGENET100,QAT,,none,,83.3,83.38,83.38,0.0,0.0,,True

@@ -1,0 +1,7 @@
+model,dataset,stage,missing_observer_keys,unexpected_keys_count,observers_total,observers_uncalibrated,calibrated,note
+cnn,IMAGENET100,PTQ,,0,6,0,yes,
+cnn,IMAGENET100,QAT,,0,6,0,yes,
+resnet18_no_weights,IMAGENET100,PTQ,,0,21,0,yes,
+resnet18_no_weights,IMAGENET100,QAT,,0,21,0,yes,
+resnet50_no_weights,IMAGENET100,PTQ,,0,54,0,yes,
+resnet50_no_weights,IMAGENET100,QAT,,0,54,0,yes,

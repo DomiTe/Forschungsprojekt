@@ -1,0 +1,23 @@
+knob,setting,resnet50_conv1_trace,reproduces_anchor,residual_pct
+fp32:basis,unfused,14.255521789193153,fp32_conv1_13.87,2.779537052582222
+fp32_fused:canonical,mean/given-device/val/canonical_probes/canonical_images,176.26117197672525,none,1170.80873811626
+fp32_fused:loss_reduction,sum,14100.950043402778,none,101565.10485510294
+fp32_fused:trace_normalization,per_param(numel=1728),0.10200299304208638,none,99.13483466461335
+fp32_fused:probe_count,smaller_maxIter=20,139.8781650543213,none,908.4943406944578
+fp32_fused:probe_count,larger_maxIter=300,176.26117197672525,none,1170.80873811626
+fp32_fused:num_images,one_batch(16_images),132.35448719206312,none,854.2500879024017
+fp32_fused:data_source_original_pipeline(bonus),train_shuffled_augmented_unseeded_run1,286.0122003555298,none,1962.092288071592
+fp32_fused:data_source_original_pipeline(bonus),train_shuffled_augmented_unseeded_run2,184.44937989206025,none,1229.8441232304272
+fp32_fused:basis,fused(canonical),176.26117197672525,none,1170.80873811626
+fp32_fused:elevation_ratio,conv1_over_median,11.340029583244085,none,18.999788691113675
+ptq:canonical,mean/given-device/val/canonical_probes/canonical_images,96.77468189440276,none,90.61260239650764
+ptq:loss_reduction,sum,7741.991063168174,none,41.17832619270788
+ptq:trace_normalization,per_param(numel=1728),0.05600386683703863,none,99.99456747823872
+ptq:probe_count,smaller_maxIter=20,82.5401273727417,none,91.99339146641364
+ptq:probe_count,larger_maxIter=300,96.77468189440276,none,90.61260239650764
+ptq:num_images,one_batch(16_images),76.32655150549752,none,92.59612459933093
+ptq:data_source_original_pipeline(bonus),train_shuffled_augmented_unseeded_run1,105.5933108207507,none,89.75717229403912
+ptq:data_source_original_pipeline(bonus),train_shuffled_augmented_unseeded_run2,388.62266846645025,none,62.3025833285042
+fp32_fused:device,"cuda(reduced: num_batches=1,maxIter=20)",110.51639709472656,none,696.8017094068246
+fp32_fused:device,"cpu(reduced: num_batches=1,maxIter=20)",132.2377893447876,none,853.4087191405017
+observer_calibration,ptq_checkpoint calibrated=True uncalibrated_count=0,,,

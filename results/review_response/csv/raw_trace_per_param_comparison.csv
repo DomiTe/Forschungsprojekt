@@ -1,0 +1,7 @@
+model,dataset,n_layers,spearman_rho_raw_trh,spearman_rho_per_param,spearman_p_per_param,true_top_layer,true_top_layer_rank_per_param,top5_overlap_per_param
+cnn,CIFAR10,6,0.9276,0.8117,0.04985758510134036,conv1,1,4/5
+cnn,IMAGENET100,6,0.6,0.9429,0.004804664723032055,conv1,1,4/5
+resnet18_no_weights,CIFAR10,21,0.2922,0.4571,0.0372083724068703,layer1.1.conv1,2,3/5
+resnet18_no_weights,IMAGENET100,21,0.1214,0.2187,0.3409389442863091,conv1,1,2/5
+resnet50_no_weights,CIFAR10,54,0.2052,0.0341,0.8067805528977965,fc,9,2/5
+resnet50_no_weights,IMAGENET100,54,0.2988,0.3694,0.005983072624697858,conv1,1,2/5

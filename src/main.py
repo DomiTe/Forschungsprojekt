@@ -72,6 +72,24 @@ DATASETS = [
 ]
 
 
+def _parse_dataset_path_pairs(pairs: list[str] | None, flag_name: str) -> dict[str, str]:
+    # Parses repeated "DATASET=PATH" CLI values (e.g. --existing-ablation-csv
+    # CIFAR10=... --existing-ablation-csv IMAGENET100=...) into a dict --
+    # used by --weight-ablation-loss / --weight-ablation-loss-correlation,
+    # which each need one canonical accuracy-only CSV per dataset (those
+    # live in separate per-dataset results/<RUN_ID>/ directories, not one
+    # shared file).
+    if not pairs:
+        raise ValueError(f"{flag_name} is required (one DATASET=PATH per dataset being processed)")
+    result: dict[str, str] = {}
+    for pair in pairs:
+        if "=" not in pair:
+            raise ValueError(f"{flag_name} value {pair!r} is not in DATASET=PATH form")
+        dataset_name, path = pair.split("=", 1)
+        result[dataset_name] = path
+    return result
+
+
 def main() -> None:
     args = parse_args()
     local_rank = _setup_distributed()
@@ -312,6 +330,49 @@ def main() -> None:
             load_run_id=args.load_run_id,
             canonical_traces_csv=args.canonical_traces_csv,
             damage_mode=args.damage_mode,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
+    # Weight-Ablation-Loss mode: extends the isolation sweep above with
+    # per-layer isolated validation LOSS alongside accuracy (both
+    # supervisors asked whether the damage metric should be loss- rather
+    # than accuracy-based). Incremental, resumable -- see
+    # src/analysis/weight_ablation_canonical.py's "Loss-based damage
+    # extension" section for the full design. Analysis only; reuses the
+    # accuracy-only isolation harness unchanged.
+    # -------------------------------------------------------------------
+    if args.weight_ablation_loss:
+        if local_rank == 0:
+            logger.info("=== Weight-Ablation-Loss: skipping training and Hessian/eigenvalue/SQNR analysis ===")
+        from src.analysis.weight_ablation_canonical import run_weight_ablation_loss
+        existing_ablation_csvs = _parse_dataset_path_pairs(args.existing_ablation_csv, "--existing-ablation-csv")
+        run_weight_ablation_loss(
+            checkpoint_dir=args.checkpoint_dir,
+            load_run_id=args.load_run_id,
+            existing_ablation_csvs=existing_ablation_csvs,
+            force_recompute=args.force_recompute,
+        )
+        _cleanup()
+        return
+
+    # -------------------------------------------------------------------
+    # Weight-Ablation-Loss-Correlation mode: Part 5 of the loss extension --
+    # separate, fast, GPU-free, safe on partial data. See
+    # src/analysis/weight_ablation_canonical.py's run_weight_ablation_loss_correlation.
+    # -------------------------------------------------------------------
+    if args.weight_ablation_loss_correlation:
+        if local_rank == 0:
+            logger.info("=== Weight-Ablation-Loss-Correlation: no model/GPU involved ===")
+        from src.analysis.weight_ablation_canonical import run_weight_ablation_loss_correlation
+        existing_ablation_csvs = _parse_dataset_path_pairs(args.existing_ablation_csv, "--existing-ablation-csv")
+        loss_damage_csv = args.loss_damage_csv or os.path.join(CSV_DIR, "weight_ablation_loss_damage.csv")
+        output_csv = args.loss_correlation_output_csv or os.path.join(CSV_DIR, "weight_ablation_loss_damage_correlation.csv")
+        run_weight_ablation_loss_correlation(
+            loss_damage_csv=loss_damage_csv,
+            existing_ablation_csvs=existing_ablation_csvs,
+            output_csv=output_csv,
         )
         _cleanup()
         return

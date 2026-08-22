@@ -68,6 +68,8 @@ trace-Weighted Quantization of Neural Networks" (NeurIPS 2020).
 """
 
 import os
+import csv
+import time
 import logging
 
 import torch
@@ -78,9 +80,11 @@ import pandas as pd
 
 from src.quantization.quantizer import QuantizedConv2d, QuantizedLinear
 from src.quantization.deploy_fbgemm import _resolve_checkpoint_dir
+from src.model_cnn.train import _evaluate
 from src.analysis.diagnose_activations import (
     _resolve_fp32_models_dir,
     _load_quant_model,
+    _load_fp32_reference,
     _disable_activation_quant,
     _disable_weight_quant,
     _verify_identity_swap,
@@ -126,6 +130,48 @@ CORRELATION_FIELDNAMES = [
 
 PREDICTORS = ["raw_trh", "dwsq", "trh_dwsq"]
 DAMAGE_MODES = ("signed", "abs", "both")
+PREDICTOR_SOURCE_COLUMNS = {"raw_trh": "hessian_trace_fused", "dwsq": "delta_w_sq", "trh_dwsq": "trh_times_dwsq"}
+
+# ---------------------------------------------------------------------------
+# Loss-based damage extension (see module docstring addendum far below):
+# adds fp32_loss/isolated_loss/loss_damage/abs_loss_damage alongside the
+# existing accuracy-only columns, incrementally written and resumable.
+# ---------------------------------------------------------------------------
+
+LOSS_ABLATION_FIELDNAMES = [
+    "model", "dataset", "stage", "layer",
+    "fp32_acc", "isolated_acc", "weight_damage_pts", "abs_weight_damage_pts",
+    "fp32_loss", "isolated_loss", "loss_damage", "abs_loss_damage",
+]
+ACCURACY_MISMATCH_FIELDNAMES = [
+    "model", "dataset", "stage", "layer", "field", "existing_value", "recomputed_value", "abs_diff",
+]
+LOSS_CORRELATION_FIELDNAMES = [
+    "model", "dataset", "stage", "predictor", "n_layers", "damage_mode", "status",
+    "spearman_rho_abs", "spearman_p_abs", "top5_overlap_abs", "conv1_damage_rank_abs",
+    "spearman_rho_signed", "spearman_p_signed", "top5_overlap_signed", "conv1_damage_rank_signed",
+    "conv1_predictor_rank",
+]
+
+# Same tolerance philosophy as PATH_EQUIVALENCE_TOLERANCE_PTS in
+# _ablation_common.py: this reuses the exact same eval path (model, loader,
+# order, determinism), so any drift beyond float noise means something is
+# genuinely different between this sweep and the stored accuracy-only run,
+# not just re-run jitter.
+ACC_MATCH_TOLERANCE_PTS = 0.01
+
+# Cheapest-first combo order (Part 6 of the task spec): CIFAR10 is fast
+# regardless of model order (~9 min total for all 3 models x both stages in
+# the original accuracy-only run), so it keeps REQUIRED_MODELS' existing
+# resnet18/resnet50/cnn order; IMAGENET100 is reordered smallest-network-first
+# (cnn, resnet18, resnet50) so a partial overnight run leaves only the single
+# most expensive combo (resnet50/IMAGENET100, 54 layers) possibly unfinished.
+_IMAGENET100_MODEL_ORDER = ["cnn", "resnet18_no_weights", "resnet50_no_weights"]
+
+LOSS_COMBO_ORDER: list[tuple[str, str, str]] = (
+    [("CIFAR10", model, stage) for stage in STAGES for model in REQUIRED_MODELS]
+    + [("IMAGENET100", model, stage) for model in _IMAGENET100_MODEL_ORDER for stage in STAGES]
+)
 
 
 class WeightAblationCanonicalError(RuntimeError):
@@ -566,3 +612,420 @@ def run_weight_ablation_canonical(
                         torch.cuda.empty_cache()
 
     logger.info("[WeightAblationCanonical] === Weight-Ablation-Canonical complete ===")
+
+
+# =============================================================================
+# Loss-based damage extension
+# =============================================================================
+"""
+Extends the accuracy-only isolation sweep above with per-layer isolated
+validation LOSS, not just accuracy -- both supervisors asked whether the
+damage metric should be loss-based, since the Hessian/Taylor motivation
+(Sec 3.3) is about loss, not accuracy. Reuses the isolation harness above
+unchanged (_run_part0's path-equivalence gate, _load_quant_model,
+_disable_activation_quant/_disable_weight_quant, _verify_weight_mask,
+_append_row) -- the only new logic is the eval call itself (loss+accuracy
+instead of accuracy-only, via train.py's _evaluate -- same mean-reduced
+CrossEntropyLoss already used everywhere else full-model loss is measured
+in this codebase, deliberately not a new reduction choice; see the trace-
+measurement discrepancy this project already documented in
+trace_reconciliation_ledger.csv for what happens when a "same" quantity is
+silently measured two different ways) and a validation gate comparing the
+freshly recomputed accuracy against the already-stored accuracy-only run
+(weight_ablation_canonical_v2.csv), since both should be numerically
+identical (same model, same loader, same order, same determinism).
+
+Sign convention: loss_damage(l) = loss_iso(l) - fp32_loss, positive = worse
+(loss went up), matching weight_damage(l) = fp32_acc - acc_iso(l), also
+positive = worse -- a reader comparing the two columns never has to mentally
+flip a sign.
+
+Designed to run unattended overnight: every row is appended and the file
+flushed immediately (_append_row, reused unchanged from
+diagnose_activations.py), and re-launching after an interruption skips any
+(model, dataset, stage, layer) already present in the output CSV rather than
+recomputing or duplicating it. The separate, fast correlation step
+(run_weight_ablation_loss_correlation, below) works against whatever subset
+of rows exists at the time it's run.
+"""
+
+
+def _existing_completed_keys(output_csv: str) -> set[tuple[str, str, str, str]]:
+    if not os.path.exists(output_csv):
+        return set()
+    df = pd.read_csv(output_csv)
+    return set(zip(df["model"], df["dataset"], df["stage"], df["layer"]))
+
+
+def _load_existing_ablation_csvs(existing_ablation_csvs: dict[str, str]) -> pd.DataFrame:
+    """
+    existing_ablation_csvs: {dataset_name: path to that dataset's canonical
+    weight_ablation_canonical_v2.csv}. Each dataset's canonical accuracy run
+    lives in its own results/<RUN_ID>/csv/ directory (a separate relock-
+    traces/weight-ablation-canonical invocation per dataset), so this is a
+    small dict, not a single shared file -- returns the concatenation with
+    every row's 'dataset' column cross-checked against the key it was loaded
+    under.
+    """
+    frames = []
+    for dataset_name, path in existing_ablation_csvs.items():
+        if not os.path.exists(path):
+            raise WeightAblationCanonicalError(f"existing ablation CSV not found for dataset={dataset_name}: {path}")
+        df = pd.read_csv(path)
+        mismatched = df[df["dataset"] != dataset_name]
+        if not mismatched.empty:
+            raise WeightAblationCanonicalError(
+                f"--existing-ablation-csv for dataset={dataset_name} ({path}) contains "
+                f"{len(mismatched)} row(s) with a different 'dataset' value -- wrong file/dataset pairing"
+            )
+        frames.append(df)
+    return pd.concat(frames, ignore_index=True)
+
+
+def _backup_existing_file(path: str) -> None:
+    if not os.path.exists(path):
+        return
+    backup_path = f"{path}.bak-{time.strftime('%Y%m%dT%H%M%S')}"
+    os.rename(path, backup_path)
+    logger.warning(f"[WeightAblationLoss] --force-recompute: existing {path} moved to {backup_path} (not deleted)")
+
+
+def _ensure_csv_with_header(path: str, fieldnames: list[str]) -> None:
+    # Part 2 requires accuracy_mismatch.csv to exist (with header) even on a
+    # completely clean run, so its absence is never confused with "the check
+    # never ran" -- _append_row alone only materializes the file on its first
+    # write, which would leave it missing entirely on a clean run.
+    if os.path.exists(path):
+        return
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "w", newline="") as f:
+        csv.DictWriter(f, fieldnames=fieldnames).writeheader()
+    logger.info(f"[WeightAblationLoss] initialized {path} (header only)")
+
+
+def _check_and_log_mismatch(
+    mismatch_csv: str, model_name: str, dataset_name: str, stage: str, layer: str,
+    field: str, existing_value: float, recomputed_value: float,
+) -> bool:
+    diff = abs(existing_value - recomputed_value)
+    if diff <= ACC_MATCH_TOLERANCE_PTS:
+        return False
+    _append_row(mismatch_csv, {
+        "model": model_name, "dataset": dataset_name, "stage": stage, "layer": layer, "field": field,
+        "existing_value": existing_value, "recomputed_value": recomputed_value, "abs_diff": diff,
+    }, ACCURACY_MISMATCH_FIELDNAMES)
+    logger.warning(
+        f"[WeightAblationLoss] ACCURACY MISMATCH {stage} {model_name}/{dataset_name} layer={layer} "
+        f"field={field}: existing={existing_value:.4f} recomputed={recomputed_value:.4f} "
+        f"diff={diff:.4f} > tolerance {ACC_MATCH_TOLERANCE_PTS} -- logged, not silently accepted"
+    )
+    return True
+
+
+def _run_combo_loss_sweep(
+    model_name: str, dataset_name: str, stage: str, specs: dict, num_classes: int, device: torch.device,
+    eval_loader: DataLoader, quant_ckpt_path: str, fp32_ckpt_path: str,
+    existing_combo_df: pd.DataFrame, output_csv: str, mismatch_csv: str,
+    completed_keys: set[tuple[str, str, str, str]], force_recompute: bool,
+) -> tuple[int, int]:
+    """Returns (n_layers_written, n_layers_skipped_already_done) for this combo."""
+    channels, image_size = specs["channels"], specs["image_size"]
+    label = f"{stage} {model_name}/{dataset_name}"
+    t0 = time.monotonic()
+
+    # ---- Part 0: reuse the unchanged path-equivalence gate + layer set ----
+    gate_passed, fp32_acc_gate, _weights_only_acc, all_layer_names, note = _run_part0(
+        model_name, dataset_name, stage, quant_ckpt_path, fp32_ckpt_path,
+        num_classes, channels, image_size, eval_loader, device,
+    )
+    if not gate_passed:
+        logger.error(f"[WeightAblationLoss] {label}: Part 0 path-equivalence GATE FAILED -- {note}. Skipping.")
+        return 0, 0
+
+    # ---- FP32 baseline: loss + accuracy together (same eval, one extra
+    # forward pass over the full val set, once per combo -- _run_part0 above
+    # already paid for this pass via evaluate(); this second pass adds loss
+    # via _evaluate(), train.py's own mean-reduced-CrossEntropyLoss path,
+    # deliberately reused rather than reimplemented) ----
+    fp32_model = _load_fp32_reference(model_name, fp32_ckpt_path, num_classes, channels, image_size).to(device)
+    fp32_loss, fp32_acc = _evaluate(fp32_model, eval_loader, nn.CrossEntropyLoss(reduction="mean"), device)
+    del fp32_model
+    if device.type == "cuda":
+        torch.cuda.empty_cache()
+    logger.info(
+        f"[WeightAblationLoss] {label}: fp32_loss={fp32_loss:.4f} fp32_acc={fp32_acc:.2f}% "
+        f"(Part0 gate's own fp32_acc={fp32_acc_gate:.2f}%, diff={abs(fp32_acc - fp32_acc_gate):.4f}pt)"
+    )
+
+    existing_fp32_acc_rows = existing_combo_df["fp32_acc"].unique()
+    if len(existing_fp32_acc_rows) > 0:
+        _check_and_log_mismatch(
+            mismatch_csv, model_name, dataset_name, stage, "__fp32_baseline__",
+            "fp32_acc", float(existing_fp32_acc_rows[0]), fp32_acc,
+        )
+
+    n_written, n_skipped = 0, 0
+    for layer_name in all_layer_names:
+        key = (model_name, dataset_name, stage, layer_name)
+        if key in completed_keys and not force_recompute:
+            n_skipped += 1
+            continue
+
+        other_layers = {n for n in all_layer_names if n != layer_name}
+        model, _, _ = _load_quant_model(model_name, quant_ckpt_path, num_classes, channels, image_size)
+        model = model.to(device)
+        _disable_activation_quant(model)
+        _disable_weight_quant(model, layer_names=other_layers)
+        _verify_weight_mask(model, {layer_name}, f"{label} loss-isolate={layer_name}")
+
+        isolated_loss, isolated_acc = _evaluate(model, eval_loader, nn.CrossEntropyLoss(reduction="mean"), device)
+        del model
+        if device.type == "cuda":
+            torch.cuda.empty_cache()
+
+        weight_damage_pts = fp32_acc - isolated_acc
+        loss_damage = isolated_loss - fp32_loss
+
+        existing_row = existing_combo_df[existing_combo_df["layer"] == layer_name]
+        if not existing_row.empty:
+            _check_and_log_mismatch(
+                mismatch_csv, model_name, dataset_name, stage, layer_name,
+                "isolated_acc", float(existing_row["isolated_acc"].iloc[0]), isolated_acc,
+            )
+
+        _append_row(output_csv, {
+            "model": model_name, "dataset": dataset_name, "stage": stage, "layer": layer_name,
+            "fp32_acc": fp32_acc, "isolated_acc": isolated_acc,
+            "weight_damage_pts": weight_damage_pts, "abs_weight_damage_pts": abs(weight_damage_pts),
+            "fp32_loss": fp32_loss, "isolated_loss": isolated_loss,
+            "loss_damage": loss_damage, "abs_loss_damage": abs(loss_damage),
+        }, LOSS_ABLATION_FIELDNAMES)
+        n_written += 1
+        logger.info(
+            f"[WeightAblationLoss] {label} layer={layer_name}: isolated_acc={isolated_acc:.2f}% "
+            f"weight_damage={weight_damage_pts:.3f}pts isolated_loss={isolated_loss:.4f} "
+            f"loss_damage={loss_damage:+.4f} ({n_written} written, {n_skipped} already done this combo)"
+        )
+
+    elapsed = time.monotonic() - t0
+    logger.info(
+        f"[WeightAblationLoss] === {label} block complete: {n_written} layer(s) computed, "
+        f"{n_skipped} already done (resumed), {len(all_layer_names)} total -- elapsed {elapsed:.1f}s ==="
+    )
+    return n_written, n_skipped
+
+
+def run_weight_ablation_loss(
+    checkpoint_dir: str | None,
+    load_run_id: str | None,
+    existing_ablation_csvs: dict[str, str],
+    force_recompute: bool = False,
+    datasets: list[str] | None = None,
+) -> None:
+    """
+    Part 1/2/3/4 of the loss-damage extension: sweeps all requested (model,
+    dataset, stage) combos in cheapest-first order (LOSS_COMBO_ORDER),
+    writing results/<RUN_ID>/csv/weight_ablation_loss_damage.csv one row at a
+    time (resumable -- rows already present are skipped unless
+    force_recompute) and results/<RUN_ID>/csv/accuracy_mismatch.csv (always
+    created, even empty).
+    """
+    datasets = datasets if datasets is not None else ["CIFAR10", "IMAGENET100"]
+    torch.manual_seed(SEED)
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if device.type != "cuda":
+        logger.warning("[WeightAblationLoss] CUDA not available -- falling back to CPU, this will be slow.")
+
+    output_csv = os.path.join(CSV_DIR, "weight_ablation_loss_damage.csv")
+    mismatch_csv = os.path.join(CSV_DIR, "accuracy_mismatch.csv")
+
+    if force_recompute:
+        _backup_existing_file(output_csv)
+        _backup_existing_file(mismatch_csv)
+    _ensure_csv_with_header(mismatch_csv, ACCURACY_MISMATCH_FIELDNAMES)
+
+    existing_ablation_df = _load_existing_ablation_csvs(existing_ablation_csvs)
+    completed_keys = _existing_completed_keys(output_csv)
+    logger.info(
+        f"[WeightAblationLoss] device={device} seed={SEED} datasets={datasets} force_recompute={force_recompute} "
+        f"output_csv={output_csv} -- {len(completed_keys)} (model,dataset,stage,layer) row(s) already done"
+    )
+
+    fp32_models_dir = _resolve_fp32_models_dir(checkpoint_dir, load_run_id)
+    quant_dir = _resolve_checkpoint_dir(checkpoint_dir, load_run_id)
+
+    combos = [c for c in LOSS_COMBO_ORDER if c[0] in datasets]
+    run_start = time.monotonic()
+    total_written, total_skipped = 0, 0
+    _loader_cache: dict[str, tuple[DataLoader, int]] = {}
+
+    for combo_idx, (dataset_name, model_name, stage) in enumerate(combos, start=1):
+        label = f"{stage} {model_name}/{dataset_name}"
+        existing_combo_df = existing_ablation_df[
+            (existing_ablation_df["model"] == model_name)
+            & (existing_ablation_df["dataset"] == dataset_name)
+            & (existing_ablation_df["stage"] == stage)
+        ]
+        if existing_combo_df.empty:
+            logger.error(
+                f"[WeightAblationLoss] {label}: no rows in the supplied --existing-ablation-csv for this "
+                f"combo -- cannot validate accuracy or determine the canonical layer set. Skipping."
+            )
+            continue
+
+        expected_layers = set(existing_combo_df["layer"])
+        done_layers = {k[3] for k in completed_keys if k[0] == model_name and k[1] == dataset_name and k[2] == stage}
+        if not force_recompute and expected_layers.issubset(done_layers):
+            logger.info(
+                f"[WeightAblationLoss] [{combo_idx}/{len(combos)}] {label}: all {len(expected_layers)} layers "
+                f"already done -- skipping combo entirely (no model load)."
+            )
+            total_skipped += len(expected_layers)
+            continue
+
+        specs = DATASET_SPECS[dataset_name]
+        if dataset_name not in _loader_cache:
+            try:
+                _loader_cache[dataset_name] = _build_eval_loader(dataset_name)
+            except Exception as exc:
+                logger.error(f"[WeightAblationLoss] {dataset_name}: could not load dataset ({exc}) -- skipping all its combos")
+                continue
+        eval_loader, num_classes = _loader_cache[dataset_name]
+
+        try:
+            fp32_ckpt_path = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": dataset_name})
+            quant_ckpt_path = _resolve_checkpoint_robust(quant_dir, {"stage": stage, "model": model_name, "dataset": dataset_name})
+        except FileNotFoundError as exc:
+            level = logger.warning if stage == "QAT" else logger.error
+            level(f"[WeightAblationLoss] {label}: checkpoint missing ({exc}) -- skipping{' (QAT optional)' if stage == 'QAT' else ''}")
+            continue
+        except WeightAblationCheckpointError as exc:
+            logger.error(f"[WeightAblationLoss] {label}: checkpoint resolution AMBIGUOUS/NEAR-MISS -- {exc} -- skipping")
+            continue
+
+        logger.info(f"[WeightAblationLoss] [{combo_idx}/{len(combos)}] === {label} ===")
+        try:
+            n_written, n_skipped = _run_combo_loss_sweep(
+                model_name, dataset_name, stage, specs, num_classes, device, eval_loader,
+                quant_ckpt_path, fp32_ckpt_path, existing_combo_df, output_csv, mismatch_csv,
+                completed_keys, force_recompute,
+            )
+            total_written += n_written
+            total_skipped += n_skipped
+        except DiagnoseActivationsError as exc:
+            logger.error(f"[WeightAblationLoss] {label}: Identity-swap verification FAILED -- {exc}")
+        except Exception as exc:
+            logger.error(f"[WeightAblationLoss] FAILED {label}: {exc}", exc_info=True)
+        finally:
+            if device.type == "cuda":
+                torch.cuda.empty_cache()
+
+        elapsed_total = time.monotonic() - run_start
+        logger.info(
+            f"[WeightAblationLoss] progress: {total_written} layer(s) newly computed, {total_skipped} "
+            f"already-done/skipped, {combo_idx}/{len(combos)} combos processed -- running total {elapsed_total:.1f}s"
+        )
+
+    logger.info(
+        f"[WeightAblationLoss] === Weight-Ablation-Loss complete: {total_written} layer(s) newly written, "
+        f"{total_skipped} already done -- {output_csv} ==="
+    )
+
+
+# ---------------------------------------------------------------------------
+# Part 5: loss-based correlation (separate, fast, safe on partial data)
+# ---------------------------------------------------------------------------
+
+def run_weight_ablation_loss_correlation(
+    loss_damage_csv: str,
+    existing_ablation_csvs: dict[str, str],
+    output_csv: str,
+) -> None:
+    """
+    Independent of run_weight_ablation_loss's sweep -- reads whatever rows
+    currently exist in loss_damage_csv (partial or complete) and correlates
+    S_raw/S_pert/S_hawq (pulled from the canonical accuracy-only CSVs, which
+    already carry hessian_trace_fused/delta_w_sq/trh_times_dwsq per layer)
+    against abs_loss_damage/loss_damage, mirroring
+    weight_ablation_canonical_correlation_v2.csv's schema exactly (same
+    _abs/_signed suffixes, same rho/p/top5/rank columns) plus one addition:
+    a status column marking any (model, dataset, stage) combo that doesn't
+    yet have all its layers -- those get n_layers/status filled in but no
+    correlation numbers, rather than a correlation computed on a truncated,
+    non-representative subset of layers.
+    """
+    if not os.path.exists(loss_damage_csv):
+        raise WeightAblationCanonicalError(f"loss damage CSV not found: {loss_damage_csv} -- run --weight-ablation-loss first")
+
+    loss_df = pd.read_csv(loss_damage_csv)
+    ablation_df = _load_existing_ablation_csvs(existing_ablation_csvs)
+    predictor_df = ablation_df[["model", "dataset", "stage", "layer"] + list(PREDICTOR_SOURCE_COLUMNS.values())]
+    merged = loss_df.merge(predictor_df, on=["model", "dataset", "stage", "layer"], how="left", validate="one_to_one")
+
+    missing_predictors = merged[merged[list(PREDICTOR_SOURCE_COLUMNS.values())].isna().any(axis=1)]
+    if not missing_predictors.empty:
+        logger.warning(
+            f"[WeightAblationLossCorrelation] {len(missing_predictors)} loss row(s) have no matching "
+            f"predictor row in --existing-ablation-csv (layer name not found there) -- dropped from correlation"
+        )
+        merged = merged.dropna(subset=list(PREDICTOR_SOURCE_COLUMNS.values()))
+
+    expected_layer_counts = ablation_df.groupby(["model", "dataset", "stage"])["layer"].nunique()
+
+    rows = []
+    for (model_name, dataset_name, stage), g in merged.groupby(["model", "dataset", "stage"]):
+        label = f"{stage} {model_name}/{dataset_name}"
+        n_present = len(g)
+        n_total = int(expected_layer_counts.get((model_name, dataset_name, stage), n_present))
+        complete = n_present >= n_total
+
+        if not complete:
+            status = f"incomplete_{n_present}_of_{n_total}"
+            logger.info(f"[WeightAblationLossCorrelation] {label}: {status} -- correlations NOT computed on this partial subset")
+            for predictor in PREDICTORS:
+                rows.append({
+                    "model": model_name, "dataset": dataset_name, "stage": stage, "predictor": predictor,
+                    "n_layers": n_present, "damage_mode": "both", "status": status,
+                    "spearman_rho_abs": "", "spearman_p_abs": "", "top5_overlap_abs": "", "conv1_damage_rank_abs": "",
+                    "spearman_rho_signed": "", "spearman_p_signed": "", "top5_overlap_signed": "", "conv1_damage_rank_signed": "",
+                    "conv1_predictor_rank": "",
+                })
+            continue
+
+        status = "complete"
+        layers = list(g["layer"])
+        damage_abs = dict(zip(layers, g["abs_loss_damage"]))
+        damage_signed = dict(zip(layers, g["loss_damage"]))
+        conv1_damage_rank_abs = _rank_desc(damage_abs, "conv1")
+        conv1_damage_rank_signed = _rank_desc(damage_signed, "conv1")
+        top_k = min(5, n_present)
+
+        raw_trh = dict(zip(layers, g["hessian_trace_fused"]))
+        dwsq = dict(zip(layers, g["delta_w_sq"]))
+        trh_dwsq = dict(zip(layers, g["trh_times_dwsq"]))
+        predictor_values = {"raw_trh": raw_trh, "dwsq": dwsq, "trh_dwsq": trh_dwsq}
+
+        summary_bits = []
+        for predictor in PREDICTORS:
+            vals = predictor_values[predictor]
+            conv1_predictor_rank = _rank_desc(vals, "conv1")
+            rho_abs, p_abs, overlap_abs = _spearman_and_overlap(layers, vals, damage_abs, top_k)
+            rho_signed, p_signed, overlap_signed = _spearman_and_overlap(layers, vals, damage_signed, top_k)
+            rows.append({
+                "model": model_name, "dataset": dataset_name, "stage": stage, "predictor": predictor,
+                "n_layers": n_present, "damage_mode": "both", "status": status,
+                "spearman_rho_abs": rho_abs, "spearman_p_abs": p_abs,
+                "top5_overlap_abs": f"{overlap_abs}/{top_k}", "conv1_damage_rank_abs": conv1_damage_rank_abs if conv1_damage_rank_abs is not None else "",
+                "spearman_rho_signed": rho_signed, "spearman_p_signed": p_signed,
+                "top5_overlap_signed": f"{overlap_signed}/{top_k}", "conv1_damage_rank_signed": conv1_damage_rank_signed if conv1_damage_rank_signed is not None else "",
+                "conv1_predictor_rank": conv1_predictor_rank if conv1_predictor_rank is not None else "",
+            })
+            summary_bits.append(f"{predictor}: rho_abs={rho_abs:.4f}")
+        logger.info(f"[WeightAblationLossCorrelation] {label}: complete ({n_present}/{n_total}) -- " + ", ".join(summary_bits))
+
+    os.makedirs(os.path.dirname(output_csv), exist_ok=True)
+    with open(output_csv, "w", newline="") as f:
+        writer = csv.DictWriter(f, fieldnames=LOSS_CORRELATION_FIELDNAMES)
+        writer.writeheader()
+        writer.writerows(rows)
+    logger.info(f"[WeightAblationLossCorrelation] === wrote {len(rows)} row(s) -> {output_csv} ===")

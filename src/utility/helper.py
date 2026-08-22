@@ -221,6 +221,74 @@ def parse_args():
              "signed regardless; abs_weight_damage_pts is added alongside it."
     )
     parser.add_argument(
+        "--weight-ablation-loss",
+        action="store_true",
+        help="Extend --weight-ablation-canonical's isolation sweep with per-layer isolated "
+             "validation LOSS (mean-reduced CrossEntropyLoss, same as train.py's _evaluate) "
+             "alongside accuracy, across all {cnn,resnet18,resnet50}x{CIFAR10,IMAGENET100}x"
+             "{PTQ,QAT} combinations (12 total), cheapest-first (CIFAR10 all models, then "
+             "IMAGENET100 cnn/resnet18/resnet50). Reuses the isolation harness unchanged "
+             "(_run_part0's gate, checkpoint loading, Identity-swap logic). Writes "
+             "results/<RUN_ID>/csv/weight_ablation_loss_damage.csv one row at a time, flushed "
+             "immediately -- resumable: re-launching skips (model,dataset,stage,layer) rows "
+             "already present. Cross-validates each freshly recomputed accuracy against "
+             "--existing-ablation-csv within 0.01pt and logs any drift to "
+             "results/<RUN_ID>/csv/accuracy_mismatch.csv (always created, even empty) instead "
+             "of silently accepting it. Requires --existing-ablation-csv (one per dataset). "
+             "Analysis only -- no torchao/deployment. Reuses --checkpoint-dir/--load-run-id for "
+             "model checkpoints. Prefers CUDA; single local process, no SLURM/torchrun required."
+    )
+    parser.add_argument(
+        "--existing-ablation-csv",
+        action="append",
+        default=None,
+        metavar="DATASET=PATH",
+        help="For --weight-ablation-loss and --weight-ablation-loss-correlation: the canonical "
+             "accuracy-only weight_ablation_canonical_v2.csv for one dataset, as DATASET=PATH "
+             "(e.g. CIFAR10=results/20260816_230437_38678/csv/weight_ablation_canonical_v2.csv). "
+             "Repeat once per dataset being processed. Supplies (a) the accuracy values the new "
+             "loss sweep validates itself against, (b) the canonical per-layer set used to "
+             "determine when a combo is fully done (resumability) and when a combo has all its "
+             "layers (Part 5 completeness), and (c) the S_raw/S_pert/S_hawq predictor columns "
+             "the loss-based correlation step needs."
+    )
+    parser.add_argument(
+        "--force-recompute",
+        action="store_true",
+        help="For --weight-ablation-loss: ignore any existing weight_ablation_loss_damage.csv "
+             "progress and recompute every row from scratch. The existing output CSV and "
+             "accuracy_mismatch.csv are backed up (renamed with a timestamp suffix), never "
+             "deleted. Default off -- normal re-launches resume instead."
+    )
+    parser.add_argument(
+        "--weight-ablation-loss-correlation",
+        action="store_true",
+        help="Separate, fast, independently-rerunnable step (Part 5): correlates S_raw/S_pert/"
+             "S_hawq against loss-based damage (abs_loss_damage/loss_damage) using whatever rows "
+             "currently exist in --loss-damage-csv (safe on a partial/still-running sweep). "
+             "Mirrors weight_ablation_canonical_correlation_v2.csv's schema exactly (same "
+             "_abs/_signed columns) plus a status column -- (model,dataset,stage) combos missing "
+             "layers are marked status=incomplete_N_of_TOTAL with correlation fields left blank, "
+             "never computed on a truncated subset. Requires --existing-ablation-csv (for the "
+             "predictor columns and each combo's canonical layer count). Writes "
+             "results/<RUN_ID>/csv/weight_ablation_loss_damage_correlation.csv. No model/GPU "
+             "involved -- runs in seconds."
+    )
+    parser.add_argument(
+        "--loss-damage-csv",
+        type=str,
+        default=None,
+        help="For --weight-ablation-loss-correlation: path to weight_ablation_loss_damage.csv. "
+             "Defaults to results/<RUN_ID>/csv/weight_ablation_loss_damage.csv (current RUN_ID)."
+    )
+    parser.add_argument(
+        "--loss-correlation-output-csv",
+        type=str,
+        default=None,
+        help="For --weight-ablation-loss-correlation: output path. Defaults to "
+             "results/<RUN_ID>/csv/weight_ablation_loss_damage_correlation.csv (current RUN_ID)."
+    )
+    parser.add_argument(
         "--weight-ablation-diagnose",
         action="store_true",
         help="Diagnose the v1->v2 weight-ablation-canonical damage-magnitude drift (resnet50 "

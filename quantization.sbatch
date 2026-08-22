@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#SBATCH --job-name=cifar10
+#SBATCH --job-name=weight-ablation
 #SBATCH --output=Forschungsprojekt/results/logs/job_%j.out  # %A = Array ID, %a = Task ID, %j = SLURM JOB ID
 #SBATCH --error=Forschungsprojekt/results/logs/job_%j.err
 #SBATCH --gres=gpu:2
@@ -30,4 +30,8 @@ export RUN_ID=$(date +%Y%m%d_%H%M%S)_$SLURM_JOB_ID
 #known good multi GPU torchrun --nproc_per_node=1 --standalone Forschungsprojekt/src/main.py name=multi_GPU_2_cramming  arch=bert-base train=bert-base data=sanity-check-2
 cd /scratch/dominic/Forschungsprojekt
 # --deploy-int8-only --load-run-id 20260624_100106_23827
-CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=1 --standalone -m src.main --analyze-cifar10 --load-run-id 20260813_053524_36857 --n-seeds 3
+CUDA_LAUNCH_BLOCKING=1 torchrun --nproc_per_node=1 --standalone -m src.main --weight-ablation-loss \
+  --checkpoint-dir results/20260813_053524_36857/quantized_models \
+  --existing-ablation-csv CIFAR10=results/20260816_230437_38678/csv/weight_ablation_canonical_v2.csv \
+  --existing-ablation-csv IMAGENET100=results/20260816_083054_38677/csv/weight_ablation_canonical_v2.csv \
+   --n-seeds 3

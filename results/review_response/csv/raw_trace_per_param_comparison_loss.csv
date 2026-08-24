@@ -1,0 +1,7 @@
+model,dataset,n_layers,spearman_rho_raw_trh_loss,spearman_rho_per_param_loss,spearman_p_per_param_loss
+cnn,CIFAR10,6,0.7714,1.0,0.0
+cnn,IMAGENET100,6,0.5429,0.8286,0.04156268221574335
+resnet18_no_weights,CIFAR10,21,0.4221,0.7156,0.0002652530626513761
+resnet18_no_weights,IMAGENET100,21,0.1026,0.2792,0.22028859486514024
+resnet50_no_weights,CIFAR10,54,0.3618,0.1643,0.23508736053792909
+resnet50_no_weights,IMAGENET100,54,0.1347,0.3425,0.011244749991500144

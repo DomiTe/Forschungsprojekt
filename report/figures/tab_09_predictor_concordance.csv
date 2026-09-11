@@ -1,0 +1,7 @@
+Modell,Datensatz,"rho(Sraw,Spert)","rho(Sraw,Shawq)","rho(Spert,Shawq)"
+CNN,CIFAR10,-0.54,0.71,0.03
+CNN,ImageNet100,-0.71,0.6,0.09
+ResNet-18,CIFAR10,-0.55,0.45,0.43
+ResNet-18,ImageNet100,-0.6,0.43,0.41
+ResNet-50,CIFAR10,0.48,0.86,0.84
+ResNet-50,ImageNet100,0.4,0.78,0.83

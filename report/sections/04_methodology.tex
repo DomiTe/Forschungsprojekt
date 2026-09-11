@@ -1,0 +1,113 @@
+\section{Methodik}
+\label{sec:methodology}
+
+\subsection{Experimentelles Setup}
+\label{sec:setup}
+
+\textbf{Architekturen.} Untersucht werden drei Convolutional-Architekturen unterschiedlicher Tiefe: ein kompaktes, projektspezifisches \texttt{cnn} mit sechs quantisierbaren Schichten (vier Faltungs-, zwei vollverbundene Schichten), \texttt{ResNet-18} \citep{he_resnet_2015} mit 21 quantisierbaren Schichten und \texttt{ResNet-50} \citep{he_resnet_2015} mit 54 quantisierbaren Schichten. Beide ResNet-Varianten werden \emph{ohne} vortrainierte Gewichte instanziiert (\texttt{resnet18\_no\_weights}, \texttt{resnet50\_no\_weights}) und vollständig von Grund auf trainiert, um Confounds durch ImageNet-1k-Vortraining auszuschließen. Die drei Architekturen spannen eine Größenordnung an Schichtzahl auf ($n=6, 21, 54$), was für die Normalisierung der Top-$k$-Auswertung in \S\ref{sec:norm} relevant wird.
+\par\medskip
+
+\textbf{Datensätze.} Verwendet werden CIFAR10 ($32\times32$ Pixel, 10 Klassen) und ImageNet100 ($224\times224$ Pixel, ein 100-Klassen-Subset von ImageNet). Diese Wahl deckt sowohl kleine als auch großformatige Eingaben ab und erlaubt es, Effekte, die von der Eingabeauflösung abhängen (etwa die Speicher- und Rechenkosten der Hessian-Schätzung, \S\ref{sec:canonical-config}), von architekturbedingten Effekten zu trennen.
+\par\medskip
+
+\textbf{Training.} Jede der sechs Architektur$\times$Datensatz-Kombinationen wird mit einem Trainings-Seed trainiert (kein Multi-Seed-Training; siehe Limitationen, \S\ref{sec:limitations}). Für jede Kombination werden drei Modellzustände erzeugt: das FP32-Basismodell, eine PTQ-Variante (FP32-Modell nachträglich PoT-quantisiert) und eine QAT-Variante (mit simulierter Quantisierung von Grund auf oder fortgesetzt trainiert). Trainings-Metadaten (Trainings-/Validierungsgenauigkeit, Wall-Time) sind in Tabelle~\ref{tab:accuracy} zusammengefasst.
+\par\medskip
+
+\textbf{PoT-Quantisierung.} Die PoT-Implementierung ist exponentenbereich-basiert und nicht über eine feste Bit-Breite parametrisiert. Jeder Gewichtswert wird pro Tensor auf die nächste Zweierpotenz innerhalb eines festgelegten Exponentenbereichs gerundet. Dies folgt der in \S\ref{sec:fund-quant} beschriebenen PoT-Definition und ist konsistent über PTQ und QAT hinweg.
+
+\subsection{Kanonische Trace-Konfiguration}
+\label{sec:canonical-config}
+
+Ein zentraler methodischer Befund dieses Projekts (im Detail in \S\ref{sec:phase3}) ist, dass gemessene Hessian-Trace-Werte empfindlich von Konfigurationsentscheidungen abhängen, die die Literatur meist implizit lässt: von der Reduktionsart des Loss (Mittelwert vs.\ Summe über ein Batch), der Basis des Modells (fusioniert vs.\ unfusioniert bezüglich Batch-Normalisierung), dem verwendeten Datensplit, der Anzahl der Hutchinson-Proben und dem Zufalls-Seed der Proben-Vektoren. Um reproduzierbare, vergleichbare Trace-Werte über die Trainingsstufen (FP32/PTQ/QAT) und Schichten hinweg zu erhalten, wird vor der Hauptanalyse eine kanonische Konfiguration festgelegt, dokumentiert in \texttt{trace\_config.json}:
+
+\begin{itemize}
+\item \textbf{Reduktion:} mittelwertreduzierte Kreuzentropie, nicht Summe.
+\item \textbf{Basis:} fusionierte Batch-Normalisierungs-Basis \citep{ioffe_batchnorm_2015} als kanonisch für stufenübergreifende Vergleiche, da PTQ- und QAT-Checkpoints ausschließlich in fusionierter Form existieren. FP32-Modelle werden zusätzlich in unfusionierter Form vermessen, sodass der Fusionseffekt selbst sichtbar bleibt (Phase~3.5, \S\ref{sec:phase35}).
+\item \textbf{Datensplit:} feste Validierungsbilder (kein zufälliges Neu-Sampling zwischen Messungen).
+\item \textbf{Proben-Seeds:} drei feste Seeds (42, 43, 44), deren Ergebnisse zu Mittelwert$\pm$Standardabweichung pro Schicht aggregiert werden.
+\item \textbf{Determinismus:} deterministische Algorithmen, \texttt{eval()}-Modus (kein Dropout, feste BN-Statistiken).
+\end{itemize}
+
+\textbf{Proben-Budget.} Das Proben-Budget ist innerhalb eines Datensatzes fest, unterscheidet sich aber zwischen den Datensätzen: 80 Bilder mit 100 Hutchinson-Iterationen für CIFAR10 gegenüber 24 Bildern mit 30 Iterationen für ImageNet100. Der Grund ist rein rechnerischer Natur, da ein Hessian-Vektor-Produkt bei $224\times224$-Eingaben (ImageNet100) um ein Vielfaches teurer ist als bei $32\times32$ (CIFAR10), sowohl in der Rechenzeit als auch im Speicherbedarf. Dieses ungleiche Budget ist eine dokumentierte Limitation (\S\ref{sec:limitations}), denn Messrauschen könnte zur schwächeren Korrelation auf CIFAR10 beitragen, unabhängig von einem echten Datensatzeffekt.
+\par\medskip
+
+\textbf{STE-relaxierte Hessian.} Da PTQ- und QAT-Gewichte über den Straight-Through-Estimator (\S\ref{sec:fund-quant}) quantisiert wurden, ist die auf diesen Modellen gemessene Hessian-Matrix genau genommen die STE-relaxierte Krümmung des Loss, also die Krümmung, die sich ergibt, wenn die nicht-differenzierbare Quantisierungsfunktion im Rückwärtsdurchlauf durch die Identität ersetzt wird, und nicht die klassische Hessian eines unquantisierten Netzes. Diese Unterscheidung ist für die Interpretation der PTQ- und QAT-Trace-Werte in \S\ref{sec:results} wichtig.
+
+\subsection{Gewichts-Schaden-Isolation}
+\label{sec:isolation}
+
+Um den Schaden einer einzelnen Schicht $l$ zu isolieren, werden ausschließlich die Gewichte dieser einen Schicht per PoT quantisiert, während alle übrigen Gewichte sowie alle Aktivierungen im gesamten Netz auf FP32 verbleiben. Implementiert wird dies, indem die Fake-Quantization-Module für Gewicht (\texttt{weight\_fake\_quant}) und Aktivierung (\texttt{act\_fake\_quant}) aller anderen Schichten durch \texttt{nn.Identity()} ersetzt werden. Nur die Zielschicht behält ihre echte Quantisierungslogik.
+\par\medskip
+
+\textbf{Loss-Schaden-Definition.} Für jede Schicht $l$ wird der Loss-Schaden definiert als
+\begin{equation}
+\mathrm{loss\_damage}(l) = \mathrm{loss}_{\mathrm{iso}}(l) - \mathrm{loss}_{\mathrm{fp32}},
+\label{eq:loss-damage}
+\end{equation}
+wobei $\mathrm{loss}_{\mathrm{iso}}(l)$ der mittlere Validierungs-Kreuzentropie-Loss des Modells mit isoliert quantisierter Schicht $l$ ist (identische Loss-Definition wie die Trace-Schätzung in \S\ref{sec:canonical-config}) und $\mathrm{loss}_{\mathrm{fp32}}$ der Loss des unveränderten FP32-Modells. Ein positiver Wert bedeutet, dass der Loss durch die Quantisierung gestiegen, also Schaden entstanden ist. Als primäres Ranking-Ziel wird $\mathrm{abs\_loss\_damage}(l) = |\mathrm{loss\_damage}(l)|$ verwendet, da unter QAT auch negative Werte auftreten (die isolierte Quantisierung einer Schicht kann den Loss gegenüber der FP32-Baseline sogar \emph{senken}, siehe \S\ref{sec:phase1}) und ein reines Ranking nach Betrag Schäden beider Vorzeichen gleich gewichtet.
+\par\medskip
+
+\textbf{Validierungs-Gate.} Um sicherzustellen, dass die Isolation korrekt implementiert ist, dass also tatsächlich nur die Zielschicht quantisiert wird und alle übrigen Modellteile numerisch mit dem FP32-Referenzmodell übereinstimmen, wird für jede Kombination eine automatisierte Konsistenzprüfung durchgeführt, deren Ergebnis in \texttt{accuracy\_mismatch.csv} protokolliert wird. Diese Datei muss für jede berichtete Kombination leer sein.
+\par\medskip
+
+\textbf{Warum Loss die natürliche Zielgröße ist.} Die Genauigkeit ist stückweise konstant (eine Vorhersage ist entweder richtig oder falsch) und daher unempfindlich gegenüber kleinen Verschiebungen der Ausgabewahrscheinlichkeiten. Die Hessian-Matrix ist per Definition die Krümmung des Loss (\S\ref{sec:fund-hessian}), und Gleichung~\eqref{eq:taylor} sagt den Loss-Anstieg vorher, nicht einen Genauigkeitsverlust. Ein direkter Test der HAWQ-V2-Motivation muss daher konsequent denselben Loss als Schaden-Ziel verwenden, für den die Taylor-Entwicklung überhaupt aufgestellt wurde. Loss ist entsprechend als Damage-Metrik dieser Analyse gesetzt, nicht als eine von mehreren gleichwertigen Optionen. Ergänzend wird geprüft, ob die Kernbefunde robust gegenüber dieser Wahl sind, indem dieselbe Analyse zusätzlich mit genauigkeitsbasiertem Schaden wiederholt wird (\S\ref{sec:robustness}); beide Versionen führen qualitativ zu denselben Schlussfolgerungen.
+
+\subsection{Drei Sensitivitäts-Scores}
+\label{sec:scores}
+
+Verglichen werden drei Scores gegen $\mathrm{abs\_loss\_damage}(l)$:
+\begin{align}
+S_{\mathrm{raw}}(l) &= \mathrm{Tr}(H_l), \label{eq:s-raw}\\
+S_{\mathrm{pert}}(l) &= \|W_l - Q(W_l)\|^2, \label{eq:s-pert}\\
+S_{\mathrm{hawq}}(l) &= \mathrm{Tr}(H_l)\cdot\|W_l - Q(W_l)\|^2. \label{eq:s-hawq}
+\end{align}
+$S_{\mathrm{raw}}$ ist die rohe kanonische Krümmung (kanonische fusionierte Basis, gemessen auf dem FP32-Modell, unnormalisierte Hutchinson-Trace-Summe, \emph{nicht} durch die Parameterzahl geteilt). $S_{\mathrm{pert}}$ ist die quadrierte Störungsgröße, die durch PoT-Rundung entsteht. $S_{\mathrm{hawq}}$ ist das HAWQ-V2-Produkt \citep{dong_hawqv2_2020}.
+\par\medskip
+
+\textbf{Begründung der Auswahl.} $S_{\mathrm{raw}}$ und $S_{\mathrm{pert}}$ sind exakt die zwei multiplikativen Faktoren, aus denen $S_{\mathrm{hawq}}$ gebildet wird, und keiner der beiden Faktoren enthält Information über den jeweils anderen. Der Vergleich aller drei Scores testet daher direkt, ob der Schaden von der Krümmung, von der Störungsgröße oder tatsächlich vom Produkt beider getrieben wird, statt gegen beliebige externe Alternativen zu testen.
+\par\medskip
+
+\textbf{Parameter-Normalisierung.} $S_{\mathrm{raw}}$ wird bewusst \emph{nicht} durch die Parameterzahl der Schicht normalisiert, was in Teilen der Literatur übliche Praxis ist, um große und kleine Schichten fair zu vergleichen. Eine parameter-normalisierte Variante verbessert die Korrelation zwar in 5 von 6 Architektur$\times$Datensatz-Kombinationen, verschlechtert sie aber gerade bei ResNet-50/CIFAR10 deutlich (Spearman-$\rho$ fällt von $0.36$ auf $0.16$; Details in \S\ref{sec:phase4}). Da dies dem HAWQ-Stil des unnormalisierten Scores entspricht und keine der beiden Varianten universell überlegen ist, wird konsistent die unnormalisierte Form als Hauptresultat berichtet.
+
+\textbf{Evaluationsmetriken.} Jeder Score wird auf drei Arten ausgewertet: (1) die Spearman-Rangkorrelation zwischen den Score-Werten und $\mathrm{abs\_loss\_damage}$ über alle Schichten, mit 95\%-Bootstrap-Konfidenzintervall ($B=2000$ Resamples, Ziehen von Schichten mit Zurücklegen); (2) der Rang, den der Score der Schicht mit dem tatsächlich größten Schaden zuweist (Rang 1 = perfekt); (3) die Überlappung zwischen den top-$k^*$ vom Score als am schädlichsten eingestuften Schichten und den top-$k^*$ tatsächlich am meisten geschädigten Schichten.
+
+\subsubsection{Größennormalisierung der Top-$k$-Auswertung}
+\label{sec:norm}
+
+Da die drei Architekturen eine Größenordnung an Schichtzahl umspannen ($n=6, 21, 54$), wäre ein fester Top-5-Schwellwert für das \texttt{cnn} fast das gesamte Netz, für ResNet-50 dagegen nur ein kleiner Ausschnitt und damit kein über die Architekturen hinweg vergleichbarer Maßstab. Verwendet wird daher $k^* = \lceil 0.1n \rceil$ (konkret $k^*=1, 3, 6$ für \texttt{cnn}, ResNet-18, ResNet-50), sodass alle drei Architekturen und alle drei Scores am gleichen Top-Dezil-Maßstab gemessen werden.
+
+\subsection{Gewichts- vs.\ Aktivierungs-Dekomposition (Phase 1)}
+\label{sec:phase1}
+
+Um F3 zu beantworten, wird der Gesamt-Genauigkeitsverlust einer Kombination in drei Konfigurationen zerlegt: (a) volle Quantisierung (Gewichte und Aktivierungen), (b) nur Gewichte quantisiert (Aktivierungen bleiben FP32), (c) nur Aktivierungen quantisiert (Gewichte bleiben FP32). Für (c) werden Beobachter zur Aktivierungs-Kalibrierung auf einem Kalibrierungs-Batch eingesetzt, wie bei Standard-PTQ üblich. Aus dem Vergleich der resultierenden Genauigkeiten werden \texttt{weight\_loss\_pts} und \texttt{activation\_loss\_pts} abgeleitet (Genauigkeitsverlust in Prozentpunkten gegenüber FP32), und die \texttt{dominant\_source} wird als die Konfiguration mit dem größeren Betrag bestimmt. Ergänzend werden die Aktivierungs-Wertebereiche pro Schicht sowie der darin auftretende Ausreißerfaktor (Verhältnis von Maximalwert zu 99.\,Perzentil) analysiert.
+
+\subsection{Weitere Analysephasen}
+\label{sec:other-phases}
+
+Über Phase~1 und die Kernanalyse aus \S\ref{sec:isolation}--\ref{sec:scores} (im Ergebnisteil als \enquote{Phase~4} geführt) hinaus umfasst die Pipeline vier weitere Phasen, deren Methodik hier kurz skizziert und deren Ergebnisse in \S\ref{sec:results} berichtet werden. Abbildung~\ref{fig:pipeline} zeigt die sechs Phasen im Überblick.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\linewidth]{figures/fig_02_pipeline_overview.pdf}
+\caption{Sechs-Phasen-Analyse-Pipeline. Phase~4 (Prädiktor-Test) ist die im Workshop-Paper berichtete Kernanalyse; alle übrigen Phasen liefern Kontext, Kontrollen oder Erweiterungen dazu. Erzeugt von \texttt{notebooks/12\_pipeline\_overview.ipynb}.}
+\label{fig:pipeline}
+\end{figure}
+
+\textbf{Phase 2: Random-Init-Kontrolle (\S\ref{sec:phase2}).} Um zu unterscheiden, ob eine beobachtete Krümmungsspitze in einer Schicht \enquote{architektonisch} (bereits bei zufälliger Initialisierung vorhanden) oder \enquote{gelernt} (erst durch Training entstanden) ist, wird die PyHessian-Trace auf drei unabhängig zufällig initialisierten, untrainierten Modellen pro Architektur (drei Init-Seeds) gemessen und das resultierende Trace-Profil mit dem des trainierten FP32-Modells verglichen.
+\par\medskip
+
+\textbf{Phase 3: Trace-Drift und Rekonziliation (\S\ref{sec:phase3}).} Da frühere, unterschiedlich konfigurierte Läufe im Projektverlauf teils stark abweichende Trace-Werte für dieselbe nominelle Größe produziert hatten, wird ein systematischer Sweep über die in \S\ref{sec:canonical-config} genannten Konfigurationsknöpfe durchgeführt (Basis, Loss-Reduktion, Proben-Anzahl, Datenquelle, Gerät), um zu prüfen, welche Konfiguration, falls überhaupt eine, die historischen Werte reproduziert.
+\par\medskip
+
+\textbf{Phase 3.5: Fusion vs.\ Quantisierung (\S\ref{sec:phase35}).} Die Batch-Normalisierungs-Fusion (das Verschmelzen von BN-Parametern in die vorangehende Faltungsschicht, Standardpraxis vor der Quantisierung) verändert die effektiven Gewichte einer Schicht bereits \emph{vor} jeder Quantisierung. Um den Fusion-Effekt vom eigentlichen PoT-Quantisierungseffekt zu trennen, werden die Trace-Werte in unfusionierter FP32-Basis, fusionierter FP32-Basis und PTQ-Basis verglichen, und eine Schicht wird als \enquote{quant\_induced} definiert, wenn die PTQ-Trace deutlich über die bereits durch Fusion erhöhte FP32-Trace hinausgeht, andernfalls als \enquote{fp32\_intrinsic}.
+\par\medskip
+
+\textbf{Phase 5: Spike-Selection (\S\ref{sec:phase5}).} Verglichen wird die Schicht mit der höchsten Trace (\enquote{Trace-Spike}) direkt mit der Schicht mit dem größten gemessenen Schaden (\enquote{Damage-Spike}, aus Phase~4/\S\ref{sec:isolation}) pro Modell, um zu prüfen, ob die naive Heuristik \enquote{höchste Krümmung = größter Schaden} zutrifft.
+\par\medskip
+
+\textbf{Phase 6: Architektonische Ursachensuche (\S\ref{sec:phase6}).} Für die jeweilige Trace-Spike-Schicht jedes Modells wird versucht, die beobachtete Krümmungserhöhung über die KFAC-Faktorisierung (\S\ref{sec:fund-rmt}) in einen Eingabe-getriebenen ($A$) und einen Gradienten-getriebenen ($G$) Anteil zu zerlegen und die vorhergesagte Pro-Parameter-Trace mit der tatsächlich gemessenen zu vergleichen. Ergänzend werden größen-kontrollierte Residuen berechnet (Korrelation von Trace-Ausreißern mit strukturellen Deskriptoren wie Fan-in, Fan-out und Output-Map-Größe, unter Kontrolle der Parameterzahl).
+
+\subsection{Deployment-Evaluation}
+\label{sec:deployment-method}
+
+Um zu prüfen, ob der theoretische Bitshift-Vorteil von PoT (\S\ref{sec:fund-quant}) auf realer Hardware tatsächlich in eine kürzere Inferenzzeit übergeht, werden zwei Deployment-Pfade evaluiert. Der erste Pfad ist \texttt{torchao} 0.17 auf einer NVIDIA A100-GPU (Compute Capability 8.0). Dabei werden torchaos INT8-Konfigurationen (\texttt{Int8DynamicActivationInt8WeightConfig} für die dynamische Aktivierungsquantisierung, \texttt{IntxWeightOnlyConfig} für die reine Gewichtsquantisierung) auf alle sechs Kombinationen angewendet und die Durchsatz-Zeit über eine Reihe von Batch-Größen vermessen, jeweils gegen die FP32-Baseline auf derselben GPU. Der zweite Pfad ist ein CPU-Pfad über den \texttt{fbgemm}-Backend \citep{khudia_fbgemm_2021} von PyTorchs eager-mode-PTQ, der auf x86-Hardware mit AVX-512-VNNI-Unterstützung (Zielsystem: AMD Ryzen~7 7700X, Zen~4) tatsächlich quantisierte Conv2d- und Linear-Kernel einsetzt, im Gegensatz zum torchao-GPU-Pfad, dessen Einschränkungen in \S\ref{sec:phase10} dokumentiert werden.

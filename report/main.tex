@@ -1,0 +1,51 @@
+\documentclass[11pt, a4paper, twocolumn]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[ngerman]{babel}
+\usepackage{csquotes}
+\usepackage{amsmath, amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage{subcaption}
+\usepackage{siunitx}
+\usepackage{float}
+\usepackage{listings}
+\usepackage{tabularx}
+\usepackage{geometry}
+\geometry{
+    left=1.5cm, right=1.5cm, top=2cm, bottom=2cm, columnsep=0.6cm
+}
+\lstset{
+    basicstyle=\ttfamily\scriptsize,
+    breaklines=true,
+    columns=flexible,
+    xleftmargin=2pt,
+}
+\usepackage[style=numeric, backend=biber, natbib=true]{biblatex}
+\addbibresource{references.bib}
+
+\title{\textbf{Hessian-basierte Vorhersage von Quantisierungsschäden in CNNs}\\
+\large Schichtweise Sensitivitätsanalyse unter Power-of-Two Quantisierung}
+\author{Dominic Jean-Luc Tarnowski\\
+\small Betreuung: Prof. Thomas Manke, Prof. Tatiana Ermakova \\
+\small School of Computing, Communication and Business, HTW Berlin}
+\date{\small \today}
+
+\begin{document}
+\twocolumn[
+  \begin{@twocolumnfalse}
+    \maketitle
+    \input{sections/abstract}
+    \vspace{1.5em}
+  \end{@twocolumnfalse}
+]
+\input{sections/01_introduction}
+\input{sections/02_fundamentals}
+\input{sections/03_related_work}
+\input{sections/04_methodology}
+\input{sections/05_results}
+\input{sections/06_discussion}
+\input{sections/07_conclusion}
+\printbibliography
+\end{document}

@@ -1,0 +1,4 @@
+Modell,Random (µ±σ),Trainiert,Klasse
+ResNet-50,74.43 ± 68.58,15.55,gelernt
+ResNet-18,7.217 ± 1.19,17.35,gelernt
+CNN,0.002393 ± 9.91e-05,65.87,gelernt

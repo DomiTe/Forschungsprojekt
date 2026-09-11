@@ -1,0 +1,41 @@
+\section{Einleitung}
+\label{sec:introduction}
+
+\subsection{Motivation und Problemstellung}
+
+Neuronale Netze werden zunehmend auf ressourcenbeschränkter Hardware ausgeführt, etwa auf eingebetteten Systemen, mobilen Geräten und Edge-Beschleunigern. Auf solcher Hardware sind die Inferenzkosten eines vollpräzisen Modells oft nicht mehr tragbar. Die Quantisierung reduziert diese Kosten, indem die Gewichte und Aktivierungen eines Netzes von 32-Bit-Gleitkommazahlen (FP32) auf niedriger aufgelöste, diskrete Werte abgebildet werden, typischerweise auf 8 Bit oder weniger. Dies senkt sowohl den Speicherbedarf als auch, bei passender Hardware-Unterstützung, die Rechenzeit pro Inferenz.
+\par\medskip
+
+Eine besonders hardware-attraktive Variante ist die Power-of-Two-Quantisierung (PoT). Hierbei werden die Gewichte nicht auf ein gleichmäßiges, uniformes Gitter abgebildet, sondern auf exakte Zweierpotenzen. Der Vorteil liegt in der Arithmetik, da eine Multiplikation mit einer Zweierpotenz einem einfachen Bitshift entspricht. Dadurch können die sonst dominierenden Multiplizierer-Schaltkreise in der Hardware entfallen \citep{miyashita_pot_2016, przewlocka_rus_pot_2022}. Dieser Effizienzgewinn ist jedoch mit einem Nachteil verbunden. Da das PoT-Gitter logarithmisch und nicht linear ist, variiert der Quantisierungsfehler stark und unvorhersehbar mit den tatsächlichen Gewichtswerten einer Schicht. Dieses Verhalten unterscheidet sich grundlegend von der uniformen Quantisierung und hat, wie dieser Bericht zeigt, direkte Konsequenzen für die Anwendbarkeit klassischer Sensitivitätsmaße.
+\par\medskip
+
+Um zu entscheiden, welche Schichten eines Netzes eine niedrigere Bit-Breite vertragen und welche nicht, hat sich die Verwendung von Krümmungsinformation aus der zweiten Ableitung des Verlustes etabliert, also der Hessian-Matrix. Der einflussreichste Vertreter dieses Ansatzes ist die HAWQ-Familie \citep{dong_hawq_2019, dong_hawqv2_2020}. HAWQ rangiert die Schichten nach ihrem größten Hessian-Eigenwert, während HAWQ-V2 dies zu einem Produkt aus Hessian-Spur und quadrierter Störungsgröße, $\mathrm{Tr}(H)\cdot\|\Delta W\|^2$, verfeinert, motiviert durch eine Taylor-Entwicklung des Verlustes zweiter Ordnung. Beide Arbeiten nutzen diese Formulierung, um eine Bit-Zuteilung über das gesamte Netz zu optimieren. Validiert wird dabei die End-to-End-Genauigkeit \emph{nach} der Zuteilung und nicht die Vorhersagegüte des Scores auf Ebene einzelner Schichten.
+\par\medskip
+
+Genau hier setzt dieses Projekt an. Die leitende Frage lautet, ob die HAWQ-V2-Formulierung tatsächlich vorhersagt, welche einzelne Schicht unter der PoT-Quantisierung am meisten leidet. Diese Frage ist nicht rein akademisch. Nutzen Praktiker Hessian-basierte Scores, um zu entscheiden, welche Schichten für gemischte Präzision reserviert werden, so verlassen sie sich implizit darauf, dass der Score mit dem tatsächlichen Schaden korreliert. Diese Annahme wurde nach bisherigem Kenntnisstand vor diesem Projekt für die PoT-Quantisierung an Vision-CNNs nie direkt gegen gemessenen Schaden getestet.
+
+\subsection{Forschungsfragen}
+
+Das Projekt verfolgt drei Forschungsfragen:
+
+\begin{enumerate}
+\item[\textbf{F1}] Wie prägen PTQ und QAT die schichtweise Verlust-Krümmung (gemessen über die Hessian-Spur) von CNNs unter PoT-Quantisierung jeweils unterschiedlich?\footnote{Im Original: \emph{How do PTQ and QAT differently reshape the layer-wise loss curvature (measured via Hessian trace) of CNNs under PoT quantization?}}
+\item[\textbf{F2}] Sagt die schichtweise Verlust-Krümmung (Hessian-Spur) vorher, welche Schichten tatsächlich den größten PoT-Gewichts-Quantisierungsschaden erleiden, und wie hängen diese beiden Auswahlen (vorhergesagt vs.\ tatsächlich) von Architektur und Datensatz ab?\footnote{Im Original: \emph{Does layer-wise loss curvature (Hessian trace) predict which layers actually incur PoT weight-quantization damage, and how do these two selections depend on architecture and dataset?}}
+\item[\textbf{F3}] In welchem Ausmaß ist der PoT-induzierte Genauigkeitsverlust auf Gewichts- gegenüber Aktivierungsquantisierung zurückführbar, und für welches Regime ist demzufolge die Hessian-basierte Sensitivitätsanalyse anwendbar?\footnote{Im Original: \emph{To what extent is PoT-induced accuracy loss attributable to weight vs. activation quantization, and consequently, to which regime does Hessian-based sensitivity analysis apply?}}
+\end{enumerate}
+
+F2 ist die zentrale Fragestellung und der Kern des daraus entstandenen Workshop-Papers (\S\ref{sec:conclusion}). F1 und F3 sind breiter angelegt und werden in diesem Bericht vollständig behandelt, obwohl sie im Papier aus Platzgründen nur gestreift oder ausgeklammert werden.
+
+\subsection{Beiträge dieses Projekts}
+
+\begin{itemize}
+\item Ein empirischer, direkter Test der HAWQ-V2-Formulierung unter PoT-Quantisierung. Der Schaden jeder Schicht wird einzeln isoliert (\S\ref{sec:methodology}) und es werden drei Sensitivitäts-Scores gegen den tatsächlich gemessenen Loss-Schaden verglichen, nicht gegen die End-to-End-Genauigkeit nach einer Bit-Zuteilung wie in der ursprünglichen HAWQ-Literatur.
+\item Eine Dokumentation der Konfigurations-Sensitivität von Hessian-Trace-Messungen. Ein Rekonziliations-Ledger (\S\ref{sec:results}) gleicht historische, unterschiedlich konfigurierte Trace-Werte für dieselbe Schicht mit einer neu festgelegten kanonischen Konfiguration ab. Dabei zeigt sich, dass Unterschiede von zwei Größenordnungen auftreten können, ohne dass eine einzelne Konfigurationsentscheidung sie erklärt.
+\item Eine Deployment-Evaluation auf realer Hardware (NVIDIA A100, x86-CPU mit AVX-512 VNNI), die zeigt, dass der theoretische Bitshift-Vorteil von PoT nicht automatisch in einen gemessenen Laufzeitvorteil übersetzt.
+\item Eine sechsphasige Analyse-Pipeline, die über die im Workshop-Paper berichteten Ergebnisse hinausgeht und zusätzlich eine Random-Init-Kontrolle, die KFAC-Faktorisierung, die Aktivierungs-Analyse sowie die QAT-Ergebnisse umfasst.
+\item Die Einreichung eines Workshop-Papers bei AXIOM @ NeurIPS 2026, das die Kernergebnisse zu F2 in kompakter Form für die Fachcommunity aufbereitet.
+\end{itemize}
+
+\subsection{Aufbau des Berichts}
+
+\S\ref{sec:fundamentals} führt die Grundlagen ein, die für das Verständnis der Methodik nötig sind: Quantisierung, die Hessian-Matrix, HAWQ/HAWQ-V2, Hessian-Spektraltheorie und Aktivierungsquantisierung. \S\ref{sec:related-work} positioniert das Projekt relativ zur Literatur. \S\ref{sec:methodology} beschreibt das experimentelle Setup und alle sechs Analysephasen im Detail. \S\ref{sec:results} präsentiert die Ergebnisse jeder Phase mit den zugehörigen Tabellen und Abbildungen. \S\ref{sec:discussion} interpretiert die Befunde, benennt Limitationen und skizziert Ausblick. \S\ref{sec:conclusion} fasst zusammen und verweist auf das eingereichte Workshop-Paper.

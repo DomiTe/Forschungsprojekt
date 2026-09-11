@@ -1,0 +1,7 @@
+Datensatz,Modell,wt.-only,dyn.-akt.
+ImageNet100,CNN,1.16,0.57
+ImageNet100,ResNet-18,1.12,0.61
+ImageNet100,ResNet-50,1.07,0.67
+CIFAR10,CNN,1.05,0.21
+CIFAR10,ResNet-18,1.19,0.56
+CIFAR10,ResNet-50,1.12,0.65

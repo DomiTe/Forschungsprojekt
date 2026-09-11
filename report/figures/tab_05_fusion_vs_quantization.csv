@@ -1,0 +1,4 @@
+Modell,Fusion,PTQ-Amp.,Rang,Verdikt
+ResNet-50,11.71,0.56,51/54,fp32_intrinsic
+ResNet-18,10.69,0.95,19/21,fp32_intrinsic
+CNN,7.29,1.15,6/6,quant_induced

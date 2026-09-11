@@ -2,7 +2,7 @@
 main.py — train all models on all datasets.
 
 Usage:
-    uv run python -m src.main
+    uv run python -m src.main "--flag"
 
 Trains the full 4-model × 5-dataset matrix and writes a summary CSV to
 results/csv/main_summary.csv.
@@ -49,7 +49,6 @@ from src.utility.config import (
     BASE_DIR,
     DATASET_SPECS,
     QUANTIZED_MODELS,
-    # DEPLOYED_MODELS,
     QAT_EPOCH,
     QAT_LR,
     HESSIAN_BATCH_SIZE,
@@ -235,7 +234,7 @@ def main() -> None:
     # checkpoint resolution helpers from src/analysis/diagnose_activations.py.
     # Analysis only -- no quantization/PTQ/QAT/deployment. Skips FP32/PTQ/QAT
     # training and all Hessian/eigenvalue/SQNR analysis. Runs as a single
-    # local process (no torchrun/distributed init needed), prefers CUDA.
+    # local process (no torchrun/distributed init needed).
     # -------------------------------------------------------------------
     if args.random_init_control:
         if local_rank == 0:
@@ -262,7 +261,7 @@ def main() -> None:
     # from src/analysis/diagnose_activations.py. Analysis only -- no
     # torchao/INT8/deployment. Skips FP32/PTQ/QAT training and all
     # Hessian/eigenvalue/SQNR analysis. Runs as a single local process (no
-    # torchrun/distributed init needed), prefers CUDA.
+    # torchrun/distributed init needed).
     # -------------------------------------------------------------------
     if args.quant_induced_trace:
         if local_rank == 0:
@@ -289,8 +288,7 @@ def main() -> None:
     # Part 0 name/shape mapping gate and model-construction helpers
     # (src/analysis/quant_induced_trace.py). Analysis only. Skips
     # FP32/PTQ/QAT training and all Hessian/eigenvalue/SQNR analysis. Runs
-    # as a single local process (no torchrun/distributed init needed),
-    # prefers CUDA.
+    # as a single local process (no torchrun/distributed init needed).
     # -------------------------------------------------------------------
     if args.relock_traces:
         if local_rank == 0:
@@ -528,7 +526,6 @@ def main() -> None:
                         "f1": fp32_class_metrics["f1"],
                     })
                 
-                # Measure FP32 Throughput
                 dummy_shape = (1, DATASET_SPECS[dataset_name]["channels"], 
                                DATASET_SPECS[dataset_name]["image_size"], 
                                DATASET_SPECS[dataset_name]["image_size"])
@@ -579,14 +576,11 @@ def main() -> None:
                 ptq_model.eval()
                 
                 fuse_model_architectures(ptq_model, model_name)
-                # Recursively inject the fake quantizers
                 replace_layers_for_quantization(ptq_model)
                 ptq_model = ptq_model.to(device)
                 
-                # Calibrate activation observers using training data
                 calibrate_ptq(ptq_model, train_loader, device, num_batches=20)
                 
-                # Evaluate PTQ accuracy and throughput
                 ptq_loss, ptq_acc = _evaluate(ptq_model, val_loader, torch.nn.CrossEntropyLoss(), device)
                 
                 if local_rank == 0:
@@ -636,7 +630,6 @@ def main() -> None:
                 if local_rank == 0:
                     logger.info("Compiling PTQ model for throughput benchmarking...")
                 
-                # max-autotune will profile different Triton kernels on your A100 to find the fastest one
                 compiled_ptq_model = torch.compile(ptq_model, mode="max-autotune")
                 
                 ptq_metrics = measure_throughput(compiled_ptq_model, device, dummy_shape)
@@ -654,7 +647,6 @@ def main() -> None:
                       "speedup":      f"{ptq_metrics['throughput_fps'] / fp32_metrics['throughput_fps']:.2f}",
                       "status":       "ok",
                     })                     
-                    # Save the quantized model state
                     ptq_path = os.path.join(QUANTIZED_MODELS, f"ptq_po2_{model_name}_{dataset_name}.pt")
                     torch.save(ptq_model.state_dict(), ptq_path)
 
@@ -667,7 +659,6 @@ def main() -> None:
                 if local_rank == 0:
                     logger.info("Starting Quantization-Aware Training (QAT)...")
                 
-                # Note: We pass the uncompiled ptq_model directly to QAT
                 qat_model, qat_history, _ = train_qat(
                     ptq_model=ptq_model, 
                     train_loader=train_loader, 
@@ -742,18 +733,6 @@ def main() -> None:
                         "status":       "ok",
                     })
                     
-                # if local_rank == 0:
-                #     logger.info("Converting float32 qat to int8")
-                # int8_qat_model = copy.deepcopy(qat_model).eval()
-                # from src.quantization.convert import convert_qat_to_real
-                # convert_qat_to_real(int8_qat_model)
-                # int8_qat_model = int8_qat_model.to(device)
-                
-                # compiled_int8_qat_model = torch.compile(int8_qat_model, mode="max-autotune")
-                # int8_metrics = measure_throughput(compiled_int8_qat_model, device, dummy_shape)
-                
-                # if local_rank == 0:
-                #     logger.info(f"[True Int8] Latency: {int8_metrics['latency_ms']: .3f} | FPS: {int8_metrics['throughput_fps']: .3f}")
                     
                 # -------------------------------------------------------------
                 # Summary Logging Updates
@@ -778,9 +757,6 @@ def main() -> None:
                 del compiled_ptq_model, compiled_qat_model, ptq_model, qat_model
                 torch.cuda.empty_cache()
                 
-                # compiled_int8_qat_model.zero_grad(set_to_none=True)
-                # del int8_qat_model, compiled_int8_qat_model
-                # torch.cude.empty_cache()
                 
             except Exception as exc:
                 elapsed_min = (time.perf_counter() - t0) / 60
@@ -1074,12 +1050,7 @@ def _run_train_only(args, local_rank: int) -> None:
         logger.info("=== Train-Only complete ===")
 
 
-# Order matters: checkpoint-metrics writes layerwise_hessian_traces.csv,
-# which --ablate-layer-quantization (layer_ablation.py) reads for its
-# trace-guided top-k/low-k layer selection; relock-traces writes
-# canonical_traces.csv, which weight-ablation-canonical and spike-layer-
-# cause both read (via canonical_traces_csv) for their fused-basis Tr(H)
-# lookups. Both must run before their respective consumers.
+
 ANALYZE_STEPS = [
     "checkpoint-metrics", "relock-traces", "quant-induced-trace",
     "weight-ablation-canonical", "spike-layer-cause", "random-init-control",
@@ -1170,10 +1141,6 @@ def _run_analyze_dataset(args, local_rank: int, dataset_name: str) -> None:
 
 
 DIAGNOSE_INT8_PERF_DATASETS = ["CIFAR10", "IMAGENET100"]
-
-# (stage label, checkpoint filename prefix) -- both PTQ and QAT checkpoints
-# went through fuse_model_architectures + replace_layers_for_quantization,
-# so they share the same custom-quantized-layer structure and loader.
 DIAGNOSE_INT8_PERF_STAGES = [
     ("PTQ", "ptq_po2"),
     ("QAT", "qat_po2"),

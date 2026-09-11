@@ -16,10 +16,7 @@ machine, same thread count, honestly reported either way.
 
 Reuses (does not duplicate) the existing PoT reconstruction pipeline:
     build_model -> fuse_model_architectures -> replace_layers_for_quantization
-    -> load_state_dict -> bake_pot_into_standard_layers
-(same pipeline src.quantization.deploy.build_int8_model uses for the GPU/
-torchao path -- it isn't called directly here because that function always
-finishes with apply_int8_quantization, which is torchao/GPU-specific).
+    -> load_state_dict -> bake_pot_into_standard_layers.
 
 Runs as a single local process (`python -m src.main --deploy-cpu-fbgemm
 ...`), no torchrun/SLURM/torch.distributed involved anywhere in this
@@ -118,7 +115,7 @@ def _build_baked_model(
     # Deferred imports: bake_pot_into_standard_layers lives in src.main,
     # which imports this module transitively (via src.main's own
     # --deploy-cpu-fbgemm dispatch) -- importing at module scope would be
-    # circular. Mirrors the same pattern in src.quantization.deploy.
+    # circular
     from src.main import bake_pot_into_standard_layers
     from src.model_cnn.train import build_model
     from src.quantization.quantizer import fuse_model_architectures, replace_layers_for_quantization

@@ -45,7 +45,7 @@ from torchao.quantization import (
 )
 
 from src.analysis.benchmark import benchmark_latency, DEFAULT_BATCH_SIZES
-from src.quantization import deploy
+from src.quantization.real_quant_attempt import deploy
 
 logger = logging.getLogger(__name__)
 
@@ -58,10 +58,6 @@ SWEEP_CSV_FIELDNAMES = [
     "fp32_throughput_ips", "int8_throughput_ips", "speedup_x",
 ]
 
-# Heuristic keyword classification of profiler kernel names. Exact cuDNN/
-# cutlass/torchao kernel names vary by version, so this is pattern matching,
-# not an exhaustive whitelist -- the report also embeds the raw top-10
-# kernel table so a human can sanity-check the classification directly.
 QUANT_KEYWORDS = ("quant", "dequant", "choose_qparams", "fake_quant")
 COMPUTE_KEYWORDS = (
     "gemm", "conv", "mm", "addmm", "cutlass", "sgemm", "cudnn_convolution",
@@ -139,9 +135,6 @@ def profile_kernels(model: nn.Module, input_shape: tuple, device: torch.device,
     averages = prof.key_averages()
 
     def _event_time_us(evt) -> float:
-        # PyTorch renamed the *_cuda_time_total attributes to
-        # *_device_time_total around the 2.1 release; fall back across
-        # whichever this torch build exposes.
         for attr in ("self_device_time_total", "self_cuda_time_total"):
             val = getattr(evt, attr, None)
             if val is not None:
@@ -224,10 +217,6 @@ def run_int8_perf_diagnosis(
     )
     fp32_model.eval()
 
-    # baked_model / dynamic_act_model ("the" deployed int8 model) both come
-    # from the shared builder -- see its module docstring for why every
-    # path that reconstructs an int8 model must go through it rather than
-    # calling quantize_() independently.
     baked_model, dynamic_act_model, audit_details = deploy.build_int8_model(
         model_name=model_name,
         dataset_name=dataset_name,
@@ -238,13 +227,6 @@ def run_int8_perf_diagnosis(
         channels=channels,
         image_size=image_size,
     )
-
-    # int8_weight_only is a deliberately different, Linear-only config
-    # (Int8WeightOnlyConfig's default filter_fn leaves Conv2d untouched) --
-    # an intentional diagnostic comparison against "the" deployed config,
-    # not a second reconstruction of it, so it's built directly here rather
-    # than through the shared builder (which always applies the full,
-    # Conv2d-inclusive scheme).
     weight_only_model = copy.deepcopy(baked_model)
     quantize_(weight_only_model, Int8WeightOnlyConfig())
     weight_only_model.eval()

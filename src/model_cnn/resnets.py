@@ -25,22 +25,18 @@ def _adapt_first_conv(model: nn.Module, channels: int, image_size: int) -> None:
     old = model.conv1
     
     if image_size == 32 or image_size == 28:
-        # CIFAR/MNIST Architecture: 3x3 conv, stride 1, padding 1, NO maxpool
         model.conv1 = nn.Conv2d(
             channels, old.out_channels, 
             kernel_size=3, stride=1, padding=1, bias=False
         )
-        # Disable the maxpool layer by replacing it with an Identity pass-through
         model.maxpool = nn.Identity()
         
     else:
-        # Standard Architecture: 7x7 conv, stride 2, keep maxpool
         model.conv1 = nn.Conv2d(
             channels, old.out_channels,
             kernel_size=old.kernel_size, stride=old.stride,
             padding=old.padding, bias=False,
         )
-        # Average pretrained RGB weights for greyscale (only if weights exist)
         if channels != 3 and getattr(old, 'weight', None) is not None:
             with torch.no_grad():
                 model.conv1.weight.copy_(old.weight.mean(dim=1, keepdim=True))
@@ -59,7 +55,6 @@ def get_resnet18(
 
     _adapt_first_conv(model, channels, image_size)
 
-    # Replace head
     in_features  = model.fc.in_features
     model.fc     = nn.Linear(in_features, num_classes)
 

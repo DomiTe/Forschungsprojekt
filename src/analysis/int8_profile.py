@@ -45,7 +45,7 @@ from torchao.quantization import (
 )
 
 from src.analysis.benchmark import benchmark_latency, DEFAULT_BATCH_SIZES
-from src.quantization.real_quant_attempt import deploy
+from src.quantization.gpu_deploy import gpu_deployment
 
 logger = logging.getLogger(__name__)
 
@@ -217,7 +217,7 @@ def run_int8_perf_diagnosis(
     )
     fp32_model.eval()
 
-    baked_model, dynamic_act_model, audit_details = deploy.build_int8_model(
+    baked_model, dynamic_act_model, audit_details = gpu_deployment.build_int8_model(
         model_name=model_name,
         dataset_name=dataset_name,
         stage=stage,

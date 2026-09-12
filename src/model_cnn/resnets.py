@@ -2,13 +2,11 @@
 Pretrained ResNet-18 and ResNet-50 wrappers.
 
 Uses torchvision.models with ImageNet-pretrained weights. The final
-fully-connected layer is replaced to match NUM_CLASSES from config so
-the models can be fine-tuned on any of the six datasets.
-
-Fine-tuning strategy (configurable via FINETUNE_MODE):
-  "full"     — unfreeze all layers from the start (good for small datasets)
-  "head"     — freeze backbone, train only the new FC head
-  "gradual"  — freeze backbone first; call unfreeze_backbone() after warm-up
+fully-connected layer is replaced to match NUM_CLASSES from config so the
+models can be fine-tuned on any dataset. FINETUNE_MODE controls the
+strategy: "full" unfreezes all layers from the start, "head" freezes the
+backbone and trains only the new FC head, and "gradual" freezes the
+backbone first and expects unfreeze_backbone() to be called after warm-up.
 """
 
 import torch

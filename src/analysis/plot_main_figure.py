@@ -14,11 +14,14 @@ Data sources, all PTQ stage only:
     draw that would only agree to ~1 decimal place).
 """
 import csv
+import logging
 import numpy as np
 import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
+
+logger = logging.getLogger(__name__)
 
 REPO = "/home/dominic/Desktop/HTW-Master/3rd-Semester/Forschungsprojekt"
 
@@ -150,7 +153,7 @@ def main():
     )
 
     fig.savefig(OUT_PDF)
-    print("wrote", OUT_PDF)
+    logger.info(f"Wrote {OUT_PDF}")
 
 
 if __name__ == "__main__":

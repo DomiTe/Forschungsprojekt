@@ -157,23 +157,15 @@ from src.utility.utils import get_data_loaders
 logger = logging.getLogger(__name__)
 
 DATASETS = ["CIFAR10", "IMAGENET100"]
-# resnet50 first -- it carries the headline conv1 spike this mode investigates.
 ORDERED_MODELS = ["resnet50_no_weights", "resnet18_no_weights", "cnn"]
 VARIANTS = ["fp32_unfused", "fp32_fused", "ptq"]
 
-# Per-dataset Hessian-trace estimator config (Part 0). CIFAR10 mirrors the
-# frozen canonical config (relock_traces.py: batch=16, num_batches=5 ->
-# 80 images, max_iter=100). IMAGENET100 is reduced -- 224x224 HVP cost is far
-# higher per iteration than 32x32 -- and that reduction is recorded in
-# trace_config.json's note field (Part 0), not hidden. Matched WITHIN each
-# dataset across every model/variant in this module.
 DATASET_TRACE_CONFIG = {
     "CIFAR10":     {"batch_size": 16, "num_batches": 5, "max_iter": 100, "tol": 1e-3},
     "IMAGENET100": {"batch_size": 8,  "num_batches": 3, "max_iter": 30,  "tol": 1e-3},
 }
 
-# Part 6 verdict thresholds, applied to the reported ratio, never hidden.
-RESOLUTION_RATIO_ELEVATED = 1.5   # ratio >= this on IMAGENET100/CIFAR10 -> "substantially larger"
+RESOLUTION_RATIO_ELEVATED = 1.5
 RESOLUTION_RATIO_SIMILAR_LO = 1.0 / 1.5
 RESOLUTION_RATIO_SIMILAR_HI = 1.5
 
@@ -188,14 +180,7 @@ DESCRIPTORS_FIELDNAMES = [
     "model", "dataset", "layer", "layer_type", "fan_in", "fan_out", "kh", "kw",
     "input_map", "output_map", "numel",
 ]
-# tr_A/tr_G/A_per_infan/G_per_outfan/predicted_per_param are batch-dependent
-# (--n-seeds pass); metric_std reports tr_A's cross-seed std specifically --
-# Tr(A) (input-covariance trace) is the module's headline KFAC quantity (H3:
-# "carried by Tr(A)", see module docstring) and the schema has one std
-# column for five seed-dependent fields. Per-seed rows carry every field's
-# individual seed value in full, so this choice loses no information, only
-# summarizes it. measured_per_param is Part 2/3's own cross-reference and is
-# only populated on the aggregate row (see _write_kfac_rows).
+
 KFAC_FIELDNAMES = [
     "model", "dataset", "variant", "layer", "tr_A", "tr_G",
     "A_per_infan", "G_per_outfan", "predicted_per_param", "measured_per_param",
@@ -205,20 +190,13 @@ ATTRIBUTION_FIELDNAMES = [
     "model", "dataset", "spike_layer", "descriptor", "spearman_vs_residual", "partial_corr_controlling_numel",
     "spike_A_share", "spike_G_share", "resolution_contrast_ratio", "hypothesis_supported",
 ]
-# This module's own fallback PTQ-damage bank (distinct filename/schema from
-# weight_ablation_canonical.py's own CSVs -- never written to that filename,
-# to avoid corrupting its richer schema with this module's leaner one).
+
 DAMAGE_FIELDNAMES = ["model", "dataset", "stage", "layer", "weight_damage_pts", "abs_weight_damage_pts"]
 SELF_COMPUTED_DAMAGE_FILENAME = "spike_layer_cause_ptq_damage.csv"
 
 
 class SpikeLayerCauseError(RuntimeError):
     pass
-
-
-# ---------------------------------------------------------------------------
-# Part 0: extend trace_config.json with an IMAGENET100 entry
-# ---------------------------------------------------------------------------
 
 def _extend_trace_config_with_imagenet100(canonical_traces_csv: str) -> dict:
     path = _resolve_trace_config_path(canonical_traces_csv)
@@ -231,10 +209,6 @@ def _extend_trace_config_with_imagenet100(canonical_traces_csv: str) -> dict:
         config = json.load(f)
 
     if "datasets" not in config:
-        # First extension -- snapshot the existing (CIFAR10-implicit) top-level
-        # keys under datasets.CIFAR10 for symmetry, WITHOUT touching those
-        # top-level keys themselves (weight_ablation_canonical.py's
-        # _log_trace_config reads them directly and must keep working).
         config["datasets"] = {
             "CIFAR10": {
                 "batch_size": config["data"]["batch_size"],
@@ -281,11 +255,6 @@ def _extend_trace_config_with_imagenet100(canonical_traces_csv: str) -> dict:
     )
     return verify
 
-
-# ---------------------------------------------------------------------------
-# Loaders
-# ---------------------------------------------------------------------------
-
 def _build_hessian_loader(dataset_name: str) -> tuple[DataLoader, int]:
     cfg = DATASET_TRACE_CONFIG[dataset_name]
     _, val_loader, num_classes = get_data_loaders(dataset_name)
@@ -321,11 +290,6 @@ def _draw_kfac_batch(hessian_loader: DataLoader, cfg: dict, device: torch.device
     shuffled_loader = DataLoader(hessian_loader.dataset, batch_size=hessian_loader.batch_size, shuffle=True, num_workers=0, pin_memory=False)
     return _single_batch(shuffled_loader, cfg["num_batches"], device)
 
-
-# ---------------------------------------------------------------------------
-# Part 5 (+ Part 4 descriptors): KFAC forward/backward hooks
-# ---------------------------------------------------------------------------
-
 def _fan_in_out(weight: torch.Tensor) -> tuple[int, int]:
     out_c, in_c = weight.shape[0], weight.shape[1]
     receptive = 1
@@ -348,17 +312,6 @@ def _measure_kfac_and_descriptors(
     input_map, output_map, numel, tr_A, tr_G, A_per_infan, G_per_outfan.
     """
     model.eval()
-    # torchvision's resnet18/50 BasicBlock/Bottleneck use an inplace residual
-    # add (out += identity) directly in forward() -- not toggleable via any
-    # module .inplace flag, so _disable_inplace_ops (reused below for the
-    # inplace=True ReLUs) cannot fix this part. register_full_backward_hook
-    # is module-boundary-based and cannot coexist with that inplace add
-    # ("Output 0 of BackwardHookFunction is a view and is being modified
-    # inplace"). The standard workaround -- used here -- is to capture the
-    # gradient via Tensor.register_hook() on the output tensor itself from a
-    # plain register_forward_hook, which ties the hook to that tensor's own
-    # autograd node rather than to module-level bookkeeping, and is robust
-    # to whatever happens to the tensor's storage afterward.
     _disable_inplace_ops(model)
     named = dict(model.named_modules())
     layers = [(name, named[name]) for name in mapping_names if name in named]
@@ -417,11 +370,9 @@ def _measure_kfac_and_descriptors(
             kh, kw = module.kernel_size
             input_map = x.shape[2] * x.shape[3]
             output_map = g.shape[2] * g.shape[3]
-            # (N, fan_in, L) patches -- L == output_map by construction (same
-            # kernel/stride/padding/dilation as the conv itself).
             patches = F.unfold(x, kernel_size=module.kernel_size, dilation=module.dilation, padding=module.padding, stride=module.stride)
             tr_A = patches.pow(2).sum(dim=1).mean().item()
-            g_flat = g.flatten(2)  # (N, out_channels, L_out)
+            g_flat = g.flatten(2)  
             tr_G = g_flat.pow(2).sum(dim=1).mean().item()
         else:
             assert isinstance(module, nn.Linear), f"{name}: expected Conv2d or Linear, got {type(module).__name__}"
@@ -442,9 +393,6 @@ def _measure_kfac_and_descriptors(
     return results
 
 
-# ---------------------------------------------------------------------------
-# Part 2 + Part 3: per-layer traces, log-log regressions, size-independent residual
-# ---------------------------------------------------------------------------
 
 def _loglog_fit(xs: list[float], ys: list[float]) -> tuple[float, float, float]:
     """log10(y) ~ log10(x). Returns (slope, intercept, r2); NaNs if <3 usable (positive) points."""
@@ -619,11 +567,6 @@ def _write_kfac_rows(
 
     return mean_kfac
 
-
-# ---------------------------------------------------------------------------
-# Part 1: spike selection
-# ---------------------------------------------------------------------------
-
 def _spike_by_trace(trace_rows_fp32_fused: dict[str, dict]) -> str | None:
     if not trace_rows_fp32_fused:
         return None
@@ -706,11 +649,6 @@ def _write_spike_selection(model_name: str, dataset_name: str, spike_trace: str 
     }, SPIKE_SELECTION_FIELDNAMES)
     logger.info(f"[SpikeLayerCause] {model_name}/{dataset_name}: spike_by_trace={spike_trace} spike_by_damage={spike_damage} agreement={agreement}")
 
-
-# ---------------------------------------------------------------------------
-# Part 4: attribution regression (per dataset)
-# ---------------------------------------------------------------------------
-
 def _partial_corr(x: list[float], y: list[float], z: list[float]) -> float:
     """Pearson partial correlation of x,y controlling for z, via linear residualization."""
     x_arr, y_arr, z_arr = np.asarray(x, dtype=float), np.asarray(y, dtype=float), np.asarray(z, dtype=float)
@@ -760,11 +698,6 @@ def _run_attribution_regression(
         result[desc_name] = {"spearman_vs_residual": rho, "partial_corr_controlling_numel": pc}
     return result
 
-
-# ---------------------------------------------------------------------------
-# Part 6: resolution contrast + attribution CSV
-# ---------------------------------------------------------------------------
-
 def _spike_ag_share(spike_layer: str, kfac: dict[str, dict]) -> tuple[float, float]:
     """
     Elevation of the spike layer's A/G-per-fan factors above the model's
@@ -790,7 +723,7 @@ def _spike_ag_share(spike_layer: str, kfac: dict[str, dict]) -> tuple[float, flo
 
 
 def _classify_hypothesis(resid_ratio: float, spike_A_share: float, spike_G_share: float, layer_type: str) -> str:
-    if resid_ratio != resid_ratio:  # NaN
+    if resid_ratio != resid_ratio:
         return "undetermined"
     if spike_G_share == spike_G_share and spike_A_share == spike_A_share and spike_G_share > spike_A_share:
         return "mixed (backward/G-dominated -- neither H1 nor H3 alone)"
@@ -815,9 +748,6 @@ def _write_attribution_for_spike(
     if "CIFAR10" in datasets_present and "IMAGENET100" in datasets_present:
         r_cifar = per_dataset_residual["CIFAR10"][spike_layer]
         r_imagenet = per_dataset_residual["IMAGENET100"][spike_layer]
-        # residuals are log10-space and can be <=0; compare via the DIFFERENCE
-        # exponentiated back to a ratio-like quantity so a sign flip doesn't
-        # produce a meaningless negative "ratio".
         resid_ratio = 10 ** (r_imagenet - r_cifar) if (r_cifar == r_cifar and r_imagenet == r_imagenet) else float("nan")
 
     layer_type = ""
@@ -844,11 +774,6 @@ def _write_attribution_for_spike(
         f"resolution_contrast_ratio(IMAGENET100/CIFAR10 residual)={resid_ratio:.4g} -- hypothesis_supported={_classify_hypothesis(resid_ratio, float('nan'), float('nan'), layer_type)}"
     )
 
-
-# ---------------------------------------------------------------------------
-# Per model x dataset orchestration
-# ---------------------------------------------------------------------------
-
 def _run_model_dataset(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
     fp32_ckpt: str, ptq_ckpt: str | None,
@@ -863,7 +788,7 @@ def _run_model_dataset(
 
     unfused_skel = build_model(num_classes=num_classes, model_name=model_name, channels=channels, image_size=image_size)
     quant_skel = _build_quant_skeleton(model_name, num_classes, channels, image_size)
-    mapping = _build_layer_mapping(model_name, unfused_skel, quant_skel)   # raises QuantInducedMappingError
+    mapping = _build_layer_mapping(model_name, unfused_skel, quant_skel)
     del unfused_skel, quant_skel
     mapping_names = [row["canonical_name"] for row in mapping]
 
@@ -960,11 +885,6 @@ def _run_model_dataset(
         "layer_type_map": layer_type_map, "regression": regression,
     }
 
-
-# ---------------------------------------------------------------------------
-# Orchestration
-# ---------------------------------------------------------------------------
-
 def run_spike_layer_cause(
     checkpoint_dir: str | None,
     load_run_id: str | None,
@@ -1057,7 +977,7 @@ def run_spike_layer_cause(
 
         for dataset_name in datasets:
             label = f"{model_name}/{dataset_name}"
-            logger.info(f"[SpikeLayerCause] === {label} ===")
+            logger.info(f"[SpikeLayerCause] {label}")
             specs = DATASET_SPECS[dataset_name]
             fp32_models_dir, quant_dir = checkpoint_dirs_by_dataset[dataset_name]
 
@@ -1107,11 +1027,10 @@ def run_spike_layer_cause(
                 if s is not None:
                     spikes_seen.add(s)
 
-        # ---- Part 6: resolution contrast + attribution, once per candidate spike ----
         for spike_layer in spikes_seen:
             _write_attribution_for_spike(
                 model_name, spike_layer, per_dataset_regression, per_dataset_residual,
                 per_dataset_kfac, per_dataset_layer_type, attribution_csv,
             )
 
-    logger.info("[SpikeLayerCause] === Spike-Layer-Cause complete ===")
+    logger.info("[SpikeLayerCause] Spike-Layer-Cause complete")

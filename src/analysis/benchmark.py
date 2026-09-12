@@ -15,11 +15,6 @@ from torchao.quantization import (
 logger = logging.getLogger(__name__)
 
 DEFAULT_BATCH_SIZES = (1, 2, 4, 8, 16, 32, 64, 128)
-
-# torchao's quantize_() silently no-ops on layer types it doesn't recognize,
-# leaving plain fp32 weights behind. Any parameter whose runtime type isn't
-# one of these is a torchao quantized tensor subclass (e.g.
-# LinearActivationQuantizedTensor, IntxUnpackedToInt8Tensor).
 _UNQUANTIZED_PARAM_TYPES = ("Parameter", "Tensor")
 
 

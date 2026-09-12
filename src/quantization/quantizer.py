@@ -6,7 +6,6 @@ import torch.ao.quantization as tq
 class PowerOfTwoSTE(torch.autograd.Function):
     @staticmethod
     def forward(ctx, x, min_exp, max_exp):
-        # Prevent log2(0)
         x_safe = torch.where(x == 0, torch.tensor(1e-9, device=x.device), x)
         
         sign = torch.sign(x_safe)
@@ -17,7 +16,6 @@ class PowerOfTwoSTE(torch.autograd.Function):
 
     @staticmethod
     def backward(ctx, grad_output):
-        # Straight-Through Estimator passes gradient unmodified
         return grad_output, None, None
 
 class PowerOfTwoFakeQuantize(nn.Module):
@@ -30,7 +28,6 @@ class PowerOfTwoFakeQuantize(nn.Module):
         return PowerOfTwoSTE.apply(x, self.min_exp, self.max_exp)
 
 def get_asymmetric_activation_quantizer():
-    # Asymmetric INT8 quantization (0 to 255)
     return tq.FakeQuantize.with_args(
         observer=tq.MovingAverageMinMaxObserver,
         quant_min=0,
@@ -86,7 +83,6 @@ def replace_layers_for_quantization(module: nn.Module) -> None:
                 bias=(child.bias is not None)
             )
             
-            # Copy original FP32 parameters
             q_conv.weight.data.copy_(child.weight.data)
             if child.bias is not None:
                 q_conv.bias.data.copy_(child.bias.data)
@@ -107,14 +103,12 @@ def replace_layers_for_quantization(module: nn.Module) -> None:
             setattr(module, name, q_linear)
             
         else:
-            # Recursive call for sequential blocks (like ResNet layers)
             replace_layers_for_quantization(child)
             
 def calibrate_ptq(model: nn.Module, data_loader: torch.utils.data.DataLoader, 
                   device: torch.device, num_batches: int = 10) -> None:
     model.eval()
-    
-    # Enable observers to collect activation statistics
+
     model.apply(torch.ao.quantization.enable_observer)
     model.apply(torch.ao.quantization.enable_fake_quant)
     
@@ -129,7 +123,6 @@ def calibrate_ptq(model: nn.Module, data_loader: torch.utils.data.DataLoader,
             
             batches_processed += 1
             
-    # Disable observers, freeze calibration statistics
     model.apply(torch.ao.quantization.disable_observer)
     
 def fuse_model_architectures(model: nn.Module, model_name: str) -> None:
@@ -140,20 +133,17 @@ def fuse_model_architectures(model: nn.Module, model_name: str) -> None:
     model.eval() 
     
     if "resnet" in model_name:
-        # Fuse stem without ReLU
         tq.fuse_modules(model, [['conv1', 'bn1']], inplace=True)
         
         for module_name, module_container in model.named_children():
             if module_name.startswith("layer"):
                 for block in module_container:
-                    # Fuse internal blocks without ReLU
                     tq.fuse_modules(block, [['conv1', 'bn1'], ['conv2', 'bn2']], inplace=True)
                     
                     if hasattr(block, 'downsample') and block.downsample is not None:
                         tq.fuse_modules(block.downsample, [['0', '1']], inplace=True)
                         
     elif model_name == "cnn":
-        # Fuse custom CNN without ReLU
         tq.fuse_modules(model, [
             ['conv1', 'bn1'],
             ['conv2', 'bn2'],

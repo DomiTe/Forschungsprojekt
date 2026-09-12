@@ -918,7 +918,7 @@ def run_relock_traces(
         except (FileNotFoundError, WeightAblationCheckpointError) as exc:
             raise RelockTracesError(f"Part 1 requires {DIAGNOSIS_MODEL}/{DATASET_NAME} FP32 and PTQ checkpoints -- {exc}") from exc
 
-        logger.info(f"[RelockTraces] === Part 1: drift diagnosis on {DIAGNOSIS_MODEL} conv1 ===")
+        logger.info(f"[RelockTraces] Part 1: drift diagnosis on {DIAGNOSIS_MODEL} conv1")
         diag_canonical = _run_part1_drift_diagnosis(
             DIAGNOSIS_MODEL, diag_specs, diag_num_classes, device, diag_val_loader, orig_loader,
             diag_fp32_ckpt, diag_ptq_ckpt, anchors, drift_csv,
@@ -947,7 +947,7 @@ def run_relock_traces(
         logger.info(f"[RelockTraces] Part 1 skipped -- {DATASET_NAME} (its anchor dataset) not in requested datasets={datasets}")
 
     # ---- Part 2: canonical recompute, per requested dataset ----
-    logger.info(f"[RelockTraces] === Part 2: canonical recompute (frozen config only), datasets={datasets} ===")
+    logger.info(f"[RelockTraces] Part 2: canonical recompute (frozen config only), datasets={datasets}")
     for dataset_name in datasets:
         specs = DATASET_SPECS[dataset_name]
         trace_cfg = (
@@ -1007,7 +1007,7 @@ def run_relock_traces(
 
     # ---- Part 3: determinism check + reconciliation ledger (CIFAR10 anchor only) ----
     if DATASET_NAME in datasets and DIAGNOSIS_MODEL in mapping_by_model.get(DATASET_NAME, {}):
-        logger.info("[RelockTraces] === Part 3: determinism check + reconciliation ledger ===")
+        logger.info("[RelockTraces] Part 3: determinism check + reconciliation ledger")
         _run_part3_determinism(
             DIAGNOSIS_MODEL, DATASET_SPECS[DATASET_NAME], diag_num_classes, device, diag_val_loader, mapping_by_model[DATASET_NAME][DIAGNOSIS_MODEL],
             diag_fp32_ckpt, canonical_run_a=canonical_by_model.get(DIAGNOSIS_MODEL, {}).get("fp32_unfused"),
@@ -1019,4 +1019,4 @@ def run_relock_traces(
     else:
         logger.info(f"[RelockTraces] Part 3 skipped -- {DATASET_NAME} (its anchor dataset) not in requested datasets={datasets}")
 
-    logger.info("[RelockTraces] === Relock-Traces complete ===")
+    logger.info("[RelockTraces] Relock-Traces complete")

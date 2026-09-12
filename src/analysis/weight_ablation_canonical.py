@@ -103,8 +103,8 @@ from src.utility.config import CSV_DIR, DATASET_SPECS
 logger = logging.getLogger(__name__)
 
 DATASETS = ["CIFAR10", "IMAGENET100"]
-REQUIRED_MODELS = ["resnet18_no_weights", "resnet50_no_weights", "cnn"]   # resnet18 first -- run/report order per spec
-STAGES = ["PTQ", "QAT"]                                            # QAT optional, skipped with a warning if missing
+REQUIRED_MODELS = ["resnet18_no_weights", "resnet50_no_weights", "cnn"]
+STAGES = ["PTQ", "QAT"]
 
 SEED = 42
 
@@ -112,15 +112,7 @@ ABLATION_FIELDNAMES = [
     "model", "dataset", "stage", "layer", "hessian_trace_fused", "delta_w_sq", "delta_w_sq_per_param",
     "trh_times_dwsq", "fp32_acc", "isolated_acc", "weight_damage_pts", "abs_weight_damage_pts",
 ]
-# Signed vs. |damage| (see module docstring addendum below): PTQ damage is
-# mostly positive (quant hurts) and QAT damage is mostly negative (the QAT
-# model has adapted TO the quantized weights, so isolating one layer's quant
-# noise on an otherwise-FP32 forward pass reads as an IMPROVEMENT), but the
-# underlying quantity in both is the same sign-agnostic one: how much does
-# this layer's quantization state matter. abs_weight_damage_pts is the
-# primary correlation target (--damage-mode default "both" still reports
-# signed alongside it, never dropped -- the sign is what carries the
-# PTQ-vs-QAT distinction).
+
 CORRELATION_FIELDNAMES = [
     "model", "dataset", "stage", "predictor", "n_layers", "damage_mode",
     "spearman_rho_abs", "spearman_p_abs", "top5_overlap_abs", "conv1_damage_rank_abs",
@@ -131,12 +123,6 @@ CORRELATION_FIELDNAMES = [
 PREDICTORS = ["raw_trh", "dwsq", "trh_dwsq"]
 DAMAGE_MODES = ("signed", "abs", "both")
 PREDICTOR_SOURCE_COLUMNS = {"raw_trh": "hessian_trace_fused", "dwsq": "delta_w_sq", "trh_dwsq": "trh_times_dwsq"}
-
-# ---------------------------------------------------------------------------
-# Loss-based damage extension (see module docstring addendum far below):
-# adds fp32_loss/isolated_loss/loss_damage/abs_loss_damage alongside the
-# existing accuracy-only columns, incrementally written and resumable.
-# ---------------------------------------------------------------------------
 
 LOSS_ABLATION_FIELDNAMES = [
     "model", "dataset", "stage", "layer",
@@ -153,19 +139,8 @@ LOSS_CORRELATION_FIELDNAMES = [
     "conv1_predictor_rank",
 ]
 
-# Same tolerance philosophy as PATH_EQUIVALENCE_TOLERANCE_PTS in
-# _ablation_common.py: this reuses the exact same eval path (model, loader,
-# order, determinism), so any drift beyond float noise means something is
-# genuinely different between this sweep and the stored accuracy-only run,
-# not just re-run jitter.
 ACC_MATCH_TOLERANCE_PTS = 0.01
 
-# Cheapest-first combo order (Part 6 of the task spec): CIFAR10 is fast
-# regardless of model order (~9 min total for all 3 models x both stages in
-# the original accuracy-only run), so it keeps REQUIRED_MODELS' existing
-# resnet18/resnet50/cnn order; IMAGENET100 is reordered smallest-network-first
-# (cnn, resnet18, resnet50) so a partial overnight run leaves only the single
-# most expensive combo (resnet50/IMAGENET100, 54 layers) possibly unfinished.
 _IMAGENET100_MODEL_ORDER = ["cnn", "resnet18_no_weights", "resnet50_no_weights"]
 
 LOSS_COMBO_ORDER: list[tuple[str, str, str]] = (
@@ -177,16 +152,7 @@ LOSS_COMBO_ORDER: list[tuple[str, str, str]] = (
 class WeightAblationCanonicalError(RuntimeError):
     pass
 
-
-# ---------------------------------------------------------------------------
-# Canonical trace source (relock_traces.py's frozen-config output)
-# ---------------------------------------------------------------------------
-
 def _resolve_trace_config_path(canonical_traces_csv: str) -> str:
-    # trace_config.json is written as a sibling of the "csv" directory that
-    # canonical_traces.csv lives in (results/<RUN_ID>/trace_config.json vs.
-    # results/<RUN_ID>/csv/canonical_traces.csv) -- same sibling-directory
-    # convention as every other per-run artifact in this project.
     run_root = os.path.dirname(os.path.dirname(os.path.normpath(canonical_traces_csv)))
     return os.path.join(run_root, "trace_config.json")
 
@@ -235,11 +201,6 @@ def _load_canonical_traces(canonical_traces_csv: str, model_name: str, dataset_n
         )
     return {row["canonical_layer"]: (row["trace_raw"], row["weight_shape"]) for _, row in subset.iterrows()}
 
-
-# ---------------------------------------------------------------------------
-# Part 0: alignment gate (canonical trace layers <-> ablation layers)
-# ---------------------------------------------------------------------------
-
 def _align_canonical_to_ablation(
     model_name: str, canonical_traces: dict[str, tuple[float, str]], all_layer_names: list[str], model: nn.Module,
 ) -> dict[str, float]:
@@ -287,11 +248,6 @@ def _align_canonical_to_ablation(
     logger.info(f"[WeightAblationCanonical] {model_name}: Part 0 alignment gate PASSED -- {len(canon_names)} layers bijective and shape-matched")
     return {name: canonical_traces[name][0] for name in canon_names}
 
-
-# ---------------------------------------------------------------------------
-# Part 1: weight-only isolation damage
-# ---------------------------------------------------------------------------
-
 def _run_isolation_sweep(
     model_name: str, dataset_name: str, stage: str, quant_ckpt_path: str,
     num_classes: int, channels: int, image_size: int,
@@ -325,11 +281,6 @@ def _run_isolation_sweep(
 
     return damage
 
-
-# ---------------------------------------------------------------------------
-# Part 2: perturbation term ||delta W||^2
-# ---------------------------------------------------------------------------
-
 def _compute_delta_w_sq(
     model_name: str, quant_ckpt_path: str, num_classes: int, channels: int, image_size: int,
     device: torch.device, all_layer_names: list[str],
@@ -360,11 +311,6 @@ def _compute_delta_w_sq(
     if device.type == "cuda":
         torch.cuda.empty_cache()
     return result
-
-
-# ---------------------------------------------------------------------------
-# Part 3: correlations
-# ---------------------------------------------------------------------------
 
 def _rank_desc(values: dict[str, float], layer: str) -> int | None:
     if layer not in values:
@@ -456,11 +402,6 @@ def _run_correlations(
         + " | ".join(summary_lines)
     )
 
-    # Honest, non-cherry-picked verdict -- reported, not used to alter any CSV row.
-    # Always computed (both targets) regardless of --damage-mode, purely as a log
-    # message -- this is what motivated the |damage| reframing in the first place
-    # (conv1 sits at the top by |damage| in every configuration; signed rank
-    # buries this on QAT, where per-layer damage is mostly negative).
     if conv1_damage_rank_abs is not None:
         rho_raw_abs, _ = spearmanr([raw_trh[l] for l in layers], [damage_abs[l] for l in layers]) if n >= 3 else (float("nan"), float("nan"))
         rho_dwsq_abs, _ = spearmanr([dwsq[l] for l in layers], [damage_abs[l] for l in layers]) if n >= 3 else (float("nan"), float("nan"))
@@ -477,11 +418,6 @@ def _run_correlations(
             f"Interpretation left to the reader per predictor's numbers above -- not selected post hoc."
         )
 
-
-# ---------------------------------------------------------------------------
-# Orchestration
-# ---------------------------------------------------------------------------
-
 def _run_one_combo(
     model_name: str, dataset_name: str, stage: str, specs: dict, num_classes: int, device: torch.device,
     eval_loader: DataLoader, quant_ckpt_path: str, fp32_ckpt_path: str, canonical_traces_csv: str,
@@ -490,9 +426,6 @@ def _run_one_combo(
     channels, image_size = specs["channels"], specs["image_size"]
     label = f"{stage} {model_name}/{dataset_name}"
 
-    # ---- Part 0a: path-equivalence gate (reused unchanged from P1; this
-    # internally deferred-imports bake_pot_into_standard_layers from
-    # src.main itself, so it is not re-imported here) ----
     gate_passed, fp32_acc, weights_only_all_acc, all_layer_names, note = _run_part0(
         model_name, dataset_name, stage, quant_ckpt_path, fp32_ckpt_path,
         num_classes, channels, image_size, eval_loader, device,
@@ -501,7 +434,6 @@ def _run_one_combo(
         logger.error(f"[WeightAblationCanonical] {label}: Part 0 path-equivalence GATE FAILED -- {note}. Skipping.")
         return
 
-    # ---- Part 0b: canonical trace <-> ablation layer alignment ----
     variant = "fp32_fused_qat" if stage == "QAT" else "fp32_fused"
     
     try:
@@ -520,13 +452,11 @@ def _run_one_combo(
     finally:
         del probe_model
 
-    # ---- Part 1: weight-only isolation damage ----
     damage = _run_isolation_sweep(
         model_name, dataset_name, stage, quant_ckpt_path, num_classes, channels, image_size,
         eval_loader, device, fp32_acc, all_layer_names,
     )
 
-    # ---- Part 2: perturbation term ----
     dwsq_map = _compute_delta_w_sq(model_name, quant_ckpt_path, num_classes, channels, image_size, device, all_layer_names)
 
     for layer_name in all_layer_names:
@@ -541,7 +471,6 @@ def _run_one_combo(
             "weight_damage_pts": layer_damage, "abs_weight_damage_pts": abs(layer_damage),
         }, ABLATION_FIELDNAMES)
 
-    # ---- Part 3: correlations (decision) ----
     dwsq_only = {l: dwsq_map[l][0] for l in dwsq_map}
     _run_correlations(model_name, dataset_name, stage, damage, raw_trh, dwsq_only, correlation_csv, damage_mode=damage_mode)
 
@@ -580,12 +509,10 @@ def run_weight_ablation_canonical(
             logger.error(f"[WeightAblationCanonical] {dataset_name}: could not load dataset ({exc}) -- skipping dataset")
             continue
 
-        # Stage-outer, model-inner: resnet18/PTQ, resnet50/PTQ, then (if reached)
-        # resnet18/QAT, resnet50/QAT -- matches the spec's explicit run/report order.
         for stage in STAGES:
             for model_name in REQUIRED_MODELS:
                 label = f"{stage} {model_name}/{dataset_name}"
-                logger.info(f"[WeightAblationCanonical] === {label} ===")
+                logger.info(f"[WeightAblationCanonical] {label}")
                 try:
                     fp32_ckpt_path = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": dataset_name})
                     quant_ckpt_path = _resolve_checkpoint_robust(quant_dir, {"stage": stage, "model": model_name, "dataset": dataset_name})
@@ -611,43 +538,7 @@ def run_weight_ablation_canonical(
                     if device.type == "cuda":
                         torch.cuda.empty_cache()
 
-    logger.info("[WeightAblationCanonical] === Weight-Ablation-Canonical complete ===")
-
-
-# =============================================================================
-# Loss-based damage extension
-# =============================================================================
-"""
-Extends the accuracy-only isolation sweep above with per-layer isolated
-validation LOSS, not just accuracy -- both supervisors asked whether the
-damage metric should be loss-based, since the Hessian/Taylor motivation
-(Sec 3.3) is about loss, not accuracy. Reuses the isolation harness above
-unchanged (_run_part0's path-equivalence gate, _load_quant_model,
-_disable_activation_quant/_disable_weight_quant, _verify_weight_mask,
-_append_row) -- the only new logic is the eval call itself (loss+accuracy
-instead of accuracy-only, via train.py's _evaluate -- same mean-reduced
-CrossEntropyLoss already used everywhere else full-model loss is measured
-in this codebase, deliberately not a new reduction choice; see the trace-
-measurement discrepancy this project already documented in
-trace_reconciliation_ledger.csv for what happens when a "same" quantity is
-silently measured two different ways) and a validation gate comparing the
-freshly recomputed accuracy against the already-stored accuracy-only run
-(weight_ablation_canonical_v2.csv), since both should be numerically
-identical (same model, same loader, same order, same determinism).
-
-Sign convention: loss_damage(l) = loss_iso(l) - fp32_loss, positive = worse
-(loss went up), matching weight_damage(l) = fp32_acc - acc_iso(l), also
-positive = worse -- a reader comparing the two columns never has to mentally
-flip a sign.
-
-Designed to run unattended overnight: every row is appended and the file
-flushed immediately (_append_row, reused unchanged from
-diagnose_activations.py), and re-launching after an interruption skips any
-(model, dataset, stage, layer) already present in the output CSV rather than
-recomputing or duplicating it. The separate, fast correlation step
-(run_weight_ablation_loss_correlation, below) works against whatever subset
-of rows exists at the time it's run.
-"""
+    logger.info("[WeightAblationCanonical] Weight-Ablation-Canonical complete")
 
 
 def _existing_completed_keys(output_csv: str) -> set[tuple[str, str, str, str]]:
@@ -691,10 +582,6 @@ def _backup_existing_file(path: str) -> None:
 
 
 def _ensure_csv_with_header(path: str, fieldnames: list[str]) -> None:
-    # Part 2 requires accuracy_mismatch.csv to exist (with header) even on a
-    # completely clean run, so its absence is never confused with "the check
-    # never ran" -- _append_row alone only materializes the file on its first
-    # write, which would leave it missing entirely on a clean run.
     if os.path.exists(path):
         return
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -733,7 +620,6 @@ def _run_combo_loss_sweep(
     label = f"{stage} {model_name}/{dataset_name}"
     t0 = time.monotonic()
 
-    # ---- Part 0: reuse the unchanged path-equivalence gate + layer set ----
     gate_passed, fp32_acc_gate, _weights_only_acc, all_layer_names, note = _run_part0(
         model_name, dataset_name, stage, quant_ckpt_path, fp32_ckpt_path,
         num_classes, channels, image_size, eval_loader, device,
@@ -741,12 +627,6 @@ def _run_combo_loss_sweep(
     if not gate_passed:
         logger.error(f"[WeightAblationLoss] {label}: Part 0 path-equivalence GATE FAILED -- {note}. Skipping.")
         return 0, 0
-
-    # ---- FP32 baseline: loss + accuracy together (same eval, one extra
-    # forward pass over the full val set, once per combo -- _run_part0 above
-    # already paid for this pass via evaluate(); this second pass adds loss
-    # via _evaluate(), train.py's own mean-reduced-CrossEntropyLoss path,
-    # deliberately reused rather than reimplemented) ----
     fp32_model = _load_fp32_reference(model_name, fp32_ckpt_path, num_classes, channels, image_size).to(device)
     fp32_loss, fp32_acc = _evaluate(fp32_model, eval_loader, nn.CrossEntropyLoss(reduction="mean"), device)
     del fp32_model
@@ -809,8 +689,8 @@ def _run_combo_loss_sweep(
 
     elapsed = time.monotonic() - t0
     logger.info(
-        f"[WeightAblationLoss] === {label} block complete: {n_written} layer(s) computed, "
-        f"{n_skipped} already done (resumed), {len(all_layer_names)} total -- elapsed {elapsed:.1f}s ==="
+        f"[WeightAblationLoss] {label} block complete: {n_written} layer(s) computed, "
+        f"{n_skipped} already done (resumed), {len(all_layer_names)} total -- elapsed {elapsed:.1f}s"
     )
     return n_written, n_skipped
 
@@ -903,7 +783,7 @@ def run_weight_ablation_loss(
             logger.error(f"[WeightAblationLoss] {label}: checkpoint resolution AMBIGUOUS/NEAR-MISS -- {exc} -- skipping")
             continue
 
-        logger.info(f"[WeightAblationLoss] [{combo_idx}/{len(combos)}] === {label} ===")
+        logger.info(f"[WeightAblationLoss] [{combo_idx}/{len(combos)}] {label}")
         try:
             n_written, n_skipped = _run_combo_loss_sweep(
                 model_name, dataset_name, stage, specs, num_classes, device, eval_loader,
@@ -927,14 +807,9 @@ def run_weight_ablation_loss(
         )
 
     logger.info(
-        f"[WeightAblationLoss] === Weight-Ablation-Loss complete: {total_written} layer(s) newly written, "
-        f"{total_skipped} already done -- {output_csv} ==="
+        f"[WeightAblationLoss] Weight-Ablation-Loss complete: {total_written} layer(s) newly written, "
+        f"{total_skipped} already done -- {output_csv}"
     )
-
-
-# ---------------------------------------------------------------------------
-# Part 5: loss-based correlation (separate, fast, safe on partial data)
-# ---------------------------------------------------------------------------
 
 def run_weight_ablation_loss_correlation(
     loss_damage_csv: str,
@@ -1028,4 +903,4 @@ def run_weight_ablation_loss_correlation(
         writer = csv.DictWriter(f, fieldnames=LOSS_CORRELATION_FIELDNAMES)
         writer.writeheader()
         writer.writerows(rows)
-    logger.info(f"[WeightAblationLossCorrelation] === wrote {len(rows)} row(s) -> {output_csv} ===")
+    logger.info(f"[WeightAblationLossCorrelation] Wrote {len(rows)} row(s) -> {output_csv}")

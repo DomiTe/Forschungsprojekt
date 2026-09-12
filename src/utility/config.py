@@ -19,7 +19,6 @@ DATASET_NAME = "CIFAR10"
 
 DATASET_SPECS = {
     "CIFAR10":      {"image_size": 32,  "channels": 3, "num_classes": 10},
-    #"IMAGENET100":  {"image_size": 224, "channels": 3, "num_classes": 100},
 }
 
 if DATASET_NAME not in DATASET_SPECS:

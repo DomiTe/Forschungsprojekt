@@ -110,39 +110,20 @@ from src.utility.utils import get_data_loaders
 logger = logging.getLogger(__name__)
 
 DATASETS = ["CIFAR10", "IMAGENET100"]
-# resnet50 first -- it carries the headline conv1 spike this mode targets.
 ORDERED_MODELS = ["resnet50_no_weights", "resnet18_no_weights", "cnn"]
 REQUIRED_MODELS = {"resnet50_no_weights", "resnet18_no_weights", "cnn"}
 
-# Per-dataset Hessian-trace budget. CIFAR10 uses HESSIAN_NUM_BATCHES/
-# HESSIAN_MAX_ITER/HESSIAN_TOL below unchanged. IMAGENET100 is reduced --
-# 224x224 HVP cost is far higher per iteration than 32x32 -- matching
-# relock_traces.py's and spike_layer_cause.py's own IMAGENET100 budget for
-# consistency across the codebase's trace outputs.
 IMAGENET100_HESSIAN_CONFIG = {"num_batches": 3, "max_iter": 30, "tol": 1e-3}
 
-# Fixed and reset immediately before every estimator call, across every
-# variant -- the config-lock this mode's cross-variant ratios depend on.
 PROBE_SEED = 20260811
 
-# compute_layerwise_hessian_trace_pyhessian's own defaults -- passed
-# explicitly so the "identical estimator config across variants" requirement
-# is visible and locked regardless of upstream default drift.
 HESSIAN_NUM_BATCHES = 5
 HESSIAN_MAX_ITER = 100
 HESSIAN_TOL = 1e-3
 
-# Verdict thresholds (Part 2), applied to the reported number, never hidden:
-# ptq_amplification <= this counts as "approximately 1" -> fp32_intrinsic.
 AMP_INTRINSIC_MAX = 1.5
-# ptq_amplification >= this multiple of the model's median amplification
-# (and above AMP_INTRINSIC_MAX) -> quant_induced. Otherwise -> mixed.
 AMP_FAR_ABOVE_MEDIAN_MULT = 3.0
 
-# Banked-FP32-profile reconciliation (Part 2): a layer's relative difference
-# between the banked profile and this run's fresh fp32_unfused trace counts
-# as agreement if <= RECONCILE_TOLERANCE; the profiles are called matching
-# overall if at least RECONCILE_MATCH_FRACTION of common layers agree.
 RECONCILE_TOLERANCE = 0.3
 RECONCILE_MATCH_FRACTION = 0.8
 
@@ -170,11 +151,6 @@ class QuantInducedTraceError(RuntimeError):
 class QuantInducedMappingError(QuantInducedTraceError):
     """Part 0 gate failure -- bijection or shape check did not pass."""
     pass
-
-
-# ---------------------------------------------------------------------------
-# Part 0: forward-order enumeration, position+shape mapping gate
-# ---------------------------------------------------------------------------
 
 def _weight_layers_in_forward_order(model: nn.Module) -> list[tuple[str, nn.Module]]:
     return [(name, m) for name, m in model.named_modules() if isinstance(m, (nn.Conv2d, nn.Linear))]
@@ -228,11 +204,6 @@ def _build_layer_mapping(model_name: str, unfused_model: nn.Module, quantized_mo
     logger.info(f"[QuantInducedTrace] {model_name}: Part 0 gate PASSED -- {len(table)} layers bijective and shape-matched")
     return table
 
-
-# ---------------------------------------------------------------------------
-# Model construction / loading
-# ---------------------------------------------------------------------------
-
 def _load_unfused_fp32(model_name: str, ckpt_path: str, num_classes: int, channels: int, image_size: int, device: torch.device) -> nn.Module:
     model = build_model(num_classes=num_classes, model_name=model_name, channels=channels, image_size=image_size)
     model.load_state_dict(torch.load(ckpt_path, map_location="cpu", weights_only=True))
@@ -257,19 +228,11 @@ def _load_quantized(model_name: str, ckpt_path: str, num_classes: int, channels:
 
 
 def _make_fused_fp32(model: nn.Module, label: str) -> nn.Module:
-    # Both quantizers -> Identity, on every quantized layer. Verified
-    # immediately after -- fail loudly naming model/stage (via `label`)
-    # rather than silently tracing a still-quantized model.
     weight_layers = _disable_weight_quant(model)
     act_layers = _disable_activation_quant(model)
     _verify_identity_swap(model, "weight_fake_quant", weight_layers, label)
     _verify_identity_swap(model, "act_fake_quant", act_layers, label)
     return model
-
-
-# ---------------------------------------------------------------------------
-# Loader (eval-mode, num_workers=0, pin_memory=False, shuffle=False)
-# ---------------------------------------------------------------------------
 
 def _build_hessian_loader(dataset_name: str) -> tuple[DataLoader, int]:
     _, val_loader, num_classes = get_data_loaders(dataset_name)
@@ -278,11 +241,6 @@ def _build_hessian_loader(dataset_name: str) -> tuple[DataLoader, int]:
         shuffle=False, num_workers=0, pin_memory=False,
     )
     return hessian_loader, num_classes
-
-
-# ---------------------------------------------------------------------------
-# CSV writing helpers
-# ---------------------------------------------------------------------------
 
 def _nan_to_blank(v):
     if v is None:
@@ -348,11 +306,6 @@ def _trace_variant_multiseed(
         }, TRACES_FIELDNAMES)
 
     return aggregated
-
-
-# ---------------------------------------------------------------------------
-# Part 2: decomposition and classification
-# ---------------------------------------------------------------------------
 
 def _classify_verdict(amp: float, median_amp: float) -> str:
     if isinstance(amp, float) and math.isnan(amp):
@@ -432,11 +385,6 @@ def _decompose_and_classify(
 
     return per_layer
 
-
-# ---------------------------------------------------------------------------
-# Banked FP32 profile reconciliation
-# ---------------------------------------------------------------------------
-
 def _load_banked_fp32_profile(path: str, model_name: str, dataset_name: str) -> dict[str, float] | None:
     if not path or not os.path.exists(path):
         logger.warning(f"[QuantInducedTrace] banked FP32 profile not found at {path!r}")
@@ -510,11 +458,6 @@ def _reconcile_banked_profile(
     logger.info(f"[QuantInducedTrace] {label}: banked-profile reconciliation -- {note}")
     return matches, note
 
-
-# ---------------------------------------------------------------------------
-# Summary: conv1 spotlight, Spearman, reconciliation
-# ---------------------------------------------------------------------------
-
 def _write_summary(
     model_name: str, dataset_name: str, comparison_rows: list[dict], banked_profile_path: str | None, summary_csv_path: str,
 ) -> None:
@@ -579,11 +522,6 @@ def _write_summary(
         "note": reconcile_note,
     }, SUMMARY_FIELDNAMES)
 
-
-# ---------------------------------------------------------------------------
-# Orchestration
-# ---------------------------------------------------------------------------
-
 def _run_one_model(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
     hessian_loader: DataLoader, fp32_models_dir: str, quant_dir: str, banked_profile_path: str | None,
@@ -593,13 +531,11 @@ def _run_one_model(
     criterion = nn.CrossEntropyLoss()
     label = f"{model_name}/{dataset_name}"
 
-    # ---- Part 0: mapping gate (checkpoint-independent) ----
     unfused_skeleton = build_model(num_classes=num_classes, model_name=model_name, channels=channels, image_size=image_size)
     quant_skeleton = _build_quant_skeleton(model_name, num_classes, channels, image_size)
     mapping = _build_layer_mapping(model_name, unfused_skeleton, quant_skeleton)
     del unfused_skeleton, quant_skeleton
 
-    # ---- checkpoint resolution (robust, as in P1) ----
     try:
         fp32_ckpt = _resolve_checkpoint_robust(fp32_models_dir, {"model": model_name, "dataset": dataset_name})
     except FileNotFoundError as exc:
@@ -619,7 +555,6 @@ def _run_one_model(
         except WeightAblationCheckpointError as exc:
             logger.error(f"[QuantInducedTrace] {label}: {stage} checkpoint resolution AMBIGUOUS/NEAR-MISS -- {exc} -- skipping {stage} stage")
 
-    # ---- Part 1: trace the variants ----
     traces: dict[str, dict[str, float]] = {}
 
     model = _load_unfused_fp32(model_name, fp32_ckpt, num_classes, channels, image_size, device)
@@ -674,7 +609,6 @@ def _run_one_model(
     if "ptq" not in traces and "qat" not in traces:
         logger.warning(f"[QuantInducedTrace] {label}: neither PTQ nor QAT checkpoint available -- decomposition will be all-NaN, only fp32_unfused recorded")
 
-    # ---- Part 2: decomposition + reconciliation ----
     comparison_rows = _decompose_and_classify(model_name, dataset_name, mapping, traces, comparison_csv)
     _write_summary(model_name, dataset_name, comparison_rows, banked_profile_path, summary_csv)
 
@@ -738,7 +672,7 @@ def run_quant_induced_trace(
             continue
 
         for model_name in ORDERED_MODELS:
-            logger.info(f"[QuantInducedTrace] === {model_name}/{dataset_name} ===")
+            logger.info(f"[QuantInducedTrace] {model_name}/{dataset_name}")
             try:
                 _run_one_model(
                     model_name, dataset_name, specs, num_classes, device,
@@ -758,4 +692,4 @@ def run_quant_induced_trace(
                 if device.type == "cuda":
                     torch.cuda.empty_cache()
 
-    logger.info("[QuantInducedTrace] === Quant-Induced-Trace complete ===")
+    logger.info("[QuantInducedTrace] Quant-Induced-Trace complete")

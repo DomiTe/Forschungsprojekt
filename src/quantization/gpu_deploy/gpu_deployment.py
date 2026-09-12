@@ -82,11 +82,6 @@ def build_int8_model(
     "int8" label is exactly the bug this function exists to make
     impossible. Do not loosen this check.
     """
-    # Deferred import: bake_pot_into_standard_layers lives in main.py, which
-    # imports this module (transitively, via validate_pot/benchmark
-    # callers) at top level -- importing it at module scope here would be
-    # circular. By the time this function actually runs, src.main has
-    # finished loading.
     from src.main import bake_pot_into_standard_layers
     from src.model_cnn.train import build_model
     from src.quantization.quantizer import fuse_model_architectures, replace_layers_for_quantization

@@ -30,18 +30,7 @@ from src.utility.utils import get_data_loaders
 
 logger = logging.getLogger(__name__)
 
-# Hard gate (Part 0): the act_fake_quant->Identity construction and the
-# bake_pot_into_standard_layers construction both apply the same weight
-# quantizer to the same weights with activations untouched, so they must
-# land within a fraction of a point of each other (a few samples' worth of
-# noise at most). This is self-consistent per model x stage -- it needs no
-# remembered "expected" accuracy table.
 PATH_EQUIVALENCE_TOLERANCE_PTS = 0.1
-
-# Soft sanity note only (Part 0): independently-known accuracies from prior
-# runs, logged as a WARNING (not a hard failure) if the freshly-computed
-# numbers drift far from them. Combos not listed here have no known
-# reference yet and are simply not checked.
 SOFT_KNOWN_ANCHORS = {
     ("resnet50_no_weights", "CIFAR10", "PTQ"): {"fp32_acc": 80.56, "weights_only_acc": 75.46},
 }
@@ -63,16 +52,7 @@ class WeightAblationCheckpointError(RuntimeError):
     """
     pass
 
-
-# ---------------------------------------------------------------------------
-# Robust checkpoint path resolution
-# ---------------------------------------------------------------------------
-
 def _normalize_token(s: str) -> str:
-    # Case-insensitive, treats spaces/dots/underscores/hyphens as equivalent
-    # (stripped entirely) so "PTQ", "ptq", " ptq", "ptq." etc. all normalize
-    # the same, and "resnet50_no_weights" / "resnet50.no.weights" /
-    # "ResNet50 No Weights" all normalize to "resnet50noweights".
     return re.sub(r"[\s._-]+", "", s.lower())
 
 
@@ -142,13 +122,6 @@ def _resolve_checkpoint_robust(directory: str, tokens: dict[str, str]) -> str:
         f"({len(all_files)} .pt files present: {all_files})"
     )
 
-
-# ---------------------------------------------------------------------------
-# Eval loader: num_workers=0, pin_memory=False, shuffle=False (explicit, per
-# this mode's constraints -- overrides the get_data_loaders default of
-# num_workers=8 / PIN_MEMORY=True on CUDA machines).
-# ---------------------------------------------------------------------------
-
 def _build_eval_loader(dataset_name: str) -> tuple[DataLoader, int]:
     _, val_loader, num_classes = get_data_loaders(dataset_name)
     eval_loader = DataLoader(
@@ -156,16 +129,6 @@ def _build_eval_loader(dataset_name: str) -> tuple[DataLoader, int]:
         shuffle=False, num_workers=0, pin_memory=False,
     )
     return eval_loader, num_classes
-
-
-# ---------------------------------------------------------------------------
-# Weight-mask verification: exactly the given set of layers has an active
-# (non-Identity) weight_fake_quant, every other quantized layer's
-# weight_fake_quant is Identity, and every act_fake_quant is Identity. One
-# generic check covers the isolation case (one active layer), the
-# leave-one-out case (all but one active), the weights-only-via-Identity
-# case (all active), and the both-Identity case (none active).
-# ---------------------------------------------------------------------------
 
 def _verify_weight_mask(model: nn.Module, expected_active_layers: set[str], label: str) -> None:
     for name, module in model.named_modules():
@@ -186,10 +149,6 @@ def _verify_weight_mask(model: nn.Module, expected_active_layers: set[str], labe
                 f"would silently measure the wrong configuration."
             )
 
-
-# ---------------------------------------------------------------------------
-# Part 0: anchors + self-consistent path-equivalence gate
-# ---------------------------------------------------------------------------
 
 def _soft_anchor_check(model_name: str, dataset_name: str, stage: str, fp32_acc: float, weights_only_acc: float) -> None:
     label = f"{stage} {model_name}/{dataset_name}"
@@ -231,14 +190,12 @@ def _run_part0(
 
     label = f"{stage} {model_name}/{dataset_name}"
 
-    # 1. FP32 reference.
     fp32_model = _load_fp32_reference(model_name, fp32_ckpt_path, num_classes, channels, image_size).to(device)
     fp32_acc = evaluate(fp32_model, eval_loader, device)
     del fp32_model
     if device.type == "cuda":
         torch.cuda.empty_cache()
 
-    # 2. Weights-only via act_fake_quant -> Identity (the construction Part 1 depends on).
     model_identity, _, _ = _load_quant_model(model_name, quant_ckpt_path, num_classes, channels, image_size)
     model_identity = model_identity.to(device)
     all_layer_names = [
@@ -252,7 +209,6 @@ def _run_part0(
     if device.type == "cuda":
         torch.cuda.empty_cache()
 
-    # 3. Weights-only via baking (structurally independent trusted reference).
     model_to_bake, _, _ = _load_quant_model(model_name, quant_ckpt_path, num_classes, channels, image_size)
     model_to_bake = model_to_bake.to(device)
     baked_model = bake_pot_into_standard_layers(model_to_bake).to(device)
@@ -267,10 +223,6 @@ def _run_part0(
         f"({len(all_layer_names)} layers)"
     )
 
-    # Hard gate: the two weights-only constructions must agree -- they apply
-    # the identical weight quantizer to identical weights with activations
-    # untouched, so any divergence beyond a few samples means the Identity
-    # swap the isolation sweep depends on is not equivalent to baking.
     path_diff = abs(acc_identity - acc_baked)
     gate_passed = path_diff < PATH_EQUIVALENCE_TOLERANCE_PTS
     logger.info(
@@ -281,12 +233,6 @@ def _run_part0(
 
     _soft_anchor_check(model_name, dataset_name, stage, fp32_acc, acc_identity)
 
-    # Optional end-to-end check: both quantizers -> Identity should reproduce
-    # the FP32 reference for PTQ (weights untouched by PTQ training, fusion
-    # is exact in eval). For QAT this instead reflects the QAT-trained
-    # weights' own clean-forward accuracy -- QAT continued training beyond
-    # the frozen FP32 baseline checkpoint, so it is NOT expected to match
-    # fp32_acc; logged purely as an informational note, never gated.
     model_both, _, _ = _load_quant_model(model_name, quant_ckpt_path, num_classes, channels, image_size)
     model_both = model_both.to(device)
     _disable_activation_quant(model_both)

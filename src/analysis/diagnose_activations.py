@@ -72,10 +72,6 @@ from src.utility.utils import get_data_loaders
 
 logger = logging.getLogger(__name__)
 
-# A small slice of one validation batch is enough to characterize each
-# layer's activation distribution; capturing all ~50+ quantized layers'
-# pre-quantization tensors simultaneously via hooks on a full TEST_BATCH_SIZE
-# (512) batch would be needlessly memory-heavy for resnet50.
 RANGE_STATS_BATCH_SIZE = 64
 CUMULATIVE_ABLATION_TOP_K = 5
 
@@ -113,15 +109,7 @@ def _append_row(path: str, row: dict, fieldnames: list[str]) -> None:
     logger.info(f"[DiagnoseActivations] row appended -> {path}")
 
 
-# ---------------------------------------------------------------------------
-# Checkpoint resolution
-# ---------------------------------------------------------------------------
-
 def _resolve_fp32_models_dir(checkpoint_dir: str | None, load_run_id: str | None) -> str:
-    # baseline_{model}_{dataset}_float32.pt lives in the "models" directory
-    # that sits next to "quantized_models" under the same run -- same sibling-
-    # directory convention used for layerwise_hessian_traces.csv in
-    # src/analysis/layer_ablation.py.
     if checkpoint_dir:
         run_root = os.path.dirname(os.path.normpath(checkpoint_dir))
         path = os.path.join(run_root, "models")
@@ -137,11 +125,6 @@ def _fp32_checkpoint_path(models_dir: str, model_name: str, dataset_name: str) -
     if not os.path.exists(path):
         raise FileNotFoundError(f"Missing FP32 baseline checkpoint: {path}")
     return path
-
-
-# ---------------------------------------------------------------------------
-# Model reconstruction
-# ---------------------------------------------------------------------------
 
 def _load_quant_model(
     model_name: str, checkpoint_path: str, num_classes: int, channels: int, image_size: int,
@@ -166,11 +149,6 @@ def _load_fp32_reference(
     model.load_state_dict(torch.load(checkpoint_path, map_location=device, weights_only=True))
     model.eval()
     return model
-
-
-# ---------------------------------------------------------------------------
-# Part 0: observer calibration gate
-# ---------------------------------------------------------------------------
 
 def _check_observer_calibration(
     model: nn.Module, missing_keys: list[str], unexpected_keys: list[str], label: str,
@@ -266,11 +244,6 @@ def _run_load_check(
     logger.info(f"[DiagnoseActivations] {label}: GATE PASSED -- observers calibrated, proceeding to Parts 1-3")
     return True
 
-
-# ---------------------------------------------------------------------------
-# Identity-based quantizer disabling (uniform for both quantizer types)
-# ---------------------------------------------------------------------------
-
 def _disable_activation_quant(model: nn.Module, layer_names: set[str] | None = None) -> list[str]:
     disabled = []
     for name, module in model.named_modules():
@@ -301,11 +274,6 @@ def _verify_identity_swap(model: nn.Module, attr_name: str, layer_names: list[st
                 f"(got {type(target).__name__}) -- modification did not take effect, "
                 f"evaluating now would silently measure an unmodified model."
             )
-
-
-# ---------------------------------------------------------------------------
-# Part 1: damage decomposition
-# ---------------------------------------------------------------------------
 
 def _run_decomposition(
     model_name: str, dataset_name: str, stage: str,
@@ -359,11 +327,6 @@ def _run_decomposition(
 
     return full_acc
 
-
-# ---------------------------------------------------------------------------
-# Part 2: per-layer activation range statistics
-# ---------------------------------------------------------------------------
-
 def _get_observer(act_fq: nn.Module, label: str, layer_name: str):
     if not hasattr(act_fq, "activation_post_process"):
         logger.error(
@@ -378,12 +341,6 @@ def _get_observer(act_fq: nn.Module, label: str, layer_name: str):
 
 
 def _collect_activation_tensors(model: nn.Module, batch_input: torch.Tensor) -> dict[str, torch.Tensor]:
-    # Hooked on act_fake_quant's INPUT (a forward_pre_hook), not its output --
-    # the input is the raw pre-quantization conv/linear activation, i.e. the
-    # actual signal the calibrated observer range was fit to. The output
-    # would already be clamped/dequantized to within the calibrated range by
-    # construction, making any outlier/range comparison against that range
-    # trivially bounded and meaningless.
     tensors: dict[str, torch.Tensor] = {}
     handles = []
 
@@ -430,12 +387,6 @@ def _draw_range_batch(val_loader, seed: int, single_seed_mode: bool) -> torch.Te
 
 
 _RANGE_METRICS = ("calib_min", "calib_max", "range_width", "scale", "zero_point", "act_p99", "act_p999", "act_max", "outlier_factor", "range_over_p99")
-
-# torch.quantile refuses tensors with more elements than this (2^24). ImageNet100's
-# 224x224 inputs make early-layer activation tensors far larger than CIFAR10's
-# (32x32) ever were, so this is routinely hit there. Subsample with a fixed
-# generator seed for reproducibility -- the exact p99/p999 of a >16M-element
-# activation tensor from a fixed subsample is stable enough for range diagnostics.
 _QUANTILE_MAX_ELEMENTS = 16_000_000
 _QUANTILE_SUBSAMPLE_SEED = 0
 
@@ -498,14 +449,6 @@ def _run_range_analysis(
             }, RANGES_FIELDNAMES)
 
         per_seed_layer_metrics[seed] = layer_metrics
-
-    # Aggregate across seeds per layer -- mean for every batch-dependent
-    # metric (calib_min/max/scale/zero_point aren't actually batch-
-    # dependent, since they come from the calibrated observer, not the
-    # drawn batch; averaging them is a harmless no-op when they're constant
-    # across seeds). metric_std reports the std of outlier_factor
-    # specifically -- the one metric Part 3's cumulative ablation actually
-    # ranks/selects layers by, and this schema's single std column.
     all_layers: set[str] = set()
     for lm in per_seed_layer_metrics.values():
         all_layers.update(lm.keys())
@@ -536,11 +479,6 @@ def _run_range_analysis(
     )
 
     return ranked_desc
-
-
-# ---------------------------------------------------------------------------
-# Part 3: cumulative activation-quantization ablation
-# ---------------------------------------------------------------------------
 
 def _run_cumulative_ablation(
     model_name: str, dataset_name: str, stage: str,
@@ -583,11 +521,6 @@ def _run_cumulative_ablation(
                 "disabled_layers": ";".join(disabled_so_far), "outlier_factor": outlier_factor,
                 "baseline_acc": baseline_acc, "ablated_acc": ablated_acc, "recovery_pts": recovery_pts,
             }, ABLATION_FIELDNAMES)
-
-
-# ---------------------------------------------------------------------------
-# Orchestration
-# ---------------------------------------------------------------------------
 
 def run_diagnose_activation_quant(
     checkpoint_dir: str | None,
@@ -632,7 +565,7 @@ def run_diagnose_activation_quant(
         for model_name in MODELS:
             for stage in STAGES:
                 label = f"{stage} {model_name}/{dataset_name}"
-                logger.info(f"[DiagnoseActivations] === {label} ===")
+                logger.info(f"[DiagnoseActivations] {label}")
 
                 try:
                     quant_ckpt_path = _checkpoint_path(resolved_checkpoint_dir, stage, model_name, dataset_name)
@@ -641,7 +574,6 @@ def run_diagnose_activation_quant(
                     logger.warning(f"[DiagnoseActivations] {label}: missing checkpoint ({exc}) -- skipping")
                     continue
 
-                # ---- Part 0: gate ----
                 loaded_model, missing_keys, unexpected_keys = _load_quant_model(
                     model_name, quant_ckpt_path, num_classes, channels, image_size,
                 )
@@ -652,7 +584,6 @@ def run_diagnose_activation_quant(
                     del loaded_model
                     continue
 
-                # ---- Part 1: decomposition ----
                 fp32_model = _load_fp32_reference(model_name, fp32_ckpt_path, num_classes, channels, image_size)
                 full_acc = _run_decomposition(
                     model_name, dataset_name, stage, loaded_model, fp32_model, val_loader, eval_subset,
@@ -660,12 +591,10 @@ def run_diagnose_activation_quant(
                 )
                 del fp32_model
 
-                # ---- Part 2: per-layer activation range statistics ----
                 ranked_layers = _run_range_analysis(
                     model_name, dataset_name, stage, loaded_model, val_loader, ranges_csv, seeds,
                 )
 
-                # ---- Part 3: cumulative activation ablation (top vs. low outlier control) ----
                 _run_cumulative_ablation(
                     model_name, dataset_name, stage, loaded_model, val_loader, eval_subset,
                     full_acc, ranked_layers, ablation_csv,
@@ -673,4 +602,4 @@ def run_diagnose_activation_quant(
 
                 del loaded_model
 
-    logger.info("[DiagnoseActivations] === Diagnose-Activation-Quant complete ===")
+    logger.info("[DiagnoseActivations] Diagnose-Activation-Quant complete")

@@ -3,9 +3,6 @@ import logging
 import torch
 import torch.nn as nn
 from pyhessian import hessian
-
-# Shared with the trace module; both need the same batch-prep and
-# layer-selection logic, so import rather than duplicate.
 from src.analysis.pyhessian import _single_batch, _target_layers
 
 logger = logging.getLogger(__name__)
@@ -48,12 +45,8 @@ def compute_top_eigenvalue(
     use_cuda = device.type == "cuda"
 
     for name, param in target_layers.items():
-        # Fresh engine per layer; __init__ runs one create_graph backward and
-        # populates params/gradsH from all requires_grad params.
         hessian_comp = hessian(model, criterion, data=(inputs, targets), cuda=use_cuda)
 
-        # Restrict the engine to this layer's weight by identity match, so
-        # power iteration estimates lambda_max of the block H_ii only.
         try:
             idx = next(i for i, p in enumerate(hessian_comp.params) if p is param)
         except StopIteration:
@@ -63,7 +56,6 @@ def compute_top_eigenvalue(
         hessian_comp.params = [hessian_comp.params[idx]]
         hessian_comp.gradsH = [hessian_comp.gradsH[idx]]
 
-        # eigenvalues() returns (values, vectors); top_n=1 gives the largest.
         top_values, _ = hessian_comp.eigenvalues(maxIter=max_iter, tol=tol, top_n=1)
         eigenvalues[name] = float(top_values[-1])
         logger.info(f"[PyHessian] {name}: lambda_max={eigenvalues[name]:.4f}")

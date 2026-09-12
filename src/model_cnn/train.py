@@ -15,7 +15,6 @@ import torch.distributed as dist
 from torch.nn.parallel import DistributedDataParallel as DDP
 
 from src.utility.config import (
-    # DEVICE,
     EPOCHS,
     LEARNING_RATE,
     WEIGHT_DECAY,
@@ -35,17 +34,12 @@ from src.utility.utils import TimingTracker, plot_training_curves, get_model_siz
 logger = logging.getLogger(__name__)
 
 def _reduce_metrics(loss: float, correct: int, total: int, device: torch.device) -> tuple[float, int, int]:
-    # Reference: PyTorch Distributed Communication documentation
     if not dist.is_initialized():
         return loss, correct, total
         
     metrics = torch.tensor([loss, correct, total], dtype=torch.float64, device=device)
     dist.all_reduce(metrics, op=dist.ReduceOp.SUM)
     return metrics[0].item(), int(metrics[1].item()), int(metrics[2].item())
-
-# ---------------------------------------------------------------------------
-# Model factory
-# ---------------------------------------------------------------------------
 
 def build_model(num_classes: int, 
                 model_name: str, 
@@ -72,11 +66,6 @@ def build_model(num_classes: int,
     else:
         raise ValueError(f"Unknown model_name '{model_name}'. "
                          "Choose: cnn | resnet18_scratch | resnet18_no_weights | resnet50_no_weights")
-
-
-# ---------------------------------------------------------------------------
-# Core training function
-# ---------------------------------------------------------------------------
 
 def train_model(
     train_loader: torch.utils.data.DataLoader,
@@ -115,11 +104,6 @@ def train_model(
     timing_path   = os.path.join(CSV_DIR,    f"timing_{model_name}_{dataset_name}.csv")
     curves_path   = os.path.join(LOG_DIR,    f"training_curves_{model_name}_{dataset_name}.png")
 
-    # model = build_model(num_classes, model_name, channels, image_size).to(DEVICE)
-    # logger.info(f"Model: {model_name} | Dataset: {dataset_name} | "
-    #             f"Size: {get_model_size(model):.2f} MB | "
-    #             f"Params: {sum(p.numel() for p in model.parameters() if p.requires_grad):,}")
-
     criterion = nn.CrossEntropyLoss()
 
     optimizer = optim.SGD(
@@ -145,7 +129,6 @@ def train_model(
         if dist.is_initialized() and hasattr(train_loader.sampler, "set_epoch"):
             train_loader.sampler.set_epoch(epoch)
 
-        # --- Training phase -------------------------------------------------
         timer.start_split("train")
         model.train()
         running_loss, correct, total = 0.0, 0, 0
@@ -168,7 +151,6 @@ def train_model(
         train_acc  = 100.0 * sync_correct / sync_total
         timer.end_split()
 
-        # --- Validation phase -----------------------------------------------
         timer.start_split("val")
         val_loss, val_acc = _evaluate(model, val_loader, criterion, device)
         timer.end_split()
@@ -176,7 +158,6 @@ def train_model(
         record = timer.end_epoch(epoch)
         scheduler.step()
 
-        # --- Logging --------------------------------------------------------
         if is_main:
             lr_now = optimizer.param_groups[0]["lr"]
             logger.info(
@@ -193,7 +174,6 @@ def train_model(
         
         if val_acc - best_acc >= MIN_DELTA:
             epochs_without_improvement = 0
-            # logger.info(f"Significant change in accuracy detected") 
         else:
             epochs_without_improvement += 1
 
@@ -210,10 +190,7 @@ def train_model(
             if is_main:
                 logger.info(f"No improvement for {PATIENCE} epochs. Stopping early.")
             break
-        
 
-
-    # --- Finalise -----------------------------------------------------------
     if is_main:
         if best_state is not None:
             unwrapped = model.module if hasattr(model, "module") else model
@@ -226,11 +203,6 @@ def train_model(
         plot_training_curves(history, save_path=curves_path)
 
     return model, history, timer
-
-
-# ---------------------------------------------------------------------------
-# Evaluation helper
-# ---------------------------------------------------------------------------
 
 def _evaluate(
     model:      nn.Module,

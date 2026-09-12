@@ -16,7 +16,6 @@ def train_qat(
     qat_model = copy.deepcopy(ptq_model).to(device)
     qat_model.train()
     
-    # Enable fake quant (STE) and observers
     qat_model.apply(torch.ao.quantization.enable_fake_quant)
     qat_model.apply(torch.ao.quantization.enable_observer)
 
@@ -26,7 +25,6 @@ def train_qat(
         lr=lr, momentum=0.9, weight_decay=1e-4
     )
     
-    # Cosine annealing decaying to 1e-6
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-6)
 
     history = {"train_loss": [], "val_loss": [], "train_acc": [], "val_acc": []}
@@ -35,18 +33,14 @@ def train_qat(
     best_acc = 0.0
     best_state = None
     
-    # Calculate when to freeze observers (e.g., epoch 8 out of 10)
     freeze_epoch = max(1, min(epochs, int(epochs * 0.8)))
 
     for epoch in range(1, epochs + 1):
         timer.start_epoch()
         
-        # Freeze observers near the end to stabilize calibration scales
         if epoch == freeze_epoch:
             qat_model.apply(torch.ao.quantization.disable_observer)
-            # Fake quant remains enabled so gradients continue to flow
             
-        # --- Training phase ---
         timer.start_split("train")
         qat_model.train()
         running_loss, correct, total = 0.0, 0, 0
@@ -69,7 +63,6 @@ def train_qat(
         train_acc = 100.0 * correct / total
         timer.end_split()
 
-        # --- Validation phase ---
         timer.start_split("val")
         qat_model.eval()
         val_loss, val_acc = 0.0, 0.0
@@ -91,7 +84,6 @@ def train_qat(
         timer.end_split()
         timer.end_epoch(epoch)
         
-        # Step the scheduler
         scheduler.step()
 
         history["train_loss"].append(train_loss)

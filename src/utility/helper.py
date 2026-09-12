@@ -3,6 +3,14 @@ import argparse
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--log-level",
+        type=str,
+        default="WARNING",
+        choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
+        help="Root logger level. Default WARNING keeps third-party traces and routine "
+             "informational messages silent; use INFO or DEBUG for verbose output."
+    )
+    parser.add_argument(
         "--skip-training",
         action="store_true",
         help="Load saved FP32 models instead of training from scratch"

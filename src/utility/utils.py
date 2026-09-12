@@ -1,31 +1,19 @@
-"""
-utils.py — data loaders, logging, timing, and plotting helpers.
-
-New additions compared to the original:
-  - ImageNet loader (_get_imagenet_loaders)
-  - ImageNet100 loader (_get_imagenet100_loaders)
-  - TimingTracker  — records per-epoch and total train/val wall-clock times
-  - save_timing_csv — persists timing results
-  - Normalisation means/stds added for CIFAR datasets
-  - measure_throughput — single-batch-shape latency/throughput benchmark
-"""
+"""Data loaders, logging setup, timing, and plotting helpers."""
 
 import os
 import sys
 import csv
-import copy
 import time
 import logging
 
 import torch
 import matplotlib.pyplot as plt
 from torchvision import datasets, transforms
-from torch.utils.data import DataLoader, random_split
+from torch.utils.data import DataLoader
 
 from src.utility.config import (
     PIN_MEMORY,
     DATA_DIR,
-    # IMAGENET_DIR,
     IMAGENET100_DIR,
     LOG_DIR,
     CSV_DIR,
@@ -37,22 +25,10 @@ from src.utility.config import (
 
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Normalisation statistics
-# ---------------------------------------------------------------------------
 _NORM = {
-    # "MNIST":         {"mean": (0.1307,),                   "std": (0.3081,)},
-    # "FASHION_MNIST": {"mean": (0.2860,),                   "std": (0.3530,)},
     "CIFAR10":       {"mean": (0.4914, 0.4822, 0.4465),    "std": (0.2023, 0.1994, 0.2010)},
-    # "CIFAR100":      {"mean": (0.5071, 0.4867, 0.4408),    "std": (0.2675, 0.2565, 0.2761)},
-    # "POKEMON":       {"mean": (0.5,    0.5,    0.5),       "std": (0.5,    0.5,    0.5)},
     "IMAGENET100":   {"mean": (0.485,  0.456,  0.406),     "std": (0.229,  0.224,  0.225)},
 }
-
-
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
 
 def get_model_size(model: torch.nn.Module) -> float:
     """Model parameter + buffer size in MB (theoretical, in-memory)."""
@@ -73,11 +49,7 @@ def get_data_loaders(dataset_name: str = DATASET_NAME, batch_size: int | None = 
         raise ValueError(f"Unknown dataset: {dataset_name}")
     image_size = DATASET_SPECS[dataset_name]["image_size"]
     dispatch = {
-        # "MNIST":         _get_mnist_loaders,
-        # "FASHION_MNIST": _get_fashion_loaders,
         "CIFAR10":       _get_cifar10_loaders,
-        # "CIFAR100":      _get_cifar100_loaders,
-        # "POKEMON":       _get_pokemon_loaders,
         "IMAGENET100":   _get_imagenet100_loaders,
     }
     return dispatch[dataset_name](image_size, batch_size)
@@ -130,11 +102,6 @@ def measure_throughput(
         "throughput_fps": throughput_fps,
     }
 
-
-# ---------------------------------------------------------------------------
-# Timing tracker
-# ---------------------------------------------------------------------------
-
 class TimingTracker:
     """
     Lightweight per-epoch wall-clock timer.
@@ -148,7 +115,7 @@ class TimingTracker:
             validate(...)
             tracker.split("val")
             tracker.end_epoch()
-        tracker.summary()        # prints table
+        tracker.summary()
         tracker.save_csv(path)
     """
 
@@ -182,7 +149,6 @@ class TimingTracker:
 
     def end_epoch(self, epoch: int | None = None) -> dict:
         """Finalise the epoch; returns the record dict."""
-        # Close the last open split
         if self._split_start is not None:
             self.end_split()
 
@@ -197,15 +163,8 @@ class TimingTracker:
     def summary(self) -> None:
         if not self.records:
             return
-        keys = list(self.records[0].keys())
-        header = " | ".join(f"{k:>10}" for k in keys)
-        logger.info("-" * len(header))
-        logger.info(header)
-        logger.info("-" * len(header))
-        for r in self.records:
-            logger.info(" | ".join(f"{str(r[k]):>10}" for k in keys))
         total = sum(r["total_s"] for r in self.records)
-        logger.info(f"\nTotal wall-clock time: {total:.1f}s  ({total/60:.2f} min)")
+        logger.info(f"Total wall-clock time: {total:.1f}s ({total/60:.2f} min)")
 
     def save_csv(self, path: str | None = None) -> None:
         if path is None:
@@ -219,41 +178,8 @@ class TimingTracker:
             writer.writerows(self.records)
         logger.info(f"Timing data saved → {path}")
 
-
-# ---------------------------------------------------------------------------
-# Dataset loaders (private)
-# ---------------------------------------------------------------------------
-
 def _norm(name: str):
     return _NORM.get(name, {"mean": (0.5,), "std": (0.5,)})
-
-
-# def _get_mnist_loaders(image_size: int, batch_size: int | None = None):
-#     n = _norm("MNIST")
-#     tf = transforms.Compose([
-#         transforms.Resize((image_size, image_size)),
-#         transforms.ToTensor(),
-#         transforms.Normalize(n["mean"], n["std"]),
-#     ])
-#     train = datasets.MNIST(DATA_DIR, train=True,  download=True, transform=tf)
-#     test  = datasets.MNIST(DATA_DIR, train=False, download=True, transform=tf)
-#     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  pin_memory=PIN_MEMORY),
-#             DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, pin_memory=PIN_MEMORY),
-#             10)
-
-
-# def _get_fashion_loaders(image_size: int, batch_size: int | None = None):
-#     n = _norm("FASHION_MNIST")
-#     tf = transforms.Compose([
-#         transforms.Resize((image_size, image_size)),
-#         transforms.ToTensor(),
-#         transforms.Normalize(n["mean"], n["std"]),
-#     ])
-#     train = datasets.FashionMNIST(DATA_DIR, train=True,  download=True, transform=tf)
-#     test  = datasets.FashionMNIST(DATA_DIR, train=False, download=True, transform=tf)
-#     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  pin_memory=PIN_MEMORY),
-#             DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, pin_memory=PIN_MEMORY),
-#             10)
 
 
 def _get_cifar10_loaders(image_size: int, batch_size: int | None = None):
@@ -277,61 +203,6 @@ def _get_cifar10_loaders(image_size: int, batch_size: int | None = None):
     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
             DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
             10)
-
-
-# def _get_cifar100_loaders(image_size: int, batch_size: int | None = None):
-#     n = _norm("CIFAR100")
-#     tf_train = transforms.Compose([
-#         transforms.RandomCrop(32, padding=4),
-#         transforms.RandomHorizontalFlip(),
-#         transforms.Resize((image_size, image_size)),
-#         transforms.ToTensor(),
-#         transforms.Normalize(n["mean"], n["std"]),
-#     ])
-#     tf_test = transforms.Compose([
-#         transforms.Resize((image_size, image_size)),
-#         transforms.ToTensor(),
-#         transforms.Normalize(n["mean"], n["std"]),
-#     ])
-#     train = datasets.CIFAR100(DATA_DIR, train=True,  download=True, transform=tf_train)
-#     test  = datasets.CIFAR100(DATA_DIR, train=False, download=True, transform=tf_test)
-#     kw = {"num_workers": 8, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
-#     logger.info(f"CIFAR-100: {len(train)} train / {len(test)} test")
-#     return (DataLoader(train, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
-#             DataLoader(test,  batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
-#             100)
-
-
-# def _get_pokemon_loaders(image_size: int, batch_size: int | None = None):
-#     n = _norm("POKEMON")
-#     tf_train = transforms.Compose([
-#         transforms.Resize((image_size, image_size)),
-#         transforms.RandomHorizontalFlip(),
-#         transforms.RandomRotation(15),
-#         transforms.ColorJitter(brightness=0.2, contrast=0.2),
-#         transforms.ToTensor(),
-#         transforms.Normalize(n["mean"], n["std"]),
-#     ])
-#     tf_val = transforms.Compose([
-#         transforms.Resize((image_size, image_size)),
-#         transforms.ToTensor(),
-#         transforms.Normalize(n["mean"], n["std"]),
-#     ])
-#     dataset_path = os.path.join(DATA_DIR, "PokemonData")
-#     full_train   = datasets.ImageFolder(dataset_path, transform=tf_train)
-#     full_val     = datasets.ImageFolder(dataset_path, transform=tf_val)
-#     total        = len(full_train)
-#     train_sz     = int(0.8 * total)
-#     val_sz       = total - train_sz
-#     gen          = torch.Generator().manual_seed(42)
-#     train_data, _ = random_split(full_train, [train_sz, val_sz], generator=gen)
-#     _, val_data   = random_split(full_val,   [train_sz, val_sz], generator=gen)
-#     kw = {"num_workers": 0, "pin_memory": PIN_MEMORY} if PIN_MEMORY else {}
-#     num_classes  = len(full_train.classes)
-#     logger.info(f"Pokemon: {len(train_data)} train / {len(val_data)} val — {num_classes} classes")
-#     return (DataLoader(train_data, batch_size=batch_size or BATCH_SIZE, shuffle=True,  **kw),
-#             DataLoader(val_data,   batch_size=TEST_BATCH_SIZE,          shuffle=False, **kw),
-#             num_classes)
 
 
 def _get_imagenet100_loaders(image_size: int, batch_size: int | None = None):
@@ -371,10 +242,6 @@ def _get_imagenet100_loaders(image_size: int, batch_size: int | None = None):
             num_classes)
 
 
-# ---------------------------------------------------------------------------
-# Plotting
-# ---------------------------------------------------------------------------
-
 def plot_training_curves(history: dict, save_path: str | None = None) -> None:
     epochs = range(1, len(history["train_loss"]) + 1)
     plt.figure(figsize=(14, 5))
@@ -405,10 +272,6 @@ def plot_training_curves(history: dict, save_path: str | None = None) -> None:
     logger.info(f"Training curves saved → {save_path}")
 
 
-# ---------------------------------------------------------------------------
-# CSV helpers
-# ---------------------------------------------------------------------------
-
 def save_csv(results: list[dict], filename: str, fieldnames: list[str]) -> None:
     filepath = os.path.join(CSV_DIR, filename)
     with open(filepath, "w", newline="") as f:
@@ -417,16 +280,17 @@ def save_csv(results: list[dict], filename: str, fieldnames: list[str]) -> None:
         writer.writerows(results)
     logger.info(f"CSV saved → {filepath}")
 
-
-# ---------------------------------------------------------------------------
-# Logging setup
-# ---------------------------------------------------------------------------
-
-def setup_global_logging() -> None:
+def setup_global_logging(level: str | int = "WARNING") -> None:
+    """
+    Configure the root logger. Default level is WARNING, so third-party
+    traces (torch, matplotlib, etc.) and routine info-level messages stay
+    silent unless an anomaly occurs; pass a lower level (e.g. "INFO") or
+    use --log-level for more verbose output.
+    """
     log_filename = os.path.join(LOG_DIR, "experiment_log.txt")
     os.makedirs(os.path.dirname(log_filename), exist_ok=True)
     logging.basicConfig(
-        level=logging.INFO,
+        level=level,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
         handlers=[

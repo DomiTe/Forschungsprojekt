@@ -72,20 +72,7 @@ OUTPUT_FIELDNAMES = [
     "fraction_of_fp32_recovered", "excluded_layer_still_fp32", "other_layers_quantized",
 ]
 
-
-# ---------------------------------------------------------------------------
-# Hessian trace CSV
-# ---------------------------------------------------------------------------
-
 def _resolve_hessian_csv_path(checkpoint_dir: str | None, load_run_id: str | None) -> str:
-    # layerwise_hessian_traces.csv lives in the "csv" directory that sits
-    # next to "quantized_models" under the same run, matching how every
-    # other per-run artifact (models/, csv/, logs/) is laid out under
-    # results/<RUN_ID>/. When checkpoint_dir is an explicit override (e.g.
-    # a flat backup directory with no sibling csv/), this correctly
-    # resolves to a path that doesn't exist, and _load_hessian_traces
-    # degrades gracefully (top-k/low-k selection is skipped, --ablate-layers
-    # still works).
     if checkpoint_dir:
         run_root = os.path.dirname(os.path.normpath(checkpoint_dir))
         path = os.path.join(run_root, "csv", "layerwise_hessian_traces.csv")
@@ -132,11 +119,6 @@ def _select_layers_by_trace(
 
     return top, low
 
-
-# ---------------------------------------------------------------------------
-# Verification: excluded layer stayed FP32, other layers were quantized
-# ---------------------------------------------------------------------------
-
 def _verify_ablation(model: nn.Module, layer_name: str, label: str) -> tuple[bool, bool]:
     resolved_name = _resolve_module_name(model, layer_name)
     if resolved_name is None:
@@ -175,14 +157,6 @@ def _verify_ablation(model: nn.Module, layer_name: str, label: str) -> tuple[boo
             other_linear_total += 1
             if other_linear_hit is None and isinstance(module, nnq.Linear):
                 other_linear_hit = name
-
-    # other_{conv,linear}_total counts how many OTHER layers of that type
-    # exist in the architecture at all (quantized or not) -- resnet18/50
-    # have exactly one nn.Linear (fc); when fc itself is the excluded layer,
-    # "no other Linear quantized" is an architectural certainty, not
-    # evidence the build silently unquantized the whole model. Only raise
-    # when there WAS another same-type layer available to stay quantized
-    # and none did.
     if other_conv_total > 0 and other_conv_hit is None:
         raise FbgemmBuildError(
             f"{label}: excluding '{resolved_name}' left no OTHER Conv2d layer quantized "
@@ -208,11 +182,6 @@ def _verify_ablation(model: nn.Module, layer_name: str, label: str) -> tuple[boo
     )
     return True, True
 
-
-# ---------------------------------------------------------------------------
-# CSV (append mode -- one row written to disk immediately after computation)
-# ---------------------------------------------------------------------------
-
 def _append_row(path: str, row: dict) -> None:
     file_exists = os.path.exists(path)
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -222,11 +191,6 @@ def _append_row(path: str, row: dict) -> None:
             writer.writeheader()
         writer.writerow(row)
     logger.info(f"[LayerAblation] row appended -> {path} ({row['selection']}: {row['excluded_layer'] or '<none>'})")
-
-
-# ---------------------------------------------------------------------------
-# Orchestration
-# ---------------------------------------------------------------------------
 
 def run_layer_ablation(
     checkpoint_dir: str | None,
@@ -277,7 +241,7 @@ def run_layer_ablation(
         for model_name in MODELS:
             for stage in STAGES:
                 label = f"{stage} {model_name}/{dataset_name}"
-                logger.info(f"[LayerAblation] --- {label} ---")
+                logger.info(f"[LayerAblation] {label}")
 
                 try:
                     checkpoint_path = _checkpoint_path(resolved_checkpoint_dir, stage, model_name, dataset_name)
@@ -312,8 +276,6 @@ def run_layer_ablation(
                     "excluded_layer_still_fp32": "", "other_layers_quantized": True,
                 })
 
-                # Build this combo's exclusion plan: one entry per layer to
-                # ablate individually (each becomes its own conversion run).
                 exclusions: list[tuple[str, object, str]] = []
                 if explicit_layer_names:
                     combo_traces = _traces_for_combo(hessian_df, model_name, dataset_name, stage)
@@ -370,4 +332,4 @@ def run_layer_ablation(
 
                 del baked_model
 
-    logger.info("[LayerAblation] === Layer ablation complete ===")
+    logger.info("[LayerAblation] Layer ablation complete")

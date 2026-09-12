@@ -95,9 +95,7 @@ def main() -> None:
     total = len(MODELS) * len(DATASETS)
     
     if local_rank == 0:
-        setup_global_logging()
-        
-        logger.info(f"=== Pipeline start: {len(MODELS)} models - {len(DATASETS)} datasets = {total} runs ===")
+        setup_global_logging(level=args.log_level)
 
     # -------------------------------------------------------------------
     # Train-Only mode: FP32 -> PTQ -> QAT training and checkpointing for
@@ -107,8 +105,6 @@ def main() -> None:
     # from these same checkpoints.
     # -------------------------------------------------------------------
     if args.train_only:
-        if local_rank == 0:
-            logger.info("=== Train-Only: FP32/PTQ/QAT training only, no analysis ===")
         _run_train_only(args, local_rank)
         _cleanup()
         return
@@ -122,7 +118,6 @@ def main() -> None:
     # -------------------------------------------------------------------
     if args.checkpoint_metrics:
         if local_rank == 0:
-            logger.info("=== Checkpoint-Metrics: skipping training ===")
             from src.analysis.checkpoint_metrics import run_checkpoint_metrics
             run_checkpoint_metrics(checkpoint_dir=args.checkpoint_dir, load_run_id=args.load_run_id)
         _cleanup()
@@ -151,8 +146,6 @@ def main() -> None:
     # Skips FP32/PTQ/QAT training and all Hessian/eigenvalue/SQNR analysis.
     # -------------------------------------------------------------------
     if args.diagnose_int8_perf:
-        if local_rank == 0:
-            logger.info("=== Diagnose-Int8-Perf: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         _run_diagnose_int8_perf(args, local_rank)
         _cleanup()
         return
@@ -164,8 +157,6 @@ def main() -> None:
     # torchrun/distributed init needed) -- see src/quantization/deploy_fbgemm.py.
     # -------------------------------------------------------------------
     if args.deploy_cpu_fbgemm:
-        if local_rank == 0:
-            logger.info("=== Deploy-CPU-fbgemm: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.quantization.deploy_fbgemm import run_deploy_cpu_fbgemm
         run_deploy_cpu_fbgemm(
             load_run_id=args.load_run_id,
@@ -186,8 +177,6 @@ def main() -> None:
     # as a single local process (no torchrun/distributed init needed).
     # -------------------------------------------------------------------
     if args.ablate_layer_quantization:
-        if local_rank == 0:
-            logger.info("=== Ablate-Layer-Quantization: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.layer_ablation import run_layer_ablation
         run_layer_ablation(
             checkpoint_dir=args.checkpoint_dir,
@@ -210,8 +199,6 @@ def main() -> None:
     # Runs as a single local process (no torchrun/distributed init needed).
     # -------------------------------------------------------------------
     if args.diagnose_activation_quant:
-        if local_rank == 0:
-            logger.info("=== Diagnose-Activation-Quant: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.diagnose_activations import run_diagnose_activation_quant
         run_diagnose_activation_quant(
             checkpoint_dir=args.checkpoint_dir,
@@ -237,8 +224,6 @@ def main() -> None:
     # local process (no torchrun/distributed init needed).
     # -------------------------------------------------------------------
     if args.random_init_control:
-        if local_rank == 0:
-            logger.info("=== Random-Init-Control: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.random_init_control import run_random_init_control
         run_random_init_control(
             checkpoint_dir=args.checkpoint_dir,
@@ -264,8 +249,6 @@ def main() -> None:
     # torchrun/distributed init needed).
     # -------------------------------------------------------------------
     if args.quant_induced_trace:
-        if local_rank == 0:
-            logger.info("=== Quant-Induced-Trace: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.quant_induced_trace import run_quant_induced_trace
         run_quant_induced_trace(
             checkpoint_dir=args.checkpoint_dir,
@@ -291,8 +274,6 @@ def main() -> None:
     # as a single local process (no torchrun/distributed init needed).
     # -------------------------------------------------------------------
     if args.relock_traces:
-        if local_rank == 0:
-            logger.info("=== Relock-Traces: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.relock_traces import run_relock_traces
         run_relock_traces(
             checkpoint_dir=args.checkpoint_dir,
@@ -320,8 +301,6 @@ def main() -> None:
     # process (no torchrun/distributed init needed), prefers CUDA.
     # -------------------------------------------------------------------
     if args.weight_ablation_canonical:
-        if local_rank == 0:
-            logger.info("=== Weight-Ablation-Canonical: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.weight_ablation_canonical import run_weight_ablation_canonical
         run_weight_ablation_canonical(
             checkpoint_dir=args.checkpoint_dir,
@@ -342,8 +321,6 @@ def main() -> None:
     # accuracy-only isolation harness unchanged.
     # -------------------------------------------------------------------
     if args.weight_ablation_loss:
-        if local_rank == 0:
-            logger.info("=== Weight-Ablation-Loss: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.weight_ablation_canonical import run_weight_ablation_loss
         existing_ablation_csvs = _parse_dataset_path_pairs(args.existing_ablation_csv, "--existing-ablation-csv")
         run_weight_ablation_loss(
@@ -361,8 +338,6 @@ def main() -> None:
     # src/analysis/weight_ablation_canonical.py's run_weight_ablation_loss_correlation.
     # -------------------------------------------------------------------
     if args.weight_ablation_loss_correlation:
-        if local_rank == 0:
-            logger.info("=== Weight-Ablation-Loss-Correlation: no model/GPU involved ===")
         from src.analysis.weight_ablation_canonical import run_weight_ablation_loss_correlation
         existing_ablation_csvs = _parse_dataset_path_pairs(args.existing_ablation_csv, "--existing-ablation-csv")
         loss_damage_csv = args.loss_damage_csv or os.path.join(CSV_DIR, "weight_ablation_loss_damage.csv")
@@ -392,8 +367,6 @@ def main() -> None:
     # torchrun/distributed init needed), prefers CUDA.
     # -------------------------------------------------------------------
     if args.weight_ablation_diagnose:
-        if local_rank == 0:
-            logger.info("=== Weight-Ablation-Diagnose: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.weight_ablation_diagnose import run_weight_ablation_diagnose
         run_weight_ablation_diagnose(
             checkpoint_dir=args.checkpoint_dir,
@@ -422,8 +395,6 @@ def main() -> None:
     # backward-hook measurement needs real gradients.
     # -------------------------------------------------------------------
     if args.spike_layer_cause:
-        if local_rank == 0:
-            logger.info("=== Spike-Layer-Cause: skipping training and Hessian/eigenvalue/SQNR analysis ===")
         from src.analysis.spike_layer_cause import run_spike_layer_cause
         run_spike_layer_cause(
             checkpoint_dir=args.checkpoint_dir,
@@ -446,9 +417,7 @@ def main() -> None:
     run_idx = 0
     
     for dataset_name in DATASETS:
-        # Load data once per dataset, reuse across all models
         if local_rank == 0:
-            logger.info(f"\n{'='*60}")
             logger.info(f"Loading dataset: {dataset_name}")
         try:
             specs = DATASET_SPECS[dataset_name]
@@ -470,8 +439,8 @@ def main() -> None:
         for model_name in MODELS:
             run_idx += 1
             if local_rank == 0:
-                logger.info(f"\n--- Run {run_idx}/{total}: {model_name} on {dataset_name} ---")
-            
+                logger.info(f"Run {run_idx}/{total}: {model_name} on {dataset_name}")
+
             t0 = time.perf_counter()
             try:
                 # -------------------------------------------------------------
@@ -533,7 +502,6 @@ def main() -> None:
                 fp32_metrics = measure_throughput(fp32_model, device, dummy_shape)
                 
                 if local_rank == 0:
-                    logger.info("Computing Hessian Trace for FP32...")
                     torch.cuda.empty_cache()
                     with torch.autograd.set_detect_anomaly(True):
                         fp32_traces = compute_layerwise_hessian_trace_pyhessian(
@@ -563,12 +531,6 @@ def main() -> None:
                 # -------------------------------------------------------------
                 # PTQ Workflow (Power-of-Two + Asymmetric)
                 # -------------------------------------------------------------
-                if local_rank == 0:
-                    logger.info("Starting PTQ Calibration...")
-                
-                
-                
-                # Deepcopy to preserve the FP32 weights for QAT later
                 ptq_model = copy.deepcopy(unwrapped_fp32)
                 del fp32_model
                 torch.cuda.empty_cache()
@@ -600,7 +562,6 @@ def main() -> None:
                     logger.info(f"Saved uncompiled PTQ state_dict -> {ptq_path}")
                 
                 if local_rank == 0:
-                    logger.info("Computing Hessian Trace for PTQ...")
                     torch.cuda.empty_cache()
                     ptq_traces = compute_layerwise_hessian_trace_pyhessian(
                         ptq_model, hessian_loader, torch.nn.CrossEntropyLoss(), device
@@ -627,11 +588,7 @@ def main() -> None:
                             "stage": "PTQ", "layer": layer, "mse" : metrics["mse"], "sqnr": metrics["sqnr"]
                         })
                         
-                if local_rank == 0:
-                    logger.info("Compiling PTQ model for throughput benchmarking...")
-                
                 compiled_ptq_model = torch.compile(ptq_model, mode="max-autotune")
-                
                 ptq_metrics = measure_throughput(compiled_ptq_model, device, dummy_shape)
                 
                 if local_rank == 0:
@@ -656,9 +613,6 @@ def main() -> None:
                 # -------------------------------------------------------------
                 # QAT Workflow (Building on PTQ)
                 # -------------------------------------------------------------
-                if local_rank == 0:
-                    logger.info("Starting Quantization-Aware Training (QAT)...")
-                
                 qat_model, qat_history, _ = train_qat(
                     ptq_model=ptq_model, 
                     train_loader=train_loader, 
@@ -683,7 +637,6 @@ def main() -> None:
                     })
                 
                 if local_rank == 0:
-                    logger.info("Computing Hessian Trace for QAT...")
                     torch.cuda.empty_cache()
                     qat_traces = compute_layerwise_hessian_trace_pyhessian(
                         qat_model, hessian_loader, torch.nn.CrossEntropyLoss(), device
@@ -745,10 +698,10 @@ def main() -> None:
                     "best_train_acc": f"{max(history['train_acc']):.2f}",
                     "best_val_acc": f"{best_val_acc:.2f}",
                     "ptq_val_acc": f"{ptq_acc:.2f}",
-                    "qat_val_acc": f"{qat_acc:.2f}",  # New QAT Accuracy
+                    "qat_val_acc": f"{qat_acc:.2f}",
                     "fp32_fps": f"{fp32_metrics['throughput_fps']:.1f}",
                     "ptq_fps": f"{ptq_metrics['throughput_fps']:.1f}",
-                    "qat_fps": f"{qat_metrics['throughput_fps']:.1f}", # New QAT FPS
+                    "qat_fps": f"{qat_metrics['throughput_fps']:.1f}",
                     "wall_time_min": f"{elapsed_min:.1f}",
                     "status": "ok",
                 })
@@ -817,7 +770,7 @@ def main() -> None:
         if hessian_summary:
             df = pd.DataFrame(hessian_summary)
             df.to_csv(os.path.join(CSV_DIR, "layerwise_hessian_traces.csv"), index=False)
-            logger.info(f"Hessian Traces saved -> layerwise_hessian_traces.csv")
+            logger.info("Hessian Traces saved -> layerwise_hessian_traces.csv")
         if eigenvalue_summary:
             df = pd.DataFrame(eigenvalue_summary)
             df.to_csv(os.path.join(CSV_DIR, "layerwise_top_eigenvalues.csv"), index=False)
@@ -832,7 +785,7 @@ def main() -> None:
             logger.info("Classification saved -> classification_metrics.csv")
             
         _print_summary(summary)
-        logger.info("=== Pipeline complete ===")
+        logger.info("Pipeline complete")
     _cleanup()
 
 
@@ -858,7 +811,6 @@ def _run_train_only(args, local_rank: int) -> None:
 
     for dataset_name in DATASETS:
         if local_rank == 0:
-            logger.info(f"\n{'='*60}")
             logger.info(f"[TrainOnly] Loading dataset: {dataset_name}")
         try:
             specs = DATASET_SPECS[dataset_name]
@@ -876,7 +828,7 @@ def _run_train_only(args, local_rank: int) -> None:
         for model_name in MODELS:
             run_idx += 1
             if local_rank == 0:
-                logger.info(f"\n--- [TrainOnly] Run {run_idx}/{total}: {model_name} on {dataset_name} ---")
+                logger.info(f"[TrainOnly] Run {run_idx}/{total}: {model_name} on {dataset_name}")
 
             t0 = time.perf_counter()
             try:
@@ -921,10 +873,7 @@ def _run_train_only(args, local_rank: int) -> None:
                 # -------------------------------------------------------------
                 # PTQ Workflow (Power-of-Two + Asymmetric)
                 # -------------------------------------------------------------
-                if local_rank == 0:
-                    logger.info("[TrainOnly] Starting PTQ Calibration...")
-
-                ptq_model = copy.deepcopy(unwrapped_fp32)  # preserve FP32 weights for QAT below
+                ptq_model = copy.deepcopy(unwrapped_fp32) 
                 del fp32_model
                 torch.cuda.empty_cache()
 
@@ -941,7 +890,6 @@ def _run_train_only(args, local_rank: int) -> None:
                     torch.save(ptq_model.state_dict(), ptq_path)
                     logger.info(f"[TrainOnly] Saved PTQ state_dict -> {ptq_path}")
 
-                # max-autotune profiles Triton kernels on the target GPU to find the fastest one
                 compiled_ptq_model = torch.compile(ptq_model, mode="max-autotune")
                 ptq_metrics = measure_throughput(compiled_ptq_model, device, dummy_shape)
 
@@ -962,9 +910,6 @@ def _run_train_only(args, local_rank: int) -> None:
                 # -------------------------------------------------------------
                 # QAT Workflow (Building on PTQ)
                 # -------------------------------------------------------------
-                if local_rank == 0:
-                    logger.info("[TrainOnly] Starting Quantization-Aware Training (QAT)...")
-
                 qat_model, qat_history, _ = train_qat(
                     ptq_model=ptq_model, train_loader=train_loader, val_loader=val_loader,
                     device=device, epochs=QAT_EPOCH, lr=QAT_LR,
@@ -1047,7 +992,7 @@ def _run_train_only(args, local_rank: int) -> None:
             "fp32_fps", "qat_fps", "speedup", "status",
         ], "qat_summary.csv")
         _print_summary(summary)
-        logger.info("=== Train-Only complete ===")
+        logger.info("Train-Only complete")
 
 
 
@@ -1087,10 +1032,10 @@ def _run_analyze_dataset(args, local_rank: int, dataset_name: str) -> None:
 
     datasets = [dataset_name]
     label = f"Analyze-{dataset_name}"
-    logger.info(f"=== {label}: {len(ANALYZE_STEPS)} pipelines, all models, {dataset_name} only ===")
+    logger.info(f"{label}: {len(ANALYZE_STEPS)} pipelines, all models, {dataset_name} only")
 
     def _step(n: int, name: str, fn, **kwargs) -> None:
-        logger.info(f"[{label}] --- {n}/{len(ANALYZE_STEPS)}: {name} ---")
+        logger.info(f"[{label}] step {n}/{len(ANALYZE_STEPS)}: {name}")
         try:
             fn(**kwargs)
         except Exception as exc:
@@ -1137,7 +1082,7 @@ def _run_analyze_dataset(args, local_rank: int, dataset_name: str) -> None:
           ablate_top_k=args.ablate_top_k, ablate_layers=args.ablate_layers,
           eval_subset=args.eval_subset, datasets=datasets)
 
-    logger.info(f"=== {label} complete ===")
+    logger.info(f"{label} complete")
 
 
 DIAGNOSE_INT8_PERF_DATASETS = ["CIFAR10", "IMAGENET100"]
@@ -1176,7 +1121,7 @@ def _run_diagnose_int8_perf(args, local_rank: int) -> None:
 
         for model_name in MODELS:
             for stage_name, checkpoint_prefix in DIAGNOSE_INT8_PERF_STAGES:
-                logger.info(f"\n--- Diagnose-Int8-Perf {stage_name} {model_name} on {dataset_name} ---")
+                logger.info(f"Diagnose-Int8-Perf {stage_name} {model_name} on {dataset_name}")
                 try:
                     fp32_path = os.path.join(
                         BASE_DIR, "results", load_run_id, "models",
@@ -1224,11 +1169,10 @@ def _run_diagnose_int8_perf(args, local_rank: int) -> None:
 
     report_path = os.path.join(LOG_DIR, "int8_perf_diagnosis.txt")
     int8_profile.write_report(report_path, gpu_info, report_sections)
-    logger.info("=== Diagnose-Int8-Perf complete ===")
+    logger.info("Diagnose-Int8-Perf complete")
 
 
 def bake_pot_into_standard_layers(model: nn.Module) -> nn.Module:
-    # Operates on a deepcopy, so the original quantized model is left untouched.
     baked_model = copy.deepcopy(model)
 
     def _bake(module: nn.Module) -> None:
@@ -1272,7 +1216,6 @@ def bake_pot_into_standard_layers(model: nn.Module) -> nn.Module:
 
 
 def evaluate(model: nn.Module, loader: torch.utils.data.DataLoader, device: torch.device) -> float:
-    # Returns top-1 accuracy as a percentage (0-100), not a 0-1 fraction.
     model.eval()
     correct, total = 0, 0
     with torch.no_grad():
@@ -1295,10 +1238,9 @@ def _save_csv_summary(rows: list[dict], fieldnames: list[str], filename: str) ->
 
 
 def _print_summary(summary: list[dict]) -> None:
-    logger.info("\n=== PIPELINE SUMMARY ===")
+    logger.info("Pipeline summary:")
     header = f"{'Model':<24} {'Dataset':<16}  {'Best Train Acc':>12} {'Best Val Acc':>10} {'Time (min)':>8} {'Status':>6}"
     logger.info(header)
-    logger.info("-" * len(header))
     for row in summary:
         logger.info(
             f"{row['model']:<24} {row['dataset']:<16} "

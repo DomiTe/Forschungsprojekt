@@ -58,13 +58,6 @@ from src.utility.utils import get_data_loaders
 
 logger = logging.getLogger(__name__)
 
-# Per-dataset trace budget for the Hessian-trace and top-eigenvalue calls.
-# CIFAR10 uses compute_layerwise_hessian_trace_pyhessian's/compute_top_
-# eigenvalue's own defaults (num_batches=5, max_iter=100, tol=1e-3) --
-# passed explicitly so nothing is left to an upstream default drifting.
-# IMAGENET100 is reduced -- 224x224 HVP cost is far higher per iteration
-# than 32x32 -- matching every other trace-estimating mode in this
-# codebase's own IMAGENET100 budget for consistency.
 TRACE_CONFIG = {
     "CIFAR10":     {"num_batches": 5, "max_iter": 100, "tol": 1e-3},
     "IMAGENET100": {"num_batches": 3, "max_iter": 30,  "tol": 1e-3},
@@ -192,4 +185,4 @@ def run_checkpoint_metrics(
             if device.type == "cuda":
                 torch.cuda.empty_cache()
 
-    logger.info("[CheckpointMetrics] === Checkpoint-Metrics complete ===")
+    logger.info("[CheckpointMetrics] Checkpoint-Metrics complete")

@@ -47,6 +47,7 @@ Run: python -m src.analysis.cheap_baselines
 
 import csv
 import os
+import logging
 
 import torch
 import torch.nn as nn
@@ -68,10 +69,11 @@ from src.analysis.quant_induced_trace import (
 from src.quantization.deploy_fbgemm import _checkpoint_path
 from src.utility.utils import _get_cifar10_loaders, _get_imagenet100_loaders
 
+logger = logging.getLogger(__name__)
+
 CHECKPOINT_DIR = os.path.join(REPO_ROOT, "results", "20260813_053524_36857", "quantized_models")
 STAGE = "PTQ"
 
-# per trace_config.json (frozen probe set), model_mode=eval, loss.reduction=mean
 PROBE_CONFIG = {
     "CIFAR10": {"image_size": 32, "channels": 3, "num_classes": 10, "batch_size": 16, "num_batches": 5},
     "IMAGENET100": {"image_size": 224, "channels": 3, "num_classes": 100, "batch_size": 8, "num_batches": 3},
@@ -160,7 +162,7 @@ def run() -> list[dict]:
             torch.cuda.empty_cache()
 
         predictors = dict(baselines)
-        predictors["raw_trh"] = raw_scores  # S_raw, side by side with the same evaluation
+        predictors["raw_trh"] = raw_scores
 
         for predictor, score_map in predictors.items():
             scores = [score_map[l] for l in layer_order]
@@ -179,7 +181,6 @@ def run() -> list[dict]:
                 "k_star": rank_stats["k_star"],
                 "top_k_overlap": f"{rank_stats['top_k_overlap']}/{rank_stats['k_star']}",
             })
-        print(f"done: {model_name}/{dataset}")
     return rows
 
 
@@ -190,7 +191,7 @@ def main() -> None:
         writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
         writer.writeheader()
         writer.writerows(rows)
-    print(f"wrote {OUT_PATH}")
+    logger.info(f"Wrote {OUT_PATH}")
 
 
 if __name__ == "__main__":

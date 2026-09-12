@@ -93,57 +93,22 @@ from src.utility.utils import get_data_loaders
 logger = logging.getLogger(__name__)
 
 DATASETS = ["CIFAR10", "IMAGENET100"]
-# resnet50 first -- it carries the headline conv1 spike this control targets.
 ORDERED_MODELS = ["resnet50_no_weights", "resnet18_no_weights", "cnn"]
-
-# >=3 independent random-init draws per architecture, per spec (P2 Method 1).
-# Drop to 2 only if resnet50's wall time genuinely threatens the budget --
-# never drop the probe count instead, that would break the config match
-# against the trained-FP32 recompute.
 INIT_SEEDS = [0, 1, 2]
-
-# Fixed and reset immediately before every estimator call (random-init AND
-# trained-FP32), so Hutchinson probe draws are identical everywhere and the
-# across-seed std reflects only the weight draw, not probe noise.
 PROBE_SEED = 20260810
 
-# compute_layerwise_hessian_trace_pyhessian's own defaults -- passed
-# explicitly (not left implicit) so the "identical estimator config between
-# regimes" requirement is visible and locked regardless of upstream default
-# drift.
 HESSIAN_NUM_BATCHES = 5
 HESSIAN_MAX_ITER = 100
 HESSIAN_TOL = 1e-3
 
-# Positive check that a "random-init" model is genuinely untrained: abort if
-# top-1 accuracy on the CIFAR10 test set exceeds chance (100/num_classes) by
-# more than this multiplier. A degenerate random-init model that always
-# predicts one class already scores ~chance on the (balanced) CIFAR10 test
-# set, so this catches a leaked checkpoint without false-positiving on
-# ordinary random-init noise.
 CHANCE_ACC_MULTIPLIER = 2.0
 
-# BN-populated control (b): number of (shuffle=False) batches forwarded in
-# train() mode to populate running stats before switching back to eval().
-# HESSIAN_BATCH_SIZE(=16) * 20 = 320 images -- "a few hundred" per spec.
 BN_POPULATE_BATCHES = 20
 
-# Classification thresholds for fraction_present_at_init, applied to the
-# reported number (never a hidden cutoff) -- most of the elevation already
-# present at init (>=0.7) -> architectural; near-flat at init (<=0.3) ->
-# learned; in between -> mixed.
 FRACTION_ARCHITECTURAL_MIN = 0.7
 FRACTION_LEARNED_MAX = 0.3
 
 TRACES_FIELDNAMES = ["model", "dataset", "init", "seed", "n_seeds", "layer", "hessian_trace"]
-# This module already reported a per-seed/aggregate schema before the
-# --n-seeds pass existed: TRACES_FIELDNAMES' "seed" column already holds
-# each per-seed row's init seed (blank for the single trained_fp32
-# reference row), and COMPARISON_FIELDNAMES' trace_random_mean/
-# trace_random_std are already the cross-seed aggregate this task's
-# "metric_std" column asks for elsewhere. Extended with n_seeds rather than
-# renamed, to avoid breaking either column name for anything already
-# reading them.
 COMPARISON_FIELDNAMES = [
     "model", "dataset", "layer", "n_seeds", "trace_random_mean", "trace_random_std",
     "trace_trained_fp32", "ratio_trained_over_random", "elev_over_median_random",
@@ -158,26 +123,12 @@ SUMMARY_FIELDNAMES = [
 class RandomInitControlError(RuntimeError):
     pass
 
-
-# ---------------------------------------------------------------------------
-# Determinism (double-backward through cuDNN convolutions can otherwise add
-# noise that inflates the across-seed std on an A100). warn_only=True: some
-# double-backward ops genuinely have no deterministic kernel, and this mode
-# must not hard-crash on that -- it should just log and proceed.
-# ---------------------------------------------------------------------------
-
 def _enable_determinism() -> None:
     os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
     torch.backends.cudnn.benchmark = False
     torch.backends.cudnn.deterministic = True
     torch.use_deterministic_algorithms(True, warn_only=True)
 
-
-# ---------------------------------------------------------------------------
-# Data loaders -- eval() mode, num_workers=0, pin_memory=False, shuffle=False,
-# built once from the CIFAR10 test split and reused (never re-shuffled) for
-# every estimator call and every chance-accuracy check.
-# ---------------------------------------------------------------------------
 
 def _build_loaders(dataset_name: str) -> tuple[DataLoader, DataLoader, int]:
     _, val_loader, num_classes = get_data_loaders(dataset_name)
@@ -191,14 +142,8 @@ def _build_loaders(dataset_name: str) -> tuple[DataLoader, DataLoader, int]:
     )
     return hessian_loader, chance_loader, num_classes
 
-
-# ---------------------------------------------------------------------------
-# Part 0: positive untrained-model check
-# ---------------------------------------------------------------------------
-
 def _assert_untrained(model: nn.Module, chance_loader: DataLoader, device: torch.device, num_classes: int, label: str) -> float:
-    from src.main import evaluate  # deferred: avoids importing the full training pipeline at module load
-
+    from src.main import evaluate 
     acc = evaluate(model, chance_loader, device)
     chance_acc = 100.0 / num_classes
     threshold = chance_acc * CHANCE_ACC_MULTIPLIER
@@ -221,11 +166,6 @@ def _populate_bn_stats(model: nn.Module, loader: DataLoader, device: torch.devic
                 break
             model(inputs.to(device))
     model.eval()
-
-
-# ---------------------------------------------------------------------------
-# Trained-FP32 profile (always recomputed -- see module docstring)
-# ---------------------------------------------------------------------------
 
 def _get_trained_fp32_traces(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
@@ -258,11 +198,6 @@ def _get_trained_fp32_traces(
         torch.cuda.empty_cache()
     return traces
 
-
-# ---------------------------------------------------------------------------
-# Part 1: random-init sweep (multiple seeds, fixed probe seed)
-# ---------------------------------------------------------------------------
-
 def _run_random_seeds(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
     hessian_loader: DataLoader, chance_loader: DataLoader, criterion: nn.Module,
@@ -274,7 +209,6 @@ def _run_random_seeds(
     for seed in seeds:
         label = f"{model_name}/{dataset_name} seed={seed} bn={bn_mode}"
 
-        # Init seed governs build_model()'s weight draw only.
         torch.manual_seed(seed)
         model = build_model(
             num_classes=num_classes, model_name=model_name, channels=channels, image_size=image_size,
@@ -286,8 +220,6 @@ def _run_random_seeds(
 
         _assert_untrained(model, chance_loader, device, num_classes, label)
 
-        # Reset immediately before the estimator call (not once per loop) so
-        # every seed sees identical Hutchinson probe draws.
         torch.manual_seed(PROBE_SEED)
         traces = compute_layerwise_hessian_trace_pyhessian(
             model, hessian_loader, criterion, device,
@@ -306,16 +238,10 @@ def _run_random_seeds(
 
     return per_layer_traces
 
-
-# ---------------------------------------------------------------------------
-# Part 2: alignment, comparison, classification
-# ---------------------------------------------------------------------------
-
 def _safe_div(a: float, b: float) -> float:
     if b == 0 or (isinstance(b, float) and math.isnan(b)):
         return float("nan")
     return a / b
-
 
 def _classify(fraction: float) -> str:
     if isinstance(fraction, float) and math.isnan(fraction):
@@ -325,7 +251,6 @@ def _classify(fraction: float) -> str:
     if fraction <= FRACTION_LEARNED_MAX:
         return "learned"
     return "mixed"
-
 
 def _compare_and_classify(
     model_name: str, dataset_name: str,
@@ -414,8 +339,6 @@ def _write_summary(
             f"only for the resnets, per spec)"
         )
 
-    # Spike layer identified data-driven: the layer with the largest
-    # elevation-over-median in the trained profile (not hardcoded to a name).
     spike_layer = max(layers, key=lambda l: per_layer[l]["elev_over_median_trained"])
     elev_random = per_layer[spike_layer]["elev_over_median_random"]
     elev_trained = per_layer[spike_layer]["elev_over_median_trained"]
@@ -438,11 +361,6 @@ def _write_summary(
 
     return verdict
 
-
-# ---------------------------------------------------------------------------
-# CSV (append mode -- one row written to disk immediately after computation)
-# ---------------------------------------------------------------------------
-
 def _append_row(path: str, row: dict, fieldnames: list[str]) -> None:
     file_exists = os.path.exists(path)
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -456,11 +374,6 @@ def _append_row(path: str, row: dict, fieldnames: list[str]) -> None:
 def _sibling_path(path: str, suffix: str) -> str:
     base, ext = os.path.splitext(path)
     return f"{base}{suffix}{ext}"
-
-
-# ---------------------------------------------------------------------------
-# Orchestration
-# ---------------------------------------------------------------------------
 
 def _run_one_model(
     model_name: str, dataset_name: str, specs: dict, num_classes: int, device: torch.device,
@@ -554,7 +467,7 @@ def run_random_init_control(
             continue
 
         for model_name in ORDERED_MODELS:
-            logger.info(f"[RandomInitControl] === {model_name}/{dataset_name} ===")
+            logger.info(f"[RandomInitControl] {model_name}/{dataset_name}")
             try:
                 _run_one_model(
                     model_name, dataset_name, specs, num_classes, device,
@@ -567,4 +480,4 @@ def run_random_init_control(
                 if device.type == "cuda":
                     torch.cuda.empty_cache()
 
-    logger.info("[RandomInitControl] === Random-Init-Control complete ===")
+    logger.info("[RandomInitControl] Random-Init-Control complete")

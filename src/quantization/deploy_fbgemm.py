@@ -77,11 +77,6 @@ def _save_csv(results: list[dict], path: str, fieldnames: list[str]) -> None:
         writer.writerows(results)
     logger.info(f"[DeployFbgemm] CSV saved -> {path}")
 
-
-# ---------------------------------------------------------------------------
-# Checkpoint resolution
-# ---------------------------------------------------------------------------
-
 def _resolve_checkpoint_dir(checkpoint_dir: str | None, load_run_id: str | None) -> str:
     if checkpoint_dir:
         resolved = checkpoint_dir
@@ -100,11 +95,6 @@ def _checkpoint_path(checkpoint_dir: str, stage: str, model_name: str, dataset_n
         )
     return path
 
-
-# ---------------------------------------------------------------------------
-# Model reconstruction: checkpoint -> baked fp32 PoT model
-# ---------------------------------------------------------------------------
-
 def _build_baked_model(
     model_name: str,
     checkpoint_path: str,
@@ -112,10 +102,6 @@ def _build_baked_model(
     channels: int,
     image_size: int,
 ) -> nn.Module:
-    # Deferred imports: bake_pot_into_standard_layers lives in src.main,
-    # which imports this module transitively (via src.main's own
-    # --deploy-cpu-fbgemm dispatch) -- importing at module scope would be
-    # circular
     from src.main import bake_pot_into_standard_layers
     from src.model_cnn.train import build_model
     from src.quantization.quantizer import fuse_model_architectures, replace_layers_for_quantization
@@ -137,11 +123,6 @@ def _build_baked_model(
     baked_model = bake_pot_into_standard_layers(quant_model)
     baked_model.eval()
     return baked_model
-
-
-# ---------------------------------------------------------------------------
-# fbgemm eager-mode PTQ
-# ---------------------------------------------------------------------------
 
 def _fuse_leftover_conv_bn(model: nn.Module, model_name: str) -> None:
     """
@@ -417,11 +398,6 @@ def _audit_quantized_modules(model: nn.Module, label: str) -> tuple[bool, bool]:
     )
     return True, True
 
-
-# ---------------------------------------------------------------------------
-# Accuracy
-# ---------------------------------------------------------------------------
-
 def _evaluate_accuracy(model: nn.Module, loader, eval_subset_batches: int | None = None) -> float:
     model.eval()
     correct, total = 0, 0
@@ -434,11 +410,6 @@ def _evaluate_accuracy(model: nn.Module, loader, eval_subset_batches: int | None
             correct += preds.eq(targets).sum().item()
             total += targets.size(0)
     return 100.0 * correct / total if total > 0 else float("nan")
-
-
-# ---------------------------------------------------------------------------
-# Throughput sweep (CPU: no cuda synchronize, fixed thread count)
-# ---------------------------------------------------------------------------
 
 def _benchmark_sweep(
     fp32_model: nn.Module,
@@ -461,11 +432,6 @@ def _benchmark_sweep(
             "speedup_x": fp32_result["latency_ms"] / int8_result["latency_ms"],
         })
     return rows
-
-
-# ---------------------------------------------------------------------------
-# CPU info log
-# ---------------------------------------------------------------------------
 
 def _write_cpu_info(path: str, num_threads: int) -> None:
     try:
@@ -496,11 +462,6 @@ def _write_cpu_info(path: str, num_threads: int) -> None:
         f.write("\n".join(lines) + "\n")
     logger.info(f"[DeployFbgemm] CPU info written -> {path}")
 
-
-# ---------------------------------------------------------------------------
-# Orchestration
-# ---------------------------------------------------------------------------
-
 def run_deploy_cpu_fbgemm(
     load_run_id: str | None,
     checkpoint_dir: str | None,
@@ -518,8 +479,6 @@ def run_deploy_cpu_fbgemm(
 
     resolved_checkpoint_dir = _resolve_checkpoint_dir(checkpoint_dir, load_run_id)
 
-    # CSV_DIR/LOG_DIR (src.utility.config) are already results/<RUN_ID>/{csv,logs} --
-    # the same per-run directories every other mode in src.main writes to.
     os.makedirs(CSV_DIR, exist_ok=True)
     os.makedirs(LOG_DIR, exist_ok=True)
 
@@ -540,7 +499,7 @@ def run_deploy_cpu_fbgemm(
         for model_name in MODELS:
             for stage in STAGES:
                 label = f"{stage} {model_name}/{dataset_name}"
-                logger.info(f"[DeployFbgemm] --- {label} ---")
+                logger.info(f"[DeployFbgemm] {label}")
 
                 checkpoint_path = _checkpoint_path(resolved_checkpoint_dir, stage, model_name, dataset_name)
 
@@ -600,11 +559,7 @@ def run_deploy_cpu_fbgemm(
                     })
 
                 del baked_model, int8_model
-
-                # Re-saved after every combo (not just at the end) so a late
-                # failure on a slow CPU run (IMAGENET100 at 224x224, batch
-                # sweep up to 128) doesn't discard everything completed so far.
                 _save_csv(summary_rows, os.path.join(CSV_DIR, "fbgemm_summary.csv"), SUMMARY_FIELDNAMES)
                 _save_csv(sweep_rows, os.path.join(CSV_DIR, "fbgemm_sweep.csv"), SWEEP_FIELDNAMES)
 
-    logger.info("[DeployFbgemm] === Deploy-CPU-fbgemm complete ===")
+    logger.info("[DeployFbgemm] Deploy-CPU-fbgemm complete")

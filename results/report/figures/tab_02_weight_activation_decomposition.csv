@@ -1,7 +1,0 @@
-Modell,Stufe,Gewicht,Aktivierung,Dominant
-CNN,PTQ,10.24,-0.07,Gewicht
-CNN,QAT,-3.22,3.11,Aktivierung
-ResNet-18,PTQ,1.41,0.09,Gewicht
-ResNet-18,QAT,-6.36,-5.48,Aktivierung
-ResNet-50,PTQ,1.9,-0.23,Gewicht
-ResNet-50,QAT,-5.5,-3.72,Aktivierung

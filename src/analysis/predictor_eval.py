@@ -29,12 +29,11 @@ from scipy.stats import spearmanr
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 
 MODELS = ["cnn", "resnet18_no_weights", "resnet50_no_weights"]
-DATASETS = ["IMAGENET100", "CIFAR10"]  # Table 6 row order
+DATASETS = ["IMAGENET100", "CIFAR10"] 
 COMBINATIONS = [(model, dataset) for dataset in DATASETS for model in MODELS]
 
 MODEL_LABEL = {"cnn": "CNN", "resnet18_no_weights": "ResNet-18", "resnet50_no_weights": "ResNet-50"}
 
-# S_raw, S_pert, S_hawq columns in weight_ablation_canonical_v2(_imagnet).csv
 SCORE_COLUMNS = {"raw_trh": "hessian_trace_fused", "dwsq": "delta_w_sq", "trh_dwsq": "trh_times_dwsq"}
 PREDICTOR_LABEL = {"raw_trh": "S_raw", "dwsq": "S_pert", "trh_dwsq": "S_hawq"}
 

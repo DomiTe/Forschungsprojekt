@@ -1,6 +1,0 @@
-Größe,Alter Wert,Kanonisch,Verhältnis,Erklärung
-resnet50_conv1_fp32,13.87,14.9,0.931,fp32:basis=unfused (residual 2.78%)
-resnet50_conv1_fp32,11.79,14.9,0.791,ungeklärt
-resnet50_conv1_ptq,13161.8,97.76,134.631,ungeklärt
-resnet50_conv1_ptq,1030.9,97.76,10.545,ungeklärt
-resnet50_conv1_elevation_fp32,14.0,11.73,1.194,ungeklärt
